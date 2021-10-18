@@ -1,0 +1,114 @@
+[
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\adapter_walletstatement.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\adapter_walletstatement.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_misc.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_misc.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\login_screen_fragment.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\login_screen_fragment.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\adapter_history_item.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\adapter_history_item.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_rewards_points.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_rewards_points.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_home.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_home.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_profile_bottom.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_profile_bottom.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_splash.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_splash.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\custom_duo_view_header.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\custom_duo_view_header.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_splash_screen.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\activity_splash_screen.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\adapter_transaction.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\adapter_transaction.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_wallet_bottom.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_wallet_bottom.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\common_toolbar.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\common_toolbar.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_transfer_money.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_transfer_money.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\content_event.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\content_event.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_my_order_list.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_my_order_list.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_products_list.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_products_list.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\sign_up_screen_fragment.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\sign_up_screen_fragment.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_home_bottom.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_home_bottom.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\toolbar_trans.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\toolbar_trans.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_login.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_login.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_main.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_walletw_statement.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_walletw_statement.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\layout_main.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\layout_main.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\item_features.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\item_features.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_history_bottom.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_history_bottom.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\fragment_notification.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\fragment_notification.xml"
+    },
+    {
+        "merged": "E:\\LIVEProjects\\ActorPayApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\custom_duo_view_footer.xml",
+        "source": "E:\\LIVEProjects\\ActorPayApp\\app\\src\\main\\res\\layout\\custom_duo_view_footer.xml"
+    }
+]

@@ -1,0 +1,60 @@
+com/octal/actorpay/databinding/FragmentNotificationBinding.java
+ com.octal.actorpay.databinding.FragmentNotificationBinding
+com/octal/actorpay/databinding/CommonToolbarBinding.java
+ com.octal.actorpay.databinding.CommonToolbarBinding
+com/octal/actorpay/databinding/FragmentWalletwStatementBinding.java
+ com.octal.actorpay.databinding.FragmentWalletwStatementBinding
+com/octal/actorpay/databinding/SignUpScreenFragmentBinding.java
+ com.octal.actorpay.databinding.SignUpScreenFragmentBinding
+com/octal/actorpay/databinding/ToolbarTransBinding.java
+ com.octal.actorpay.databinding.ToolbarTransBinding
+com/octal/actorpay/databinding/CustomDuoViewFooterBinding.java
+ com.octal.actorpay.databinding.CustomDuoViewFooterBinding
+com/octal/actorpay/BuildConfig.java
+ com.octal.actorpay.BuildConfig
+com/octal/actorpay/databinding/AdapterHistoryItemBinding.java
+ com.octal.actorpay.databinding.AdapterHistoryItemBinding
+com/octal/actorpay/databinding/LayoutMainBinding.java
+ com.octal.actorpay.databinding.LayoutMainBinding
+com/octal/actorpay/databinding/FragmentRewardsPointsBinding.java
+ com.octal.actorpay.databinding.FragmentRewardsPointsBinding
+com/octal/actorpay/databinding/ItemFeaturesBinding.java
+ com.octal.actorpay.databinding.ItemFeaturesBinding
+com/octal/actorpay/databinding/FragmentWalletBottomBinding.java
+ com.octal.actorpay.databinding.FragmentWalletBottomBinding
+com/octal/actorpay/databinding/FragmentHomeBottomBinding.java
+ com.octal.actorpay.databinding.FragmentHomeBottomBinding
+com/octal/actorpay/databinding/ActivitySplashScreenBinding.java
+ com.octal.actorpay.databinding.ActivitySplashScreenBinding
+com/octal/actorpay/databinding/FragmentProductsListBinding.java
+ com.octal.actorpay.databinding.FragmentProductsListBinding
+com/octal/actorpay/databinding/FragmentHistoryBottomBinding.java
+ com.octal.actorpay.databinding.FragmentHistoryBottomBinding
+com/octal/actorpay/databinding/FragmentMyOrderListBinding.java
+ com.octal.actorpay.databinding.FragmentMyOrderListBinding
+com/octal/actorpay/databinding/FragmentSplashBinding.java
+ com.octal.actorpay.databinding.FragmentSplashBinding
+com/octal/actorpay/databinding/FragmentProfileBottomBinding.java
+ com.octal.actorpay.databinding.FragmentProfileBottomBinding
+com/octal/actorpay/databinding/CustomDuoViewHeaderBinding.java
+ com.octal.actorpay.databinding.CustomDuoViewHeaderBinding
+com/octal/actorpay/databinding/LoginScreenFragmentBinding.java
+ com.octal.actorpay.databinding.LoginScreenFragmentBinding
+com/octal/actorpay/databinding/FragmentHomeBinding.java
+ com.octal.actorpay.databinding.FragmentHomeBinding
+com/octal/actorpay/databinding/ContentEventBinding.java
+ com.octal.actorpay.databinding.ContentEventBinding
+com/octal/actorpay/databinding/AdapterWalletstatementBinding.java
+ com.octal.actorpay.databinding.AdapterWalletstatementBinding
+com/octal/actorpay/databinding/FragmentTransferMoneyBinding.java
+ com.octal.actorpay.databinding.FragmentTransferMoneyBinding
+com/octal/actorpay/databinding/FragmentLoginBinding.java
+ com.octal.actorpay.databinding.FragmentLoginBinding
+com/octal/actorpay/databinding/ActivityMainBinding.java
+ com.octal.actorpay.databinding.ActivityMainBinding
+com/octal/actorpay/databinding/FragmentMiscBinding.java
+ com.octal.actorpay.databinding.FragmentMiscBinding
+com/octal/actorpay/databinding/AdapterTransactionBinding.java
+ com.octal.actorpay.databinding.AdapterTransactionBinding
+com/octal/actorpay/DataBindingTriggerClass.java
+ com.octal.actorpay.DataBindingTriggerClass
