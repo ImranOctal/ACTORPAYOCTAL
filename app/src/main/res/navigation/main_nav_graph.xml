@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.octal.actorpay.ui.splash.SplashFragment"
+        android:label="@string/splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.octal.actorpay.ui.auth.LoginFragment"
+        android:label="@string/login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.octal.actorpay.ui.dashboard.home.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_walletFragment"
+            app:destination="@id/walletFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/walletFragment"
+        android:name="com.octal.actorpay.ui.walletStatement.WalletStatementFragment"
+        android:label="@string/wallet_statement"
+        tools:layout="@layout/fragment_walletw_statement">
+
+
+        <action
+            android:id="@+id/action_walletFragment_to_homeFragment"
+            app:destination="@+id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/transferMoneyFragment"
+        android:name="com.octal.actorpay.ui.transferMoney.TransferMoneyFragment"
+        android:label="@string/transfer_money"
+        tools:layout="@layout/fragment_transfer_money">
+        <!-- <action
+             app:popUpTo="@id/homeFragment"
+             app:popUpToInclusive="true" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="com.octal.actorpay.ui.productList.ProductsListFragment"
+        android:label="@string/product_list"
+        tools:layout="@layout/fragment_products_list" />
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.octal.actorpay.ui.notification.NotificationFragment"
+        android:label="@string/notification"
+        tools:layout="@layout/fragment_notification" />
+
+
+    <fragment
+        android:id="@+id/myOrderFragment"
+        android:name="com.octal.actorpay.ui.myOrderList.MyOrdersListFragment"
+        android:label="@string/my_order"
+        tools:layout="@layout/fragment_my_order_list" />
+    <fragment
+        android:id="@+id/rewardsFragment"
+        android:name="com.octal.actorpay.ui.rewards_points.RewardsPointsFragment"
+        android:label="@string/rewards"
+        tools:layout="@layout/fragment_rewards_points" />
+
+    <fragment
+        android:id="@+id/miscFragment"
+        android:name="com.octal.actorpay.ui.misc.MiscFragment"
+        android:label="@string/misc"
+        tools:layout="@layout/fragment_misc" />
+
+</navigation>

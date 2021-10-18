@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><!--<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">-->
+<layout>
+<nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/white"
+    app:layout_scrollFlags="scroll">
+    <!-- app:background="@drawable/drawer_bg"-->
+    <nl.psdcompany.duonavigationdrawer.views.DuoMenuView
+        android:id="@+id/duoMenuView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:tag="@string/tag_menu"
+        app:background="@color/white"
+        app:footer="@layout/custom_duo_view_footer"
+        app:header="@layout/custom_duo_view_header" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:tag="@string/tag_content">
+
+        <include
+            android:id="@+id/toolbarLayout"
+            layout="@layout/toolbar_trans"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+        <View
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_27sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:background="@color/primary" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:src="@drawable/drawable_menu"
+            android:visibility="visible" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbarLayout"
+            tools:context=".MainActivity">
+
+
+        <include
+            android:id="@+id/layout_mainID"
+            layout="@layout/layout_main" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+
+</nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout>
+</layout><!--
+</layout>-->

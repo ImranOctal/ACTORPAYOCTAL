@@ -1,0 +1,9 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:drawable="@drawable/t_qr_code"
+        android:width="@dimen/_15sdp"
+        android:height="@dimen/_15sdp"
+        />
+
+</layer-list >
