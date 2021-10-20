@@ -39,6 +39,20 @@
     <string name="rewards">Rewards</string>
     <string name="name">Name</string>
     <string name="splash">Splash</string>
+    <string name="enter_currency_type">Enter currency type</string>
+    <string name="currency_type">Currency type</string>
+    <string name="next">Next</string>
+    <string name="choose_country">Choose country</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_email_i_d">Enter Email I\'d</string>
+    <string name="select_branch">Select Branch</string>
+    <string name="unique_code">Unique Code</string>
+    <string name="enter_unique_code">Enter Unique Code</string>
+    <string name="enter_account">Enter Account</string>
+    <string name="beneficiary_account_no">Beneficiary Account No.</string>
+    <string name="pay_now">Pay Now</string>
 
 
 </resources>
