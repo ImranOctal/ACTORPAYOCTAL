@@ -53,6 +53,8 @@
     <string name="enter_account">Enter Account</string>
     <string name="beneficiary_account_no">Beneficiary Account No.</string>
     <string name="pay_now">Pay Now</string>
+    <string name="add_new_address">Add New Address</string>
+    <string name="submit">Submit</string>
 
 
 </resources>

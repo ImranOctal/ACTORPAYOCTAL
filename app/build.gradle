@@ -53,6 +53,9 @@ dependencies {
 
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
 
+    implementation 'com.gauravbhola.ripplepulsebackground:library:1.0.0'
+
+
     /*Sdp Library*/
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
