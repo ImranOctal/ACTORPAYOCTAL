@@ -6,17 +6,57 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.octal.actorpay.R
+import com.octal.actorpay.databinding.FragmentRaiseConcernsBinding
+import com.octal.actorpay.databinding.FragmentRemittanceBinding
+import com.octal.actorpay.viewmodel.ActorPayViewModel
+import org.koin.android.ext.android.inject
 
 class RemittanceFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val viewModel: ActorPayViewModel by  inject()
+    private var _binding: FragmentRemittanceBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_remittance, container, false)
+
+        _binding = FragmentRemittanceBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+        init()
+
+        return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    fun init() {
+        binding.apply {
+            buttonNext.setOnClickListener {
+                tvCircleOne.setBackgroundResource(R.drawable.unselected_circle)
+                tvCircleTwo.setBackgroundResource(R.drawable.selected_circle)
+                tvCircleThree.setBackgroundResource(R.drawable.unselected_circle)
+
+                firstLayout.visibility=View.GONE
+                secondLayout.visibility=View.VISIBLE
+            }
+            buttonNextTwo.setOnClickListener {
+
+                tvCircleOne.setBackgroundResource(R.drawable.unselected_circle)
+                tvCircleTwo.setBackgroundResource(R.drawable.unselected_circle)
+                tvCircleThree.setBackgroundResource(R.drawable.selected_circle)
+
+                secondLayout.visibility=View.GONE
+                thirdLayout.visibility=View.VISIBLE
+            }
+        }
+
     }
 }

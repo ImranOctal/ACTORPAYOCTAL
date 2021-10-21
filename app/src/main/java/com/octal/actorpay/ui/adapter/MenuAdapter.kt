@@ -55,11 +55,13 @@ class MenuAdapter : BaseAdapter  {
             optionView = convertView as DuoOptionView
         }
 
-            (((optionView.getChildAt(0) as RelativeLayout).getChildAt(1) as RelativeLayout).getChildAt(
-                1
-            ) as TextView).setTextColor(
-                Color.parseColor("#8E8D8D")
-            )
+        val textView =(((optionView.getChildAt(0) as RelativeLayout).getChildAt(1) as RelativeLayout).getChildAt(1) as TextView)
+        textView.setTextColor(
+            Color.parseColor("#8E8D8D")
+           // Color.parseColor("#8E8D8D")
+        )
+        textView.textSize = 17F
+
         // Using the DuoOptionView's default selectors
         optionView.bind(option.mTitle, option.mDrawable)
 

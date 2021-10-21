@@ -91,4 +91,10 @@
         android:label="@string/misc"
         tools:layout="@layout/fragment_misc" />
 
+    <fragment
+        android:id="@+id/remittance"
+        android:name="com.octal.actorpay.ui.remittance.RemittanceFragment"
+        android:label="@string/remittance"
+        tools:layout="@layout/fragment_remittance"/>
+
 </navigation>

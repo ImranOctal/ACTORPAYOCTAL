@@ -137,8 +137,8 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
     private fun initiliation() {
         mTitles.add(
             DrawerItems(
-                getString(R.string.my_profile),
-                this.resources.getDrawable(R.drawable.my_profile)!!
+                getString(R.string.my_orders),
+                this.resources.getDrawable(R.drawable.my_orders)!!
             )
         )
         mTitles.add(
@@ -149,7 +149,31 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.my_orders),
+                getString(R.string.my_loyalty_and_rewards),
+                this.resources.getDrawable(R.drawable.my_profile)!!
+            )
+        )
+        mTitles.add(
+            DrawerItems(
+                getString(R.string.referral),
+                this.resources.getDrawable(R.drawable.my_profile)!!
+            )
+        )
+        mTitles.add(
+            DrawerItems(
+                getString(R.string.view_available_money_in_wallet),
+                this.resources.getDrawable(R.drawable.my_profile)!!
+            )
+        )
+        mTitles.add(
+            DrawerItems(
+                getString(R.string.my_profile),
+                this.resources.getDrawable(R.drawable.my_profile)!!
+            )
+        )
+        mTitles.add(
+            DrawerItems(
+                getString(R.string.promo_offers),
                 this.resources.getDrawable(R.drawable.my_orders)!!
             )
         )
@@ -157,12 +181,6 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
             DrawerItems(
                 getString(R.string.change_payment_option),
                 this.resources.getDrawable(R.drawable.my_orders)!!
-            )
-        )
-        mTitles.add(
-            DrawerItems(
-                getString(R.string.settings),
-                this.resources.getDrawable(R.drawable.settings)!!
             )
         )
         mTitles.add(
