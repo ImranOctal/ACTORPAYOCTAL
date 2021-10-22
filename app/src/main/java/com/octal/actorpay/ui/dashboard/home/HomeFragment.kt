@@ -250,46 +250,41 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
         mMenuAdapter?.setViewSelected(position, true)
         // Navigate to the right fragment
         when (position) {
-            /*0 -> {
-                startActivity(Intent(this, KitchenListParent::class.java))
-            }
-    */
-            0 -> {
-                // showAlertBar("0")
-                //bottomNavigationView.selectedItemId = R.id.bottomMenuMeals
-                /* val intent = Intent(applicationContext, MyOrders::class.java)
-                 startActivity(intent)*/
 
+            0 -> {
+                NavController().navigateWithId(R.id.myOrderFragment, findNavController())
             }
             1 -> {
-                //showCustomToast("screen")
-                /* val intent = Intent(applicationContext, Profile::class.java)
-                 startActivity(intent)*/
+                NavController().navigateWithId(R.id.walletFragment, findNavController())
             }
             2 -> {
-                //showCustomToast("screen")
-                /*val intent = Intent(applicationContext, Wallet::class.java)
-                startActivity(intent)*/
+
                 NavController().navigateWithId(R.id.productListFragment, findNavController())
 
             }
             3 -> {
-                //showCustomToast("screen")
-                /*val intent = Intent(applicationContext, Refer_and_Earn::class.java)
-                startActivity(intent)*/
+                NavController().navigateWithId(R.id.rewardsFragment, findNavController())
             }
             4 -> {
-                /*val intent = Intent(applicationContext, RateAndReviews::class.java)
-                startActivity(intent)*/
+                NavController().navigateWithId(R.id.walletFragment, findNavController())
             }
             5 -> {
-                NavController().navigateWithId(R.id.miscFragment, findNavController())
+               // NavController().navigateWithId(R.id.miscFragment, findNavController())
             }
             6 -> {
-                //startActivity(Intent(applicationContext, MoreActivity::class.java))
+                val fragment = ProfileBottomFragment()
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.framelayout, fragment, fragment.javaClass.getSimpleName())
+                    .commit()
             }
             7 -> {
 
+            }
+            8->{
+
+            }
+            9->{
+                NavController().navigateWithId(R.id.miscFragment, findNavController())
             }
         }
 
