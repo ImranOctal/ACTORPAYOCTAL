@@ -252,40 +252,42 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
         when (position) {
 
             0 -> {
-                NavController().navigateWithId(R.id.myOrderFragment, findNavController())
+               // NavController().navigateWithId(R.id.myOrderFragment, findNavController())
+                Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_myOrderFragment)
             }
             1 -> {
-                NavController().navigateWithId(R.id.walletFragment, findNavController())
+                Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_walletFragment)
             }
             2 -> {
-
-                NavController().navigateWithId(R.id.productListFragment, findNavController())
+                Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_rewardsFragment)
+              //  NavController().navigateWithId(R.id.productListFragment, findNavController())
 
             }
             3 -> {
-                NavController().navigateWithId(R.id.rewardsFragment, findNavController())
+                Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_referFragment)
+               // NavController().navigateWithId(R.id.rewardsFragment, findNavController())
             }
             4 -> {
-                NavController().navigateWithId(R.id.walletFragment, findNavController())
+                Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_walletFragment)
+               // NavController().navigateWithId(R.id.walletFragment, findNavController())
             }
             5 -> {
-               // NavController().navigateWithId(R.id.miscFragment, findNavController())
-            }
-            6 -> {
                 val fragment = ProfileBottomFragment()
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.framelayout, fragment, fragment.javaClass.getSimpleName())
                     .commit()
             }
+            6 -> {
+                Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_productListFragment)
+            }
             7 -> {
-
+                Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_remittance)
             }
             8->{
+                Navigation.findNavController(binding.root).navigate(R.id.action_homeFragment_to_miscFragment)
+               // NavController().navigateWithId(R.id.miscFragment, findNavController())
+            }
 
-            }
-            9->{
-                NavController().navigateWithId(R.id.miscFragment, findNavController())
-            }
         }
 
         // Close the drawer

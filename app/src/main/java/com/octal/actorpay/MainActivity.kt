@@ -36,6 +36,13 @@ class MainActivity : BaseActivity() {
         when (navController!!.currentDestination?.id) {
             R.id.homeFragment -> navController!!.navigateUp()
             R.id.walletFragment -> navController!!.navigateUp()
+            R.id.myOrderFragment -> navController!!.navigateUp()
+            R.id.rewardsFragment -> navController!!.navigateUp()
+            R.id.miscFragment -> navController!!.navigateUp()
+            R.id.remittance -> navController!!.navigateUp()
+            R.id.productListFragment -> navController!!.navigateUp()
+            R.id.transferMoneyFragment -> navController!!.navigateUp()
+            R.id.notificationFragment -> navController!!.navigateUp()
             else -> super.onBackPressed()
         }
        // super.onBackPressed()

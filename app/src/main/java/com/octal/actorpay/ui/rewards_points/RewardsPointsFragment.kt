@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.octal.actorpay.databinding.FragmentRewardsPointsBinding
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
@@ -37,6 +38,9 @@ class RewardsPointsFragment : Fragment() {
     }
 
     fun init() {
-
+        _binding!!.toolbar.title.setText("My Rewards")
+        _binding!!.toolbar.backIcon.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 }

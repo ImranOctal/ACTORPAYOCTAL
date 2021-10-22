@@ -5,7 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
+import com.octal.actorpay.R
 import com.octal.actorpay.databinding.FragmentRaiseConcernsBinding
+import com.octal.actorpay.databinding.FragmentReferAndEarnBinding
 import com.octal.actorpay.databinding.FragmentRewardsPointsBinding
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
@@ -13,11 +17,8 @@ import org.koin.android.ext.android.inject
 
 class ReferAndEarnFragment : Fragment() {
     private val viewModel: ActorPayViewModel by  inject()
-    private var _binding: FragmentRaiseConcernsBinding? = null
+    private lateinit var binding:FragmentReferAndEarnBinding
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,19 +26,19 @@ class ReferAndEarnFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentRaiseConcernsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        init()
-
-        return root
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_refer_and_earn, container, false)
+        binding.toolbar.title.setText("My Order")
+        binding.toolbar.backIcon.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
-    }
-
-    fun init() {
 
     }
+
+
 }

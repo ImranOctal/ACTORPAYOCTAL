@@ -190,7 +190,7 @@ abstract class BaseActivity : AppCompatActivity() {
             if (frag!!.childFragmentManager.backStackEntryCount > 1) {
                 frag.childFragmentManager.popBackStack()
             } else {
-                finish()
+               super.onBackPressed()
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.octal.actorpay.R
 import com.octal.actorpay.databinding.FragmentRaiseConcernsBinding
 import com.octal.actorpay.databinding.FragmentRemittanceBinding
@@ -38,6 +39,10 @@ class RemittanceFragment : Fragment() {
     }
 
     fun init() {
+        binding.toolbar.title.setText(R.string.change_payment_option)
+        binding.toolbar.backIcon.setOnClickListener {
+            findNavController().popBackStack()
+        }
         binding.apply {
             buttonNext.setOnClickListener {
                 tvCircleOne.setBackgroundResource(R.drawable.unselected_circle)

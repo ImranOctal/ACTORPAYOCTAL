@@ -34,6 +34,27 @@
         <action
             android:id="@+id/action_homeFragment_to_walletFragment"
             app:destination="@id/walletFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_myOrderFragment"
+            app:destination="@id/myOrderFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_productListFragment"
+            app:destination="@id/productListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_miscFragment"
+            app:destination="@id/miscFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_transferMoneyFragment"
+            app:destination="@id/transferMoneyFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_rewardsFragment"
+            app:destination="@id/rewardsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_remittance"
+            app:destination="@id/remittance" />
+        <action
+            android:id="@+id/action_homeFragment_to_referFragment"
+            app:destination="@id/referFragment" />
 
     </fragment>
 
@@ -72,6 +93,11 @@
         android:name="com.octal.actorpay.ui.notification.NotificationFragment"
         android:label="@string/notification"
         tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/referFragment"
+        android:name="com.octal.actorpay.ui.refer_and_earn.ReferAndEarnFragment"
+        android:label="@string/referral"
+        tools:layout="@layout/fragment_refer_and_earn" />
 
 
     <fragment

@@ -25,7 +25,7 @@ class WalletStatementFragment : Fragment() {
         _binding = FragmentWalletwStatementBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
+        binding.toolbar.title.setText("My Wallet")
         binding.toolbar.backIcon.setOnClickListener {
             findNavController().popBackStack()
 
