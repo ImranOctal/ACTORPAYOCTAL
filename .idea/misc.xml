@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_walletw_statement.xml" value="0.22" />
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/menu/demo_menu.xml" value="0.21203703703703702" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
