@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.octal.actorpay.MainActivity
 import com.octal.actorpay.ui.navController.NavController
 import com.octal.actorpay.R
 import com.octal.actorpay.databinding.FragmentHomeBinding
@@ -137,56 +139,55 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
     private fun initiliation() {
         mTitles.add(
             DrawerItems(
-                getString(R.string.my_orders),
-                this.resources.getDrawable(R.drawable.my_orders)!!
+                getString(R.string.my_orders),ContextCompat.getDrawable((context as MainActivity),R.drawable.my_orders)!!
+
             )
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.wallet_statement),
-                this.resources.getDrawable(R.drawable.wallet_statement)!!
+                getString(R.string.wallet_statement),ContextCompat.getDrawable((context as MainActivity),R.drawable.wallet_statement)!!
+
             )
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.my_loyalty_and_rewards),
-                this.resources.getDrawable(R.drawable.my_profile)!!
+                getString(R.string.my_loyalty_and_rewards),ContextCompat.getDrawable((context as MainActivity),R.drawable.my_profile)!!
+
             )
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.referral),
-                this.resources.getDrawable(R.drawable.my_profile)!!
+                getString(R.string.referral),ContextCompat.getDrawable((context as MainActivity),R.drawable.my_profile)!!
+
             )
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.view_available_money_in_wallet),
-                this.resources.getDrawable(R.drawable.my_profile)!!
+                getString(R.string.view_available_money_in_wallet),ContextCompat.getDrawable((context as MainActivity),R.drawable.my_profile)!!
             )
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.my_profile),
-                this.resources.getDrawable(R.drawable.my_profile)!!
+                getString(R.string.my_profile),ContextCompat.getDrawable((context as MainActivity),R.drawable.my_profile)!!
+
             )
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.promo_offers),
-                this.resources.getDrawable(R.drawable.my_orders)!!
+                getString(R.string.promo_offers),ContextCompat.getDrawable((context as MainActivity),R.drawable.my_orders)!!
+
             )
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.change_payment_option),
-                this.resources.getDrawable(R.drawable.my_orders)!!
+                getString(R.string.change_payment_option),ContextCompat.getDrawable((context as MainActivity),R.drawable.my_orders)!!
+
             )
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.more),
-                this.resources.getDrawable(R.drawable.more)!!
+                getString(R.string.more),ContextCompat.getDrawable((context as MainActivity),R.drawable.more)!!
+
             )
         )
         // Initialize the views

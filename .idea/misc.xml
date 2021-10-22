@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_misc.xml" value="0.20520833333333333" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_my_order_list.xml" value="0.2" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_products_list.xml" value="0.22" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_profile_bottom.xml" value="0.29257246376811596" />
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_raise_concerns.xml" value="0.20520833333333333" />
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_refer_and_earn.xml" value="0.20520833333333333" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_remittance.xml" value="0.33" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_rewards_points.xml" value="0.20520833333333333" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_transfer_money.xml" value="0.29257246376811596" />
