@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpay.databinding.FragmentHomeBottomBinding
 import com.octal.actorpay.ui.adapter.TransactionAdapter
+import com.octal.actorpay.ui.dashboard.home.HomeFragment
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
@@ -27,7 +28,19 @@ class HomeBottomFragment : Fragment() {
         gettransaction()
         return root
     }
+    companion object {
+        private var instance: HomeBottomFragment? = null
 
+
+        @JvmStatic
+        fun newInstance(): HomeBottomFragment? {
+
+            if (instance == null) {
+                instance = HomeBottomFragment()
+            }
+            return instance
+        }
+    }
     private fun gettransaction() {
         binding.rvtransactionID.apply {
             var arraylist: ArrayList<String> = arrayListOf("AddMoney", "AddMoney", "AddMoney")

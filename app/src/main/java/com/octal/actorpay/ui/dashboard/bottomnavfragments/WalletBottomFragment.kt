@@ -19,7 +19,19 @@ class WalletBottomFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
+    companion object {
+        private var instance: WalletBottomFragment? = null
 
+
+        @JvmStatic
+        fun newInstance(): WalletBottomFragment? {
+
+            if (instance == null) {
+                instance = WalletBottomFragment()
+            }
+            return instance
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

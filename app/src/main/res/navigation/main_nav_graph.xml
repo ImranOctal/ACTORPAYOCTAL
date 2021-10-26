@@ -3,26 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/homeFragment">
+
+
 
     <fragment
-        android:id="@+id/splashFragment"
-        android:name="com.octal.actorpay.ui.splash.SplashFragment"
-        android:label="@string/splash"
-        tools:layout="@layout/fragment_splash">
-        <action
-            android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+        android:id="@+id/homeBottomFragment"
+        android:name="com.octal.actorpay.ui.dashboard.bottomnavfragments.HomeBottomFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home_bottom">
+
     </fragment>
-
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.octal.actorpay.ui.auth.LoginFragment"
-        android:label="@string/login"
-        tools:layout="@layout/fragment_login">
-        <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+        android:id="@+id/profileBottomFragment"
+        android:name="com.octal.actorpay.ui.dashboard.bottomnavfragments.ProfileBottomFragment"
+        android:label="@string/my_profile"
+        tools:layout="@layout/fragment_profile_bottom">
+
+    </fragment>
+    <fragment
+        android:id="@+id/historyBottomFragment"
+        android:name="com.octal.actorpay.ui.dashboard.bottomnavfragments.HistoryBottomFragment"
+        android:label="@string/history"
+        tools:layout="@layout/fragment_history_bottom">
+
     </fragment>
 
     <fragment

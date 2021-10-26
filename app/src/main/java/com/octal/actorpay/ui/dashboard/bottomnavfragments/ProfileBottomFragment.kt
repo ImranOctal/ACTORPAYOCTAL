@@ -17,7 +17,19 @@ class ProfileBottomFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+    companion object {
+        private var instance: ProfileBottomFragment? = null
 
+
+        @JvmStatic
+        fun newInstance(): ProfileBottomFragment? {
+
+            if (instance == null) {
+                instance = ProfileBottomFragment()
+            }
+            return instance
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

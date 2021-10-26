@@ -6,50 +6,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.ViewPager
 import com.octal.actorpay.databinding.FragmentLoginBinding
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.octal.actorpay.R
+import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
 
-class LoginFragment : Fragment() {
-    private var _binding: FragmentLoginBinding? = null
+class LoginActivity : BaseActivity() {
+    private lateinit var binding: FragmentLoginBinding
     private val viewModel: ActorPayViewModel by  inject()
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //Data binding here
+        binding = DataBindingUtil.setContentView(this, R.layout.fragment_login)
+    }
+    override fun onResume() {
+        super.onResume()
         init()
-
-        return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 
     fun init() {
         binding.apply {
-            val viewPagerAdapter = activity?.let { ViewPagerAdapter(it.supportFragmentManager) }
+            val viewPagerAdapter =  ViewPagerAdapter(supportFragmentManager)
             viewPager.adapter = viewPagerAdapter
             tabs.setupWithViewPager(viewPager)
-
-            val params =
-                LinearLayout.LayoutParams(
-                    ViewPager.LayoutParams.WRAP_CONTENT,
-                    ViewPager.LayoutParams.WRAP_CONTENT
-                )
-
             viewPager.addOnPageChangeListener(object : OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
                 }

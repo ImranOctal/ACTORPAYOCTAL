@@ -39,7 +39,7 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
     private var mViewHolder: ViewHolder? = null
     private var mMenuAdapter: MenuAdapter? = null
     private lateinit var rootView: View
-    private var _binding: FragmentHomeBinding? = null
+    var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ActorPayViewModel by  inject()
     private val backStack = Stack<Int>()
@@ -52,7 +52,7 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
         val root: View = binding.root
 
 
-        loadFragment(HomeBottomFragment())
+        loadFragment(HomeBottomFragment.newInstance())
         initiliation()
         setBottomNavigationView()
         features()
@@ -89,35 +89,38 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
         binding.layoutMainID.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home_fragment -> {
+                  //  Navigation.findNavController(binding.root).navigate(R.id.homeBottomFragment)
                     val fragment = HomeBottomFragment()
                     requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.framelayout, fragment, fragment.javaClass.getSimpleName())
+                        .replace(R.id.framelayout, fragment!!, fragment.javaClass.getSimpleName())
                         .commit()
 
                 }
                 R.id.history_fragment -> {
-                    //NavController().navigateWithId(R.id.homeFragment, findNavController())
+                   // Navigation.findNavController(binding.root).navigate(R.id.historyBottomFragment)
                     val fragment = HistoryBottomFragment()
                     requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.framelayout, fragment, fragment.javaClass.getSimpleName())
+                        .replace(R.id.framelayout, fragment!!, fragment.javaClass.getSimpleName())
                         .commit()
                 }
                 R.id.wallet_fragment -> {
                     //
+                  //  Navigation.findNavController(binding.root).navigate(R.id.walletFragment)
                     val fragment = WalletBottomFragment()
                     requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.framelayout, fragment, fragment.javaClass.getSimpleName())
+                        .replace(R.id.framelayout, fragment!!, fragment.javaClass.getSimpleName())
                         .commit()
                 }
                 R.id.profile_fragment -> {
+                   // Navigation.findNavController(binding.root).navigate(R.id.profileBottomFragment)
                     val fragment = ProfileBottomFragment()
                     requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.framelayout, fragment, fragment.javaClass.getSimpleName())
+                        .replace(R.id.framelayout, fragment!!, fragment.javaClass.getSimpleName())
                         .commit()
 
                 }
                 else -> {
-                    loadFragment(HomeBottomFragment())
+                    loadFragment(HomeBottomFragment.newInstance())
                 }
             }
             true
@@ -137,6 +140,7 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
     }
 
     private fun initiliation() {
+        mTitles = ArrayList<DrawerItems>()
         mTitles.add(
             DrawerItems(
                 getString(R.string.my_orders),ContextCompat.getDrawable((context as MainActivity),R.drawable.my_orders)!!
@@ -307,12 +311,14 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
         if (fragment != null) {
             requireActivity().supportFragmentManager
                 .beginTransaction()
-                .replace(com.octal.actorpay.R.id.framelayout, fragment)
+                .replace(R.id.framelayout, fragment)
                 .commit()
             return true
         }
         return false
     }
+
+
 
     override fun on_ItemClickListner(position: Int, mList: List<String>, view: View) {
         when (mList[position]) {
@@ -348,4 +354,5 @@ class HomeFragment : Fragment(), DuoMenuView.OnMenuClickListener,
 
         }
     }
+
 }

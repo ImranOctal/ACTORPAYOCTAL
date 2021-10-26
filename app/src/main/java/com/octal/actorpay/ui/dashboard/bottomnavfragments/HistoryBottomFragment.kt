@@ -33,6 +33,19 @@ class HistoryBottomFragment : Fragment() {
         init()
         return root
     }
+    companion object {
+        private var instance: HistoryBottomFragment? = null
+
+
+        @JvmStatic
+        fun newInstance(): HistoryBottomFragment? {
+
+            if (instance == null) {
+                instance = HistoryBottomFragment()
+            }
+            return instance
+        }
+    }
     fun init(){
         binding.apply {
            /* buttonLogin.setOnClickListener {

@@ -1,11 +1,13 @@
 package com.octal.actorpay.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
 import com.octal.actorpay.databinding.LoginScreenFragmentBinding
 
@@ -16,7 +18,7 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
+ * Use the [LoginActivity.newInstance] factory method to
  * create an instance of this fragment.
  */
 class LoginScreenFragment : Fragment() {
@@ -49,7 +51,7 @@ class LoginScreenFragment : Fragment() {
         binding.apply {
             buttonLogin.setOnClickListener {
                 //NavController().navigateWithId(R.id.homeFragment,findNavController())
-                Navigation.findNavController(root).navigate(R.id.action_loginFragment_to_homeFragment)
+               startActivity(Intent(requireContext(),MainActivity::class.java))
 
             }
         }

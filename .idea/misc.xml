@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/activity_splash_screen.xml" value="0.36666666666666664" />
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_home.xml" value="0.20520833333333333" />
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_login.xml" value="0.20520833333333333" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_misc.xml" value="0.20520833333333333" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_my_order_list.xml" value="0.2" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_products_list.xml" value="0.22" />
@@ -12,6 +16,10 @@
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_remittance.xml" value="0.33" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_rewards_points.xml" value="0.20520833333333333" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_transfer_money.xml" value="0.29257246376811596" />
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/layout_main.xml" value="0.20520833333333333" />
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/login_screen_fragment.xml" value="0.36666666666666664" />
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/sign_up_screen_fragment.xml" value="0.20520833333333333" />
+        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/menu/demo_menu.xml" value="0.20185185185185187" />
       </map>
     </option>
   </component>

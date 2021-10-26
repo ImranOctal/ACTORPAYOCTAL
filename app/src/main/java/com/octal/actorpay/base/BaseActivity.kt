@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import com.octal.actorpay.R
 import java.util.regex.Pattern
@@ -194,7 +195,23 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
     }
-
+    open fun getCurrentFragment(): Int? {
+        return (supportFragmentManager.findFragmentById(R.id.nav_host_Container) as NavHostFragment).navController.currentDestination?.id
+    }
+    open fun getCurrentBottomFragment(): Fragment? {
+        return supportFragmentManager.findFragmentById(R.id.framelayout)
+    }
+     fun loadFragment(fragment: Fragment?): Boolean {
+        //switching fragment
+        if (fragment != null) {
+           supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.framelayout, fragment)
+                .commit()
+            return true
+        }
+        return false
+    }
 
 
     protected fun showSnackBar(message: String?) {
