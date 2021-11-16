@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.octal.actorpay.R
 import com.octal.actorpay.databinding.FragmentMiscBinding
+import com.octal.actorpay.ui.remittance.RemittanceFragment
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
@@ -18,16 +19,22 @@ class MiscFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+    companion object {
+        private var instance: MiscFragment? = null
+        @JvmStatic
+        fun newInstance(): MiscFragment? {
 
+            if (instance == null) {
+                instance = MiscFragment()
+            }
+            return instance
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_misc, container, false)
-        binding.toolbar.title.setText("More")
-        binding.toolbar.backIcon.setOnClickListener {
-            findNavController().popBackStack()
-        }
         return binding.root
 
     }

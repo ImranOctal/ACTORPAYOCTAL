@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg"
-        android:paddingTop="50dp">
+      >
 
-
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/common_toolbar" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,57 +17,55 @@
             android:paddingTop="30dp"
             android:paddingEnd="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toTopOf="parent">
 
-           <ImageView
-               android:layout_width="@dimen/_75sdp"
-               android:layout_gravity="center"
-               android:layout_height="@dimen/_75sdp"
-               android:padding="@dimen/_5sdp"
-               android:src="@drawable/userplus_xxx"/>
+            <ImageView
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_75sdp"
+                android:layout_gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/userplus_xxx" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="@dimen/_2sdp"
-                android:fontFamily="@font/poppins_bold"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="@dimen/_2sdp"
                 android:text="Refer and Earn"
-                android:textColor="@color/black"
-                />
-        <androidx.appcompat.widget.AppCompatTextView
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="@dimen/_2sdp"
-                android:gravity="center"
                 android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:padding="@dimen/_2sdp"
                 android:text="Earn $10 account balance when \nsharing app."
-                android:textColor="@color/text_color"
-                />
+                android:textColor="@color/text_color" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:background="@drawable/dash_border">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="@dimen/_2sdp"
                     android:layout_centerInParent="true"
-                    android:gravity="center"
+                    android:layout_gravity="center"
                     android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:padding="@dimen/_2sdp"
                     android:text="MARTIN MROC 0085"
                     android:textColor="@color/blue_color"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
 
 
             </RelativeLayout>
-
 
 
             <com.google.android.material.button.MaterialButton
@@ -83,13 +75,11 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:backgroundTint="#ED335F"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Share Now"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_12sdp"
-                android:fontFamily="@font/poppins_bold"
                 app:cornerRadius="@dimen/_5sdp" />
-
-
 
 
         </LinearLayout>

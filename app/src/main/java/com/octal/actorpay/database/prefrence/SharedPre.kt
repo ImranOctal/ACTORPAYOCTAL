@@ -62,8 +62,8 @@ class SharedPre(context: Context) {
         return GetDataBoolean(APP_BACKGROUND)
     }
 
-    fun setUserId(uid: Int) {
-        SetDataString(USER_ID, uid.toString())
+    fun setUserId(uid: String) {
+        SetDataString(USER_ID, uid)
     }
 
     val userId: String?
@@ -139,9 +139,20 @@ class SharedPre(context: Context) {
     fun setJwtToken(points: String) {
         SetDataString(JWT_TOKEN, points)
     }
+    fun setRefreshToken(points: String) {
+        SetDataString(REFRESH_TOKEN, points)
+    }
+    fun setTokenType(points: String) {
+        SetDataString(TOKEN_TYPE, points)
+    }
+
 
     val jwtToken: String?
         get() = GetDataString(JWT_TOKEN)
+    val refreshToken: String?
+        get() = GetDataString(REFRESH_TOKEN)
+    val tokenType: String?
+        get() = GetDataString(TOKEN_TYPE)
 
     fun setFont(points: Float) {
         SetDataFloat(FONT, points)
@@ -295,6 +306,8 @@ class SharedPre(context: Context) {
         private const val IS_LOGGED_IN_VIA_FACEBOOK = "facebookLoggedin"
         private const val FB_ACCESS_TOKEN = "facebookToken"
         private const val JWT_TOKEN = "jwt"
+        private const val REFRESH_TOKEN = "refreshToken"
+        private const val TOKEN_TYPE = "token_type"
         private const val Is_LOGOUT = "logout"
         private const val THEMES = "themePref"
         private const val DARK_MODE = "darkmoded"

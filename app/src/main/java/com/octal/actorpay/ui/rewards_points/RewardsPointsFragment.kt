@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentRewardsPointsBinding
+import com.octal.actorpay.ui.dashboard.bottomnavfragments.WalletBottomFragment
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
 
-class RewardsPointsFragment : Fragment() {
-    private val viewModel: ActorPayViewModel by  inject()
+class RewardsPointsFragment : BaseFragment() {
     private var _binding: FragmentRewardsPointsBinding? = null
 
     // This property is only valid between onCreateView and
@@ -27,7 +28,7 @@ class RewardsPointsFragment : Fragment() {
 
         _binding = FragmentRewardsPointsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        init()
+        WorkStation()
 
         return root
     }
@@ -36,11 +37,25 @@ class RewardsPointsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+    companion object {
+        private var instance: RewardsPointsFragment? = null
+        @JvmStatic
+        fun newInstance(): RewardsPointsFragment? {
 
-    fun init() {
-        _binding!!.toolbar.title.setText("My Rewards")
-        _binding!!.toolbar.backIcon.setOnClickListener {
-            findNavController().popBackStack()
+            if (instance == null) {
+                instance = RewardsPointsFragment()
+            }
+            return instance
         }
     }
+
+
+    override fun WorkStation() {
+    }
+
+    override fun toString(): String {
+        return "RewardsPointsFragment()"
+    }
+
+
 }

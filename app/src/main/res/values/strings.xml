@@ -61,6 +61,9 @@
     <string name="my_loyalty_and_rewards">My Loyalty/Rewards Points</string>
     <string name="referral">Referral</string>
     <string name="history">History</string>
+    <string name="server_not_responding">Server Not Responding!!</string>
+    <string name="error_on_fetching_loginDetails">Error on Login Detail Please try again !!</string>
+    <string name="please_try_after_sometime">Something went Wrong</string>
 
 
 </resources>

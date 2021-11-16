@@ -6,19 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentWalletBottomBinding
 import com.octal.actorpay.ui.adapter.AdapterWalletStatement
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
-class WalletBottomFragment : Fragment() {
+class WalletBottomFragment : BaseFragment() {
     private var _binding: FragmentWalletBottomBinding? = null
-    private val viewModel: ActorPayViewModel by  inject()
     private val binding get() = _binding!!
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-    }
+
     companion object {
         private var instance: WalletBottomFragment? = null
 
@@ -39,10 +37,11 @@ class WalletBottomFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentWalletBottomBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        gettransaction()
+        WorkStation()
         return root
     }
-    private fun gettransaction() {
+
+    override fun WorkStation() {
         binding.rvItemsWalletID.apply {
             var arraylist: ArrayList<String> = arrayListOf("AddMoney", "AddMoney", "AddMoney")
             adapter = AdapterWalletStatement(arraylist, requireActivity())
@@ -51,9 +50,8 @@ class WalletBottomFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun toString(): String {
+        return "WalletBottomFragment()"
     }
 
 }

@@ -6,24 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.octal.actorpay.R
+import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentProfileBottomBinding
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
-class ProfileBottomFragment : Fragment() {
+class ProfileBottomFragment : BaseFragment() {
     private var _binding: FragmentProfileBottomBinding? = null
-    private val viewModel: ActorPayViewModel by  inject()
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
     companion object {
         private var instance: ProfileBottomFragment? = null
-
-
         @JvmStatic
         fun newInstance(): ProfileBottomFragment? {
-
             if (instance == null) {
                 instance = ProfileBottomFragment()
             }
@@ -36,7 +33,7 @@ class ProfileBottomFragment : Fragment() {
     ): View? {
         _binding = FragmentProfileBottomBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        WorkStation()
         return root
         // Inflate the layout for this fragment
     }
@@ -44,5 +41,7 @@ class ProfileBottomFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+    override fun WorkStation() {
 
+    }
 }

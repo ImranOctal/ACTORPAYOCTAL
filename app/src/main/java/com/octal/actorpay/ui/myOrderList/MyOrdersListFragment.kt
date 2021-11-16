@@ -9,28 +9,43 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.octal.actorpay.R
+import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentMyOrderListBinding
+import com.octal.actorpay.ui.dashboard.bottomnavfragments.ProfileBottomFragment
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
 
- class MyOrdersListFragment : Fragment() {
-    private val viewModel: ActorPayViewModel by  inject()
-     private lateinit var binding:FragmentMyOrderListBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+ class MyOrdersListFragment : BaseFragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding =DataBindingUtil.inflate(inflater,R.layout.fragment_my_order_list, container, false)
-        binding.toolbar.title.setText("My Order")
-        binding.toolbar.backIcon.setOnClickListener {
-            findNavController().popBackStack()
-        }
-        return binding.root
-    }
+     private lateinit var binding: FragmentMyOrderListBinding
 
-}
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+     }
+
+     companion object {
+         private var instance: MyOrdersListFragment? = null
+
+         @JvmStatic
+         fun newInstance(): MyOrdersListFragment? {
+             if (instance == null) {
+                 instance = MyOrdersListFragment()
+             }
+             return instance
+         }
+     }
+
+     override fun onCreateView(
+         inflater: LayoutInflater, container: ViewGroup?,
+         savedInstanceState: Bundle?
+     ): View? {
+         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_order_list, container, false)
+         WorkStation()
+         return binding.root
+     }
+
+     override fun WorkStation() {
+
+     }
+ }

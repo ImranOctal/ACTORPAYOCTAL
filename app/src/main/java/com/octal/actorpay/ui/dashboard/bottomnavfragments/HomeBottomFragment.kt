@@ -4,34 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.octal.actorpay.R
+import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentHomeBottomBinding
 import com.octal.actorpay.ui.adapter.TransactionAdapter
-import com.octal.actorpay.ui.dashboard.home.HomeFragment
-import com.octal.actorpay.viewmodel.ActorPayViewModel
-import org.koin.android.ext.android.inject
 
 
-class HomeBottomFragment : Fragment() {
-    private var _binding: FragmentHomeBottomBinding? = null
-    private val viewModel: ActorPayViewModel by  inject()
-    private val binding get() = _binding!!
+class HomeBottomFragment : BaseFragment() {
+    private lateinit var binding: FragmentHomeBottomBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentHomeBottomBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_bottom, container, false)
         val root: View = binding.root
 
-        gettransaction()
+        WorkStation()
         return root
     }
+
     companion object {
         private var instance: HomeBottomFragment? = null
-
-
         @JvmStatic
         fun newInstance(): HomeBottomFragment? {
 
@@ -41,7 +38,7 @@ class HomeBottomFragment : Fragment() {
             return instance
         }
     }
-    private fun gettransaction() {
+    override fun WorkStation() {
         binding.rvtransactionID.apply {
             var arraylist: ArrayList<String> = arrayListOf("AddMoney", "AddMoney", "AddMoney")
             adapter = TransactionAdapter(arraylist, requireActivity())
@@ -50,8 +47,9 @@ class HomeBottomFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun toString(): String {
+        return "HomeBottomFragment()"
     }
+
+
 }

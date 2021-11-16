@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/homeBottomFragment">
 
 
 
@@ -29,38 +29,7 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.octal.actorpay.ui.dashboard.home.HomeFragment"
-        android:label="@string/home"
-        tools:layout="@layout/fragment_home">
 
-        <action
-            android:id="@+id/action_homeFragment_to_walletFragment"
-            app:destination="@id/walletFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_myOrderFragment"
-            app:destination="@id/myOrderFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_productListFragment"
-            app:destination="@id/productListFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_miscFragment"
-            app:destination="@id/miscFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_transferMoneyFragment"
-            app:destination="@id/transferMoneyFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_rewardsFragment"
-            app:destination="@id/rewardsFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_remittance"
-            app:destination="@id/remittance" />
-        <action
-            android:id="@+id/action_homeFragment_to_referFragment"
-            app:destination="@id/referFragment" />
-
-    </fragment>
 
     <fragment
         android:id="@+id/walletFragment"

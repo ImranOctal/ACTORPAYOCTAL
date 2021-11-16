@@ -1,4 +1,4 @@
-package com.octal.actorpay.repositories.retrofitrepository
+package com.octal.actorpay.repositories.retrofitrepository.resource
 /*
 * © Copyright Ishant Sharma
 * Android Developer

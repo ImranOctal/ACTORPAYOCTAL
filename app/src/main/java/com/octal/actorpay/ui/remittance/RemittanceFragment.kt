@@ -7,18 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.octal.actorpay.R
+import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentRaiseConcernsBinding
 import com.octal.actorpay.databinding.FragmentRemittanceBinding
+import com.octal.actorpay.ui.productList.ProductsListFragment
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
-class RemittanceFragment : Fragment() {
-    private val viewModel: ActorPayViewModel by  inject()
+class RemittanceFragment : BaseFragment() {
     private var _binding: FragmentRemittanceBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    override fun WorkStation() {
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,20 +33,24 @@ class RemittanceFragment : Fragment() {
         _binding = FragmentRemittanceBinding.inflate(inflater, container, false)
         val root: View = binding.root
         init()
-
+        WorkStation()
         return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    companion object {
+        private var instance: RemittanceFragment? = null
+        @JvmStatic
+        fun newInstance(): RemittanceFragment? {
 
-    fun init() {
-        binding.toolbar.title.setText(R.string.change_payment_option)
-        binding.toolbar.backIcon.setOnClickListener {
-            findNavController().popBackStack()
+            if (instance == null) {
+                instance = RemittanceFragment()
+            }
+            return instance
         }
+    }
+    fun init() {
+
+
         binding.apply {
             buttonNext.setOnClickListener {
                 tvCircleOne.setBackgroundResource(R.drawable.unselected_circle)

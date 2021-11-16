@@ -1,22 +1,37 @@
 package com.octal.actorpay.base
 
 
+import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import com.octal.actorpay.R
+import com.octal.actorpay.ui.dashboard.bottomnavfragments.HomeBottomFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 abstract class BaseActivity : AppCompatActivity() {
-
+    private var addToBackStack = false
+    private var manager: FragmentManager? = null
+    private var transaction: FragmentTransaction? = null
+    private var fragment: Fragment? = null
+    private var doubleBackToExitPressedOnce = false
+    private lateinit var snackBar: Snackbar
+    private lateinit var actiVityView: View
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +39,9 @@ abstract class BaseActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         window.statusBarColor = this.resources.getColor(R.color.primary)
     }
-
+    open fun setView(view: View){
+        this.actiVityView=view
+    }
     fun showCustomToast(msg: String) {
         val myToast = Toast.makeText(
             applicationContext,
@@ -50,89 +67,89 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
-    /*Validation are Here*/
-    fun isValidMobile(phone: String): Boolean {
-        return if (!Pattern.matches("[a-zA-Z]+", phone)) {
-            phone.length > 6 && phone.length <= 15
-        } else false
+
+    open fun startFragment(fragment: Fragment?, backStackTag: String?, addToBackStack: Boolean) {
+          if(manager==null){
+              manager = supportFragmentManager
+          }
+        transaction = manager!!.beginTransaction()
+        this.addToBackStack = addToBackStack
+        transaction!!.addToBackStack(backStackTag)
+        transaction!!.replace(R.id.container, fragment!!)
+        if (!isFinishing && !isDestroyed) {
+            transaction!!.commit()
+        }
     }
 
-    fun setToolbarTitle(title: String, shouldShowBack: Boolean, shouldShowTitle: Boolean) {
-        //val toolbar: Toolbar = findViewById(R.id.toolbar)
-        //setSupportActionBar(toolbar)
-        if (shouldShowTitle) {
-            supportActionBar?.title = title
-          //  toolbar.setTitleTextColor(resources.getColor(R.color.white))
-            /*  if (title.equals(getString(R.string.edit_profile))) {
-                  toolbar.setTitleTextColor(resources.getColor(R.color.black_filter_view))
-                  showAlertBar("sdv;kmSD;KVD;KV;lsB")
-              } else {*/
-            // toolbar.setTitleTextColor(resources.getColor(R.color.white))
-            /*  }*/
+    public fun startFragment(fragment: Fragment?, addToBackStack: Boolean, backStackTag: String?) {
+        this.addToBackStack = addToBackStack
+        val fragmentPopped = manager!!.popBackStackImmediate(backStackTag, 0)
+        if (!fragmentPopped) {
+            transaction = manager!!.beginTransaction()
+            if (addToBackStack) {
+                transaction!!.addToBackStack(backStackTag)
+            } else {
+                transaction!!.addToBackStack(null)
+            }
+            transaction!!.replace(R.id.container, fragment!!)
+            transaction!!.commit()
+        }
+    }
+
+
+
+    open fun showCustomAlert(msg: String?, v: View?) {
+        snackBar = Snackbar.make(v!!, msg!!, Snackbar.LENGTH_LONG)
+        snackBar.setActionTextColor(Color.BLUE)
+        val snackBarView: View = snackBar.getView()
+        val textView = snackBarView.findViewById<TextView>(R.id.snackbar_text)
+        textView.setTextColor(Color.WHITE)
+        snackBar.show()
+    }
+
+    override fun onBackPressed() {
+        fragment = getCurrentFragment()
+        if (addToBackStack) {
+            if (fragment is HomeBottomFragment) {
+                if (doubleBackToExitPressedOnce) {
+                    finish()
+                    return
+                }
+                doubleBackToExitPressedOnce = true
+                showCustomAlert("Press back again",actiVityView);
+                //Toast.makeText(this, "Press back again", Toast.LENGTH_SHORT)
+                lifecycleScope.launch(Dispatchers.Default) {
+                    delay(2000)
+                    doubleBackToExitPressedOnce = false
+                }
+            } else {
+                if (manager!= null && manager!!.backStackEntryCount > 0) {
+                    manager!!.popBackStackImmediate()
+                } else {
+                    super.onBackPressed()
+                }
+            }
         } else {
-            supportActionBar?.title = ""
-        }
-        if (shouldShowBack) {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeButtonEnabled(true)
-            //supportActionBar?.setHomeAsUpIndicator(R.drawable.back_btn)
+            super.onBackPressed()
         }
     }
 
-
-    fun logout(auth: String, contentTypeJson: String) {
-        callToLogout(auth, contentTypeJson)
-//        AppLocal.getInstance().clearConfig()
-//        LoginActivity.startActivity(this@BaseActivity, null)
-//        finishAffinity()
+    open fun getCurrentFragment(): Fragment? {
+        fragment = manager!!.findFragmentById(R.id.container)
+        return fragment
     }
 
-
-    fun callToLogout(auth: String, contentTypeJson: String) {
-        /*var restApiFactory: RestApiFactory? = RestApiFactory
-        var responseLiveData = MutableLiveData<ApiResponse<Any>>()
-        var apiResponse: ApiResponse<Any>? = ApiResponse(ApiResponse.Status.LOADING, null, null)
-
-        if (!NetworkUtil.isNetworkAvailable(this)) {
-            return
+    open fun hideSoftKeyboard(activity: Activity) {
+        val imm = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view = activity.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
         }
-
-        val mLogin = restApiFactory!!.create()
-            .logout(
-                auth,
-                contentTypeJson,
-                lang = SharedPreferenceUtility.getInstance().get(Constant.SELECTED_LANGUAGE)
-            )
-        mLogin.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<CommonModel> {
-
-                override fun onSubscribe(d: Disposable) {
-                    responseLiveData.postValue(apiResponse!!.loading())
-                }
-
-                override fun onNext(result: CommonModel) {
-                    SharedPreferenceUtility.getInstance().save(Constant.IS_LOGIN, false)
-                    // SharedPreferenceUtility.getInstance().clearSharedPreferences()
-                    SharedPreferenceUtility.getInstance().save(Constant.LOGGED_IN_AUTH_TOKEN, null)
-                    SharedPreferenceUtility.getInstance().save(Constant.LOGGED_IN_EMAIL, null)
-                    SharedPreferenceUtility.getInstance().save(Constant.LOGGED_IN_MOBILE, null)
-                    SharedPreferenceUtility.getInstance().save(Constant.LOGGED_IN_USER_ID, null)
-                    SharedPreferenceUtility.getInstance().save(Constant.LOGGED_IN_USER_IMAGE, null)
-                    LoginActivity.startActivity(this@BaseActivity, null)
-                    finishAffinity()
-
-                    //responseLiveData.postValue(apiResponse!!.success(result))
-                }
-
-                override fun onError(throwable: Throwable) {
-                    responseLiveData.postValue(apiResponse!!.error(throwable))
-                }
-
-                override fun onComplete() {}
-            })*/
-
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
 
 
     fun setFragment(resourceView: Int, fragment: Fragment, addToBackStackFlag: Boolean) {
@@ -168,7 +185,7 @@ abstract class BaseActivity : AppCompatActivity() {
      * override onBackPressed
      *
      */
-    @Override
+  /*  @Override
     override fun onBackPressed() {
         val fm = supportFragmentManager
         val backStackCount = fm.backStackEntryCount
@@ -194,24 +211,10 @@ abstract class BaseActivity : AppCompatActivity() {
                super.onBackPressed()
             }
         }
-    }
-    open fun getCurrentFragment(): Int? {
-        return (supportFragmentManager.findFragmentById(R.id.nav_host_Container) as NavHostFragment).navController.currentDestination?.id
-    }
-    open fun getCurrentBottomFragment(): Fragment? {
-        return supportFragmentManager.findFragmentById(R.id.framelayout)
-    }
-     fun loadFragment(fragment: Fragment?): Boolean {
-        //switching fragment
-        if (fragment != null) {
-           supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.framelayout, fragment)
-                .commit()
-            return true
-        }
-        return false
-    }
+    }*/
+
+
+
 
 
     protected fun showSnackBar(message: String?) {

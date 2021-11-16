@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.octal.actorpay.R
 import com.octal.actorpay.databinding.FragmentProductsListBinding
+import com.octal.actorpay.ui.rewards_points.RewardsPointsFragment
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
@@ -19,17 +20,23 @@ class ProductsListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+    companion object {
+        private var instance: ProductsListFragment? = null
+        @JvmStatic
+        fun newInstance(): ProductsListFragment? {
 
+            if (instance == null) {
+                instance = ProductsListFragment()
+            }
+            return instance
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_products_list, container, false)
-        binding.toolbar.title.setText("Products")
-        binding.toolbar.backIcon.setOnClickListener {
-            findNavController().popBackStack()
-        }
         return binding.root
 
     }
