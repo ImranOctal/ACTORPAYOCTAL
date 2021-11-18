@@ -193,6 +193,41 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/misc_change_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="6dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="6dp">
+
+                <ImageView
+                    android:id="@+id/misc_password_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/notification_item_grey_bg"
+                    android:padding="15dp"
+                    android:src="@drawable/privacy" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/misc_password_icon"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="10dp"
+                    android:text="@string/change_password"
+                    android:textColor="@color/text_color"
+                    android:textSize="16sp"
+                    app:drawableRightCompat="@drawable/next" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
 
     </LinearLayout>
 

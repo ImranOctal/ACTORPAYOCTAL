@@ -3,9 +3,11 @@ package com.octal.actorpay
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -18,10 +20,12 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.octal.actorpay.Utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.databinding.ActivityMainBinding
 import com.octal.actorpay.ui.adapter.FeaturesAdapter
 import com.octal.actorpay.ui.adapter.MenuAdapter
+import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.ui.dashboard.`interface`.ItemListenr
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.HistoryBottomFragment
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.HomeBottomFragment
@@ -169,12 +173,32 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         val mDuoDrawerLayout: DuoDrawerLayout = binding.drawer
         val mDuoMenuView: DuoMenuView
         val mToolbar: Toolbar
+        val mFooterLayout: RelativeLayout
 
         init {
             mDuoMenuView = mDuoDrawerLayout.menuView as DuoMenuView
             mToolbar = binding.toolbarLayout.toolbar
+            mFooterLayout = mDuoMenuView.footerView as RelativeLayout
+            mFooterLayout.setOnClickListener {
+
+                logout()
+            }
 
         }
+    }
+
+    fun logout(){
+        CommonDialogsUtils.showCommonDialog(this,viewModel.methodRepo, "Log Out ",
+            "Are you sure?", true, true, true, false,
+            object : CommonDialogsUtils.DialogClick {
+                override fun onClick() {
+                    viewModel.shared.Logout()
+                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                    finishAffinity()
+                }
+                override fun onCancel() {
+                }
+            })
     }
 
     private fun initiliation() {

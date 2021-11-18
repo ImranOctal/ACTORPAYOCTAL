@@ -24,6 +24,7 @@
     <string name="contact_us">Contact Us</string>
     <string name="faq">FAQ</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="change_password">Change Password</string>
     <string name="user_type">User Type</string>
     <string name="redeem">Redeem</string>
 
@@ -65,5 +66,12 @@
     <string name="error_on_fetching_loginDetails">Error on Login Detail Please try again !!</string>
     <string name="please_try_after_sometime">Something went Wrong</string>
 
-
+    <string name="email_empty">Oops! Your Email is Empty</string>
+    <string name="invalid_email">Oops! Your Email is Invalid</string>
+    <string name="oops_your_password_is_empty">Oops! Your Password is Empty</string>
+    <string name="oops_your_email_is_not_correct_or_empty">Oops! Your Email Is Not Correct or Empty</string>
+    <string name="oops_your_password_is_not_valid">Password should contain min of 8 characters</string>
+    <string name="oops_your_password_is_not_matched">Password and Confirm Password not Match</string>
+    <string name="email_phone">Oops! Your Phone is Not Corret or Empty</string>
+    <string name="email_name">Oops! Your Name is Empty</string>
 </resources>

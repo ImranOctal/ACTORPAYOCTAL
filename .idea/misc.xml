@@ -3,29 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/activity_splash_screen.xml" value="0.36666666666666664" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_home.xml" value="0.20520833333333333" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_home_bottom.xml" value="0.2869791666666667" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_login.xml" value="0.20520833333333333" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_misc.xml" value="0.20520833333333333" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_my_order_list.xml" value="0.2" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_products_list.xml" value="0.22" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_profile_bottom.xml" value="0.29257246376811596" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_raise_concerns.xml" value="0.20520833333333333" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_refer_and_earn.xml" value="0.20520833333333333" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_remittance.xml" value="0.33" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_rewards_points.xml" value="0.20520833333333333" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_transfer_money.xml" value="0.29257246376811596" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/fragment_wallet_bottom.xml" value="0.1515625" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/layout_main.xml" value="0.20520833333333333" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/login_screen_fragment.xml" value="0.36666666666666664" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/sign_up_screen_fragment.xml" value="0.20520833333333333" />
-        <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/menu/demo_menu.xml" value="0.20185185185185187" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/btn_outline_gray.xml" value="0.403125" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_main.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/change_password_dialog.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/common_dialog.xml" value="0.33" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/custom_duo_view_footer.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/forget_password_dialog.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_home_bottom.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_login.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_misc.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_profile_bottom.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_transfer_money.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/login_page.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/login_screen_fragment.xml" value="0.38697916666666665" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/progress_dialog.xml" value="0.21875" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/sign_up_screen_fragment.xml" value="0.38697916666666665" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

@@ -5,6 +5,7 @@ package com.octal.actorpay.repositories.methods
 * JAVA/KOTLIN
 * */
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -12,9 +13,11 @@ import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Base64
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.octal.actorpay.R
@@ -75,11 +78,17 @@ class MethodsRepo {
                 window.setGravity(Gravity.CENTER)
                 progressDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             }
-          //  progressDialog!!.setContentView(R.layout.dialog_progress)
+            progressDialog!!.setContentView(R.layout.progress_dialog)
             progressDialog!!.setCancelable(false)
             progressDialog!!.setCanceledOnTouchOutside(false)
+            progressDialog!!.show()
         }
         return progressDialog
+    }
+    fun hideLoadingDialog() {
+        if(progressDialog!=null){
+           progressDialog!!.dismiss()
+        }
     }
     fun getFormattedDate(context: Context?, smsTimeInMilis: Long): String? {
         val formatter = SimpleDateFormat("yyyy-MM-dd , h:mm aa")
@@ -133,11 +142,26 @@ class MethodsRepo {
         return text
     }
     fun setBackGround(context: Context?, view: View, @DrawableRes drawable: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            view.setBackground(ContextCompat.getDrawable(context!!, drawable))
-        } else {
-            view.setBackgroundDrawable(ContextCompat.getDrawable(context!!, drawable))
-        }
+        view.setBackground(ContextCompat.getDrawable(context!!, drawable))
     }
 
+    fun hideSoftKeypad(activity: Activity) {
+        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(
+            activity.currentFocus?.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
+    }
+    fun getDeviceWidth(context: Context): Int {
+        val displayMetrics = DisplayMetrics()
+        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        return displayMetrics.widthPixels
+    }
+    fun getDeviceHeight(context: Context): Int {
+        val displayMetrics = DisplayMetrics()
+        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        return displayMetrics.heightPixels
+    }
 }

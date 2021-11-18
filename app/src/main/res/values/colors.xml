@@ -11,6 +11,7 @@
     <color name="text_color">#565656</color>
     <color name="card_bg_color">#f6f6f6</color>
     <color name="pink_color">#ed3460</color>
+    <color name="red">#F44336</color>
     <color name="blue_color">#0078b7</color>
     <color name="green_color">#00A61B</color>
     <color name="light_grey">#8E9092</color>

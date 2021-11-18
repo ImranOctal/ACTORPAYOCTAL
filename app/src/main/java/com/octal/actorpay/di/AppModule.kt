@@ -13,6 +13,9 @@ import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitMainRepos
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.retrofitrepository.apiclient.ApiClient
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
+import com.octal.actorpay.ui.auth.viewmodel.SignupViewModel
+import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
+import com.octal.actorpay.ui.misc.MiscViewModel
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.koin.android.ext.koin.androidContext
@@ -39,8 +42,8 @@ private val appKoinModule = module {
 
     single<OkHttpClient> {
         OkHttpClient.Builder()
-            /* .addInterceptor(okhttp3.Interceptor {chain ->
-               val request:Request=chain.request().newBuilder().addHeader("Authorization", "Bearer " + sharedPre.jwtToken).build()
+           /*  .addInterceptor(okhttp3.Interceptor {chain ->
+               val request:Request=chain.request().newBuilder().build()
                  chain.proceed(request)
              })*/
             .connectTimeout(20, TimeUnit.SECONDS)
@@ -49,13 +52,13 @@ private val appKoinModule = module {
             .retryOnConnectionFailure(true)
             .build()
     }
-    single<okhttp3.Interceptor> {
+   /* single<okhttp3.Interceptor> {
         okhttp3.Interceptor { chain ->
             val request: Request =
                 chain.request().newBuilder().addHeader("Authorization", "Bearer " + "token").build()
             chain.proceed(request)
         }
-    }
+    }*/
     single<ApiClient> {
         Retrofit.Builder().baseUrl(BASE_URL)
             .client(get())
@@ -67,10 +70,19 @@ private val appKoinModule = module {
     }
 
     viewModel {
-        ActorPayViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+        ActorPayViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(), shared = get())
     }
     viewModel {
         LoginViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(),sharedPre=get())
+    }
+    viewModel {
+        SignupViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(),sharedPre=get())
+    }
+    viewModel {
+        ProfileViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(),sharedPre=get())
+    }
+    viewModel {
+        MiscViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(),sharedPre=get())
     }
 
 }

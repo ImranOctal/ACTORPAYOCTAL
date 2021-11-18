@@ -116,7 +116,7 @@
                         android:gravity="center">
 
                         <ImageView
-                            android:id="@+id/imGoogle"
+                            android:id="@+id/imFacebook"
                             android:layout_width="@dimen/_70sdp"
                             android:layout_height="@dimen/_35sdp"
                             android:layout_gravity="center"
@@ -127,7 +127,7 @@
                             android:src="@drawable/facebook" />
 
                         <ImageView
-                            android:id="@+id/imFacebook"
+                            android:id="@+id/imTwitter"
                             android:layout_width="@dimen/_70sdp"
                             android:layout_height="@dimen/_35sdp"
                             android:layout_gravity="center"
@@ -137,12 +137,8 @@
                             android:padding="@dimen/_10sdp"
                             android:src="@drawable/twitter" />
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
                         <ImageView
-                            android:id="@+id/imTwitter"
+                            android:id="@+id/imGoogle"
                             android:layout_width="@dimen/_70sdp"
                             android:layout_height="@dimen/_35sdp"
                             android:layout_gravity="center"

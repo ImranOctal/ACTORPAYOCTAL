@@ -6,6 +6,17 @@ class AppConstance {
         const val SUB_DOMAIN: String = "api/"
         const val SUB_DOMAIN2: String = "user-service/"
         const val SUB_DOMAIN3: String = "users/"
+        const val SUB_DOMAIN_FORGET: String = "forget/"
+        const val BY:String="by/"
+        const val ID:String="id/"
+        const val B_Token:String="Bearer "
+        const val UPDATE:String="update/"
         const val LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"login"
+        const val SIGNUP: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"signup"
+        const val SOCIAL_LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"social/signup"
+        const val FORGETPASSWORD: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+SUB_DOMAIN_FORGET+"password"
+        const val GET_PROFILE: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ BY+ ID
+        const val UPDATE_PROFILE: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ UPDATE
+        const val CHANGE_PASSWORD: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ "change/password"
     }
 }

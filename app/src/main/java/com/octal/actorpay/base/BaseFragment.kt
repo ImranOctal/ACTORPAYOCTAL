@@ -45,4 +45,15 @@ abstract class BaseFragment : Fragment(){
         (requireActivity() as BaseActivity).startFragment(fragment,true,backStackTag)
     }
 
+    fun showCustomToast(msg: String) {
+        val myToast = Toast.makeText(
+            activity,
+            msg,
+            Toast.LENGTH_SHORT
+        )
+        myToast.setGravity(Gravity.CENTER, 0, 0)
+        myToast.show()
+    }
+
+
 }

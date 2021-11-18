@@ -1,4 +1,4 @@
-package com.octal.actorpay.repositories.retrofitrepository.models.login
+package com.octal.actorpay.repositories.retrofitrepository.models.auth.login
 
 data class Data(
     val access_token: String,
@@ -9,3 +9,4 @@ data class Data(
     val refresh_token: String,
     val token_type: String
 )
+
