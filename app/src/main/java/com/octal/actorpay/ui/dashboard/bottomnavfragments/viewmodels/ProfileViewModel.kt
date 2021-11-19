@@ -8,7 +8,7 @@ import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.FailResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.LoginParams
-import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
@@ -34,7 +34,7 @@ class ProfileViewModel(val dispatcherProvider: CoroutineContextProvider, val met
                 is RetrofitResource.Error -> profileResponseLive.value =
                     ResponsProfileSealed.ErrorOnResponse(response.message)
                 is RetrofitResource.Success -> profileResponseLive.value =
-                    ResponsProfileSealed.Success(response.data!!.data as ProfileResponse)
+                    ResponsProfileSealed.Success(response.data!!)
             }
         }
     }

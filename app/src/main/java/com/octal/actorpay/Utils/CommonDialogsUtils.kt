@@ -69,7 +69,7 @@ class CommonDialogsUtils() {
             span.setSpan(object : ClickableSpan() {
                 override fun onClick(v: View) {
 
-                    val mailto = "mailto:task@gmail.com"
+                    val mailto = "mailto:actorpay@gmail.com"
                     val emailIntent = Intent(Intent.ACTION_SENDTO)
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, "My Experience with the Ouq App")
                     emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -92,7 +92,7 @@ class CommonDialogsUtils() {
                     super.updateDrawState(ds)
                     ds.isUnderlineText = false
                     ds.color = ResourcesCompat.getColor(activity.resources, R.color.black,null)
-                    ds.linkColor = activity.resources.getColor(R.color.black)
+                    ds.linkColor = ContextCompat.getColor(activity,R.color.black)
                 }
             }, 79, 104, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
 
@@ -148,11 +148,11 @@ class CommonDialogsUtils() {
 
 
         fun showApiErrorDialog(context: Activity, methodsRepo: MethodsRepo, failResponse:  FailResponse?, optionalMessage: String) {
-            var message = ""
+            val message =
             if (failResponse != null) {
-                message = failResponse.message ?: failResponse.status ?: ""
+                failResponse.message
             } else {
-                message = optionalMessage
+               optionalMessage
             }
             showCommonDialog(context,methodsRepo, "Error", message, true, false, true,false)
         }

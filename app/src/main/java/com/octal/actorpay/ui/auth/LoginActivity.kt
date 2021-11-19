@@ -1,6 +1,5 @@
 package com.octal.actorpay.ui.auth
 
-import android.R.attr
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.octal.actorpay.databinding.FragmentLoginBinding
@@ -13,18 +12,11 @@ import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import org.koin.android.ext.android.inject
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import android.content.Intent
-
 import android.app.Activity
 
-import androidx.activity.result.ActivityResultCallback
-
-import androidx.activity.result.contract.ActivityResultContracts
-
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import android.R.attr.data
-import android.util.Log
 import androidx.lifecycle.lifecycleScope
+import com.facebook.*
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
@@ -35,12 +27,23 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.Logi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import com.facebook.login.LoginManager
+
+import java.util.*
+import com.facebook.login.LoginResult
+import org.json.JSONObject
+import org.json.JSONException
+
+import android.util.Log
+
+import java.lang.Exception
 
 
 class LoginActivity : BaseActivity() {
     private lateinit var binding: FragmentLoginBinding
     private val loginViewModel: LoginViewModel by  inject()
-    lateinit var mGoogleSignInClient:GoogleSignInClient
+    private lateinit var mGoogleSignInClient:GoogleSignInClient
+    private lateinit var callbackManager:CallbackManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +57,14 @@ class LoginActivity : BaseActivity() {
         configSocialLogin()
     }
 
-    fun configSocialLogin(){
+    private fun configSocialLogin(){
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        callbackManager = CallbackManager.Factory.create()
+        registerFbCallback()
     }
 
 
@@ -80,12 +86,12 @@ class LoginActivity : BaseActivity() {
                 override fun onPageSelected(position: Int) {
                     when (position) {
                         0 -> {
-                            viewPager.invalidate();
-                            viewPagerAdapter?.notifyDataSetChanged()
+                            viewPager.invalidate()
+                            viewPagerAdapter.notifyDataSetChanged()
                         }
                         1 -> {
-                            viewPager.invalidate();
-                            viewPagerAdapter?.notifyDataSetChanged()
+                            viewPager.invalidate()
+                            viewPagerAdapter.notifyDataSetChanged()
 
                         }
                     }
@@ -93,15 +99,22 @@ class LoginActivity : BaseActivity() {
             })
 
             imGoogle.setOnClickListener {
-                val intent =  mGoogleSignInClient.getSignInIntent();
+                val intent =  mGoogleSignInClient.signInIntent
                 googleResultLauncher.launch(intent)
+            }
+            imFacebook.setOnClickListener {
+                LoginManager.getInstance().logInWithReadPermissions(
+                    this@LoginActivity,
+                    callbackManager,
+                    listOf("public_profile", "email")
+                )
             }
         }
 
 
     }
 
-    fun apiResponse() {
+    private fun apiResponse() {
         lifecycleScope.launch {
             loginViewModel.loginResponseLive.collect { event ->
                 when (event) {
@@ -111,23 +124,23 @@ class LoginActivity : BaseActivity() {
                     }
                     is LoginViewModel.ResponseLoginSealed.Success -> {
                         loginViewModel.methodRepo.hideLoadingDialog()
-                        if (event.response is LoginResponses) {
-                            if (event.response != null && event.response.data != null) {
+                        when (event.response) {
+                            is LoginResponses -> {
                                 loginViewModel.sharedPre.setUserId(event.response.data.id)
                                 loginViewModel.sharedPre.setIsregister(true)
                                 loginViewModel.sharedPre.setIsFacebookLoggedIn(false)
-                                loginViewModel.sharedPre.isGoogleLoggedIn = true;
-                                loginViewModel.sharedPre.isLoggedIn = false;
+                                loginViewModel.sharedPre.isGoogleLoggedIn = true
+                                loginViewModel.sharedPre.isLoggedIn = false
                                 loginViewModel.sharedPre.setUserEmail(event.response.data.email)
                                 loginViewModel.sharedPre.setName(event.response.data.firstName)
                                 loginViewModel.sharedPre.setJwtToken(
-                                    event.response.data.access_token ?: ""
+                                    event.response.data.access_token
                                 )
                                 loginViewModel.sharedPre.setRefreshToken(
-                                    event.response.data.refresh_token ?: ""
+                                    event.response.data.refresh_token
                                 )
                                 loginViewModel.sharedPre.setTokenType(
-                                    event.response.data.token_type ?: ""
+                                    event.response.data.token_type
                                 )
                                 showCustomAlert(
                                     "Logged in Successfully",
@@ -137,28 +150,30 @@ class LoginActivity : BaseActivity() {
                                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                 finishAffinity()
                             }
-                        } else if (event.response is String) {
-                            loginViewModel.methodRepo.hideLoadingDialog()
-                            CommonDialogsUtils.showCommonDialog(
-                                this@LoginActivity,
-                                loginViewModel.methodRepo,
-                                "Forget Password",
-                                event.response
-                            )
-                        } else {
-                            loginViewModel.methodRepo.hideLoadingDialog()
-                            showCustomAlert(
-                                getString(R.string.please_try_after_sometime),
-                                binding.root
-                            )
+                            is String -> {
+                                loginViewModel.methodRepo.hideLoadingDialog()
+                                CommonDialogsUtils.showCommonDialog(
+                                    this@LoginActivity,
+                                    loginViewModel.methodRepo,
+                                    "Forget Password",
+                                    event.response
+                                )
+                            }
+                            else -> {
+                                loginViewModel.methodRepo.hideLoadingDialog()
+                                showCustomAlert(
+                                    getString(R.string.please_try_after_sometime),
+                                    binding.root
+                                )
+                            }
                         }
                     }
                     is LoginViewModel.ResponseLoginSealed.ErrorOnResponse -> {
                         //(requireActivity() as BaseActivity).showLoading(false)
                         loginViewModel.sharedPre.setIsregister(false)
                         loginViewModel.sharedPre.setIsFacebookLoggedIn(false)
-                        loginViewModel.sharedPre.isGoogleLoggedIn = false;
-                        loginViewModel.sharedPre.isLoggedIn = false;
+                        loginViewModel.sharedPre.isGoogleLoggedIn = false
+                        loginViewModel.sharedPre.isLoggedIn = false
                         loginViewModel.sharedPre.setUserEmail("")
                         loginViewModel.sharedPre.setName("")
                         loginViewModel.sharedPre.setUserMobile("")
@@ -179,7 +194,7 @@ class LoginActivity : BaseActivity() {
     }
 
 
-    var googleResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+    private var googleResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             // There are no request codes
             val data: Intent? = result.data
@@ -195,12 +210,11 @@ class LoginActivity : BaseActivity() {
     private fun handleGoogleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            var image=""
-                if(account.photoUrl==null)
-                    image=""
-                else
-                    image=account.photoUrl!!.toString()
-            socialLogin(account.getDisplayName()!!,"",account.email!!+System.currentTimeMillis(),account.id!!+System.currentTimeMillis(),image)
+            val image = if(account.photoUrl==null)
+                ""
+            else
+                account.photoUrl!!.toString()
+            socialLogin(account.displayName!!,"",account.email!!,account.id!!,image)
 
         } catch (e: ApiException) {
 
@@ -212,8 +226,61 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    fun socialLogin(firstName:String,lastName:String,email:String,socialId:String,imgUrl:String){
-            loginViewModel.socialLogin(firstName, lastName, email, socialId, imgUrl)
+    private fun registerFbCallback(){
+        LoginManager.getInstance().registerCallback(callbackManager,object :FacebookCallback<LoginResult>{
+
+            override fun onSuccess(result: LoginResult) {
+
+               val request= GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),object :GraphRequest.GraphJSONObjectCallback{
+                    override fun onCompleted(obj: JSONObject?, response: GraphResponse?) {
+                        val json = response!!.jsonObject
+                        try {
+                            if (json != null) {
+                                Log.d("fb response", json.toString())
+                                val email: String
+                                try {
+                                     email = json.getString("email")
+
+                                } catch (e: Exception) {
+                                    showCustomToast("Sorry!!! Your email is not verified on facebook.")
+                                    return
+                                }
+                                val facebookId = json.getString("id")
+                                val firstName = json.getString("first_name")
+                                val lastName = json.getString("last_name")
+//                                val name = json.getString("name")
+                                val picture = "https://graph.facebook.com/$facebookId/picture?type=large"
+                                Log.d("fb response", " picture$picture")
+
+                                LoginManager.getInstance().logOut()
+                                socialLogin(firstName,lastName,email,facebookId,picture)
+
+                            }
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                            Log.d("fb response problem", "problem" + e.message)
+                        }
+                    }
+                })
+                val parameters = Bundle()
+                parameters.putString("fields", "id,name,first_name,last_name,link,email,picture")
+                request.parameters=parameters
+                request.executeAsync()
+            }
+
+            override fun onCancel() {
+
+            }
+
+            override fun onError(error: FacebookException) {
+
+            }
+
+        })
+    }
+
+    private fun socialLogin(firstName:String, lastName:String, email:String, socialId:String, imgUrl:String){
+            loginViewModel.socialLogin(firstName, lastName, email+System.currentTimeMillis(), socialId+System.currentTimeMillis(), imgUrl)
     }
 
 }

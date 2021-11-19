@@ -7,13 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:orientation="vertical"
         tools:context=".ui.auth.LoginActivity">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:weightSum="1"
-            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/logo"
@@ -47,21 +42,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".55"
-                android:layout_below="@id/tabs"
                 android:minHeight="300dp">
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_300sdp"
-                    android:layout_weight="1" />
+                     />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight=".2"
-                android:layout_below="@id/header_LinearLayout"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -103,9 +96,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -160,13 +153,10 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="@dimen/_20sdp"
-                    android:text="Don't have an account? Sign up"
+                    android:text="@string/don_t_have_an_account_sign_up"
                     android:textColor="@color/light_grey"
                     android:textSize="@dimen/_11sdp" />
             </LinearLayout>
-
-
-        </LinearLayout>
 
 
     </LinearLayout>

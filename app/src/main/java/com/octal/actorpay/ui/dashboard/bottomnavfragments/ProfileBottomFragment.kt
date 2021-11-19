@@ -2,7 +2,6 @@ package com.octal.actorpay.ui.dashboard.bottomnavfragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +12,8 @@ import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentProfileBottomBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponse
-import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
+import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
-import com.octal.actorpay.viewmodel.ActorPayViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -124,12 +121,13 @@ class ProfileBottomFragment : BaseFragment() {
                     }
                     is ProfileViewModel.ResponsProfileSealed.Success -> {
                         profileViewModel.methodRepo.hideLoadingDialog()
-                        if (it.response is ProfileResponse) {
-                            binding.firstName.setText(it.response.firstName + it.response.lastName)
-                            binding.editEmail.setText(it.response.email)
-                            binding.mobNumber.setText(it.response.contactNumber)
+                        if (it.response is ProfileReesponse) {
+                            val reesponse2=it.response.data
+                            binding.firstName.setText(reesponse2.firstName + reesponse2.lastName)
+                            binding.editEmail.setText(reesponse2.email)
+                            binding.mobNumber.setText(reesponse2.contactNumber)
                             try {
-                                var extContact = it.response.extensionNumber
+                                var extContact = reesponse2.extensionNumber
                                 if (extContact.isNotEmpty()) {
                                     extContact = extContact.replace("+", "")
                                     binding.profileCcp.setCountryForPhoneCode(extContact.toInt())

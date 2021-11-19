@@ -23,8 +23,8 @@ class WrappingViewPager : ViewPager {
     constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {}
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        var heightMeasureSpec = heightMeasureSpec
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec1: Int) {
+        var heightMeasureSpec = heightMeasureSpec1
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         if (!mAnimStarted && null != adapter) {
             var height = 0

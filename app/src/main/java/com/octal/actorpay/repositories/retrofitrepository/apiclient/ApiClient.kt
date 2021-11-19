@@ -15,7 +15,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.Soci
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileParams
-import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import retrofit2.Response
 import retrofit2.http.*
@@ -40,7 +40,7 @@ interface ApiClient {
     suspend fun getProfile(
         @Header("Authorization") token: String,
         @Path("id") id: String
-    ): Response<SuccessResponse>
+    ): Response<ProfileReesponse>
 
     @PUT(UPDATE_PROFILE)
     suspend fun saveProfile(

@@ -21,6 +21,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import android.content.pm.PackageManager
+
+import android.content.pm.PackageInfo
+import android.util.Base64
+import android.util.Log
+import java.lang.Exception
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 
 class SplashActivity : BaseActivity() {
@@ -30,6 +38,8 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen)
+
+//        printHashKey()
         lifecycleScope.launch(Dispatchers.Main) {
             delay(2000L)
 
@@ -38,6 +48,22 @@ class SplashActivity : BaseActivity() {
             else
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             finishAffinity()
+        }
+    }
+    fun printHashKey() {
+        try {
+            val info: PackageInfo = getPackageManager()
+                .getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md: MessageDigest = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                val hashKey: String = String(Base64.encode(md.digest(), 0))
+                Log.i("Fb Key Hash", "printHashKey() Hash Key: $hashKey")
+            }
+        } catch (e: NoSuchAlgorithmException) {
+            Log.e("Fb Key Hash", "printHashKey()", e)
+        } catch (e: Exception) {
+            Log.e("Fb Key Hash", "printHashKey()", e)
         }
     }
 }

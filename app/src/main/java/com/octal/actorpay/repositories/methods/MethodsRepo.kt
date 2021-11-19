@@ -12,12 +12,18 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Build
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.octal.actorpay.R
@@ -62,6 +68,25 @@ class MethodsRepo {
         val matcher: Matcher = pattern.matcher(password)
         return matcher.matches()
     }
+    fun makeTextLink(textView: TextView, str: String, underlined: Boolean, color: Int?, action: (() -> Unit)? = null) {
+        val spannableString = SpannableString(textView.text)
+        val textColor = color ?: textView.currentTextColor
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(textView: View) {
+                action?.invoke()
+            }
+            override fun updateDrawState(drawState: TextPaint) {
+                super.updateDrawState(drawState)
+                drawState.isUnderlineText = underlined
+                drawState.color = textColor
+            }
+        }
+        val index = spannableString.indexOf(str)
+        spannableString.setSpan(clickableSpan, index, index + str.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        textView.text = spannableString
+        textView.movementMethod = LinkMovementMethod.getInstance()
+        textView.highlightColor = Color.TRANSPARENT
+    }
      fun isNetworkConnected(): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         return cm!!.activeNetworkInfo != null && cm.activeNetworkInfo!!.isConnected
@@ -91,14 +116,14 @@ class MethodsRepo {
         }
     }
     fun getFormattedDate(context: Context?, smsTimeInMilis: Long): String? {
-        val formatter = SimpleDateFormat("yyyy-MM-dd , h:mm aa")
+        val formatter = SimpleDateFormat("yyyy-MM-dd , h:mm aa",Locale.ENGLISH)
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = smsTimeInMilis
         return formatter.format(calendar.time)
     }
 
     fun getFormattedDate(context: Context?, smsTimeInMilis: Long, Format: String?): String? {
-        val formatter = SimpleDateFormat(Format)
+        val formatter = SimpleDateFormat(Format,Locale.ENGLISH)
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = smsTimeInMilis
         return formatter.format(calendar.time)
@@ -106,15 +131,15 @@ class MethodsRepo {
 
     fun ConverMillsTo(mills: Long, youFormat: String?): String? {
         val date = Date(mills)
-        val formatter: DateFormat = SimpleDateFormat(youFormat)
+        val formatter: DateFormat = SimpleDateFormat(youFormat,Locale.ENGLISH)
         return formatter.format(date)
     }
 
     fun getMillsFromDateandTime(dateOrTime: String?, format: String?): Long {
-        val sdf = SimpleDateFormat(format)
+        val sdf = SimpleDateFormat(format,Locale.ENGLISH)
         var date: Date? = null
         return try {
-            date = sdf.parse(dateOrTime)
+            date = sdf.parse(dateOrTime!!)
             date.time
         } catch (e: ParseException) {
             e.printStackTrace()

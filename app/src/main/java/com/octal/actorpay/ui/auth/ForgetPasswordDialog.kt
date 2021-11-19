@@ -27,11 +27,11 @@ class ForgetPasswordDialog {
         binding.tvOk.setOnClickListener {
             val email=binding.tvMessage.text.toString().trim()
             if(email.isEmpty()){
-                binding.tvMessage.setError(activity.getString(R.string.email_empty))
+                binding.tvMessage.error = activity.getString(R.string.email_empty)
             }
             else if(!methodsRepo.isValidEmail(email))
             {
-                binding.tvMessage.setError(activity.getString(R.string.invalid_email))
+                binding.tvMessage.error = activity.getString(R.string.invalid_email)
             }
             else{
             alertDialog.dismiss()

@@ -1,6 +1,12 @@
 package com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments
 
-data class ProfileResponse (val id: String,
+import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.Data
+
+data class ProfileReesponse(val message: String,
+                            val status: String,
+                            val `data`: ProfileResponseData)
+
+data class ProfileResponseData (val id: String,
                        val firstName: String,
                        val lastName: String,
                        val gender: String,

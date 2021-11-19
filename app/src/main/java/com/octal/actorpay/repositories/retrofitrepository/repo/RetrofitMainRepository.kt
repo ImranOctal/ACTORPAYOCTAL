@@ -17,11 +17,10 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.Soci
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileParams
-import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import com.octal.actorpay.retrofitrepository.apiclient.ApiClient
-import org.json.JSONException
 import org.json.JSONObject
 
 class RetrofitMainRepository constructor(var context: Context, private var apiClient: ApiClient) :
@@ -66,9 +65,9 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
         }
     }
 
-    override suspend fun socialLogin(socialParams: SocialParams): RetrofitResource<LoginResponses> {
+    override suspend fun socialLogin(signupDetails: SocialParams): RetrofitResource<LoginResponses> {
         try {
-            val loginData = apiClient.socialLogin(socialParams)
+            val loginData = apiClient.socialLogin(signupDetails)
             val result = loginData.body()
             if (loginData.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)
@@ -106,7 +105,7 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
         }
     }
 
-    override suspend fun getProfile(id: String, token: String): RetrofitResource<SuccessResponse> {
+    override suspend fun getProfile(id: String, token: String): RetrofitResource<ProfileReesponse> {
         try {
 
             val data = apiClient.getProfile(B_Token+token,id)

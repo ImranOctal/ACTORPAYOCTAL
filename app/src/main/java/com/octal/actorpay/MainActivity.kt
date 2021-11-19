@@ -287,7 +287,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
     private fun handleToolbar() {
         setSupportActionBar(mViewHolder?.mToolbar)
-        mViewHolder?.mToolbar?.setTitleTextColor(resources.getColor(R.color.white))
+        mViewHolder?.mToolbar?.setTitleTextColor(ContextCompat.getColor(this,R.color.white))
 
     }
 

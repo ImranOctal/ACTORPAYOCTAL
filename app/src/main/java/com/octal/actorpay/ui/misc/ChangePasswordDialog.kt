@@ -36,6 +36,9 @@ class ChangePasswordDialog {
             {
                 binding.editChangePasswordNew.setError(activity.getString(R.string.oops_your_password_is_not_valid))
             }
+            else if(!methodsRepo.isValidPassword(newPassword)){
+                binding.editChangePasswordNew.setError(activity.getString(R.string.oops_your_password_is_not_valid2))
+            }
             else if(!confirmPassword.equals(newPassword))
             {
                 binding.editChangePasswordConfirm.setError((activity.getString(R.string.oops_your_password_is_not_matched)))

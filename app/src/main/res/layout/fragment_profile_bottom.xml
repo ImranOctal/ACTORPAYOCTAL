@@ -204,7 +204,7 @@
                     android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
-                    android:text="@string/email_phone"
+                    android:text="@string/error_phone"
                     android:visibility="gone"
                     />
 

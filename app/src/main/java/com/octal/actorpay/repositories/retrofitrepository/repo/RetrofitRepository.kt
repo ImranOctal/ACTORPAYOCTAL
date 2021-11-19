@@ -7,7 +7,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.Logi
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.SocialParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 
@@ -28,7 +28,7 @@ interface RetrofitRepository {
 
     suspend fun ForgetPassword(forgetPasswordParams:ForgetPasswordParams):RetrofitResource<LoginResponses>
 
-    suspend fun getProfile(id:String,token:String):RetrofitResource<SuccessResponse>
+    suspend fun getProfile(id:String,token:String):RetrofitResource<ProfileReesponse>
 
     suspend fun saveProfile(email:String,extensionNumber:String,contactNumber:String,id:String,token: String):RetrofitResource<SuccessResponse>
 
