@@ -1,23 +1,21 @@
 package com.octal.actorpay.ui.misc
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.Navigation
 import com.octal.actorpay.R
-import com.octal.actorpay.Utils.CommonDialogsUtils
+import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentMiscBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
-import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
-import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
-import com.octal.actorpay.ui.remittance.RemittanceFragment
-import com.octal.actorpay.viewmodel.ActorPayViewModel
+import com.octal.actorpay.ui.content.ContentActivity
+import com.octal.actorpay.ui.content.ContentViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -62,18 +60,30 @@ class MiscFragment : BaseFragment() {
 
     fun init() {
         binding.apply {
-            miscChangePassword.setOnClickListener {
-                changePasswordUi()
+            aboutUsText.setOnClickListener {
+                ContentViewModel.type=1
+                startActivity(Intent(requireContext(), ContentActivity::class.java))
             }
+            tcText.setOnClickListener {
+                ContentViewModel.type=3
+                startActivity(Intent(requireContext(), ContentActivity::class.java))
+            }
+            privacyText.setOnClickListener {
+                ContentViewModel.type=2
+                startActivity(Intent(requireContext(), ContentActivity::class.java))
+            }
+            faqText.setOnClickListener {
+
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.container, FAQFragment())
+                transaction.addToBackStack("faq")
+                transaction.commit()
+            }
+
         }
     }
 
-    fun changePasswordUi(){
-        ChangePasswordDialog().show(requireActivity(),miscViewModel.methodRepo){
-            oldPassword, newPassword ->
-            miscViewModel.changePassword(oldPassword,newPassword    )
-        }
-    }
+
 
     private fun ApiResponse(){
         lifecycleScope.launch {

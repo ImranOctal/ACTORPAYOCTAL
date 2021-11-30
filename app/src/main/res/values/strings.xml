@@ -91,4 +91,7 @@
     <string name="enter_your_current_password">Enter Your Current Password</string>
     <string name="enter_your_new_password">Enter Your New Password</string>
     <string name="confirm_your_new_password">Confirm Your New Password</string>
+    <string name="save">save</string>
+    <string name="hint_balance">₹ 10,000</string>
+
 </resources>

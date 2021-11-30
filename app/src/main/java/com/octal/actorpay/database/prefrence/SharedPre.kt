@@ -25,29 +25,31 @@ class SharedPre(context: Context) {
             SetDataBoolean(IS_LOGGED_IN_VIA_GOOGLE, value)
         }
 
-  fun setIsFacebookLoggedIn(value: Boolean){
-      SetDataBoolean(IS_LOGGED_IN_VIA_FACEBOOK, value)
-  }
-    fun IsFacebookLoggedIn(): Boolean{
-        return  GetDataBoolean(IS_LOGGED_IN_VIA_FACEBOOK)
-    }
+    var isFacebookLoggedIn: Boolean
+        get() = GetDataBoolean(IS_LOGGED_IN_VIA_FACEBOOK)
+        set(value) {
+            SetDataBoolean(IS_LOGGED_IN_VIA_FACEBOOK, value)
+        }
 
-    fun setEmailLoggedIn(value: Boolean){
+
+    fun setEmailLoggedIn(value: Boolean) {
         SetDataBoolean(IS_LOGGED_IN_VIA_EMAIL, value)
     }
-    fun isEmailLogged():Boolean{
+
+    fun isEmailLogged(): Boolean {
         return GetDataBoolean(IS_LOGGED_IN_VIA_EMAIL)
     }
 
-    fun isRegister():Boolean {
-       return GetDataBoolean(IS_REGISTER)
+    fun isRegister(): Boolean {
+        return GetDataBoolean(IS_REGISTER)
     }
 
     fun setIsregister(value: Boolean) {
         SetDataBoolean(IS_REGISTER, value)
     }
-    fun isLogout():Boolean {
-       return GetDataBoolean(Is_LOGOUT)
+
+    fun isLogout(): Boolean {
+        return GetDataBoolean(Is_LOGOUT)
     }
 
     fun setIsLogout(value: Boolean) {
@@ -139,9 +141,11 @@ class SharedPre(context: Context) {
     fun setJwtToken(points: String) {
         SetDataString(JWT_TOKEN, points)
     }
+
     fun setRefreshToken(points: String) {
         SetDataString(REFRESH_TOKEN, points)
     }
+
     fun setTokenType(points: String) {
         SetDataString(TOKEN_TYPE, points)
     }
@@ -162,12 +166,12 @@ class SharedPre(context: Context) {
         get() = GetDataFloat(FONT)
 
 
-
     fun setTheme(theme: String) {
-        SetDataString(THEMES, theme )
+        SetDataString(THEMES, theme)
 
     }
-    val GetCurrentTheme : String?
+
+    val GetCurrentTheme: String?
         get() = GetDataString(THEMES)
 
     var isDarkModeEnable: Boolean
@@ -186,7 +190,7 @@ class SharedPre(context: Context) {
             SetDataBoolean(ISPLANACTIVATED, plan)
         }
     var PlanName: String
-        get() = GetDataString(PLAN_NAME)?:"No Plan Available"
+        get() = GetDataString(PLAN_NAME) ?: "No Plan Available"
         set(planname) {
             SetDataString(PLAN_NAME, planname)
         }
@@ -222,9 +226,11 @@ class SharedPre(context: Context) {
     private fun GetDataInt(key: String): Int {
         return getSharedPreferences(mContext).getInt(key, 0)
     }
-    private fun GetDataFloat(key: String):Float {
+
+    private fun GetDataFloat(key: String): Float {
         return getSharedPreferences(mContext).getFloat(key, 0.0f)
     }
+
     private fun SetDataFloat(key: String, value: Float) {
         val edit = getSharedPreferences(mContext).edit()
         edit.putFloat(key, value)

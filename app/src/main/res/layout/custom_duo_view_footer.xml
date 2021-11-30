@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 <RelativeLayout
     android:layout_width="match_parent"
     android:background="@color/transparent"
@@ -10,21 +11,23 @@
         android:layout_width="@dimen/_16sdp"
         android:layout_height="@dimen/_16sdp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_25sdp"
         android:layout_marginTop="@dimen/_40sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:src="@drawable/logout" />
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:src="@drawable/logout"
+        app:tint="@color/red"
+        />
 
     <TextView
         android:id="@+id/txtLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_toRightOf="@+id/imgLogoutIcon"
+        android:layout_toEndOf="@+id/imgLogoutIcon"
         android:fontFamily="@font/poppins_regular"
         android:text="@string/logout"
         android:textAllCaps="true"
-        android:textColor="@color/gray_dark"
+        android:textColor="@color/red"
         android:textSize="@dimen/_12sdp" />
 </RelativeLayout>
 </layout>

@@ -18,6 +18,8 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.Sig
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileParams
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
+import com.octal.actorpay.repositories.retrofitrepository.models.content.ContentResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import com.octal.actorpay.retrofitrepository.apiclient.ApiClient
@@ -164,6 +166,50 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
             }
         }
         catch (e: Exception) {
+            return RetrofitResource.Error(FailResponse(e.message ?: context.getString(R.string.server_not_responding),""))
+        }
+    }
+
+    override suspend fun getContent(type: String): RetrofitResource<ContentResponse> {
+
+        try {
+
+            val data = apiClient.getContent(type)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if(data.errorBody()!=null) {
+                    val json=JSONObject(data.errorBody()!!.string())
+                    val status=json.getString("status")
+                    val message=json.getString("message")
+                    return RetrofitResource.Error(FailResponse(message, status))
+                }
+                return RetrofitResource.Error(FailResponse(context.getString(R.string.please_try_after_sometime),""))
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(FailResponse(e.message ?: context.getString(R.string.server_not_responding),""))
+        }
+    }
+
+    override suspend fun getFAQ(): RetrofitResource<FAQResponse> {
+
+        try {
+
+            val data = apiClient.getFAQ()
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if(data.errorBody()!=null) {
+                    val json=JSONObject(data.errorBody()!!.string())
+                    val status=json.getString("status")
+                    val message=json.getString("message")
+                    return RetrofitResource.Error(FailResponse(message, status))
+                }
+                return RetrofitResource.Error(FailResponse(context.getString(R.string.please_try_after_sometime),""))
+            }
+        } catch (e: Exception) {
             return RetrofitResource.Error(FailResponse(e.message ?: context.getString(R.string.server_not_responding),""))
         }
     }

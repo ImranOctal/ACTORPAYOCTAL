@@ -2,13 +2,21 @@ package com.octal.actorpay.ui.adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.View
 import android.widget.BaseAdapter
 import nl.psdcompany.duonavigationdrawer.views.DuoOptionView
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import com.octal.actorpay.R
 import com.octal.actorpay.ui.dashboard.models.DrawerItems
+
+import androidx.core.content.res.ResourcesCompat
+
+
+
 
 
 class MenuAdapter : BaseAdapter  {
@@ -56,10 +64,12 @@ class MenuAdapter : BaseAdapter  {
         }
 
         val textView =(((optionView.getChildAt(0) as RelativeLayout).getChildAt(1) as RelativeLayout).getChildAt(1) as TextView)
-        textView.setTextColor(
-            Color.parseColor("#8E8D8D")
+        textView.setTextColor(ContextCompat.getColor(mContext!!, R.color.black
            // Color.parseColor("#8E8D8D")
-        )
+        ))
+        val typeface = ResourcesCompat.getFont(mContext!!, R.font.poppins_regular)
+
+        textView.setTypeface(typeface)
         textView.textSize = 17F
 
         // Using the DuoOptionView's default selectors

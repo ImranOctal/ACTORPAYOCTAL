@@ -1,4 +1,4 @@
-package com.octal.actorpay.Utils
+package com.octal.actorpay.utils
 
 import android.content.Context
 import android.widget.Toast

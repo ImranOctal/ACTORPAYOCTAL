@@ -11,3 +11,4 @@ data class SuccessResponse(
     val status: String,
     val `data`: Data,
 )
+

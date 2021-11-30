@@ -2,6 +2,8 @@ package com.octal.actorpay.retrofitrepository.apiclient
 
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.CHANGE_PASSWORD
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.FORGETPASSWORD
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_CONTENT
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_FAQ
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_PROFILE
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.LOGIN
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.SIGNUP
@@ -16,6 +18,8 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.Sig
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileParams
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
+import com.octal.actorpay.repositories.retrofitrepository.models.content.ContentResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import retrofit2.Response
 import retrofit2.http.*
@@ -55,5 +59,16 @@ interface ApiClient {
         @Body miscChangePasswordParams: MiscChangePasswordParams
     ): Response<SuccessResponse>
 
+
+    @GET(GET_CONTENT)
+    suspend fun getContent(
+        @Query("type") type: String
+    ): Response<ContentResponse>
+
+
+    @GET(GET_FAQ)
+    suspend fun getFAQ(
+
+    ): Response<FAQResponse>
 
 }

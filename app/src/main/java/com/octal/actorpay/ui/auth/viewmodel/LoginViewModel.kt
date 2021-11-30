@@ -11,16 +11,18 @@ import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResou
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-import com.octal.actorpay.database.prefrence.SharedPre
 import com.octal.actorpay.repositories.retrofitrepository.models.FailResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.LoginParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.SocialParams
 
 
-class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val methodRepo: MethodsRepo, val apiRepo: RetrofitRepository,val sharedPre:SharedPre)  : AndroidViewModel(
+class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val methodRepo: MethodsRepo, val apiRepo: RetrofitRepository)  : AndroidViewModel(
     Application()
 ) {
+    companion object{
+    var isFromContentPage=false
+    }
     val loginResponseLive = MutableStateFlow<ResponseLoginSealed>(ResponseLoginSealed.Empty)
     sealed class ResponseLoginSealed {
         class Success(val response: Any) : ResponseLoginSealed()

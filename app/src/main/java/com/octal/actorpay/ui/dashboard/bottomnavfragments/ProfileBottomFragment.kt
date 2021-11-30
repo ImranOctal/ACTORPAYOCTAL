@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.octal.actorpay.R
-import com.octal.actorpay.Utils.CommonDialogsUtils
+import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentProfileBottomBinding
@@ -24,9 +24,7 @@ class ProfileBottomFragment : BaseFragment() {
     private val binding get() = _binding!!
     private val profileViewModel: ProfileViewModel by inject()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
 
     companion object {
         private var instance: ProfileBottomFragment? = null
@@ -74,7 +72,7 @@ class ProfileBottomFragment : BaseFragment() {
                 binding.profileEmail,
                 R.drawable.btn_search_outline
             )
-        } else if (binding.mobNumber.text.toString().trim().length != 10) {
+        } else if (binding.mobNumber.text.toString().trim().length <=6) {
             binding.profileErroronemail.visibility = View.GONE
             binding.profileErroronphone.visibility = View.VISIBLE
             profileViewModel.methodRepo.setBackGround(
@@ -87,7 +85,22 @@ class ProfileBottomFragment : BaseFragment() {
                 binding.profileNumber,
                 R.drawable.btn_search_outline
             )
-        } else {
+        }
+        else if (binding.mobNumber.text.toString().trim()[0].toString() == "0"){
+            binding.profileErroronemail.visibility = View.GONE
+            binding.profileErroronphone.visibility = View.VISIBLE
+            binding.profileErroronphone.text=getString(R.string.mobile_not_start_with_0)
+            profileViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.profileEmail,
+                R.drawable.btn_outline_gray
+            )
+            profileViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.profileNumber,
+                R.drawable.btn_search_outline
+            )
+        }else {
             binding.profileErroronemail.visibility = View.GONE
             binding.profileErroronphone.visibility = View.GONE
             profileViewModel.methodRepo.setBackGround(
@@ -104,14 +117,14 @@ class ProfileBottomFragment : BaseFragment() {
         }
     }
 
-    fun saveProfile() {
+    private fun saveProfile() {
         val email=binding.editEmail.text.toString().trim()
         val contactNumber=binding.mobNumber.text.toString().trim()
         val ext=binding.profileCcp.selectedCountryCodeWithPlus
         profileViewModel.saveProfile(email,ext,contactNumber)
     }
 
-    fun apiResponse() {
+    private fun apiResponse() {
         lifecycleScope.launch {
             profileViewModel.profileResponseLive.collect {
                 when (it) {
@@ -121,30 +134,31 @@ class ProfileBottomFragment : BaseFragment() {
                     }
                     is ProfileViewModel.ResponsProfileSealed.Success -> {
                         profileViewModel.methodRepo.hideLoadingDialog()
-                        if (it.response is ProfileReesponse) {
-                            val reesponse2=it.response.data
-                            binding.firstName.setText(reesponse2.firstName + reesponse2.lastName)
-                            binding.editEmail.setText(reesponse2.email)
-                            binding.mobNumber.setText(reesponse2.contactNumber)
-                            try {
-                                var extContact = reesponse2.extensionNumber
-                                if (extContact.isNotEmpty()) {
-                                    extContact = extContact.replace("+", "")
-                                    binding.profileCcp.setCountryForPhoneCode(extContact.toInt())
+                        when (it.response) {
+                            is ProfileReesponse -> {
+                                val response2=it.response.data
+                                binding.firstName.setText("${response2.firstName} ${response2.lastName}")
+                                binding.editEmail.setText(response2.email)
+                                binding.mobNumber.setText(response2.contactNumber)
+                                try {
+                                    var extContact = response2.extensionNumber
+                                    if (extContact.isNotEmpty()) {
+                                        extContact = extContact.replace("+", "")
+                                        binding.profileCcp.setCountryForPhoneCode(extContact.toInt())
+                                    }
+                                } catch (e: Exception) {
+                                    Log.d("Profile Fragment", "apiResponse: ${e.message}")
                                 }
-                            } catch (e: Exception) {
-                                Log.d("Profile Fragment", "apiResponse: ${e.message}")
                             }
-                        }
-                        else if(it.response is SuccessResponse){
-                            CommonDialogsUtils.showCommonDialog(requireActivity(),profileViewModel.methodRepo,"Profile Update",it.response.message)
-                        }
-
-                        else {
-                            showCustomAlert(
-                                getString(R.string.please_try_after_sometime),
-                                binding.root
-                            )
+                            is SuccessResponse -> {
+                                CommonDialogsUtils.showCommonDialog(requireActivity(),profileViewModel.methodRepo,"Profile Update",it.response.message)
+                            }
+                            else -> {
+                                showCustomAlert(
+                                    getString(R.string.please_try_after_sometime),
+                                    binding.root
+                                )
+                            }
                         }
                     }
                     is ProfileViewModel.ResponsProfileSealed.ErrorOnResponse -> {

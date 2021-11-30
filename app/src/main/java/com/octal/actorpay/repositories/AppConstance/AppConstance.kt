@@ -7,6 +7,7 @@ class AppConstance {
         const val SUB_DOMAIN2: String = "user-service/"
         const val SUB_DOMAIN3: String = "users/"
         const val SUB_DOMAIN_FORGET: String = "forget/"
+        const val SUB_DOMAIN_CMS: String = "cms-service/"
         const val BY:String="by/"
         const val ID:String="id/"
         const val B_Token:String="Bearer "
@@ -18,5 +19,7 @@ class AppConstance {
         const val GET_PROFILE: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ BY+ ID
         const val UPDATE_PROFILE: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ UPDATE
         const val CHANGE_PASSWORD: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ "change/password"
+        const val GET_CONTENT: String = SUB_DOMAIN+ SUB_DOMAIN_CMS+  "get/static/data/by/cms"
+        const val GET_FAQ: String = SUB_DOMAIN+ SUB_DOMAIN_CMS+  "faq/all"
     }
 }

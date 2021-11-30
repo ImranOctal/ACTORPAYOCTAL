@@ -5,7 +5,6 @@ import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import com.octal.actorpay.database.datastore.*
-import com.octal.actorpay.database.prefrence.SharedPre
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.BASE_URL
 import com.octal.actorpay.repositories.methods.MethodsRepo
@@ -14,10 +13,10 @@ import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepositor
 import com.octal.actorpay.retrofitrepository.apiclient.ApiClient
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.ui.auth.viewmodel.SignupViewModel
+import com.octal.actorpay.ui.content.ContentViewModel
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
 import com.octal.actorpay.ui.misc.MiscViewModel
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.koin.android.ext.koin.androidContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,8 +28,6 @@ private val appKoinModule = module {
     single { CoroutineContextProvider() }
 
     single { DataStoreCoroutinesHandler }
-
-    single { SharedPre(androidContext()) }
 
     single<DataStoreBase> {
         DataStoreCustom(androidContext())
@@ -70,19 +67,22 @@ private val appKoinModule = module {
     }
 
     viewModel {
-        ActorPayViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(), shared = get())
+        ActorPayViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     viewModel {
-        LoginViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(),sharedPre=get())
+        LoginViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     viewModel {
-        SignupViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(),sharedPre=get())
+        SignupViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     viewModel {
-        ProfileViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(),sharedPre=get())
+        ProfileViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     viewModel {
-        MiscViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(),sharedPre=get())
+        MiscViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        ContentViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
 
 }

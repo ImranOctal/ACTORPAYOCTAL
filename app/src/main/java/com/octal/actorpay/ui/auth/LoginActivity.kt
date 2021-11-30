@@ -3,7 +3,6 @@ package com.octal.actorpay.ui.auth
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.octal.actorpay.databinding.FragmentLoginBinding
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.octal.actorpay.R
@@ -22,7 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
 import com.octal.actorpay.MainActivity
-import com.octal.actorpay.Utils.CommonDialogsUtils
+import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.LoginResponses
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -35,6 +34,7 @@ import org.json.JSONObject
 import org.json.JSONException
 
 import android.util.Log
+import androidx.viewpager.widget.ViewPager
 
 import java.lang.Exception
 
@@ -72,9 +72,10 @@ class LoginActivity : BaseActivity() {
     fun init() {
         binding.apply {
             val viewPagerAdapter =  ViewPagerAdapter(supportFragmentManager)
+            val viewPager=customViewPager as ViewPager
             viewPager.adapter = viewPagerAdapter
             tabs.setupWithViewPager(viewPager)
-            viewPager.addOnPageChangeListener(object : OnPageChangeListener {
+            viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
                 }
                 override fun onPageScrolled(
@@ -97,6 +98,8 @@ class LoginActivity : BaseActivity() {
                     }
                 }
             })
+            if(LoginViewModel.isFromContentPage)
+            viewPager.setCurrentItem(1)
 
             imGoogle.setOnClickListener {
                 val intent =  mGoogleSignInClient.signInIntent
@@ -126,22 +129,13 @@ class LoginActivity : BaseActivity() {
                         loginViewModel.methodRepo.hideLoadingDialog()
                         when (event.response) {
                             is LoginResponses -> {
-                                loginViewModel.sharedPre.setUserId(event.response.data.id)
-                                loginViewModel.sharedPre.setIsregister(true)
-                                loginViewModel.sharedPre.setIsFacebookLoggedIn(false)
-                                loginViewModel.sharedPre.isGoogleLoggedIn = true
-                                loginViewModel.sharedPre.isLoggedIn = false
-                                loginViewModel.sharedPre.setUserEmail(event.response.data.email)
-                                loginViewModel.sharedPre.setName(event.response.data.firstName)
-                                loginViewModel.sharedPre.setJwtToken(
-                                    event.response.data.access_token
-                                )
-                                loginViewModel.sharedPre.setRefreshToken(
-                                    event.response.data.refresh_token
-                                )
-                                loginViewModel.sharedPre.setTokenType(
-                                    event.response.data.token_type
-                                )
+                                loginViewModel.methodRepo.dataStore.setUserId(event.response.data.id)
+                                loginViewModel.methodRepo.dataStore.setIsLoggedIn(true)
+                                loginViewModel.methodRepo.dataStore.setEmail(event.response.data.email)
+                                loginViewModel.methodRepo.dataStore.setFirstName(event.response.data.firstName)
+                                loginViewModel.methodRepo.dataStore.setLastName(event.response.data.lastName)
+                                loginViewModel.methodRepo.dataStore.setAccessToken(event.response.data.access_token)
+                                loginViewModel.methodRepo.dataStore.setRefreshToken(event.response.data.refresh_token)
                                 showCustomAlert(
                                     "Logged in Successfully",
                                     binding.root
@@ -170,18 +164,7 @@ class LoginActivity : BaseActivity() {
                     }
                     is LoginViewModel.ResponseLoginSealed.ErrorOnResponse -> {
                         //(requireActivity() as BaseActivity).showLoading(false)
-                        loginViewModel.sharedPre.setIsregister(false)
-                        loginViewModel.sharedPre.setIsFacebookLoggedIn(false)
-                        loginViewModel.sharedPre.isGoogleLoggedIn = false
-                        loginViewModel.sharedPre.isLoggedIn = false
-                        loginViewModel.sharedPre.setUserEmail("")
-                        loginViewModel.sharedPre.setName("")
-                        loginViewModel.sharedPre.setUserMobile("")
-                        loginViewModel.sharedPre.setUserId("0")
-                        loginViewModel.sharedPre.setName("")
-                        loginViewModel.sharedPre.setJwtToken("")
-                        loginViewModel.sharedPre.setRefreshToken("")
-                        loginViewModel.sharedPre.setTokenType("")
+
                         showCustomAlert(
                             event.message!!.message,
                             binding.root

@@ -26,26 +26,12 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
     override fun giveRepository() : String {
         return this.toString()
     }
-    //region CRUD Operation
-    override suspend fun update(booleanKey : Boolean) {
-        context.dataStore.edit { preference ->
-            preference.set(PreferenceKeys.BOOLEAN_KEY, booleanKey)
+
+    override suspend fun logOut() {
+        context.dataStore.edit {preference ->
+           preference.clear()
         }
     }
-
-    override suspend fun update(stringKey : String) {
-
-        context.dataStore.edit { preference ->
-            preference.set(PreferenceKeys.STRING_KEY, stringKey)
-        }
-    }
-    override suspend fun updateAppname(appName : String) {
-
-        context.dataStore.edit { preference ->
-            preference.set(PreferenceKeys.APP_NAME, appName)
-        }
-    }
-
     override suspend fun setPhoneNumber(mobileNumber: String) {
         context.dataStore.edit { preference ->
             preference.set(PreferenceKeys.MOBILE, mobileNumber)
@@ -58,9 +44,15 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
         }
     }
 
-    override suspend fun setName(name: String) {
+    override suspend fun setFirstName(name: String) {
         context.dataStore.edit { preference ->
-            preference.set(PreferenceKeys.NAME, name)
+            preference.set(PreferenceKeys.FIRST_NAME, name)
+        }
+    }
+
+    override suspend fun setLastName(name: String) {
+        context.dataStore.edit { preference ->
+            preference.set(PreferenceKeys.LAST_NAME, name)
         }
     }
 
@@ -68,26 +60,22 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
         context.dataStore.edit { preferences -> preferences.set(PreferenceKeys.USERID,userId) }
     }
 
+    override suspend fun setEmail(email: String) {
+        context.dataStore.edit { preferences -> preferences.set(PreferenceKeys.EMAIL,email) }
+    }
+
     override suspend fun setIsLoggedIn(value: Boolean) {
         context.dataStore.edit { mutablePreferences: MutablePreferences -> mutablePreferences.set(IS_APP_LOGGED_IN,value) }
     }
 
-    override suspend fun update(integerKey : Int) {
-        context.dataStore.edit { preference ->
-            preference.set(PreferenceKeys.INTEGER_KEY, integerKey)
-        }
+    override suspend fun setAccessToken(value: String) {
+
+        context.dataStore.edit { preferences -> preferences.set(PreferenceKeys.ACCESS_TOKEN,value) }
     }
 
-    override suspend fun update(doubleKey : Double) {
-        context.dataStore.edit { preference ->
-            preference.set(PreferenceKeys.DOUBLE_KEY, doubleKey)
-        }
-    }
+    override suspend fun setRefreshToken(value: String) {
 
-    override suspend fun update(longKey : Long) {
-        context.dataStore.edit { preference ->
-            preference.set(PreferenceKeys.LONG_KEY, longKey)
-        }
+        context.dataStore.edit { preferences -> preferences.set(PreferenceKeys.REFRESH_TOKEN,value) }
     }
 
     override fun getBoolean() : Flow<Boolean> {
@@ -106,32 +94,34 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
         return getString(PreferenceKeys.USERID)
     }
 
-    override fun getAppName() : Flow<String> {
-        return getString(PreferenceKeys.APP_NAME)
+    override fun getEmail(): Flow<String> {
+        return getString(PreferenceKeys.EMAIL)
     }
 
     override fun getMobileNumber(): Flow<String> {
        return getString(PreferenceKeys.MOBILE)
     }
 
-    override fun getName(): Flow<String> {
-        return getString(PreferenceKeys.NAME)
+    override fun getFirstName(): Flow<String> {
+        return getString(PreferenceKeys.FIRST_NAME)
+    }
+
+    override fun getLastName(): Flow<String> {
+        return getString(PreferenceKeys.LAST_NAME)
     }
 
     override fun getCountryCode(): Flow<String> {
         return getString(PreferenceKeys.COUNTRY_CODE)
     }
 
-    override fun getLong() : Flow<Long> {
-        return getLong(PreferenceKeys.LONG_KEY)
-    }
-    override fun getDouble() : Flow<Double> {
-        return getDouble(PreferenceKeys.DOUBLE_KEY)
+    override fun getAccessToken(): Flow<String> {
+        return getString(PreferenceKeys.ACCESS_TOKEN)
     }
 
-    override fun getInteger() : Flow<Int> {
-        return getIntegerData(PreferenceKeys.INTEGER_KEY)
+    override fun getRefreshToken(): Flow<String> {
+        return getString(PreferenceKeys.REFRESH_TOKEN)
     }
+
 
     //Predefine Function to get Data Using Keys
     fun getString(key:Preferences.Key<String> ):Flow<String>{

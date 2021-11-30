@@ -1,4 +1,4 @@
-package com.octal.actorpay.Utils
+package com.octal.actorpay.utils
 
 import android.view.animation.Animation
 

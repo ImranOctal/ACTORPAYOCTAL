@@ -3,39 +3,45 @@ package com.octal.actorpay.ui.misc
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.octal.actorpay.database.prefrence.SharedPre
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.FailResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
+import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponseData
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
-import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
+import com.octal.actorpay.viewmodel.ActorPayViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MiscViewModel(val dispatcherProvider: CoroutineContextProvider, val methodRepo: MethodsRepo, val apiRepo: RetrofitRepository, val sharedPre: SharedPre) : AndroidViewModel(
+class MiscViewModel(val dispatcherProvider: CoroutineContextProvider, val methodRepo: MethodsRepo, val apiRepo: RetrofitRepository) : AndroidViewModel(
     Application()){
 
-
+    val faqList= mutableListOf<FAQResponseData>()
     val miscResponseLive = MutableStateFlow<ResponseMiscSealed>(ResponseMiscSealed.Empty)
     sealed class ResponseMiscSealed {
         class Success(val response: Any) : ResponseMiscSealed()
         class ErrorOnResponse(val failResponse: FailResponse?) : ResponseMiscSealed()
-        class loading(val isLoading: Boolean?) : ResponseMiscSealed()
+        class loading : ResponseMiscSealed()
         object Empty : ResponseMiscSealed()
     }
 
-    fun changePassword(oldPassword: String,newPassword:String){
-        val body= MiscChangePasswordParams(oldPassword,newPassword,newPassword)
+    fun getFAQ(){
+
         viewModelScope.launch(dispatcherProvider.IO){
-            miscResponseLive.value= ResponseMiscSealed.loading(true)
-            when(val response=apiRepo.changePassword(body,sharedPre.jwtToken!!)){
-                is RetrofitResource.Error -> miscResponseLive.value =
-                    ResponseMiscSealed.ErrorOnResponse(response.message)
-                is RetrofitResource.Success -> miscResponseLive.value =
-                    ResponseMiscSealed.Success(response.data!!)
+            miscResponseLive.value= ResponseMiscSealed.loading()
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when(val response=apiRepo.getFAQ()){
+                    is RetrofitResource.Error -> miscResponseLive.value =
+                        ResponseMiscSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> {
+                        faqList.clear()
+                        faqList.addAll(response.data!!.data)
+                        miscResponseLive.value =
+                        ResponseMiscSealed.Success(response.data)
+                    }
+                }
             }
         }
     }

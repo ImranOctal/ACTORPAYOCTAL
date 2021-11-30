@@ -37,33 +37,26 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 
-class MethodsRepo {
-    private lateinit var dataStore: DataStoreBase
-    private lateinit var context: Context
+class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
     private var  progressDialog:Dialog?=null
 
 
-    constructor(context: Context, dataStore: DataStoreBase) {
-        this.context = context
-        this.dataStore = dataStore
-    }
-
-    fun isValidEmail(email: String?): Boolean {
+    fun isValidEmail(email: String): Boolean {
         val EMAIL_PATTERN =
             "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
         return Pattern.compile(EMAIL_PATTERN).matcher(email).matches()
     }
 
-    fun isValidPhoneNumber(phone: String?): Boolean {
+    fun isValidPhoneNumber(phone: String): Boolean {
         val mobilePattern = "[0-9]{10}"
         return Pattern.matches(mobilePattern, phone)
     }
-    fun isValidName(name: String?):Boolean{
+    fun isValidName(name: String):Boolean{
         val pattern = Pattern.compile("^[a-zA-Z\\s]*$")
         val matcher: Matcher = pattern.matcher(name)
         return matcher.matches()
     }
-    fun isValidPassword(password: String?):Boolean{
+    fun isValidPassword(password: String):Boolean{
         val pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$")
         val matcher: Matcher = pattern.matcher(password)
         return matcher.matches()
@@ -122,7 +115,7 @@ class MethodsRepo {
         return formatter.format(calendar.time)
     }
 
-    fun getFormattedDate(context: Context?, smsTimeInMilis: Long, Format: String?): String? {
+    fun getFormattedDate(smsTimeInMilis: Long, Format: String?): String? {
         val formatter = SimpleDateFormat(Format,Locale.ENGLISH)
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = smsTimeInMilis
