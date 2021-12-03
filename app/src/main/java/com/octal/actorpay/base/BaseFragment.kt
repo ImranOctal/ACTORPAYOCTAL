@@ -21,7 +21,6 @@ abstract class BaseFragment : Fragment(){
     val viewModel: ActorPayViewModel by  inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setRetainInstance(true)
         manager = requireActivity().supportFragmentManager
     }
 
