@@ -8,7 +8,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
 import com.octal.actorpay.R
 import com.octal.actorpay.viewmodel.ActorPayViewModel
@@ -44,5 +43,16 @@ abstract class BaseFragment : Fragment(){
     open fun startFragment(fragment: Fragment?, addToBackStack: Boolean, backStackTag: String?) {
         (requireActivity() as BaseActivity).startFragment(fragment,true,backStackTag)
     }
+
+    fun showCustomToast(msg: String) {
+        val myToast = Toast.makeText(
+            activity,
+            msg,
+            Toast.LENGTH_SHORT
+        )
+        myToast.setGravity(Gravity.CENTER, 0, 0)
+        myToast.show()
+    }
+
 
 }

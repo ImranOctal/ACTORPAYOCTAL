@@ -5,7 +5,6 @@ import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import com.octal.actorpay.database.datastore.*
-import com.octal.actorpay.database.prefrence.SharedPre
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.BASE_URL
 import com.octal.actorpay.repositories.methods.MethodsRepo
@@ -13,8 +12,11 @@ import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitMainRepos
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.retrofitrepository.apiclient.ApiClient
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
+import com.octal.actorpay.ui.auth.viewmodel.SignupViewModel
+import com.octal.actorpay.ui.content.ContentViewModel
+import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
+import com.octal.actorpay.ui.misc.MiscViewModel
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.koin.android.ext.koin.androidContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,8 +29,6 @@ private val appKoinModule = module {
 
     single { DataStoreCoroutinesHandler }
 
-    single { SharedPre(androidContext()) }
-
     single<DataStoreBase> {
         DataStoreCustom(androidContext())
     }
@@ -39,8 +39,8 @@ private val appKoinModule = module {
 
     single<OkHttpClient> {
         OkHttpClient.Builder()
-            /* .addInterceptor(okhttp3.Interceptor {chain ->
-               val request:Request=chain.request().newBuilder().addHeader("Authorization", "Bearer " + sharedPre.jwtToken).build()
+           /*  .addInterceptor(okhttp3.Interceptor {chain ->
+               val request:Request=chain.request().newBuilder().build()
                  chain.proceed(request)
              })*/
             .connectTimeout(20, TimeUnit.SECONDS)
@@ -49,13 +49,13 @@ private val appKoinModule = module {
             .retryOnConnectionFailure(true)
             .build()
     }
-    single<okhttp3.Interceptor> {
+   /* single<okhttp3.Interceptor> {
         okhttp3.Interceptor { chain ->
             val request: Request =
                 chain.request().newBuilder().addHeader("Authorization", "Bearer " + "token").build()
             chain.proceed(request)
         }
-    }
+    }*/
     single<ApiClient> {
         Retrofit.Builder().baseUrl(BASE_URL)
             .client(get())
@@ -70,7 +70,19 @@ private val appKoinModule = module {
         ActorPayViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     viewModel {
-        LoginViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get(),sharedPre=get())
+        LoginViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        SignupViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        ProfileViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        MiscViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        ContentViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
 
 }

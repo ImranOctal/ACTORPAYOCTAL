@@ -2,23 +2,29 @@ package com.octal.actorpay.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
+import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseActivity
+import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.LoginScreenFragmentBinding
+import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.LoginResponses
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 
-class LoginScreenFragment : Fragment() {
-    private val viewModel: LoginViewModel by  inject()
+class LoginScreenFragment : BaseFragment() {
+    override fun WorkStation() {
+
+    }
+
+    private val loginViewModel: LoginViewModel by inject()
     private var _binding: LoginScreenFragmentBinding? = null
 
     private val binding get() = _binding!!
@@ -27,60 +33,65 @@ class LoginScreenFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = LoginScreenFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         init()
-        ApiResponse()
+        apiResponse()
         return root
     }
 
-    private fun ApiResponse() {
+    private fun apiResponse() {
         lifecycleScope.launchWhenStarted {
-            viewModel.loginResponseLive.collect { event ->
+            loginViewModel.loginResponseLive.collect { event ->
                 when (event) {
                     is LoginViewModel.ResponseLoginSealed.loading -> {
-                        //(requireActivity() as BaseActivity).showLoading(true)
+                        loginViewModel.methodRepo.showLoadingDialog(requireContext())
                     }
                     is LoginViewModel.ResponseLoginSealed.Success -> {
-                        if(event.response!=null && event.response.data!=null){
-                            viewModel.sharedPre.setUserId(event.response.data.id)
-                            viewModel.sharedPre.setIsregister(true)
-                            viewModel.sharedPre.setIsFacebookLoggedIn(false)
-                            viewModel.sharedPre.isGoogleLoggedIn = false;
-                            viewModel.sharedPre.isLoggedIn = true;
-                            viewModel.sharedPre.setUserEmail(event.response.data.email)
-                            viewModel.sharedPre.setName(event.response.data.firstName)
-                            viewModel.sharedPre.setJwtToken(event.response.data.access_token?:"")
-                            viewModel.sharedPre.setRefreshToken(event.response.data.refresh_token?:"")
-                            viewModel.sharedPre.setTokenType(event.response.data.token_type?:"")
-                            (requireActivity() as BaseActivity).showCustomAlert("Logged in Successfully", binding.root)
-                            delay(1000)
-                            startActivity(Intent(requireContext(), MainActivity::class.java))
-                            requireActivity().finishAffinity()
-                        }else{
-                            (requireActivity() as BaseActivity).showCustomAlert(getString(R.string.please_try_after_sometime), binding.root)
+                        loginViewModel.methodRepo.hideLoadingDialog()
+                        when (event.response) {
+                            is LoginResponses -> {
+
+                                viewModel.methodRepo.dataStore.setUserId(event.response.data.id)
+                                viewModel.methodRepo.dataStore.setIsLoggedIn(true)
+                                viewModel.methodRepo.dataStore.setEmail(event.response.data.email)
+                                viewModel.methodRepo.dataStore.setFirstName(event.response.data.firstName)
+                                viewModel.methodRepo.dataStore.setLastName(event.response.data.lastName)
+                                viewModel.methodRepo.dataStore.setAccessToken(event.response.data.access_token)
+                                viewModel.methodRepo.dataStore.setRefreshToken(event.response.data.refresh_token)
+
+                                (requireActivity() as BaseActivity).showCustomAlert(
+                                    "Logged in Successfully",
+                                    binding.root
+                                )
+                                delay(1000)
+                                startActivity(Intent(requireContext(), MainActivity::class.java))
+                                requireActivity().finishAffinity()
+                            }
+                            is String -> {
+                                CommonDialogsUtils.showCommonDialog(requireActivity(),loginViewModel.methodRepo,"Forget Password",event.response)
+                            }
+                            else -> {
+                                showCustomAlert(
+                                    getString(R.string.please_try_after_sometime),
+                                    binding.root
+                                )
+                            }
                         }
                     }
                     is LoginViewModel.ResponseLoginSealed.ErrorOnResponse -> {
-                        //(requireActivity() as BaseActivity).showLoading(false)
-                        viewModel.sharedPre.setIsregister(false)
-                        viewModel.sharedPre.setIsFacebookLoggedIn(false)
-                        viewModel.sharedPre.isGoogleLoggedIn = false;
-                        viewModel.sharedPre.isLoggedIn = false;
-                        viewModel.sharedPre.setUserEmail("")
-                        viewModel.sharedPre.setName("")
-                        viewModel.sharedPre.setUserMobile("")
-                        viewModel.sharedPre.setUserId("0")
-                        viewModel.sharedPre.setName("")
-                        viewModel.sharedPre.setJwtToken("")
-                        viewModel.sharedPre.setRefreshToken("")
-                        viewModel.sharedPre.setTokenType("")
-                        (requireActivity() as BaseActivity). showCustomAlert(event.message, binding.root)
+                        loginViewModel.methodRepo.hideLoadingDialog()
+                        (requireActivity() as BaseActivity).showCustomAlert(
+                            event.message!!.message,
+                            binding.root
+                        )
                     }
-                    else -> Unit
+                    else -> {
+                        loginViewModel.methodRepo.hideLoadingDialog()
+                    }
                 }
             }
 
@@ -91,16 +102,99 @@ class LoginScreenFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    fun init(){
+
+    fun init() {
         binding.apply {
             buttonLogin.setOnClickListener {
-             /*   //NavController().navigateWithId(R.id.homeFragment,findNavController())
-              */
-                viewModel.SignInNow(
-                    binding.name.text.toString(),
-                    binding.password.text.toString()
-                )
+                validateLogin()
             }
+            loginForget.setOnClickListener {
+                forgetPassword()
+            }
+
         }
     }
+
+    private fun validateLogin() {
+        if (binding.name.text.toString().trim().isEmpty()) {
+            binding.errorOnName.visibility = View.VISIBLE
+            binding.errorOnName.text = getString(R.string.email_empty)
+            binding.errorOnPassword.visibility = View.GONE
+                loginViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.loginEmaillay,
+                R.drawable.btn_search_outline
+            )
+        } else if (!loginViewModel.methodRepo.isValidEmail(
+                binding.name.text.toString().trim()
+            )
+        ) {
+            binding.errorOnName.visibility = View.VISIBLE
+            binding.errorOnName.text = getString(R.string.invalid_email)
+            binding.errorOnPassword.visibility = View.GONE
+            loginViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.loginEmaillay,
+                R.drawable.btn_search_outline
+            )
+        } else if (binding.password.text.toString().trim().isEmpty()) {
+            binding.errorOnPassword.visibility = View.VISIBLE
+            binding.errorOnPassword.text = getString(R.string.oops_your_password_is_empty)
+            binding.errorOnName.visibility = View.GONE
+            loginViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.loginEmaillay,
+                R.drawable.btn_outline_gray
+            )
+            loginViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.loginPasslay,
+                R.drawable.btn_search_outline
+            )
+        } else if (!binding.cbRememberMe.isChecked) {
+            binding.errorOnName.visibility = View.GONE
+            binding.errorOnPassword.visibility = View.GONE
+            loginViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.loginEmaillay,
+                R.drawable.btn_outline_gray
+            )
+            loginViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.loginPasslay,
+                R.drawable.btn_outline_gray
+            )
+            login()
+        } else {
+            binding.errorOnName.visibility = View.GONE
+            binding.errorOnPassword.visibility = View.GONE
+            loginViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.loginEmaillay,
+                R.drawable.btn_outline_gray
+            )
+            loginViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.loginPasslay,
+                R.drawable.btn_outline_gray
+            )
+            login()
+        }
+    }
+
+    fun login() {
+        loginViewModel.methodRepo.hideSoftKeypad(requireActivity())
+        loginViewModel.SignInNow(
+            binding.name.text.toString(),
+            binding.password.text.toString()
+        )
+    }
+
+    private fun forgetPassword(){
+        ForgetPasswordDialog().show(requireActivity(),loginViewModel.methodRepo){
+            email ->
+            loginViewModel.forgetPassword(email)
+        }
+    }
+
 }

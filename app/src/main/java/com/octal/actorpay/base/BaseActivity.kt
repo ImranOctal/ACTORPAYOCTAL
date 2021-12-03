@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -37,7 +38,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        window.statusBarColor = this.resources.getColor(R.color.primary)
+        window.statusBarColor = ContextCompat.getColor(this,R.color.primary)
     }
     open fun setView(view: View){
         this.actiVityView=view
@@ -222,7 +223,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private val view: View
-        private get() = findViewById(R.id.content)
+        get() = findViewById(R.id.content)
 
 
 }

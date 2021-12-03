@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">ActorPayApp</string>
+    <string name="facebook_app_id">473779207383239</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="transfer_money">Transfer Money</string>
@@ -7,6 +9,7 @@
     <string name="wallet_to_wallet">Wallet To Wallet</string>
     <string name="wallet_to_bank">Wallet To Bank</string>
     <string name="enter_mobile_no_or_email">Enter Mobile No. Or Email</string>
+    <string name="mobile_not_start_with_0">Mobile No. should not start with 0</string>
     <string name="misc">Misc.</string>
     <string name="there_are_many_variations">There are many variations</string>
     <string name="dummy_cancel_amount">\u00241500</string>
@@ -24,6 +27,7 @@
     <string name="contact_us">Contact Us</string>
     <string name="faq">FAQ</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="change_password">Change Password</string>
     <string name="user_type">User Type</string>
     <string name="redeem">Redeem</string>
 
@@ -65,5 +69,29 @@
     <string name="error_on_fetching_loginDetails">Error on Login Detail Please try again !!</string>
     <string name="please_try_after_sometime">Something went Wrong</string>
 
+    <string name="email_empty">Oops! Your Email is Empty</string>
+    <string name="invalid_email">Oops! Your Email is Invalid</string>
+    <string name="oops_your_password_is_empty">Oops! Your Password is Empty</string>
+    <string name="oops_your_email_is_not_correct_or_empty">Oops! Your Email Is Not Correct or Empty</string>
+    <string name="oops_your_password_is_not_valid">Password should contain min of 8 characters</string>
+    <string name="oops_your_password_is_not_valid2">Password should contains one digit,one lowercase,one uppercase and one sysmbol</string>
+    <string name="oops_your_password_is_not_matched">Password and Confirm Password not Match</string>
+    <string name="error_phone">Oops! Your Phone is Not Corret or Empty</string>
+    <string name="error_name">Oops! Your Name\'s Length is less than 3</string>
+    <string name="error_l_name">Oops! Your Last Name\'s Length is less than 3</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">Password</string>
+    <string name="terms_of_use_and_privacy_policy">By signing up you are agreeing to our Terms of Use and Privacy Policy</string>
+    <string name="enter_your_current_password">Enter Your Current Password</string>
+    <string name="enter_your_new_password">Enter Your New Password</string>
+    <string name="confirm_your_new_password">Confirm Your New Password</string>
+    <string name="save">save</string>
+    <string name="hint_balance">₹ 10,000</string>
 
 </resources>

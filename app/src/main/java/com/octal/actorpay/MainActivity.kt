@@ -1,42 +1,43 @@
 package com.octal.actorpay
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.DataBindingUtil.getBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.databinding.ActivityMainBinding
+import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.ui.adapter.FeaturesAdapter
 import com.octal.actorpay.ui.adapter.MenuAdapter
+import com.octal.actorpay.ui.auth.LoginActivity
+import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.ui.dashboard.`interface`.ItemListenr
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.HistoryBottomFragment
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.HomeBottomFragment
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.ProfileBottomFragment
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.WalletBottomFragment
 import com.octal.actorpay.ui.dashboard.models.DrawerItems
+import com.octal.actorpay.ui.misc.ChangePasswordDialog
 import com.octal.actorpay.ui.misc.MiscFragment
+import com.octal.actorpay.ui.misc.MiscViewModel
 import com.octal.actorpay.ui.myOrderList.MyOrdersListFragment
 import com.octal.actorpay.ui.productList.ProductsListFragment
 import com.octal.actorpay.ui.refer_and_earn.ReferAndEarnFragment
 import com.octal.actorpay.ui.remittance.RemittanceFragment
 import com.octal.actorpay.ui.rewards_points.RewardsPointsFragment
 import com.octal.actorpay.viewmodel.ActorPayViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout
 import nl.psdcompany.duonavigationdrawer.views.DuoMenuView
@@ -76,8 +77,9 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     }
 
     private fun features() {
+        LoginViewModel.isFromContentPage=false
         binding.layoutMainID.rvItemsID.apply {
-            var arraylist: ArrayList<String> =
+            val arraylist: ArrayList<String> =
                 arrayListOf(
                     "Add Money",
                     "Send Money",
@@ -169,15 +171,54 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         val mDuoDrawerLayout: DuoDrawerLayout = binding.drawer
         val mDuoMenuView: DuoMenuView
         val mToolbar: Toolbar
+        val mFooterLayout: RelativeLayout
+        val mHeaderLayout: RelativeLayout
 
         init {
             mDuoMenuView = mDuoDrawerLayout.menuView as DuoMenuView
             mToolbar = binding.toolbarLayout.toolbar
+            mFooterLayout = mDuoMenuView.footerView as RelativeLayout
+            mHeaderLayout = mDuoMenuView.headerView as RelativeLayout
+            val name=mHeaderLayout.findViewById<TextView>(R.id.duo_view_header_text_title)
+            lifecycleScope.launchWhenCreated {
+
+
+            viewModel.methodRepo.dataStore.getFirstName().collect {
+                first->
+                viewModel.methodRepo.dataStore.getLastName().collect {
+                    last->
+                    name.text="$first $last"
+                }
+                }
+            }
+            mFooterLayout.setOnClickListener {
+
+                logout()
+            }
 
         }
     }
 
+    fun logout(){
+        CommonDialogsUtils.showCommonDialog(this,viewModel.methodRepo, "Log Out ",
+            "Are you sure?", true, true, true, false,
+            object : CommonDialogsUtils.DialogClick {
+                override fun onClick() {
+//                    viewModel.shared.Logout()
+                    lifecycleScope.launchWhenCreated {
+                        viewModel.methodRepo.dataStore.logOut()
+                        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                        finishAffinity()
+                    }
+                }
+                override fun onCancel() {
+                }
+            })
+    }
+
     private fun initiliation() {
+        apiResponse()
+
         mTitles = ArrayList<DrawerItems>()
         mTitles.add(
             DrawerItems(
@@ -216,6 +257,13 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         mTitles.add(
             DrawerItems(
                 getString(R.string.my_profile),
+                ContextCompat.getDrawable((this), R.drawable.my_profile)!!
+
+            )
+        )
+        mTitles.add(
+            DrawerItems(
+                getString(R.string.change_password),
                 ContextCompat.getDrawable((this), R.drawable.my_profile)!!
 
             )
@@ -263,7 +311,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
     private fun handleToolbar() {
         setSupportActionBar(mViewHolder?.mToolbar)
-        mViewHolder?.mToolbar?.setTitleTextColor(resources.getColor(R.color.white))
+        mViewHolder?.mToolbar?.setTitleTextColor(ContextCompat.getColor(this,R.color.white))
 
     }
 
@@ -295,10 +343,14 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     }
 
     override fun onOptionClicked(position: Int, objectClicked: Any?) {
-        // Set the toolbar title
-        title = mTitles[position].mTitle
-        // Set the right options selected
-        mMenuAdapter?.setViewSelected(position, true)
+
+        // No need for Change Password UI
+        if(position!=6) {
+            // Set the toolbar title
+            title = mTitles[position].mTitle
+            // Set the right options selected
+            mMenuAdapter?.setViewSelected(position, true)
+        }
         // Navigate to the right fragment
         when (position) {
 
@@ -379,6 +431,9 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                 }
             }
             6 -> {
+                changePasswordUi()
+            }
+            7 -> {
                 if (getCurrentFragment() !is ProductsListFragment) {
                     title = "Products"
                     startFragment(
@@ -391,7 +446,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                /* Navigation.findNavController(binding.root).navigate(R.id.productListFragment)
                 binding.layoutMainID.rvItemsID.visibility = View.GONE*/
             }
-            7 -> {
+            8 -> {
                 if (getCurrentFragment() !is RemittanceFragment) {
                     title=getString(R.string.change_payment_option)
                     startFragment(
@@ -404,7 +459,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                // Navigation.findNavController(binding.root).navigate(R.id.remittance)
                // binding.layoutMainID.rvItemsID.visibility = View.GONE
             }
-            8 -> {
+            9 -> {
                 if (getCurrentFragment() !is MiscFragment) {
                     title="More"
                     startFragment(
@@ -424,6 +479,12 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         mViewHolder?.mDuoDrawerLayout?.closeDrawer()
     }
 
+    fun changePasswordUi(){
+        ChangePasswordDialog().show(this,viewModel.methodRepo){
+                oldPassword, newPassword ->
+            viewModel.changePassword(oldPassword,newPassword    )
+        }
+    }
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
     }
 
@@ -510,6 +571,42 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
             onBackPressed()
         }
         return navController!!.navigateUp()
+    }
+
+
+    private fun apiResponse(){
+        lifecycleScope.launch {
+            viewModel.actorcResponseLive.collect {
+                when(it){
+                    is ActorPayViewModel.ResponseActorSealed.loading->{
+                        viewModel.methodRepo.showLoadingDialog(this@MainActivity)
+                    }
+                    is ActorPayViewModel.ResponseActorSealed.Success->{
+                        viewModel.methodRepo.hideLoadingDialog()
+                        if(it.response is SuccessResponse){
+                            CommonDialogsUtils.showCommonDialog(this@MainActivity,viewModel.methodRepo,"Success",it.response.message)
+                        }
+
+                        else {
+                            showCustomAlert(
+                                getString(R.string.please_try_after_sometime),
+                                binding.root
+                            )
+                        }
+                    }
+                    is ActorPayViewModel.ResponseActorSealed.ErrorOnResponse->{
+                        viewModel.methodRepo.hideLoadingDialog()
+                        showCustomAlert(
+                            it.failResponse!!.message,
+                            binding.root
+                        )
+                    }
+                    is ActorPayViewModel.ResponseActorSealed.Empty -> {
+                        viewModel.methodRepo.hideLoadingDialog()
+                    }
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
