@@ -72,7 +72,7 @@ class LoginScreenFragment : BaseFragment() {
                                 requireActivity().finishAffinity()
                             }
                             is String -> {
-                                CommonDialogsUtils.showCommonDialog(requireActivity(),loginViewModel.methodRepo,"Forget Password",event.response)
+                                CommonDialogsUtils.showCommonDialog(requireActivity(),loginViewModel.methodRepo,getString(R.string.forget_password1),event.response)
                             }
                             else -> {
                                 showCustomAlert(

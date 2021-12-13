@@ -80,6 +80,7 @@
     <string name="error_name">Oops! Your Name\'s Length is less than 3</string>
     <string name="error_l_name">Oops! Your Last Name\'s Length is less than 3</string>
     <string name="forget_password">Forget Password?</string>
+    <string name="forget_password1">Forget Password</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up</string>

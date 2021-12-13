@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseActivity
@@ -20,6 +23,10 @@ import org.koin.android.ext.android.inject
 //import android.util.Base64
 //import android.util.Log
 import kotlinx.coroutines.flow.collect
+import android.R.id
+
+
+
 //import java.lang.Exception
 //import java.security.MessageDigest
 //import java.security.NoSuchAlgorithmException
@@ -32,7 +39,12 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen)
-
+        Firebase.messaging.isAutoInitEnabled = true
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, System.currentTimeMillis().toString())
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "ActorPay")
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
+        FirebaseAnalytics.getInstance(this).logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
 //        printHashKey()
         lifecycleScope.launch(Dispatchers.Main) {
             delay(2000L)
