@@ -2,6 +2,7 @@ package com.octal.actorpay.base
 
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
@@ -15,11 +16,15 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import com.octal.actorpay.R
+import com.octal.actorpay.repositories.methods.MethodsRepo
+import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.HomeBottomFragment
+import com.octal.actorpay.utils.CommonDialogsUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -66,6 +71,39 @@ abstract class BaseActivity : AppCompatActivity() {
             //showAlertBar(getString(R.string.not_connected_internet))
         }
 
+    }
+
+    fun logout(methodRepo: MethodsRepo){
+        CommonDialogsUtils.showCommonDialog(this,methodRepo, "Log Out ",
+            "Are you sure?", true, true, true, false,
+            object : CommonDialogsUtils.DialogClick {
+                override fun onClick() {
+//                    viewModel.shared.Logout()
+                    lifecycleScope.launchWhenCreated {
+                        methodRepo.dataStore.logOut()
+                        startActivity(Intent(this@BaseActivity, LoginActivity::class.java))
+                        finishAffinity()
+                    }
+                }
+                override fun onCancel() {
+                }
+            })
+    }
+    fun forcelogout(methodRepo: MethodsRepo){
+        CommonDialogsUtils.showCommonDialog(this,methodRepo, "Log Out ",
+            "Session Expire", false, false, true, false,
+            object : CommonDialogsUtils.DialogClick {
+                override fun onClick() {
+//                    viewModel.shared.Logout()
+                    lifecycleScope.launchWhenCreated {
+                        methodRepo.dataStore.logOut()
+                        startActivity(Intent(this@BaseActivity, LoginActivity::class.java))
+                        finishAffinity()
+                    }
+                }
+                override fun onCancel() {
+                }
+            })
     }
 
 

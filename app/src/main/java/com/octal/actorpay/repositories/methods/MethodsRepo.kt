@@ -24,6 +24,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.octal.actorpay.R
@@ -40,6 +41,15 @@ import java.util.regex.Pattern
 class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
     private var  progressDialog:Dialog?=null
 
+    fun showCustomToast(msg: String) {
+        val myToast = Toast.makeText(
+            context,
+            msg,
+            Toast.LENGTH_SHORT
+        )
+        myToast.setGravity(Gravity.CENTER, 0, 0)
+        myToast.show()
+    }
 
     fun isValidEmail(email: String): Boolean {
         val EMAIL_PATTERN =

@@ -18,9 +18,13 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.Sig
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileParams
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
+import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartParams
+import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdateParams
 import com.octal.actorpay.repositories.retrofitrepository.models.content.ContentResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
+import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import com.octal.actorpay.retrofitrepository.apiclient.ApiClient
 import org.json.JSONObject
@@ -213,6 +217,124 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
             return RetrofitResource.Error(FailResponse(e.message ?: context.getString(R.string.server_not_responding),""))
         }
     }
+
+
+    override suspend fun getProducts(token: String,pageNo:Int,pageSize:Int): RetrofitResource<ProductListResponse> {
+
+        try {
+
+            val data = apiClient.getProducts(B_Token+token,pageNo, pageSize)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if(data.errorBody()!=null) {
+                    if(data.code()==403)
+                    {
+                        return RetrofitResource.Error(FailResponse("","", data.code()))
+                    }
+                    val json=JSONObject(data.errorBody()!!.string())
+                    val status=json.getString("status")
+                    val message=json.getString("message")
+                    return RetrofitResource.Error(FailResponse(message, status,data.code()))
+                }
+                return RetrofitResource.Error(FailResponse(context.getString(R.string.please_try_after_sometime),""))
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(FailResponse(e.message ?: context.getString(R.string.server_not_responding),"",))
+        }
+    }
+
+
+    override suspend fun getCarts(token: String): RetrofitResource<CartResponse> {
+
+        try {
+
+            val data = apiClient.getCarts(B_Token+token)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if(data.errorBody()!=null) {
+                    val json=JSONObject(data.errorBody()!!.string())
+                    val status=json.getString("status")
+                    val message=json.getString("message")
+                    return RetrofitResource.Error(FailResponse(message, status))
+                }
+                return RetrofitResource.Error(FailResponse(context.getString(R.string.please_try_after_sometime),""))
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(FailResponse(e.message ?: context.getString(R.string.server_not_responding),""))
+        }
+    }
+
+override suspend fun addCart(token: String,cartParams: CartParams): RetrofitResource<CartResponse> {
+
+        try {
+
+            val data = apiClient.addCart(B_Token+token,cartParams)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if(data.errorBody()!=null) {
+                    val json=JSONObject(data.errorBody()!!.string())
+                    val status=json.getString("status")
+                    val message=json.getString("message")
+                    return RetrofitResource.Error(FailResponse(message, status))
+                }
+                return RetrofitResource.Error(FailResponse(context.getString(R.string.please_try_after_sometime),""))
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(FailResponse(e.message ?: context.getString(R.string.server_not_responding),""))
+        }
+    }
+
+
+override suspend fun deleteCart(token: String,cartId:String): RetrofitResource<CartResponse> {
+
+        try {
+
+            val data = apiClient.deleteCart(B_Token+token,cartId)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if(data.errorBody()!=null) {
+                    val json=JSONObject(data.errorBody()!!.string())
+                    val status=json.getString("status")
+                    val message=json.getString("message")
+                    return RetrofitResource.Error(FailResponse(message, status))
+                }
+                return RetrofitResource.Error(FailResponse(context.getString(R.string.please_try_after_sometime),""))
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(FailResponse(e.message ?: context.getString(R.string.server_not_responding),""))
+        }
+    }
+
+    override suspend fun updateCart(token: String,cartParams: CartUpdateParams): RetrofitResource<CartResponse> {
+
+        try {
+
+            val data = apiClient.updateCart(B_Token+token,cartParams)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if(data.errorBody()!=null) {
+                    val json=JSONObject(data.errorBody()!!.string())
+                    val status=json.getString("status")
+                    val message=json.getString("message")
+                    return RetrofitResource.Error(FailResponse(message, status))
+                }
+                return RetrofitResource.Error(FailResponse(context.getString(R.string.please_try_after_sometime),""))
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(FailResponse(e.message ?: context.getString(R.string.server_not_responding),""))
+        }
+    }
+
 
 
 }

@@ -1,7 +1,6 @@
 package com.octal.actorpay
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -20,8 +19,8 @@ import com.octal.actorpay.databinding.ActivityMainBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.ui.adapter.FeaturesAdapter
 import com.octal.actorpay.ui.adapter.MenuAdapter
-import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
+import com.octal.actorpay.ui.cart.CartViewModel
 import com.octal.actorpay.ui.dashboard.`interface`.ItemListenr
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.HistoryBottomFragment
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.HomeBottomFragment
@@ -30,7 +29,6 @@ import com.octal.actorpay.ui.dashboard.bottomnavfragments.WalletBottomFragment
 import com.octal.actorpay.ui.dashboard.models.DrawerItems
 import com.octal.actorpay.ui.misc.ChangePasswordDialog
 import com.octal.actorpay.ui.misc.MiscFragment
-import com.octal.actorpay.ui.misc.MiscViewModel
 import com.octal.actorpay.ui.myOrderList.MyOrdersListFragment
 import com.octal.actorpay.ui.productList.ProductsListFragment
 import com.octal.actorpay.ui.refer_and_earn.ReferAndEarnFragment
@@ -56,6 +54,9 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     private lateinit var activity: Context
     private val viewModel: ActorPayViewModel by inject()
     private var fragment: Fragment? = null
+    private val cartViewModel: CartViewModel by inject()
+//    private val cartViewModel by sharedViewModel<CartViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Data binding here
@@ -193,31 +194,17 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
             }
             mFooterLayout.setOnClickListener {
 
-                logout()
+                logout(viewModel.methodRepo)
             }
 
         }
     }
 
-    fun logout(){
-        CommonDialogsUtils.showCommonDialog(this,viewModel.methodRepo, "Log Out ",
-            "Are you sure?", true, true, true, false,
-            object : CommonDialogsUtils.DialogClick {
-                override fun onClick() {
-//                    viewModel.shared.Logout()
-                    lifecycleScope.launchWhenCreated {
-                        viewModel.methodRepo.dataStore.logOut()
-                        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                        finishAffinity()
-                    }
-                }
-                override fun onCancel() {
-                }
-            })
-    }
+
 
     private fun initiliation() {
         apiResponse()
+        cartViewModel.getCartItmes()
 
         mTitles = ArrayList<DrawerItems>()
         mTitles.add(
@@ -586,7 +573,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                         if(it.response is SuccessResponse){
                             CommonDialogsUtils.showCommonDialog(this@MainActivity,viewModel.methodRepo,"Success",it.response.message)
                         }
-
                         else {
                             showCustomAlert(
                                 getString(R.string.please_try_after_sometime),
@@ -638,5 +624,16 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
 
 }

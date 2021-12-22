@@ -12,6 +12,8 @@ class AppConstance {
         const val ID:String="id/"
         const val B_Token:String="Bearer "
         const val UPDATE:String="update/"
+        const val PRODUCT:String="products"
+        const val CART:String="cartitems/"
         const val LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"login"
         const val SIGNUP: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"signup"
         const val SOCIAL_LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"social/signup"
@@ -21,5 +23,22 @@ class AppConstance {
         const val CHANGE_PASSWORD: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ "change/password"
         const val GET_CONTENT: String = SUB_DOMAIN+ SUB_DOMAIN_CMS+  "get/static/data/by/cms"
         const val GET_FAQ: String = SUB_DOMAIN+ SUB_DOMAIN_CMS+  "faq/all"
+
+
+
+        const val GET_ALL_PRODUCTS: String = SUB_DOMAIN+ SUB_DOMAIN2+ PRODUCT
+        const val GET_ALL_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"view"
+        const val ADD_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"add"
+        const val DELETE_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"remove/"
+        const val UPDATE_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"update"
     }
+}
+
+enum class Clicks{
+    AddCart,
+    Root,
+    Minus,
+    Plus,
+    BuyNow,
+    Delete
 }

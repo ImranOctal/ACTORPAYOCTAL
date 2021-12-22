@@ -13,9 +13,12 @@ import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepositor
 import com.octal.actorpay.retrofitrepository.apiclient.ApiClient
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.ui.auth.viewmodel.SignupViewModel
+import com.octal.actorpay.ui.cart.CartViewModel
 import com.octal.actorpay.ui.content.ContentViewModel
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
 import com.octal.actorpay.ui.misc.MiscViewModel
+import com.octal.actorpay.ui.productList.ProductViewModel
+import com.octal.actorpay.ui.productList.productdetails.ProductDetailsViewModel
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import retrofit2.Retrofit
@@ -83,6 +86,15 @@ private val appKoinModule = module {
     }
     viewModel {
         ContentViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        ProductViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        ProductDetailsViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    single {
+        CartViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
 
 }

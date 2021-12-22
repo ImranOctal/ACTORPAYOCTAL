@@ -2,18 +2,13 @@
  package com.octal.actorpay.ui.myOrderList
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentMyOrderListBinding
-import com.octal.actorpay.ui.dashboard.bottomnavfragments.ProfileBottomFragment
-import com.octal.actorpay.viewmodel.ActorPayViewModel
-import org.koin.android.ext.android.inject
 
 
  class MyOrdersListFragment : BaseFragment() {

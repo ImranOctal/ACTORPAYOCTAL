@@ -1,5 +1,6 @@
 package com.octal.actorpay.base
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
@@ -8,8 +9,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.octal.actorpay.R
+import com.octal.actorpay.repositories.methods.MethodsRepo
+import com.octal.actorpay.ui.auth.LoginActivity
+import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
@@ -51,6 +56,15 @@ abstract class BaseFragment : Fragment(){
         )
         myToast.setGravity(Gravity.CENTER, 0, 0)
         myToast.show()
+    }
+
+    fun logout(methodRepo: MethodsRepo){
+        (requireActivity() as BaseActivity).logout(methodRepo)
+    }
+
+
+    fun forcelogout(methodRepo: MethodsRepo){
+        (requireActivity() as BaseActivity).forcelogout(methodRepo)
     }
 
 

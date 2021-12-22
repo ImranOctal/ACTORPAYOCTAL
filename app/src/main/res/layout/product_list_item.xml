@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp">
+    >
+    <data>
+        <variable
+            name="productItem"
+            type="com.octal.actorpay.repositories.retrofitrepository.models.products.ProductItem" />
+    </data>
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/card_bg_color"
         app:cardCornerRadius="10dp"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -27,7 +35,7 @@
                 android:background="@drawable/round_wallet_bg"
                 android:src="@drawable/logo" />
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -39,34 +47,39 @@
                     android:id="@+id/productTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:fontFamily="@font/poppins_semibold"
                     android:paddingEnd="10dp"
                     android:singleLine="true"
-                    android:text="@string/there_are_many_variations"
+                    android:text="@{productItem.name}"
                     android:textColor="#383838"
                     android:textSize="16sp"
-                    app:drawableEndCompat="@drawable/like_small"
-                    tools:ignore="RtlSymmetry" />
+                    tools:ignore="RtlSymmetry"
+                    tools:text="@string/there_are_many_variations" />
 
                 <TextView
                     android:id="@+id/cancelPriceText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/productTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/productTitle"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="@string/dummy_cancel_amount"
+                    android:text='@{"$"+productItem.actualPrice}'
                     android:textColor="#ed3460"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="@string/dummy_cancel_amount" />
 
                 <TextView
                     android:id="@+id/actualPriceText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/productTitle"
-                    android:layout_toEndOf="@id/cancelPriceText"
+                    app:layout_constraintTop_toBottomOf="@+id/productTitle"
+                    app:layout_constraintStart_toEndOf="@+id/cancelPriceText"
                     android:fontFamily="@font/poppins_medium"
                     android:paddingStart="10dp"
-                    android:text="@string/dummy_actual_amount"
+                    tools:text="@string/dummy_actual_amount"
+                    android:text='@{"$"+productItem.dealPrice}'
                     android:textColor="@color/blue_color"
                     android:textSize="12sp" />
 
@@ -74,17 +87,19 @@
                     android:id="@+id/productDisc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/actualPriceText"
+                    app:layout_constraintTop_toBottomOf="@+id/actualPriceText"
                     android:fontFamily="@font/poppins_regular"
                     android:maxLines="2"
-                    android:text="@string/dummy_text"
+                    tools:text="@string/dummy_text"
+                    android:text="@{productItem.description}"
                     android:textSize="12sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buyNow"
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:layout_below="@id/productDisc"
+                    android:layout_height="@dimen/_30sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/productDisc"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:backgroundTint="@color/pink_color"
                     android:fontFamily="@font/poppins_semibold"
                     android:gravity="center"
@@ -94,19 +109,21 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addToCart"
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:layout_below="@id/productDisc"
-                    android:layout_marginStart="5dp"
-                    android:layout_toEndOf="@id/buyNow"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    app:layout_constraintStart_toEndOf="@+id/buyNow"
+                    app:layout_constraintTop_toBottomOf="@+id/productDisc"
                     android:backgroundTint="@color/blue_color"
                     android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:visibility="visible"
                     android:text="@string/add_to_cart"
-                    android:textSize="12sp"
-                    android:gravity="center"/>
+                    android:textSize="12sp" />
 
-            </RelativeLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-
-</FrameLayout>
+</layout>

@@ -94,5 +94,14 @@
     <string name="confirm_your_new_password">Confirm Your New Password</string>
     <string name="save">save</string>
     <string name="hint_balance">₹ 10,000</string>
+    <string name="rs">₹</string>
+    <string name="similiar_products">Similiar Products</string>
+    <string name="my_cart">My Cart</string>
+    <string name="sub_total">Sub Total</string>
+    <string name="shipping_charge">Shipping Charge</string>
+    <string name="gst">GST</string>
+    <string name="total">Total</string>
+    <string name="checkout">CHECKOUT</string>
+    <string name="go_to_cart">Go To Cart</string>
 
 </resources>

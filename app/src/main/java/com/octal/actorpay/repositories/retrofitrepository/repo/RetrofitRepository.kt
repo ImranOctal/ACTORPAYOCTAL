@@ -8,9 +8,13 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.Soci
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
+import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartParams
+import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdateParams
 import com.octal.actorpay.repositories.retrofitrepository.models.content.ContentResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
+import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 
 /*
@@ -40,6 +44,15 @@ interface RetrofitRepository {
 
     suspend fun getFAQ():RetrofitResource<FAQResponse>
 
+    suspend fun getProducts(token: String,pageNo:Int,pageSize:Int):RetrofitResource<ProductListResponse>
+
+    suspend fun getCarts(token: String):RetrofitResource<CartResponse>
+
+    suspend fun addCart(token: String,cartParams: CartParams):RetrofitResource<CartResponse>
+
+    suspend fun deleteCart(token: String,cartId: String):RetrofitResource<CartResponse>
+
+    suspend fun updateCart(token: String,cartParams: CartUpdateParams):RetrofitResource<CartResponse>
 
 
 }
