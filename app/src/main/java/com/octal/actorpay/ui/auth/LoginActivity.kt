@@ -263,7 +263,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun socialLogin(firstName:String, lastName:String, email:String, socialId:String, imgUrl:String){
-            loginViewModel.socialLogin(firstName, lastName, email+System.currentTimeMillis(), socialId+System.currentTimeMillis(), imgUrl)
+            loginViewModel.socialLogin(firstName, lastName, email, socialId, imgUrl)
     }
 
 }

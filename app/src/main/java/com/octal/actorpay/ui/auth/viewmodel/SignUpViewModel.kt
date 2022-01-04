@@ -23,8 +23,8 @@ class SignupViewModel(val dispatcherProvider: CoroutineContextProvider, val meth
         object Empty : ResponseSignupSealed()
     }
 
-    fun SignUpNow(firstName:String,lastName:String,email: String,extensionNumber:String,contactNumber:String, password: String,) {
-        val body= SignUpParams(firstName, lastName, email, extensionNumber, contactNumber, password)
+    fun SignUpNow(firstName:String,lastName:String,email: String,extensionNumber:String,contactNumber:String, password: String,gender:String,dob:String,adhar:String,pan:String) {
+        val body= SignUpParams(firstName, lastName, email, extensionNumber, contactNumber, password,gender,dob,pan,adhar)
         viewModelScope.launch(dispatcherProvider.IO) {
             signInResponseLive.value = ResponseSignupSealed.loading()
             when (val response = apiRepo.SignUpNow(body)) {

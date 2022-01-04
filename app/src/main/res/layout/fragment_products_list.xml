@@ -9,15 +9,78 @@
     android:layout_height="match_parent"
     tools:context=".ui.productList.ProductsListFragment">
 
+<EditText
+    android:id="@+id/product_search"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    android:background="@drawable/item_bg"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:padding="@dimen/_5sdp"
+    android:drawableStart="@drawable/ic_baseline_search_24"
+    android:drawablePadding="@dimen/_10sdp"
+    android:inputType="text"
+    android:imeOptions="actionSearch"
+    android:hint="Search Products"
+    android:textColorHint="@color/white"
+    android:textColor="@color/white"
+    android:fontFamily="@font/poppins_regular"
+    android:textSize="@dimen/_12ssp"
+
+    />
+
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerview_categories"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_30sdp"
+    app:layout_constraintTop_toBottomOf="@+id/product_search"
+    tools:itemCount="5"
+    tools:listitem="@layout/row_categories_item"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:paddingEnd="@dimen/_10sdp"
+    android:clipToPadding="false"
+    />
 
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/recyclerview_product"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:itemCount="5"
+    android:layout_height="0dp"
+    app:layout_constraintTop_toBottomOf="@+id/recyclerview_categories"
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:itemCount="0"
     tools:listitem="@layout/product_list_item"
     android:layout_marginBottom="@dimen/_10sdp"
     />
+
+
+    <ImageView
+        android:id="@+id/image_empty"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/oops"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/text_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/image_empty"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Product are not available"
+        android:textSize="@dimen/_12sdp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_regular"
+        android:visibility="gone"
+        />
 
 
 

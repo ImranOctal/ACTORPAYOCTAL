@@ -1,7 +1,12 @@
 package com.octal.actorpay.retrofitrepository.apiclient
 
 import com.octal.actorpay.repositories.AppConstance.AppConstance
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ADDRESS_ADD
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ADDRESS_DELETE
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ADDRESS_LIST
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ADDRESS_UPDATE
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ADD_CART
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.CATEGORIE_LIST
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.CHANGE_PASSWORD
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.FORGETPASSWORD
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_ALL_CART
@@ -10,10 +15,16 @@ import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_C
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_FAQ
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_PROFILE
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.LOGIN
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.PLACE_ORDER
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.PROMO_LIST
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.RESEND_OTP
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.SEND_OTP
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.SIGNUP
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.SOCIAL_LOGIN
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.SUB_CATEGORIE_LIST
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.UPDATE_CART
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.UPDATE_PROFILE
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.VERIFY_OTP
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.LoginParams
@@ -26,10 +37,20 @@ import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartParams
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdateParams
+import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.categories.SubCategorieResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.content.ContentResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
+import com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
+import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -49,6 +70,9 @@ interface ApiClient {
     @POST(FORGETPASSWORD)
     suspend fun forgetPassword(@Body forgetPasswordParams: ForgetPasswordParams): Response<LoginResponses>
 
+    @POST(RESEND_OTP)
+    suspend fun resendOtp(@Body forgetPasswordParams: ForgetPasswordParams): Response<LoginResponses>
+
     @GET(GET_PROFILE + "{id}")
     suspend fun getProfile(
         @Header("Authorization") token: String,
@@ -59,6 +83,19 @@ interface ApiClient {
     suspend fun saveProfile(
         @Header("Authorization") token: String,
         @Body profileParams: ProfileParams
+    ): Response<SuccessResponse>
+
+
+    @GET(SEND_OTP)
+    suspend fun sendOtp(
+        @Header("Authorization") token: String
+    ): Response<SuccessResponse>
+
+
+    @POST(VERIFY_OTP)
+    suspend fun verifyOtp(
+        @Header("Authorization") token: String,
+        @Query("otp") type: String
     ): Response<SuccessResponse>
 
 
@@ -80,11 +117,12 @@ interface ApiClient {
 
     ): Response<FAQResponse>
 
-    @GET(GET_ALL_PRODUCTS)
+    @POST(GET_ALL_PRODUCTS)
     suspend fun getProducts(
         @Header("Authorization") token: String,
         @Query("pageNo") pageNo: Int,
-        @Query("pageSize") pageSize: Int
+        @Query("pageSize") pageSize: Int,
+        @Body productParams: ProductParams
     ): Response<ProductListResponse>
 
     @GET(GET_ALL_CART)
@@ -110,5 +148,68 @@ interface ApiClient {
         @Header("Authorization") token: String,
         @Body cartParams: CartUpdateParams
     ): Response<CartResponse>
+
+    @POST(PLACE_ORDER)
+    suspend fun placeOrder(
+        @Header("Authorization") token: String,
+        @Body placeOrderParamas: PlaceOrderParamas
+    ): Response<PlaceOrderResponse>
+
+    @GET(PLACE_ORDER)
+    suspend fun getAllOrders(
+        @Header("Authorization") token: String,
+    ): Response<OrderListResponse>
+
+
+
+    @POST(PROMO_LIST)
+    suspend fun getPromos(
+        @Header("Authorization") token: String,
+        @Query("pageNo") pageNo: Int,
+        @Query("pageSize") pageSize: Int,
+        @Body productParams: ProductParams
+    ): Response<PromoResponse>
+
+    @GET(CATEGORIE_LIST)
+    suspend fun getCategories(
+        @Header("Authorization") token: String
+    ): Response<CategorieResponse>
+
+
+    @GET(SUB_CATEGORIE_LIST)
+    suspend fun getSubCategories(
+        @Header("Authorization") token: String,
+        @Query("pageNo") pageNo: Int=0,
+        @Query("pageSize") pageSize: Int=50,
+    ): Response<SubCategorieResponse>
+
+
+    @GET(ADDRESS_LIST)
+    suspend fun getAddressList(
+        @Header("Authorization") token: String,
+        @Query("pageNo") pageNo: Int=0,
+        @Query("pageSize") pageSize: Int=50,
+        @Query("sortBy") sortBy: String="createdAt",
+        @Query("asc") asc: Boolean=false,
+    ): Response<ShippingAddressListResponse>
+
+
+    @POST(ADDRESS_ADD)
+    suspend fun addAddress(
+        @Header("Authorization") token: String,
+        @Body shippingAddressItem: ShippingAddressItem
+    ): Response<SuccessResponse>
+
+    @PUT(ADDRESS_UPDATE)
+    suspend fun updateAddress(
+        @Header("Authorization") token: String,
+        @Body shippingAddressItem: ShippingAddressItem
+    ): Response<SuccessResponse>
+
+    @HTTP(method = "DELETE", path = ADDRESS_DELETE, hasBody = true)
+    suspend fun deleteAddress(
+        @Header("Authorization") token: String,
+        @Body shippingDeleteParams: ShippingDeleteParams
+    ): Response<SuccessResponse>
 
 }

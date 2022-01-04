@@ -14,23 +14,43 @@ class AppConstance {
         const val UPDATE:String="update/"
         const val PRODUCT:String="products"
         const val CART:String="cartitems/"
+        const val ORDER:String="orders/"
+        const val OFFER:String="offers/"
         const val LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"login"
         const val SIGNUP: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"signup"
         const val SOCIAL_LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"social/signup"
         const val FORGETPASSWORD: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+SUB_DOMAIN_FORGET+"password"
+        const val RESEND_OTP: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+"resend/activation/link/request"
         const val GET_PROFILE: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ BY+ ID
         const val UPDATE_PROFILE: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ UPDATE
+
+        const val SEND_OTP: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ "phone/otp/request"
+        const val VERIFY_OTP: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ "phone/verify"
+
         const val CHANGE_PASSWORD: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ "change/password"
         const val GET_CONTENT: String = SUB_DOMAIN+ SUB_DOMAIN_CMS+  "get/static/data/by/cms"
         const val GET_FAQ: String = SUB_DOMAIN+ SUB_DOMAIN_CMS+  "faq/all"
 
 
 
-        const val GET_ALL_PRODUCTS: String = SUB_DOMAIN+ SUB_DOMAIN2+ PRODUCT
+        const val GET_ALL_PRODUCTS: String = SUB_DOMAIN+ SUB_DOMAIN2+ PRODUCT+"/list/paged"
         const val GET_ALL_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"view"
         const val ADD_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"add"
         const val DELETE_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"remove/"
         const val UPDATE_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"update"
+
+
+        const val PLACE_ORDER: String = SUB_DOMAIN+ SUB_DOMAIN2+ ORDER
+
+
+        const val PROMO_LIST: String = SUB_DOMAIN+ SUB_DOMAIN2+ OFFER+"available"
+        const val CATEGORIE_LIST: String = SUB_DOMAIN+ SUB_DOMAIN2+"get/all/active/categories"
+        const val SUB_CATEGORIE_LIST: String = SUB_DOMAIN+ SUB_DOMAIN2+"get/all/subcategories/paged"
+
+        const val ADDRESS_LIST: String = SUB_DOMAIN+ SUB_DOMAIN2+"get/all/user/shipping/address"
+        const val ADDRESS_ADD: String = SUB_DOMAIN+ SUB_DOMAIN2+"add/new/shipping/address"
+        const val ADDRESS_UPDATE: String = SUB_DOMAIN+ SUB_DOMAIN2+"update/shipping/address"
+        const val ADDRESS_DELETE: String = SUB_DOMAIN+ SUB_DOMAIN2+"delete/saved/shipping/address/ids"
     }
 }
 

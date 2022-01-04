@@ -2,9 +2,14 @@ package com.octal.actorpay.ui.productList
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,9 +28,15 @@ import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieItem
+import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductData
+import com.octal.actorpay.ui.productList.productsfilter.ProductFilterFragment
+import com.octal.actorpay.ui.shippingaddress.details.ShippingAddressDetailsFragment
+import com.octal.actorpay.utils.OnFilterClick
 
 
-class ProductsListFragment : BaseFragment() {
+class ProductsListFragment : BaseFragment(),OnFilterClick {
     private lateinit var binding: FragmentProductsListBinding
     private val productViewModel: ProductViewModel by inject()
     private val cartViewModel: CartViewModel by inject()
@@ -38,8 +49,15 @@ class ProductsListFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productViewModel.productData.pageNumber = 0
+        productViewModel.productData.totalPages = 0
         productViewModel.productData.items.clear()
+        productViewModel.name=""
+        productViewModel.category=""
         productViewModel.getProducts()
+        productViewModel.categoryList.clear()
+        Handler(Looper.myLooper()!!).postDelayed({
+            productViewModel.getCategories()
+        },200)
     }
 
     companion object {
@@ -63,9 +81,31 @@ class ProductsListFragment : BaseFragment() {
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_products_list, container, false)
+        showHideBottomNav(false)
+        showHideCartIcon(false)
+        showHideFilterIcon(true)
+        onFilterClick(this)
+        setCategoriesAdapter()
         setAdapter()
         cartResponse()
         apiResponse()
+
+        binding.productSearch.setOnEditorActionListener(object :TextView.OnEditorActionListener{
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    val name=binding.productSearch.text.toString().trim()
+                    productViewModel.name=name
+                    productViewModel.productData.pageNumber = 0
+                    productViewModel.productData.totalPages = 0
+                    productViewModel.productData.items.clear()
+                    productViewModel.getProducts()
+                    productViewModel.methodRepo.hideSoftKeypad(requireActivity())
+
+                }
+                return false;
+            }
+
+        })
 
 
         return binding.root
@@ -124,13 +164,14 @@ class ProductsListFragment : BaseFragment() {
                             productViewModel.methodRepo.hideLoadingDialog()
                             when (event.response) {
                                 is ProductListResponse -> {
-//                                productViewModel.productData.pageNumber=event.response.data.pageNumber
-                                    productViewModel.productData.pageNumber =
-                                        event.response.data.pageNumber
-                                    productViewModel.productData.totalPages =
-                                        event.response.data.totalPages
-                                    productViewModel.productData.items.addAll(event.response.data.items)
-                                    adapter.notifyItemChanged(productViewModel.productData.items.size - 1)
+                                  updateUI(event.response.data)
+
+
+                                }
+                                is CategorieResponse->{
+                                    productViewModel.categoryList.add(CategorieItem("","All","","",true))
+                                    productViewModel.categoryList.addAll(event.response.data)
+                                   setCategoriesAdapter()
                                 }
                             }
                         }
@@ -138,7 +179,6 @@ class ProductsListFragment : BaseFragment() {
                             if (event.message!!.code == 403) {
                                 forcelogout(productViewModel.methodRepo)
                             }
-
                             productViewModel.methodRepo.hideLoadingDialog()
                         }
                         is ResponseSealed.Empty -> {
@@ -149,6 +189,24 @@ class ProductsListFragment : BaseFragment() {
                 }
             }
 
+    }
+
+    fun updateUI(productData: ProductData){
+        productViewModel.productData.pageNumber =
+            productData.pageNumber
+        productViewModel.productData.totalPages =
+            productData.totalPages
+        productViewModel.productData.items.addAll(productData.items)
+        binding.recyclerviewProduct.adapter?.notifyDataSetChanged()
+
+        if(productViewModel.productData.items.size>0){
+            binding.imageEmpty.visibility=View.GONE
+            binding.textEmpty.visibility=View.GONE
+        }
+        else {
+            binding.imageEmpty.visibility=View.VISIBLE
+            binding.textEmpty.visibility=View.VISIBLE
+        }
     }
 
     private fun setAdapter() {
@@ -223,9 +281,36 @@ class ProductsListFragment : BaseFragment() {
 
     }
 
+    fun setCategoriesAdapter(){
+
+        val categorieAdapter=CategorieAdapter(productViewModel.categoryList){
+            if(productViewModel.categoryList[it].isSelected.not()){
+                productViewModel.categoryList.forEach(){
+                    it.isSelected=false
+                }
+                var cat=productViewModel.categoryList[it].name
+                if(cat.equals("All"))
+                    cat=""
+                productViewModel.category=cat
+                productViewModel.categoryList[it].isSelected=true
+                productViewModel.productData.pageNumber = 0
+                productViewModel.productData.totalPages = 0
+                productViewModel.productData.items.clear()
+                binding.recyclerviewCategories.adapter?.notifyDataSetChanged()
+
+                productViewModel.getProducts()
+            }
+            }
+
+
+        binding.recyclerviewCategories.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+        binding.recyclerviewCategories.adapter=categorieAdapter
+
+    }
+
     private fun addToCart(position: Int) {
         val product = productViewModel.productData.items[position]
-        cartViewModel.addCart(product.productId)
+        cartViewModel.addCart(product.productId,product.dealPrice)
 
     }
 
@@ -240,7 +325,7 @@ class ProductsListFragment : BaseFragment() {
         CommonDialogsUtils.showCommonDialog(requireActivity(),
             productViewModel.methodRepo,
             "Replace Cart Item",
-            "Your Cart Contains Products from Different Merchant, Do you want to discard the selection and add this product?",
+            "Your cart contains products from different Merchant, Do you want to discard the selection and add this product?",
             autoCancelable = true,
             isCancelAvailable = true,
             isOKAvailable = true,
@@ -249,10 +334,16 @@ class ProductsListFragment : BaseFragment() {
                 override fun onClick() {
                     onClick()
                 }
-
                 override fun onCancel() {
 
                 }
             })
+    }
+
+    override fun onClick() {
+        startFragment(
+            ProductFilterFragment.newInstance(),
+            true,
+            ProductFilterFragment.toString())
     }
 }

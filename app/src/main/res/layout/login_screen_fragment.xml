@@ -21,8 +21,8 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/name"
                 android:background="@android:color/transparent"
-                android:paddingStart="@dimen/_10sdp"
-                android:hint="User Name"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:hint="@string/user_name"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/_12ssp"
                 style="@style/regular1Full"
@@ -64,11 +64,20 @@
                     style="@style/regular1Full"
                     android:layout_weight=".8"
                     android:background="@android:color/transparent"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:hint="Password"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:hint="@string/password"
                     android:textSize="@dimen/_12ssp"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    />
+
+                <ImageView
+                    android:id="@+id/password_show_hide"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/show"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5sdp"
                     />
 
 
@@ -111,29 +120,28 @@
                 android:id="@+id/cbRememberMe"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_weight=".8"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Remember Me"
+                android:text="@string/remember_me"
                 android:textColor="@color/light_grey"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_10sdp"
+                android:visibility="invisible"
+                />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/login_forget"
                 style="@style/SemiBoldTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:gravity="left"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="start"
                 android:text="@string/forgot_password"
                 android:textColor="#2659C5"
                 android:textSize="@dimen/_10sdp" />
 
         </LinearLayout>
-
-
-
     </LinearLayout>
 </layout>

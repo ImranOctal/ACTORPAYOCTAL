@@ -2,10 +2,10 @@ package com.octal.actorpay.repositories.retrofitrepository.models.cart
 
 
 data class CartResponse(
-    var message: String? = null,
+    var message: String,
     var data: CartData,
-    var status: String? = null,
-    var httpStatus: String? = null
+    var status: String,
+    var httpStatus: String
 
 )
 
@@ -14,9 +14,9 @@ data class CartData(
     var totalPrice: Double,
     var totalSgst: Double,
     var totalCgst: Double,
-    var userId: String? = null,
-    var merchantId: String? = null,
-    var productName: String? = null,
+    var userId: String,
+    var merchantId: String,
+    var productName: String,
     var cartItemDTOList: MutableList<CartItemDTO> = mutableListOf(),
     var totalTaxableValue: Double
 
@@ -24,37 +24,39 @@ data class CartData(
 
 
 data class CartItemDTO(
-    var createdAt: String? = null,
-    var updatedAt: String? = null,
+    var createdAt: String,
+    var updatedAt: String,
     var cartItemId: String,
-    var productName: String? = null,
-    var productId: String? = null,
-    var productPrice: Int? = null,
+    var productName: String,
+    var productId: String,
+    var productPrice: Double,
     var productQty: Int,
-    var productSgst: Int? = null,
-    var productCgst: Int? = null,
-    var userDTO: UserDTO? = UserDTO(),
-    var merchantId: String? = null,
-    var totalPrice: Int? = null,
-    var shippingCharge: Int? = null,
-    var taxPercentage: Int? = null,
-    var taxableValue: Int? = null,
-    var email: String? = null,
-    var active: Boolean? = null
+    var productSgst: Double,
+    var productCgst: Double,
+    var userDTO: UserDTO,
+    var merchantId: String,
+    var totalPrice: Double,
+    var shippingCharge: Double,
+    var taxPercentage: Double,
+    var taxableValue: Double,
+    var email: String,
+    var image: String,
+    var active: Boolean
 
 )
 
 
 data class UserDTO(
-    var id: String? = null,
-    var invalidLoginAttempts: Int? = null,
-    var roles: ArrayList<String> = arrayListOf(),
-    var kycDone: Boolean? = null
+    var id: String,
+    var invalidLoginAttempts: Int,
+    var roles: ArrayList<String>,
+    var kycDone: Boolean
 
 )
 
 data class CartParams(
     val productId:String,
+    val productPrice:Double,
     val productQty:Int=1
 )
 data class CartUpdateParams(

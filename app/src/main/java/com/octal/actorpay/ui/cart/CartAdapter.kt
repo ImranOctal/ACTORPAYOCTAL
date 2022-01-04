@@ -35,10 +35,10 @@ class CartAdapter(val cartList: MutableStateFlow<MutableList<CartItemDTO>> = Mut
 
          fun bindView(item:CartItemDTO){
                 binding.cartItem=item
-            /* Glide.with(binding.root)
+             Glide.with(binding.root)
                  .load(item.image)
                  .error(R.drawable.logo)
-                 .into(binding.productImage)*/
+                 .into(binding.productImage)
 
                 binding.productQuantityDelete.setOnClickListener {
                     onClick(adapterPosition,Clicks.Delete)

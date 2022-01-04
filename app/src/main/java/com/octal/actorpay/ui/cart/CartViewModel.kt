@@ -11,6 +11,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartData
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartItemDTO
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartParams
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdateParams
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import kotlinx.coroutines.flow.Flow
@@ -50,12 +51,12 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
         }
     }
 
-    fun addCart(prodId:String) {
+    fun addCart(prodId:String,price:Double) {
 
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(true)
             methodRepo.dataStore.getAccessToken().collect { token ->
-                val cartParams=CartParams(prodId)
+                val cartParams=CartParams(prodId,price)
                 when (val response =
                     apiRepo.addCart(token,cartParams)) {
                     is RetrofitResource.Error -> responseLive.value =
@@ -107,6 +108,7 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
             }
         }
     }
+
 
 
 }

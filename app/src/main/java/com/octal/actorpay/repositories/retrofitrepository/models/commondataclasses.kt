@@ -10,6 +10,5 @@ data class FailResponse(
 data class SuccessResponse(
     val message: String,
     val status: String,
-    val `data`: Data,
 )
 

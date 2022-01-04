@@ -2,18 +2,19 @@ package com.octal.actorpay.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
-import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.LoginScreenFragmentBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.LoginResponses
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
+import com.octal.actorpay.utils.CommonDialogsUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
@@ -28,6 +29,7 @@ class LoginScreenFragment : BaseFragment() {
     private var _binding: LoginScreenFragmentBinding? = null
 
     private val binding get() = _binding!!
+    private var showPassword = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,7 +74,12 @@ class LoginScreenFragment : BaseFragment() {
                                 requireActivity().finishAffinity()
                             }
                             is String -> {
-                                CommonDialogsUtils.showCommonDialog(requireActivity(),loginViewModel.methodRepo,getString(R.string.forget_password1),event.response)
+                                CommonDialogsUtils.showCommonDialog(
+                                    requireActivity(),
+                                    loginViewModel.methodRepo,
+                                    "Resend Activation Link",
+                                    event.response
+                                )
                             }
                             else -> {
                                 showCustomAlert(
@@ -84,10 +91,13 @@ class LoginScreenFragment : BaseFragment() {
                     }
                     is LoginViewModel.ResponseLoginSealed.ErrorOnResponse -> {
                         loginViewModel.methodRepo.hideLoadingDialog()
-                        (requireActivity() as BaseActivity).showCustomAlert(
-                            event.message!!.message,
-                            binding.root
-                        )
+                        if (event.message!!.message.equals("Use account is not verified")) {
+                            resendOtpUI()
+                        } else
+                            (requireActivity() as BaseActivity).showCustomAlert(
+                                event.message!!.message,
+                                binding.root
+                            )
                     }
                     else -> {
                         loginViewModel.methodRepo.hideLoadingDialog()
@@ -96,6 +106,27 @@ class LoginScreenFragment : BaseFragment() {
             }
 
         }
+    }
+
+    fun resendOtpUI() {
+        CommonDialogsUtils.showCommonDialog(
+            requireActivity(),
+            loginViewModel.methodRepo,
+            "Resend OTP",
+            "Your Account is not verified.\nResend OTP on email?",
+            true,
+            true,
+            true,
+            false,
+            object : CommonDialogsUtils.DialogClick {
+                override fun onClick() {
+                    loginViewModel.resendOtp(binding.name.text.toString().trim())
+                }
+
+                override fun onCancel() {
+
+                }
+            })
     }
 
     override fun onDestroyView() {
@@ -111,6 +142,19 @@ class LoginScreenFragment : BaseFragment() {
             loginForget.setOnClickListener {
                 forgetPassword()
             }
+            passwordShowHide.setOnClickListener {
+                if (showPassword) {
+                    password.transformationMethod = PasswordTransformationMethod()
+                    showPassword = false
+                    passwordShowHide.setImageResource(R.drawable.show)
+                    password.setSelection(password.text.toString().length)
+                } else {
+                    password.transformationMethod = null
+                    showPassword = true
+                    passwordShowHide.setImageResource(R.drawable.hide)
+                    password.setSelection(password.text.toString().length)
+                }
+            }
 
         }
     }
@@ -120,7 +164,7 @@ class LoginScreenFragment : BaseFragment() {
             binding.errorOnName.visibility = View.VISIBLE
             binding.errorOnName.text = getString(R.string.email_empty)
             binding.errorOnPassword.visibility = View.GONE
-                loginViewModel.methodRepo.setBackGround(
+            loginViewModel.methodRepo.setBackGround(
                 requireContext(),
                 binding.loginEmaillay,
                 R.drawable.btn_search_outline
@@ -185,14 +229,13 @@ class LoginScreenFragment : BaseFragment() {
     fun login() {
         loginViewModel.methodRepo.hideSoftKeypad(requireActivity())
         loginViewModel.SignInNow(
-            binding.name.text.toString(),
-            binding.password.text.toString()
+            binding.name.text.toString().trim(),
+            binding.password.text.toString().trim()
         )
     }
 
-    private fun forgetPassword(){
-        ForgetPasswordDialog().show(requireActivity(),loginViewModel.methodRepo){
-            email ->
+    private fun forgetPassword() {
+        ForgetPasswordDialog().show(requireActivity(), loginViewModel.methodRepo) { email ->
             loginViewModel.forgetPassword(email)
         }
     }

@@ -16,6 +16,7 @@ import com.octal.actorpay.databinding.FragmentMiscBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.ui.content.ContentActivity
 import com.octal.actorpay.ui.content.ContentViewModel
+import com.octal.actorpay.ui.shippingaddress.ShippingAddressFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -50,7 +51,9 @@ class MiscFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_misc, container, false)
-
+        showHideBottomNav(false)
+        showHideCartIcon(false)
+        showHideFilterIcon(false)
         init()
         ApiResponse()
 
@@ -78,6 +81,9 @@ class MiscFragment : BaseFragment() {
                 transaction.replace(R.id.container, FAQFragment())
                 transaction.addToBackStack("faq")
                 transaction.commit()
+            }
+            myAddress.setOnClickListener {
+                startFragment(ShippingAddressFragment.newInstance(),true, ShippingAddressFragment.toString())
             }
 
         }

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <variable
+            name="orderData"
+            type="com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData" />
+    </data>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+  >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cart_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/primary"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
+            android:contentDescription="@string/back" />
+
+        <TextView
+            android:id="@+id/txtToolbarTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/order_summary"
+            android:textSize="@dimen/_14ssp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins_regular"
+
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        app:layout_constraintTop_toBottomOf="@+id/cart_toolbar"
+        android:background="@color/primary"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cart_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/cart_toolbar"
+        android:background="@drawable/layout_bg"
+        android:paddingTop="@dimen/_20sdp"
+        >
+
+        <ImageView
+            android:id="@+id/success_icon"
+            android:layout_width="@dimen/_75sdp"
+            android:layout_height="@dimen/_75sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/success_icon"
+            android:visibility="visible"
+            android:contentDescription="@string/thank_you" />
+
+        <TextView
+            android:id="@+id/thankyou_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/success_icon"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/thank_you"
+            android:textSize="@dimen/_16ssp"
+            android:textColor="@color/green_color"
+            android:fontFamily="@font/poppins_semibold"
+            android:visibility="visible"
+            />
+
+
+        <TextView
+            android:id="@+id/thankyou_desc_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/thankyou_text"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:text="@string/thank_you_for_your_order"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/text_color"
+            android:fontFamily="@font/poppins_regular"
+            android:visibility="visible"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/order_summary_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/thankyou_desc_text"
+            android:paddingBottom="@dimen/_10sdp"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@color/light_grey_home"
+
+            >
+
+            <TextView
+                android:id="@+id/order_summary_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:text="@string/order_summary"
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_regular"
+                />
+
+            <TextView
+                android:id="@+id/merchant_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/order_summary_text"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:text='@{orderData.customer.firstName+" "+orderData.customer.lastName}'
+                tools:text="Merchant Name"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_medium"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/order_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/merchant_name"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                tools:listitem="@layout/row_order_item"
+                tools:itemCount="0"
+                />
+
+            <TextView
+                android:id="@+id/order_date_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/order_recycler_view"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:text='@{"Order Date &amp; Time: "+orderData.createdAt}'
+                tools:text="Order Date &amp; Time:"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_medium"
+                />
+
+
+            <TextView
+                android:id="@+id/order_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/order_date_text"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:text='@{"Order Number: "+orderData.orderNo}'
+                tools:text="Order Number: "
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_medium"
+                />
+
+            <TextView
+                android:id="@+id/order_amount_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/order_number"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:text="@string/order_amount"
+                tools:text="Order Number: "
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_bold"
+                />
+
+            <ImageView
+                android:id="@+id/delivery_address_location"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/address_icon"
+                app:layout_constraintTop_toBottomOf="@+id/order_amount_text"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:contentDescription="@string/delivery_address_and_time" />
+
+            <TextView
+                android:id="@+id/delivery_address_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="@+id/delivery_address_location"
+                app:layout_constraintBottom_toBottomOf="@+id/delivery_address_location"
+                app:layout_constraintStart_toEndOf="@+id/delivery_address_location"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:text="@string/delivery_address_and_time"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_semibold"
+                />
+
+            <TextView
+                android:id="@+id/delivery_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/delivery_address_text"
+                app:layout_constraintStart_toStartOf="@+id/delivery_address_text"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Dummy Shipping Address"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_semibold"
+                />
+
+            <TextView
+                android:id="@+id/order_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/order_number"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:text='@{"₹"+orderData.totalPrice}'
+                tools:text="Order Price"
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_bold"
+                />
+
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/delivery_address"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:backgroundTint="@color/pink_color"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:text="@string/explore_more"
+                android:textSize="@dimen/_10ssp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+</layout>

@@ -11,10 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
+import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.utils.CommonDialogsUtils
+import com.octal.actorpay.utils.OnFilterClick
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import org.koin.android.ext.android.inject
 
@@ -46,6 +48,21 @@ abstract class BaseFragment : Fragment(){
 
     open fun startFragment(fragment: Fragment?, addToBackStack: Boolean, backStackTag: String?) {
         (requireActivity() as BaseActivity).startFragment(fragment,true,backStackTag)
+    }
+    fun setTitle(title:String){
+        (requireActivity() as MainActivity).title = title
+    }
+    fun showHideBottomNav(showHide:Boolean){
+        (requireActivity() as MainActivity).showHideBottomNav(showHide)
+    }
+    fun showHideCartIcon(showHide: Boolean){
+        (requireActivity() as MainActivity).showHideCartIcon(showHide)
+    }
+    fun showHideFilterIcon(showHide: Boolean){
+        (requireActivity() as MainActivity).showHideFilterIcon(showHide)
+    }
+    fun onFilterClick(filterClick: OnFilterClick){
+        (requireActivity() as MainActivity).onFilterClick(filterClick)
     }
 
     fun showCustomToast(msg: String) {

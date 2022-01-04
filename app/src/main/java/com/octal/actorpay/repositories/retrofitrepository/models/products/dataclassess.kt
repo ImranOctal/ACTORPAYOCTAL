@@ -1,6 +1,9 @@
 package com.octal.actorpay.repositories.retrofitrepository.models.products
 
-
+data class ProductParams(
+    val categoryName:String?=null,
+    val name:String?=null
+)
 
 data class ProductListResponse(
     val `data`: ProductData,
@@ -25,14 +28,16 @@ data class ProductItem (
     val description : String,
     val categoryId : String,
     val subCategoryId : String,
-    val actualPrice : Int,
-    val dealPrice : Int,
+    val actualPrice : Double,
+    val dealPrice : Double,
     val image : String,
     val merchantId : String,
     val stockCount : Int,
     val taxId : String,
     val stockStatus : String,
     val status : Boolean,
+    val sgst : Double,
+    val cgst : Double,
     val createdAt : String,
     val updatedAt : String
 )

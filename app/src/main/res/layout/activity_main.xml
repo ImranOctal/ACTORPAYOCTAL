@@ -45,6 +45,31 @@
             android:src="@drawable/drawable_menu"
             android:visibility="visible" />
 
+        <ImageView
+            android:id="@+id/cart"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:src="@drawable/cart_icon"
+            android:visibility="visible"
+            app:tint="@color/white" />
+
+
+        <ImageView
+            android:id="@+id/filter"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:src="@drawable/filters"
+            android:visibility="gone"
+            app:tint="@color/white" />
+
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             xmlns:tools="http://schemas.android.com/tools"

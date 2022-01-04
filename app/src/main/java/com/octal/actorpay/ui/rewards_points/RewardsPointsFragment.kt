@@ -28,6 +28,9 @@ class RewardsPointsFragment : BaseFragment() {
 
         _binding = FragmentRewardsPointsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        showHideBottomNav(false)
+        showHideCartIcon(false)
+        showHideFilterIcon(false)
         WorkStation()
 
         return root

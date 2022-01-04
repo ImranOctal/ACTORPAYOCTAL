@@ -69,5 +69,32 @@ class ProfileViewModel(
         }
     }
 
+    fun sendOtp() {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            profileResponseLive.value = ResponsProfileSealed.loading()
+                methodRepo.dataStore.getAccessToken().collect { token ->
+                    when (val response = apiRepo.sendOtp(token)) {
+                        is RetrofitResource.Error -> profileResponseLive.value =
+                            ResponsProfileSealed.ErrorOnResponse(response.message)
+                        is RetrofitResource.Success -> profileResponseLive.value =
+                            ResponsProfileSealed.Success(response.data!!)
+                    }
+                }
+        }
+    }
+    fun verifyOtp(otp:String) {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            profileResponseLive.value = ResponsProfileSealed.loading()
+                methodRepo.dataStore.getAccessToken().collect { token ->
+                    when (val response = apiRepo.verifyOtp(otp,token)) {
+                        is RetrofitResource.Error -> profileResponseLive.value =
+                            ResponsProfileSealed.ErrorOnResponse(response.message)
+                        is RetrofitResource.Success -> profileResponseLive.value =
+                            ResponsProfileSealed.Success(response.data!!)
+                    }
+                }
+        }
+    }
+
 
 }

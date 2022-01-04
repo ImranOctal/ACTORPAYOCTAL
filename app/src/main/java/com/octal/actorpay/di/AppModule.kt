@@ -17,8 +17,14 @@ import com.octal.actorpay.ui.cart.CartViewModel
 import com.octal.actorpay.ui.content.ContentViewModel
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
 import com.octal.actorpay.ui.misc.MiscViewModel
+import com.octal.actorpay.ui.myOrderList.OrderViewModel
+import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderViewModel
 import com.octal.actorpay.ui.productList.ProductViewModel
 import com.octal.actorpay.ui.productList.productdetails.ProductDetailsViewModel
+import com.octal.actorpay.ui.productList.productsfilter.ProductFilterViewModel
+import com.octal.actorpay.ui.promocodes.PromoListViewModel
+import com.octal.actorpay.ui.shippingaddress.ShippingAddressViewModel
+import com.octal.actorpay.ui.shippingaddress.details.ShippingAddressDetailsViewModel
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import retrofit2.Retrofit
@@ -91,7 +97,25 @@ private val appKoinModule = module {
         ProductViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     viewModel {
+        ProductFilterViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
         ProductDetailsViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        OrderViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        PromoListViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        PlaceOrderViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        ShippingAddressViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        ShippingAddressDetailsViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     single {
         CartViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())

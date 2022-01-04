@@ -11,10 +11,20 @@ import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartParams
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdateParams
+import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.categories.SubCategorieResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.content.ContentResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
+import com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
+import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 
 /*
@@ -38,13 +48,17 @@ interface RetrofitRepository {
 
     suspend fun saveProfile(email:String,extensionNumber:String,contactNumber:String,id:String,token: String):RetrofitResource<SuccessResponse>
 
+    suspend fun sendOtp(token: String):RetrofitResource<SuccessResponse>
+
+    suspend fun verifyOtp(otp:String,token: String):RetrofitResource<SuccessResponse>
+
     suspend fun changePassword(miscChangePasswordParams: MiscChangePasswordParams,token: String):RetrofitResource<SuccessResponse>
 
     suspend fun getContent(type:String):RetrofitResource<ContentResponse>
 
     suspend fun getFAQ():RetrofitResource<FAQResponse>
 
-    suspend fun getProducts(token: String,pageNo:Int,pageSize:Int):RetrofitResource<ProductListResponse>
+    suspend fun getProducts(token: String,pageNo:Int,pageSize:Int,productParams: ProductParams):RetrofitResource<ProductListResponse>
 
     suspend fun getCarts(token: String):RetrofitResource<CartResponse>
 
@@ -54,5 +68,24 @@ interface RetrofitRepository {
 
     suspend fun updateCart(token: String,cartParams: CartUpdateParams):RetrofitResource<CartResponse>
 
+    suspend fun placeOrder(token: String,placeOrderParamas: PlaceOrderParamas):RetrofitResource<PlaceOrderResponse>
+
+    suspend fun getAllOrders(token: String):RetrofitResource<OrderListResponse>
+
+    suspend fun getPromos(token: String,pageNo:Int,pageSize:Int):RetrofitResource<PromoResponse>
+
+    suspend fun getCategories(token: String):RetrofitResource<CategorieResponse>
+
+    suspend fun getSubCategories(token: String):RetrofitResource<SubCategorieResponse>
+
+    suspend fun resendOtp(forgetPasswordParams:ForgetPasswordParams):RetrofitResource<LoginResponses>
+
+    suspend fun getAddresses(token:String):RetrofitResource<ShippingAddressListResponse>
+
+    suspend fun addAddress(token:String,shippingAddressItem: ShippingAddressItem):RetrofitResource<SuccessResponse>
+
+    suspend fun updateAddress(token:String,shippingAddressItem: ShippingAddressItem):RetrofitResource<SuccessResponse>
+
+    suspend fun deleteAddress(token:String,shippingDeleteParams: ShippingDeleteParams):RetrofitResource<SuccessResponse>
 
 }

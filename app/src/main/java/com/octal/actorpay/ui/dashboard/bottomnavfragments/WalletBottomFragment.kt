@@ -37,6 +37,9 @@ class WalletBottomFragment : BaseFragment() {
         // Inflate the layout for this fragment
         _binding = FragmentWalletBottomBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        showHideBottomNav(true)
+        showHideCartIcon(true)
+        showHideFilterIcon(false)
         WorkStation()
         return root
     }

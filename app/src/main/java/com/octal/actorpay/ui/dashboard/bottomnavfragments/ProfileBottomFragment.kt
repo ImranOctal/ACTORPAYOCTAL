@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
 import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseActivity
@@ -13,7 +14,10 @@ import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentProfileBottomBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
+import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponseData
+import com.octal.actorpay.ui.auth.verifyotp.VerifyOtpDialog
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
+import com.octal.actorpay.ui.shippingaddress.ShippingAddressFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -54,10 +58,20 @@ class ProfileBottomFragment : BaseFragment() {
     }
 
     fun init() {
+        (requireActivity() as MainActivity).title="My Profile"
+        showHideBottomNav(true)
+        showHideCartIcon(true)
+        showHideFilterIcon(false)
         binding.apply {
-            binding.profileSave.setOnClickListener {
+          /*  profileSave.setOnClickListener {
                 //NavController().navigateWithId(R.id.homeFragment, findNavController())
                 validate()
+            }*/
+            verifyMobile.setOnClickListener {
+                profileViewModel.sendOtp()
+            }
+            address.setOnClickListener {
+                startFragment(ShippingAddressFragment.newInstance(),true,ShippingAddressFragment.toString())
             }
         }
     }
@@ -137,21 +151,17 @@ class ProfileBottomFragment : BaseFragment() {
                         when (it.response) {
                             is ProfileReesponse -> {
                                 val response2=it.response.data
-                                binding.firstName.setText("${response2.firstName} ${response2.lastName}")
-                                binding.editEmail.setText(response2.email)
-                                binding.mobNumber.setText(response2.contactNumber)
-                                try {
-                                    var extContact = response2.extensionNumber
-                                    if (extContact.isNotEmpty()) {
-                                        extContact = extContact.replace("+", "")
-                                        binding.profileCcp.setCountryForPhoneCode(extContact.toInt())
-                                    }
-                                } catch (e: Exception) {
-                                    Log.d("Profile Fragment", "apiResponse: ${e.message}")
-                                }
+                                handleProfileResponse(response2)
                             }
                             is SuccessResponse -> {
-                                CommonDialogsUtils.showCommonDialog(requireActivity(),profileViewModel.methodRepo,"Profile Update",it.response.message)
+                                if(it.response.message.equals("OTP sent successfully"))
+                                    VerifyOtpDialog().show(requireActivity(),profileViewModel.methodRepo){
+                                            profileViewModel.verifyOtp(it)
+                                    }
+                                else if(it.response.message.equals("User contact number has been verified successfully"))
+                                    profileViewModel.getProfile()
+                                else
+                                    CommonDialogsUtils.showCommonDialog(requireActivity(),profileViewModel.methodRepo,"Profile Update",it.response.message)
                             }
                             else -> {
                                 showCustomAlert(
@@ -163,17 +173,51 @@ class ProfileBottomFragment : BaseFragment() {
                     }
                     is ProfileViewModel.ResponsProfileSealed.ErrorOnResponse -> {
                         profileViewModel.methodRepo.hideLoadingDialog()
+                        if (it.failResponse!!.code == 403) {
+                            forcelogout(profileViewModel.methodRepo)
+                        }
+                        else
                         (requireActivity() as BaseActivity).showCustomAlert(
-                            it.failResponse!!.message,
+                            it.failResponse.message,
                             binding.root
                         )
                     }
                     is ProfileViewModel.ResponsProfileSealed.Empty -> {
                         profileViewModel.methodRepo.hideLoadingDialog()
                     }
-
                 }
             }
+        }
+    }
+
+    fun handleProfileResponse(profileReesponse: ProfileResponseData){
+        binding.firstName.setText("${profileReesponse.firstName} ${profileReesponse.lastName}")
+        binding.editEmail.setText(profileReesponse.email)
+        binding.mobNumber.setText(profileReesponse.contactNumber)
+
+        binding.mobileUpdate.visibility=View.VISIBLE
+
+        if(profileReesponse.phoneVerified){
+            binding.verifyMobile.visibility=View.GONE
+        }
+        else{
+            binding.verifyMobile.visibility=View.VISIBLE
+        }
+        if(profileReesponse.contactNumber == null || profileReesponse.contactNumber.equals("")){
+            binding.mobileUpdate.text=getString(R.string.add_mobile_number)
+            binding.verifyMobile.visibility=View.GONE
+        }
+        else{
+            binding.mobileUpdate.text=getString(R.string.chnage_mobile_number)
+        }
+        try {
+            var extContact = profileReesponse.extensionNumber
+            if (extContact.isNotEmpty()) {
+                extContact = extContact.replace("+", "")
+                binding.profileCcp.setCountryForPhoneCode(extContact.toInt())
+            }
+        } catch (e: Exception) {
+            Log.d("Profile Fragment", "apiResponse: ${e.message}")
         }
     }
 

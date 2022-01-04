@@ -32,6 +32,9 @@ class RemittanceFragment : BaseFragment() {
 
         _binding = FragmentRemittanceBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        showHideBottomNav(false)
+        showHideCartIcon(false)
+        showHideFilterIcon(false)
         init()
         WorkStation()
         return root

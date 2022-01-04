@@ -5,4 +5,9 @@ data class SignUpParams(val firstName:String,
                         val email:String,
                         val extensionNumber:String,
                         val contactNumber:String,
-                        val password:String)
+                        val password:String,
+                        val gender:String,
+                        val dateOfBirth:String,
+                        val panNumber:String,
+                        val aadharNumber:String,
+)

@@ -22,6 +22,10 @@ class HomeBottomFragment : BaseFragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_bottom, container, false)
         val root: View = binding.root
+        showHideBottomNav(true)
+        showHideCartIcon(true)
+        showHideFilterIcon(false)
+
 
         WorkStation()
         return root

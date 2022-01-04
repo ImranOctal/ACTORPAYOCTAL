@@ -7,20 +7,22 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpay.R
-import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.ActivityCartBinding
 import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.repositories.methods.MethodsRepo
-import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartData
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartResponse
 import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.utils.CommonDialogsUtils
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
-import android.app.Activity
+import android.view.View
+import android.widget.Toast
 import com.octal.actorpay.MainActivity
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
+import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderActivity
+import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderDialog
 
 
 class CartActivity : AppCompatActivity() {
@@ -41,6 +43,17 @@ class CartActivity : AppCompatActivity() {
 
         binding.back.setOnClickListener {
             finish()
+        }
+        binding.checkout.setOnClickListener {
+            if(cartViewModel.cartData!=null && cartViewModel.cartData!!.totalPrice > 0.0){
+                PlaceOrderActivity.total=cartViewModel.cartData!!.totalPrice
+                startActivity(Intent(this, PlaceOrderActivity::class.java))
+//                cartViewModel.placeOrder()
+            }
+            else
+            {
+                Toast.makeText(this,"Cart is Empty",Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -64,9 +77,7 @@ class CartActivity : AppCompatActivity() {
                     }
                     is ResponseSealed.Empty -> {
                         cartViewModel.methodRepo.hideLoadingDialog()
-
                     }
-
                 }
             }
         }
@@ -89,6 +100,13 @@ class CartActivity : AppCompatActivity() {
                                 }
 
                             }
+                            is PlaceOrderResponse->{
+                                cartViewModel.getCartItmes()
+                                PlaceOrderDialog(this@CartActivity,true,event.response.data){
+                                    startActivity(Intent(this@CartActivity,MainActivity::class.java))
+                                    finishAffinity()
+                                }.show(supportFragmentManager,"Place")
+                            }
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
@@ -110,6 +128,15 @@ class CartActivity : AppCompatActivity() {
         binding.subTotal.text = getString(R.string.rs).plus(cartData.totalTaxableValue)
         binding.total.text = getString(R.string.rs).plus(cartData.totalPrice)
         adapter.notifyItemChanged(cartViewModel.cartItems.value.size)
+
+        if(cartViewModel.cartData!!.cartItemDTOList.size==0){
+            binding.imageEmpty.visibility=View.VISIBLE
+            binding.textEmpty.visibility=View.VISIBLE
+        }
+        else{
+            binding.imageEmpty.visibility=View.GONE
+            binding.textEmpty.visibility=View.GONE
+        }
     }
 
     fun setAdapter() {
@@ -175,6 +202,10 @@ class CartActivity : AppCompatActivity() {
 
                 }
             })
+    }
+
+    private fun orderPlacedDialog(){
+
     }
 
     override fun onBackPressed() {

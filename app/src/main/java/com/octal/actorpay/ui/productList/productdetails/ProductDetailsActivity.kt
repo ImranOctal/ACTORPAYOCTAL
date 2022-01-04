@@ -90,10 +90,10 @@ class ProductDetailsActivity : AppCompatActivity() {
 //                                addToCart(position)
                 }
             } else
-                cartViewModel.addCart(productItem!!.productId)
+                cartViewModel.addCart(productItem!!.productId,productItem!!.dealPrice)
         }
         else
-        cartViewModel.addCart(productItem!!.productId)
+        cartViewModel.addCart(productItem!!.productId,productItem!!.dealPrice)
 
     }
     private fun buyNow() {
@@ -111,13 +111,13 @@ class ProductDetailsActivity : AppCompatActivity() {
                     }
                 } else {
                     isFromBuy=true
-                    cartViewModel.addCart(productItem!!.productId)
+                    cartViewModel.addCart(productItem!!.productId,productItem!!.dealPrice)
                 }
             }
 
         } else {
             isFromBuy=true
-            cartViewModel.addCart(productItem!!.productId)
+            cartViewModel.addCart(productItem!!.productId,productItem!!.dealPrice)
         }
 
     }
@@ -155,7 +155,7 @@ class ProductDetailsActivity : AppCompatActivity() {
                         if(isFromBuy)
                             isFromBuy=false
                         if (event.message!!.code == 403) {
-                            forcelogout(cartViewModel.methodRepo)
+                            forcelogout()
                         }
                         cartViewModel.methodRepo.hideLoadingDialog()
                     }
@@ -235,14 +235,14 @@ class ProductDetailsActivity : AppCompatActivity() {
 
     }
 
-    fun forcelogout(methodRepo: MethodsRepo) {
-        CommonDialogsUtils.showCommonDialog(this, methodRepo, "Log Out ",
+    fun forcelogout() {
+        CommonDialogsUtils.showCommonDialog(this, cartViewModel.methodRepo, "Log Out ",
             "Session Expire", false, false, true, false,
             object : CommonDialogsUtils.DialogClick {
                 override fun onClick() {
 //                    viewModel.shared.Logout()
                     lifecycleScope.launchWhenCreated {
-                        methodRepo.dataStore.logOut()
+                        cartViewModel.methodRepo.dataStore.logOut()
                         startActivity(
                             Intent(
                                 this@ProductDetailsActivity,

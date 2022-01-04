@@ -18,10 +18,48 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/aboutUsText"
+            android:id="@+id/myAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            app:cardCornerRadius="6dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp">
+
+                <ImageView
+                    android:id="@+id/myAddress_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/notification_item_grey_bg"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/address_icon"
+                    app:tint="@color/text_color"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/myAddress_icon"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="@dimen/_8sdp"
+                    android:text="My Addresses"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_12ssp"
+                    app:drawableRightCompat="@drawable/next" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+  <androidx.cardview.widget.CardView
+            android:id="@+id/aboutUsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_2sdp"
             app:cardCornerRadius="6dp">
 

@@ -71,4 +71,17 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
         }
     }
 
+    fun resendOtp(email: String){
+        val body=ForgetPasswordParams(email)
+        viewModelScope.launch(dispatcherProvider.IO){
+            loginResponseLive.value=ResponseLoginSealed.loading(true)
+            when(val response=apiRepo.resendOtp(body)){
+                is RetrofitResource.Error -> loginResponseLive.value =
+                    ResponseLoginSealed.ErrorOnResponse(response.message)
+                is RetrofitResource.Success -> loginResponseLive.value =
+                    ResponseLoginSealed.Success(response.data!!.message)
+            }
+        }
+    }
+
 }

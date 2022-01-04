@@ -1,6 +1,7 @@
 package com.octal.actorpay
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -20,6 +21,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.ui.adapter.FeaturesAdapter
 import com.octal.actorpay.ui.adapter.MenuAdapter
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
+import com.octal.actorpay.ui.cart.CartActivity
 import com.octal.actorpay.ui.cart.CartViewModel
 import com.octal.actorpay.ui.dashboard.`interface`.ItemListenr
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.HistoryBottomFragment
@@ -31,9 +33,11 @@ import com.octal.actorpay.ui.misc.ChangePasswordDialog
 import com.octal.actorpay.ui.misc.MiscFragment
 import com.octal.actorpay.ui.myOrderList.MyOrdersListFragment
 import com.octal.actorpay.ui.productList.ProductsListFragment
+import com.octal.actorpay.ui.promocodes.PromoListFragment
 import com.octal.actorpay.ui.refer_and_earn.ReferAndEarnFragment
 import com.octal.actorpay.ui.remittance.RemittanceFragment
 import com.octal.actorpay.ui.rewards_points.RewardsPointsFragment
+import com.octal.actorpay.utils.OnFilterClick
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -53,8 +57,8 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     var navController: NavController? = null
     private lateinit var activity: Context
     private val viewModel: ActorPayViewModel by inject()
-    private var fragment: Fragment? = null
     private val cartViewModel: CartViewModel by inject()
+    private lateinit var filterClick:OnFilterClick
 //    private val cartViewModel by sharedViewModel<CartViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -300,6 +304,12 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         setSupportActionBar(mViewHolder?.mToolbar)
         mViewHolder?.mToolbar?.setTitleTextColor(ContextCompat.getColor(this,R.color.white))
 
+        binding.cart.setOnClickListener {
+            startActivity(Intent(this,CartActivity::class.java))
+        }
+        binding.filter.setOnClickListener {
+            filterClick.onClick()
+        }
     }
 
 
@@ -362,6 +372,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                         addToBackStack = true,
                         WalletBottomFragment.toString()
                     )
+                    binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.wallet_fragment)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 //  Navigation.findNavController(binding.root).navigate(R.id.walletFragment)
@@ -402,6 +413,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                         addToBackStack = true,
                         WalletBottomFragment.toString()
                     )
+                    binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.wallet_fragment)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 // NavController().navigateWithId(R.id.walletFragment, findNavController())
@@ -414,6 +426,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                         addToBackStack = true,
                         ProfileBottomFragment.toString()
                     )
+                    binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.profile_fragment)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
             }
@@ -421,17 +434,17 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                 changePasswordUi()
             }
             7 -> {
-                if (getCurrentFragment() !is ProductsListFragment) {
-                    title = "Products"
+                if (getCurrentFragment() !is PromoListFragment) {
+                    title = "Promos"
                     startFragment(
-                        ProductsListFragment.newInstance(),
+                        PromoListFragment.newInstance(),
                         addToBackStack = true,
-                        ProductsListFragment.toString()
+                        PromoListFragment.toString()
                     )
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                /* Navigation.findNavController(binding.root).navigate(R.id.productListFragment)
-                binding.layoutMainID.rvItemsID.visibility = View.GONE*/
+                binding.findNavController.rvItemsID.visibility = View.GONE*/
             }
             8 -> {
                 if (getCurrentFragment() !is RemittanceFragment) {
@@ -622,6 +635,37 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         }else   if (getCurrentFragment() is MiscFragment) {
             title = "More"
         }
+    }
+
+    fun showHideBottomNav(showHide:Boolean){
+        if(showHide) {
+            binding.layoutMainID.bottomNavigation.visibility = View.VISIBLE
+            binding.layoutMainID.floating.visibility = View.VISIBLE
+        }
+        else {
+            binding.layoutMainID.bottomNavigation.visibility = View.GONE
+            binding.layoutMainID.floating.visibility = View.GONE
+        }
+    }
+    fun showHideCartIcon(showHide: Boolean){
+        if(showHide) {
+            binding.cart.visibility = View.VISIBLE
+        }
+        else {
+            binding.cart.visibility = View.GONE
+        }
+    }
+    fun showHideFilterIcon(showHide: Boolean){
+        if(showHide) {
+            binding.filter.visibility = View.VISIBLE
+        }
+        else {
+            binding.filter.visibility = View.GONE
+        }
+    }
+
+    fun onFilterClick(filterClick: OnFilterClick){
+        this.filterClick=filterClick
     }
 
     override fun onRestart() {

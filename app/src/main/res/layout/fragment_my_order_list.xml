@@ -19,11 +19,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/my_oders" />
+        <!--<include layout="@layout/row_single_oder" />
 
-        <include layout="@layout/my_oders" />
+        <include layout="@layout/row_single_oder" />
 
-        <include layout="@layout/my_oders" />
+        <include layout="@layout/row_single_oder" />-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_order_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
 
     </LinearLayout>
 <!--
