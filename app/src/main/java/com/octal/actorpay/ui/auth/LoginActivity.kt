@@ -6,7 +6,6 @@ import com.octal.actorpay.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.octal.actorpay.R
-import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import org.koin.android.ext.android.inject
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -35,11 +34,14 @@ import org.json.JSONException
 
 import android.util.Log
 import androidx.viewpager.widget.ViewPager
+import com.octal.actorpay.base.BaseCommonActivity
+import com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryResponse
+import com.octal.actorpay.utils.GlobalData
 
 import java.lang.Exception
 
 
-class LoginActivity : BaseActivity() {
+class LoginActivity : BaseCommonActivity() {
     private lateinit var binding: FragmentLoginBinding
     private val loginViewModel: LoginViewModel by  inject()
     private lateinit var mGoogleSignInClient:GoogleSignInClient
@@ -49,6 +51,7 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         //Data binding here
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_login)
+//        loginViewModel.getAllCountries()
     }
     override fun onResume() {
         super.onResume()
@@ -143,6 +146,10 @@ class LoginActivity : BaseActivity() {
                                 delay(1000)
                                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                 finishAffinity()
+                            }
+                            is CountryResponse->{
+                                    GlobalData.allCountries.clear()
+                                    GlobalData.allCountries.addAll(event.response.data)
                             }
                             is String -> {
                                 loginViewModel.methodRepo.hideLoadingDialog()

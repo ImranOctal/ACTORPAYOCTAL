@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.octal.actorpay.database.datastore.PreferenceKeys.IS_APP_INTRO
 import com.octal.actorpay.database.datastore.PreferenceKeys.IS_APP_LOGGED_IN
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -68,6 +69,11 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
         context.dataStore.edit { mutablePreferences: MutablePreferences -> mutablePreferences.set(IS_APP_LOGGED_IN,value) }
     }
 
+    override suspend fun setIsIntro(value: Boolean) {
+        context.dataStore.edit { mutablePreferences: MutablePreferences -> mutablePreferences.set(
+            IS_APP_INTRO,value) }
+    }
+
     override suspend fun setAccessToken(value: String) {
 
         context.dataStore.edit { preferences -> preferences.set(PreferenceKeys.ACCESS_TOKEN,value) }
@@ -84,6 +90,10 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
 
     override fun isLoggedIn(): Flow<Boolean> {
         return getBooleanData(IS_APP_LOGGED_IN)
+    }
+
+    override fun isIntro(): Flow<Boolean> {
+        return getBooleanData(IS_APP_INTRO)
     }
 
     override fun getString() : Flow<String> {

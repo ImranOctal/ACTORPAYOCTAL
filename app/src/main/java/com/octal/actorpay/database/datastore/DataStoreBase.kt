@@ -27,6 +27,8 @@ interface DataStoreBase {
 
     suspend fun setIsLoggedIn(value:Boolean)
 
+    suspend fun setIsIntro(value:Boolean)
+
     suspend fun setAccessToken(value:String)
 
     suspend fun setRefreshToken(value:String)
@@ -34,6 +36,8 @@ interface DataStoreBase {
     fun getBoolean(): Flow<Boolean>
 
     fun isLoggedIn(): Flow<Boolean>
+
+    fun isIntro(): Flow<Boolean>
 
     fun getString(): Flow<String>
 

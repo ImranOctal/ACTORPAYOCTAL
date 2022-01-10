@@ -168,4 +168,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
+    implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.1"
+
+
 }

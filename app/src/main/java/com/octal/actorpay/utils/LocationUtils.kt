@@ -25,13 +25,13 @@ import java.lang.Exception
 import java.util.*
 
 
-class LocationUtils(private var pActivity: Context, val isFromService: Boolean,val result:(LatLng)->Unit) :
+class LocationUtils(private var pActivity: Activity, val isFromService: Boolean,val result:(LatLng)->Unit) :
     LocationListener {
 
     private lateinit var mLocation: Location
     private var mLocationManager: LocationManager? = null
 
-    lateinit var mLocationSettingsRequest: LocationSettingsRequest
+    private var mLocationSettingsRequest: LocationSettingsRequest?=null
 
     //  private var mLocationRequest: LocationRequest? = null
     private val sUINTERVAL = (2 * 1000).toLong()  /* 10 secs */
@@ -86,7 +86,7 @@ class LocationUtils(private var pActivity: Context, val isFromService: Boolean,v
             Looper.getMainLooper()
         )
 
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+        /*fusedLocationProviderClient.lastLocation.addOnSuccessListener {
             OnSuccessListener<Location> { location ->
                 if (location != null) {
                     mLocation = location
@@ -95,7 +95,7 @@ class LocationUtils(private var pActivity: Context, val isFromService: Boolean,v
             }
         }.addOnFailureListener {
             Log.d("sdsd", it.message!!)
-        }
+        }*/
     }
 
     fun stopLocation(){
@@ -117,7 +117,7 @@ class LocationUtils(private var pActivity: Context, val isFromService: Boolean,v
         locationManager = pActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER).not()) {
             mSettingsClient
-                .checkLocationSettings(mLocationSettingsRequest)
+                .checkLocationSettings(mLocationSettingsRequest!!)
                 .addOnSuccessListener(pActivity as Activity,
                     object : OnSuccessListener<LocationSettingsResponse> {
                         override fun onSuccess(locationSettingsResponse: LocationSettingsResponse) {
@@ -133,7 +133,7 @@ class LocationUtils(private var pActivity: Context, val isFromService: Boolean,v
                                     // Show the dialog by calling startResolutionForResult(), and check the
                                     // result in onActivityResult().
                                     val rae: ResolvableApiException = e as ResolvableApiException
-                                    rae.startResolutionForResult(pActivity as MainActivity, 1);
+                                    rae.startResolutionForResult(pActivity, 1);
                                 } catch (sie: IntentSender.SendIntentException) {
                                     Log.d("DFSf", "Dfasdf")
 

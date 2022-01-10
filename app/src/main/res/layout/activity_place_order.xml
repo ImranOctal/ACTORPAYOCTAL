@@ -5,11 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+
+
+
 <androidx.constraintlayout.widget.ConstraintLayout
    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
+    android:background="@color/white"
     tools:context=".ui.myOrderList.placeorder.PlaceOrderActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@color/primary"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
@@ -47,27 +57,69 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/shipping_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/layout_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        >
 
         <TextView
             android:id="@+id/shipping_address_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="Shippping Address"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:fontFamily="@font/poppins_light"
+            android:text="DELIVERY ADDRESS"
             android:textColor="@color/text_color"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_13ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/address_recyclerview_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintHeight_max="@dimen/_200sdp"
+            app:layout_constraintTop_toBottomOf="@+id/shipping_address_text"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            >
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/address_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/row_checkout_address"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/add_new_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/address_recyclerview_layout"
+            android:background="@drawable/orderstatus_bg"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_8sdp"
+            android:text="ADD NEW ADDRESS"
+            android:textColor="@color/primary"
+            android:fontFamily="@font/poppins_medium"
+
+
+            />
+
+
+      <!--  <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/address_line_1"
             style="@style/RegularTextView"
             android:layout_width="match_parent"
@@ -203,22 +255,204 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/address_primary_contact" />
+            app:layout_constraintTop_toBottomOf="@+id/address_primary_contact" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/totalLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/checkout"
+            android:background="@color/white"
+            android:padding="@dimen/_10sdp"
+            >
+
+            <TextView
+                android:id="@+id/sub_total_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14ssp"
+                tools:ignore="RtlSymmetry"
+                android:text="@string/sub_total" />
+
+
+            <TextView
+                android:id="@+id/sub_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/sub_total_text"
+                app:layout_constraintBottom_toBottomOf="@+id/sub_total_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/poppins_medium"
+                tools:text="@string/dummy_actual_amount"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:id="@+id/shipping_charge_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sub_total_text"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14ssp"
+                tools:ignore="RtlSymmetry"
+                android:visibility="gone"
+                android:text="@string/shipping_charge" />
+
+
+            <TextView
+                android:id="@+id/shipping_charge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/shipping_charge_text"
+                app:layout_constraintBottom_toBottomOf="@+id/shipping_charge_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/poppins_medium"
+                tools:text="@string/dummy_actual_amount"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/_12ssp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/gst_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shipping_charge_text"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14ssp"
+                tools:ignore="RtlSymmetry"
+                android:text="@string/gst" />
+
+
+            <TextView
+                android:id="@+id/gst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/gst_text"
+                app:layout_constraintBottom_toBottomOf="@+id/gst_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/poppins_medium"
+                tools:text="@string/dummy_actual_amount"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/_12ssp" />
+
+            <View
+                android:id="@+id/total_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/very_light_grey"
+                app:layout_constraintTop_toBottomOf="@id/gst_text"
+                android:layout_marginTop="@dimen/_5sdp"
+                />
+
+            <TextView
+                android:id="@+id/total_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/total_view"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14ssp"
+                tools:ignore="RtlSymmetry"
+                android:text="@string/total" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/total_text"
+                app:layout_constraintBottom_toBottomOf="@+id/total_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/poppins_medium"
+                tools:text="@string/dummy_actual_amount"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/_12ssp" />
+
+
+            <View
+                android:id="@+id/total_view2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/very_light_grey"
+                app:layout_constraintTop_toBottomOf="@id/total"
+                android:layout_marginTop="@dimen/_5sdp"
+                />
+
+            <RelativeLayout
+                android:id="@+id/promo_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/total_view2"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/btn_outline_gray"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                >
+
+                <EditText
+                    android:id="@+id/promo_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/apply"
+                    android:gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:hint="@string/enter_promo_code"
+                    android:textColor="@color/text_color"
+                    android:inputType="textEmailAddress"
+                    android:textSize="@dimen/_12ssp"
+                    android:autofillHints="emailAddress" />
+
+
+                <TextView
+                    android:id="@+id/apply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="Apply"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/_12ssp" />
+
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/checkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="@dimen/_10sdp"
             android:backgroundTint="@color/pink_color"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
             android:text="@string/place_order"
             android:textSize="@dimen/_10ssp"
-            app:layout_constraintBottom_toBottomOf="parent" />
+         />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

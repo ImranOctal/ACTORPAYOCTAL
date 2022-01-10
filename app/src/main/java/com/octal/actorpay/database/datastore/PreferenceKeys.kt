@@ -18,6 +18,7 @@ object PreferenceKeys {
 
 
     val IS_APP_LOGGED_IN : Preferences.Key<Boolean> = booleanPreferencesKey("app_logged_in")
+    val IS_APP_INTRO : Preferences.Key<Boolean> = booleanPreferencesKey("app_intro")
     val FIRST_NAME : Preferences.Key<String> = stringPreferencesKey("first_name")
     val LAST_NAME : Preferences.Key<String> = stringPreferencesKey("last_name")
     val USERID : Preferences.Key<String> = stringPreferencesKey("userId")

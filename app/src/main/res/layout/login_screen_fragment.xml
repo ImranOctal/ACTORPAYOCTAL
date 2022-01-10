@@ -22,7 +22,7 @@
                 android:id="@+id/name"
                 android:background="@android:color/transparent"
                 android:paddingHorizontal="@dimen/_10sdp"
-                android:hint="@string/user_name"
+                android:hint="@string/enter_email"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/_12ssp"
                 style="@style/regular1Full"

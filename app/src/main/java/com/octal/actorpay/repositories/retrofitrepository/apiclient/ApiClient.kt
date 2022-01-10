@@ -10,11 +10,14 @@ import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.CATEG
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.CHANGE_PASSWORD
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.FORGETPASSWORD
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_ALL_CART
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_ALL_ORDERS
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_ALL_PRODUCTS
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_CONTENT
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_COUNTRIES
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_FAQ
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_PROFILE
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.LOGIN
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ORDER_STATUS
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.PLACE_ORDER
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.PROMO_LIST
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.RESEND_OTP
@@ -40,8 +43,10 @@ import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdate
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.SubCategorieResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.content.ContentResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
@@ -155,10 +160,21 @@ interface ApiClient {
         @Body placeOrderParamas: PlaceOrderParamas
     ): Response<PlaceOrderResponse>
 
-    @GET(PLACE_ORDER)
+    @POST(GET_ALL_ORDERS)
     suspend fun getAllOrders(
         @Header("Authorization") token: String,
+        @Query("pageNo") pageNo: Int,
+        @Query("pageSize") pageSize: Int,
+        @Body orderListParams: OrderListParams
     ): Response<OrderListResponse>
+
+
+    @PUT(ORDER_STATUS+"{status}")
+    suspend fun changeOrderStatus(
+        @Header("Authorization") token: String,
+        @Path("status") status: String,
+        @Query("orderNo") orderNo: String,
+    ): Response<SuccessResponse>
 
 
 
@@ -211,5 +227,10 @@ interface ApiClient {
         @Header("Authorization") token: String,
         @Body shippingDeleteParams: ShippingDeleteParams
     ): Response<SuccessResponse>
+
+
+    @GET(GET_COUNTRIES)
+    suspend fun getAllCountries(
+    ): Response<CountryResponse>
 
 }

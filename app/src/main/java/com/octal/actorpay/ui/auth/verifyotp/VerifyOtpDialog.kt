@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.databinding.DataBindingUtil
@@ -29,9 +30,11 @@ class VerifyOtpDialog() {
             val otp=binding.edtOtp.text.toString().trim()
             if(otp.length!=6)
             {
-                binding.edtOtp.error = activity.getString(R.string.invalid_otp)
+//                binding.edtOtp.error = activity.getString(R.string.invalid_otp)
+                binding.errorOnOTP.visibility= View.VISIBLE
             }
             else{
+                binding.errorOnOTP.visibility= View.GONE
                 alertDialog.dismiss()
                 onClick(otp)
             }

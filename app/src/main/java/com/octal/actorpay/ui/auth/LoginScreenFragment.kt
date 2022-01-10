@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
-import com.octal.actorpay.base.BaseActivity
+import com.octal.actorpay.base.BaseCommonActivity
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.LoginScreenFragmentBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.LoginResponses
@@ -65,7 +65,7 @@ class LoginScreenFragment : BaseFragment() {
                                 viewModel.methodRepo.dataStore.setAccessToken(event.response.data.access_token)
                                 viewModel.methodRepo.dataStore.setRefreshToken(event.response.data.refresh_token)
 
-                                (requireActivity() as BaseActivity).showCustomAlert(
+                                (requireActivity() as BaseCommonActivity).showCustomAlert(
                                     "Logged in Successfully",
                                     binding.root
                                 )
@@ -94,8 +94,8 @@ class LoginScreenFragment : BaseFragment() {
                         if (event.message!!.message.equals("Use account is not verified")) {
                             resendOtpUI()
                         } else
-                            (requireActivity() as BaseActivity).showCustomAlert(
-                                event.message!!.message,
+                            (requireActivity() as BaseCommonActivity).showCustomAlert(
+                                event.message.message,
                                 binding.root
                             )
                     }

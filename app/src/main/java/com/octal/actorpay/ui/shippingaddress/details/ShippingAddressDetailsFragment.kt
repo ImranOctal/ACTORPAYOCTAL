@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.hbb20.CountryCodePicker
 import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
+import com.octal.actorpay.app.MyApplication
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentShippingAddressBinding
@@ -50,6 +51,7 @@ class ShippingAddressDetailsFragment : BaseFragment() {
     private val binding get() = _binding!!
     private val shippingAddressViewModel: ShippingAddressDetailsViewModel by inject()
     var isSave=true
+    var isComingFirst=true
     private var mMap: GoogleMap? = null
     lateinit var mLocationUtils: LocationUtils
     var userlat = 0.0
@@ -75,8 +77,7 @@ class ShippingAddressDetailsFragment : BaseFragment() {
         showHideFilterIcon(false)
         apiResponse()
 
-//        val mapFragment = childFragmentManager.findFragmentById(R.id.map_map) as SupportMapFragment?
-//        mapFragment?.getMapAsync(callback)
+
 
         if(shippingAddressItem!=null){
             isSave=false
@@ -99,6 +100,48 @@ class ShippingAddressDetailsFragment : BaseFragment() {
             }
             binding.addressSecondaryContact.setText(shippingAddressItem!!.secondaryContactNumber)
         }
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_map) as SupportMapFragment?
+        mapFragment?.getMapAsync(callback)
+
+        mLocationUtils = LocationUtils(requireActivity(), false)
+        {
+            if(isSave) {
+                userlat = it.latitude
+                userlong = it.longitude
+            }
+            else{
+                try {
+                    userlat= shippingAddressItem!!.latitude.toDouble()
+                    userlong= shippingAddressItem!!.longitude.toDouble()
+                }
+                catch (e:Exception){
+                    userlat = 0.0
+                    userlong = 0.0
+                }
+
+            }
+
+            val cameraPosition = CameraPosition.Builder()
+                .target(
+                    LatLng(
+                        userlat,
+                        userlong
+                    )
+                ) // Sets the center of the map to Mountain View
+                .zoom(17f) // Sets the zoom // Sets the orientation of the camera to east // Sets the tilt of the camera to 30 degrees
+                .bearing(30f)
+                .tilt(45f)
+                .build() // Creates a CameraPosition from the builder
+
+            mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+
+            getAddress(userlat,userlong)
+
+
+
+        }
+        mLocationUtils.initConnection()
 
         binding.ccp.setOnCountryChangeListener {
             binding.ccp2.setCountryForPhoneCode(binding.ccp.selectedCountryCode.toInt())
@@ -151,6 +194,14 @@ class ShippingAddressDetailsFragment : BaseFragment() {
             }
             if(s_contact.length<5){
                 binding.addressSecondaryContact.error="Please Enter Valid Contact"
+                isValid=false
+            }
+            if(title.length<3){
+                binding.addressTitle.error="Please Enter Valid Address Type"
+                isValid=false
+            }
+            if(area.length<3){
+                binding.addressArea.error="Please Enter Valid Address Area"
                 isValid=false
             }
             if(isValid){
@@ -230,24 +281,16 @@ class ShippingAddressDetailsFragment : BaseFragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 permReqLuncher.launch(
                     arrayOf(
                         Manifest.permission.ACCESS_FINE_LOCATION,
                     )
                 )
-            }
-            else{
-                permReqLuncher.launch(
-                    arrayOf(
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    )
-                )
-            }
+
             return false
         } else {
-            val mapFragment = childFragmentManager.findFragmentById(R.id.map_map) as SupportMapFragment?
-            mapFragment?.getMapAsync(callback)
+//            val mapFragment = childFragmentManager.findFragmentById(R.id.map_map) as SupportMapFragment?
+//            mapFragment?.getMapAsync(callback)
             /*val mLocationUtils = LocationUtils(requireActivity(), false)
             {
             }
@@ -267,9 +310,8 @@ class ShippingAddressDetailsFragment : BaseFragment() {
             }
 
             if (count == totalCount) {
-                showCustomToast("Permission Granted")
-                val mapFragment = childFragmentManager.findFragmentById(R.id.map_map) as SupportMapFragment?
-                mapFragment?.getMapAsync(callback)
+//                showCustomToast("Permission Granted")
+                mLocationUtils.initConnection()
             }
             else {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(
@@ -303,12 +345,19 @@ class ShippingAddressDetailsFragment : BaseFragment() {
 
                 mMap!!.setOnCameraIdleListener {
                     mMap!!.projection.visibleRegion.latLngBounds.center.let {
-
-                        userlat = it.latitude
-                        userlong = it.longitude
-                        //mAddAddressViewModel?.cancelApi()
-                        //mAddAddressViewModel?.getAddressFromLatLng(latitude, longitude)
-                        getAddress(userlat,userlong)
+                            if(!isComingFirst) {
+                                userlat = it.latitude
+                                userlong = it.longitude
+                                getAddress(userlat, userlong)
+                            }
+                        else if(isSave){
+                                userlat = it.latitude
+                                userlong = it.longitude
+                                getAddress(userlat, userlong)
+                        } else
+                        {
+                            isComingFirst=false
+                            }
                         //AppLogger.w("Latitude is : $latitude Longitude is$longitude")
 
                     }
@@ -316,47 +365,39 @@ class ShippingAddressDetailsFragment : BaseFragment() {
 
             }
 
+        if(!isSave) {
 
-
-
-            mLocationUtils = LocationUtils(requireActivity(), false)
-            {
-                if(isSave) {
-                    userlat = it.latitude
-                    userlong = it.longitude
-                }
-                else{
-                    try {
-                        userlat= shippingAddressItem!!.latitude.toDouble()
-                        userlong= shippingAddressItem!!.longitude.toDouble()
-                    }
-                    catch (e:Exception){
-                        userlat = 0.0
-                        userlong = 0.0
-                    }
-
-                }
-
-                    val cameraPosition = CameraPosition.Builder()
-                        .target(
-                            LatLng(
-                                userlat,
-                                userlong
-                            )
-                        ) // Sets the center of the map to Mountain View
-                        .zoom(17f) // Sets the zoom // Sets the orientation of the camera to east // Sets the tilt of the camera to 30 degrees
-                        .bearing(30f)
-                        .tilt(45f)
-                        .build() // Creates a CameraPosition from the builder
-
-                    mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-
-                    getAddress(userlat,userlong)
-
-
-
+            try {
+                userlat= shippingAddressItem!!.latitude.toDouble()
+                userlong= shippingAddressItem!!.longitude.toDouble()
             }
-            mLocationUtils.initConnection()
+            catch (e:Exception){
+                userlat = 0.0
+                userlong = 0.0
+            }
+
+
+
+        val cameraPosition = CameraPosition.Builder()
+            .target(
+                LatLng(
+                    userlat,
+                    userlong
+                )
+            ) // Sets the center of the map to Mountain View
+            .zoom(17f) // Sets the zoom // Sets the orientation of the camera to east // Sets the tilt of the camera to 30 degrees
+            .bearing(30f)
+            .tilt(45f)
+            .build() // Creates a CameraPosition from the builder
+
+        mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+
+//        getAddress(userlat,userlong)
+        }
+
+
+
+
 //                setMarkerMap(userlat, userlong,destLat,destLong)
         }
 
@@ -368,7 +409,7 @@ class ShippingAddressDetailsFragment : BaseFragment() {
     fun getAddress(lat: Double, lng: Double) {
 
 
-        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+        val geocoder = Geocoder(MyApplication.application, Locale.getDefault())
 
         val    // TODO: 11/1/20 find address
                 addresses =

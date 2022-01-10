@@ -54,7 +54,7 @@ class ShippingListAdapter(
             binding.shippingItem = item
 
 //            binding.selectRadio.isChecked=item.isSelect
-            binding.options.setOnClickListener {
+            /*binding.options.setOnClickListener {
                 val popupMenu=PopupMenu(binding.root.context,binding.options)
                 popupMenu.menu.add("Edit")
                 popupMenu.menu.add("Delete")
@@ -70,6 +70,18 @@ class ShippingListAdapter(
                     }
                 })
                 popupMenu.show()
+            }*/
+            binding.delete.setOnClickListener {
+                onClick(adapterPosition,"Delete")
+            }
+            binding.deleteIcon.setOnClickListener {
+                onClick(adapterPosition,"Delete")
+            }
+            binding.edit.setOnClickListener {
+                onClick(adapterPosition,"Edit")
+            }
+            binding.editIcon.setOnClickListener {
+                onClick(adapterPosition,"Edit")
             }
 
          /*   Glide.with(binding.root)

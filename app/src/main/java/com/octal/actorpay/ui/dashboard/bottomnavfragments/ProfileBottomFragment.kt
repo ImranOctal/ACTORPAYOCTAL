@@ -17,7 +17,6 @@ import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponseData
 import com.octal.actorpay.ui.auth.verifyotp.VerifyOtpDialog
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
-import com.octal.actorpay.ui.shippingaddress.ShippingAddressFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -69,9 +68,6 @@ class ProfileBottomFragment : BaseFragment() {
             }*/
             verifyMobile.setOnClickListener {
                 profileViewModel.sendOtp()
-            }
-            address.setOnClickListener {
-                startFragment(ShippingAddressFragment.newInstance(),true,ShippingAddressFragment.toString())
             }
         }
     }
@@ -193,9 +189,15 @@ class ProfileBottomFragment : BaseFragment() {
     fun handleProfileResponse(profileReesponse: ProfileResponseData){
         binding.firstName.setText("${profileReesponse.firstName} ${profileReesponse.lastName}")
         binding.editEmail.setText(profileReesponse.email)
-        binding.mobNumber.setText(profileReesponse.contactNumber)
+        binding.mobNumber.setText(profileReesponse.extensionNumber+" "+profileReesponse.contactNumber)
+        binding.gender.setText(profileReesponse.gender)
+        binding.dob.setText(profileReesponse.dateOfBirth)
+        binding.editAdhar.setText(profileReesponse.aadharNumber)
+        binding.editPAN.setText(profileReesponse.panNumber)
 
-        binding.mobileUpdate.visibility=View.VISIBLE
+
+
+        binding.mobileUpdate.visibility=View.GONE
 
         if(profileReesponse.phoneVerified){
             binding.verifyMobile.visibility=View.GONE

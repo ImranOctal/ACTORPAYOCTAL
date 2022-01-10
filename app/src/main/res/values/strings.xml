@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">ActorPayApp</string>
     <string name="facebook_app_id">473779207383239</string>
-    <string name="google_map_key">AIzaSyCZGIE2o472ZoYOlLZk6rdPDWYtU3zoBOQ</string>
+<!--    <string name="google_map_key">AIzaSyCZGIE2o472ZoYOlLZk6rdPDWYtU3zoBOQ</string>-->
+    <string name="google_map_key">AIzaSyDF9E6078CB2YHeX3Qc6c4xOTkkQoT7KCY</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -9,12 +10,12 @@
     <string name="account_balance">Account Balance</string>
     <string name="wallet_to_wallet">Wallet To Wallet</string>
     <string name="wallet_to_bank">Wallet To Bank</string>
-    <string name="enter_mobile_no_or_email">Enter Mobile No. Or Email</string>
-    <string name="mobile_not_start_with_0">Mobile No. should not start with 0</string>
+    <string name="enter_mobile_no_or_email">Enter mobile no. or email</string>
+    <string name="mobile_not_start_with_0">Mobile no. should not start with 0</string>
     <string name="misc">Misc.</string>
     <string name="there_are_many_variations">There are many variations</string>
-    <string name="dummy_cancel_amount">\u00241500</string>
-    <string name="dummy_actual_amount">\u00241700</string>
+    <string name="dummy_cancel_amount">₹1500</string>
+    <string name="dummy_actual_amount">₹1700</string>
     <string name="dummy_text">An Order ID in this unique number associated with every our secure checkout</string>
     <string name="buy_now">BUY NOW</string>
     <string name="add_to_cart">ADD TO CART</string>
@@ -70,17 +71,17 @@
     <string name="error_on_fetching_loginDetails">Error on Login Detail Please try again !!</string>
     <string name="please_try_after_sometime">Something went Wrong</string>
 
-    <string name="email_empty">Oops! Your Email is Empty</string>
-    <string name="invalid_email">Oops! Your Email is Invalid</string>
-    <string name="invalid_otp">Oops! Your Otp is Invalid</string>
-    <string name="oops_your_password_is_empty">Oops! Your Password is Empty</string>
-    <string name="oops_your_email_is_not_correct_or_empty">Oops! Your Email Is Not Correct or Empty</string>
+    <string name="email_empty">Oops! your Email is empty</string>
+    <string name="invalid_email">Oops! your Email is invalid</string>
+    <string name="invalid_otp">Oops! Your OTP is invalid</string>
+    <string name="oops_your_password_is_empty">Oops! your password is empty</string>
+    <string name="oops_your_email_is_not_correct_or_empty">Oops! your email is not correct or empty</string>
     <string name="oops_your_password_is_not_valid">Password should contain min of 8 characters</string>
-    <string name="oops_your_password_is_not_valid2">Password should contains one digit,one lowercase,one uppercase and one sysmbol</string>
-    <string name="oops_your_password_is_not_matched">Password and Confirm Password not Match</string>
-    <string name="error_phone">Oops! Your Phone is Not Corret or Empty</string>
-    <string name="error_name">Oops! Your Name\'s Length is less than 3</string>
-    <string name="error_l_name">Oops! Your Last Name\'s Length is less than 3</string>
+    <string name="oops_your_password_is_not_valid2">Password should contains one digit,one lowercase,one uppercase and one symbol</string>
+    <string name="oops_your_password_is_not_matched">Password and confirm password not match</string>
+    <string name="error_phone">Oops! your phone is not correct or empty</string>
+    <string name="error_name">Oops! your name\'s length is less than 3</string>
+    <string name="error_l_name">Oops! your last name\'s length is less than 3</string>
     <string name="forget_password">Forget Password?</string>
     <string name="forget_password1">Forget Password</string>
     <string name="cancel">Cancel</string>
@@ -91,9 +92,9 @@
     <string name="email_address">Email Address</string>
     <string name="password">Password</string>
     <string name="terms_of_use_and_privacy_policy">By signing up you are agreeing to our Terms of Use and Privacy Policy</string>
-    <string name="enter_your_current_password">Enter Your Current Password</string>
-    <string name="enter_your_new_password">Enter Your New Password</string>
-    <string name="confirm_your_new_password">Confirm Your New Password</string>
+    <string name="enter_your_current_password">Enter your current Password</string>
+    <string name="enter_your_new_password">Enter your new password</string>
+    <string name="confirm_your_new_password">Confirm your new password</string>
     <string name="save">save</string>
     <string name="hint_balance">₹ 10,000</string>
     <string name="rs">₹</string>
@@ -117,21 +118,27 @@
     <string name="back">Back</string>
     <string name="explore_more">Explore More</string>
     <string name="verify_otp">Verify OTP</string>
-    <string name="enter_otp">Enter six digit otp</string>
-    <string name="enter_mobile_number">Enter Mobile number</string>
-    <string name="chnage_mobile_number">Change Mobile Number</string>
-    <string name="add_mobile_number">Add Mobile Number</string>
-    <string name="please_select_gender">Please Select Gender</string>
-    <string name="please_valid_pan">Please Valid PAN</string>
-    <string name="enter_valid_adhar">Enter Valid Adhar</string>
-    <string name="plase_select_dob">Plase Select DOB</string>
+    <string name="enter_otp">Enter six digit OTP</string>
+    <string name="enter_mobile_number">Enter mobile number</string>
+    <string name="chnage_mobile_number">Change mobile Number</string>
+    <string name="add_mobile_number">Add mobile number</string>
+    <string name="please_select_gender">Please select gender</string>
+    <string name="please_valid_pan">Please enter valid PAN no</string>
+    <string name="enter_valid_adhar">please enter valid Adhar no</string>
+    <string name="plase_select_dob">Please select DOB</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="update">Update</string>
 
     <string-array name="gender_array">
-        <item>Select Gender</item>
         <item>Male</item>
         <item>Female</item>
+    </string-array>
+    <string-array name="status_array">
+        <item>Select Status</item>
+        <item>SUCCESS</item>
+        <item>CANCELLED</item>
+        <item>PENDING</item>
+        <item>FAILURE</item>
     </string-array>
     <string name="title_activity_maps">MapsActivity</string>
 

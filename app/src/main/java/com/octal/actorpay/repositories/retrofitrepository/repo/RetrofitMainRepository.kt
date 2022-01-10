@@ -24,8 +24,10 @@ import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdate
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.SubCategorieResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.content.ContentResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
@@ -528,10 +530,36 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
         }
     }
 
-    override suspend fun getAllOrders(token: String): RetrofitResource<OrderListResponse> {
+    override suspend fun getAllOrders(token: String,pageNo:Int,pageSize:Int,orderListParams: OrderListParams): RetrofitResource<OrderListResponse> {
 
         try {
-            val data = apiClient.getAllOrders(B_Token + token)
+            val data = apiClient.getAllOrders(B_Token + token,pageNo, pageSize, orderListParams)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+    override suspend fun changeOrderStatus(token: String,status:String,orderNo:String): RetrofitResource<SuccessResponse> {
+
+        try {
+            val data = apiClient.changeOrderStatus(B_Token + token,status,orderNo)
             val result = data.body()
             if (data.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)
@@ -753,6 +781,32 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
     override suspend fun deleteAddress(token:String,shippingDeleteParams: ShippingDeleteParams): RetrofitResource<SuccessResponse> {
         try {
             val data = apiClient.deleteAddress(B_Token +token,shippingDeleteParams)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
+    override suspend fun getAllCountries(): RetrofitResource<CountryResponse> {
+        try {
+            val data = apiClient.getAllCountries()
             val result = data.body()
             if (data.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)

@@ -8,6 +8,7 @@ class AppConstance {
         const val SUB_DOMAIN3: String = "users/"
         const val SUB_DOMAIN_FORGET: String = "forget/"
         const val SUB_DOMAIN_CMS: String = "cms-service/"
+        const val SUB_DOMAIN_GLOBAL: String = "global-service/"
         const val BY:String="by/"
         const val ID:String="id/"
         const val B_Token:String="Bearer "
@@ -41,6 +42,8 @@ class AppConstance {
 
 
         const val PLACE_ORDER: String = SUB_DOMAIN+ SUB_DOMAIN2+ ORDER
+        const val GET_ALL_ORDERS: String = SUB_DOMAIN+ SUB_DOMAIN2+ ORDER+"list/paged"
+        const val ORDER_STATUS: String = SUB_DOMAIN+ SUB_DOMAIN2+ ORDER+"status/"
 
 
         const val PROMO_LIST: String = SUB_DOMAIN+ SUB_DOMAIN2+ OFFER+"available"
@@ -51,6 +54,8 @@ class AppConstance {
         const val ADDRESS_ADD: String = SUB_DOMAIN+ SUB_DOMAIN2+"add/new/shipping/address"
         const val ADDRESS_UPDATE: String = SUB_DOMAIN+ SUB_DOMAIN2+"update/shipping/address"
         const val ADDRESS_DELETE: String = SUB_DOMAIN+ SUB_DOMAIN2+"delete/saved/shipping/address/ids"
+
+        const val GET_COUNTRIES: String = SUB_DOMAIN+ SUB_DOMAIN_GLOBAL+"v1/country/get/all"
     }
 }
 

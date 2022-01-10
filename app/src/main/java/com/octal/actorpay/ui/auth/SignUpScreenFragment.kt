@@ -8,11 +8,13 @@ import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.octal.actorpay.R
 import com.octal.actorpay.utils.CommonDialogsUtils
-import com.octal.actorpay.base.BaseActivity
+import com.octal.actorpay.base.BaseCommonActivity
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.SignUpScreenFragmentBinding
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
@@ -21,7 +23,9 @@ import com.octal.actorpay.ui.content.ContentActivity
 import com.octal.actorpay.ui.content.ContentViewModel
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
+import java.text.DecimalFormat
 import java.util.*
+
 
 
 class SignUpScreenFragment : BaseFragment() {
@@ -92,14 +96,34 @@ class SignUpScreenFragment : BaseFragment() {
             ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.gender_array,
-                android.R.layout.simple_spinner_item
+                android.R.layout.simple_list_item_1
             ).also {
                     adapter ->
                 // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 // Apply the adapter to the spinner
                 binding.spinnerGender.adapter = adapter
+                binding.spinnerAutocomplete.setAdapter(adapter)
             }
+            binding.spinnerGender.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+
+                    if(view!=null && position==0){
+                        (view as TextView).setTextColor(requireContext().resources.getColor(R.color.light_grey))
+                    }
+                }
+
+            }
+
+
             signupDob.setOnClickListener {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
@@ -110,7 +134,11 @@ class SignUpScreenFragment : BaseFragment() {
                 val dpd = DatePickerDialog(requireActivity(),  { view, yearR, monthOfYear, dayOfMonth ->
 
                     // Display Selected date in textbox
-                    binding.dob.setText("" + dayOfMonth + "-" + (monthOfYear+1) + "-" + yearR)
+                    val f =  DecimalFormat("00");
+                    val dayMonth=f.format(dayOfMonth)
+                     val monthYear=f.format(monthOfYear+1)
+
+                    binding.dob.setText("" + dayMonth + "-" + (monthYear) + "-" + yearR)
 
                 }, year, month, day)
                 dpd.show()
@@ -194,7 +222,7 @@ class SignUpScreenFragment : BaseFragment() {
             isValidate=false
             showCustomToast("Please agree to our terms to sign up")
         }
-        val genderPosition=binding.spinnerGender.selectedItemPosition
+       /* val genderPosition=binding.spinnerGender.selectedItemPosition
         if(genderPosition==0){
             isValidate=false
             binding.errorOnGender.visibility = View.VISIBLE
@@ -203,6 +231,15 @@ class SignUpScreenFragment : BaseFragment() {
         else{
             binding.errorOnGender.visibility = View.GONE
             signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupGender, R.drawable.btn_outline_gray)
+        }*/
+        if(binding.spinnerAutocomplete.text.toString().trim().equals("")){
+            isValidate=false
+            binding.errorOnGender.visibility = View.VISIBLE
+            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupGender2, R.drawable.btn_search_outline)
+        }
+        else{
+            binding.errorOnGender.visibility = View.GONE
+            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupGender2, R.drawable.btn_outline_gray)
         }
         if(binding.dob.text.toString().trim().equals("")){
             isValidate=false
@@ -224,7 +261,7 @@ class SignUpScreenFragment : BaseFragment() {
             signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupAdhar, R.drawable.btn_outline_gray)
         }
 
-        if(binding.pan.text.toString().trim().length<10){
+        if(!signupViewModel.methodRepo.isValidPAN(binding.pan.text.toString().trim())){
             isValidate=false
             binding.errorOnPan.visibility = View.VISIBLE
             signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPan, R.drawable.btn_search_outline)
@@ -246,7 +283,7 @@ class SignUpScreenFragment : BaseFragment() {
                 countryCode,
                 binding.editTextMobile.text.toString().trim(),
                 binding.password.text.toString(),
-                if(genderPosition==1) "Male" else "Female",
+                binding.spinnerAutocomplete.text.toString().trim(),
                 binding.dob.text.toString().trim(),
                 binding.adhar.text.toString().trim(),
                 binding.pan.text.toString().trim(),
@@ -292,7 +329,7 @@ class SignUpScreenFragment : BaseFragment() {
                     }
                     is SignupViewModel.ResponseSignupSealed.ErrorOnResponse -> {
                         signupViewModel.methodRepo.hideLoadingDialog()
-                        (requireActivity() as BaseActivity).showCustomAlert(
+                        (requireActivity() as BaseCommonActivity).showCustomAlert(
                             event.message!!.message,
                             binding.root
                         )

@@ -8,6 +8,7 @@ import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListData
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,14 +25,35 @@ class OrderViewModel(
 
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
 
-    var orderListData = OrderListData(0, 0, mutableListOf(), 1, 10)
+    var orderListData = OrderListData(0, 0, mutableListOf(), 0, 10)
+    var orderStatus=""
+    var orderListParams=OrderListParams()
 
-    fun getAllOrders() {
+    fun getAllOrders(orderListParams: OrderListParams) {
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(true)
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
-                    apiRepo.getAllOrders(token)) {
+                    apiRepo.getAllOrders(token,orderListData.pageNumber,orderListData.pageSize,
+                        orderListParams
+                    )) {
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> {
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                    }
+                }
+            }
+        }
+    }
+
+    fun changeOrderStatus(status:String,orderNo:String) {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.changeOrderStatus(token,status, orderNo)) {
                     is RetrofitResource.Error -> responseLive.value =
                         ResponseSealed.ErrorOnResponse(response.message)
                     is RetrofitResource.Success -> {

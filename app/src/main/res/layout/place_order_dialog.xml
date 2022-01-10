@@ -243,14 +243,46 @@
                 />
 
             <TextView
-                android:id="@+id/delivery_address"
-                android:layout_width="wrap_content"
+                android:id="@+id/delivery_address_address1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 app:layout_constraintTop_toBottomOf="@+id/delivery_address_text"
                 app:layout_constraintStart_toStartOf="@+id/delivery_address_text"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:text="Dummy Shipping Address"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="@{orderData.shippingAddressDTO.addressLine1}"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_semibold"
+                />
+            <TextView
+                android:id="@+id/delivery_address_address2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/delivery_address_address1"
+                app:layout_constraintStart_toStartOf="@+id/delivery_address_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="@{orderData.shippingAddressDTO.addressLine2}"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_semibold"
+                />
+            <TextView
+                android:id="@+id/delivery_address_city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@+id/delivery_address_address2"
+                app:layout_constraintStart_toStartOf="@+id/delivery_address_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text='@{orderData.shippingAddressDTO.city+", "+orderData.shippingAddressDTO.state}'
                 android:textSize="@dimen/_12ssp"
                 android:textColor="@color/text_color"
                 android:fontFamily="@font/poppins_semibold"
@@ -278,7 +310,7 @@
                 android:id="@+id/done"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/delivery_address"
+                app:layout_constraintTop_toBottomOf="@+id/delivery_address_city"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:backgroundTint="@color/pink_color"
@@ -286,6 +318,21 @@
                 android:gravity="center"
                 android:text="@string/explore_more"
                 android:textSize="@dimen/_10ssp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/delivery_address_city"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:backgroundTint="@color/pink_color"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:text="Cancel Order"
+                android:textSize="@dimen/_10ssp"
+                android:visibility="gone"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

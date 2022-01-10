@@ -6,7 +6,9 @@
     >
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    >
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -84,7 +86,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/btn_outline_gray"
             android:hint="Enter Zipcode"
-            android:inputType="text"
+            android:inputType="number"
             android:maxLength="8"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"

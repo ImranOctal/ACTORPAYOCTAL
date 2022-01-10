@@ -1,6 +1,7 @@
 package com.octal.actorpay.repositories.retrofitrepository.models.order
 
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductItem
+import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 
 
 data class PlaceOrderResponse(
@@ -30,6 +31,15 @@ data class OrderListResponse(
     var httpStatus: String
 )
 
+data class OrderListParams(
+    var totalPrice:Double?=null,
+    var merchantId:String?=null,
+    var startDate:String?=null,
+    var endDate:String?=null,
+    var orderNo:String?=null,
+    var orderStatus:String?=null,
+)
+
 data class OrderListData (
     var totalPages : Int,
     var totalItems : Int,
@@ -53,7 +63,8 @@ data class OrderData(
     var orderStatus: String,
     var orderItemDtos: ArrayList<OrderItemDtos>,
     var createdAt: String,
-    var totalTaxableValue: Double
+    var totalTaxableValue: Double,
+    val shippingAddressDTO:ShippingAddressItem?
 
 )
 

@@ -32,7 +32,6 @@ import com.octal.actorpay.repositories.retrofitrepository.models.categories.Cate
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductData
 import com.octal.actorpay.ui.productList.productsfilter.ProductFilterFragment
-import com.octal.actorpay.ui.shippingaddress.details.ShippingAddressDetailsFragment
 import com.octal.actorpay.utils.OnFilterClick
 
 
@@ -82,8 +81,8 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_products_list, container, false)
         showHideBottomNav(false)
-        showHideCartIcon(false)
-        showHideFilterIcon(true)
+        showHideCartIcon(true)
+        showHideFilterIcon(false)
         onFilterClick(this)
         setCategoriesAdapter()
         setAdapter()
@@ -188,7 +187,6 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                     }
                 }
             }
-
     }
 
     fun updateUI(productData: ProductData){

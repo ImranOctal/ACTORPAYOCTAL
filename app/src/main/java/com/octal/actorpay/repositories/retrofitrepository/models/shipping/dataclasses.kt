@@ -21,7 +21,7 @@ data class ShippingAddressListData(
 data class ShippingAddressItem(
 
     var addressLine1: String,
-    var addressLine2: String,
+    var addressLine2: String?,
     var zipCode: String,
     var city: String,
     var state: String,

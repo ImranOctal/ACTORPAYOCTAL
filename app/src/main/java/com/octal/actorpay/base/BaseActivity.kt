@@ -74,13 +74,14 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun logout(methodRepo: MethodsRepo){
-        CommonDialogsUtils.showCommonDialog(this,methodRepo, "Log Out ",
+        CommonDialogsUtils.showCommonDialog(this,methodRepo, "Logout ",
             "Are you sure?", true, true, true, false,
             object : CommonDialogsUtils.DialogClick {
                 override fun onClick() {
 //                    viewModel.shared.Logout()
                     lifecycleScope.launchWhenCreated {
                         methodRepo.dataStore.logOut()
+                        methodRepo.dataStore.setIsIntro(true)
                         startActivity(Intent(this@BaseActivity, LoginActivity::class.java))
                         finishAffinity()
                     }
@@ -97,6 +98,7 @@ abstract class BaseActivity : AppCompatActivity() {
 //                    viewModel.shared.Logout()
                     lifecycleScope.launchWhenCreated {
                         methodRepo.dataStore.logOut()
+                        methodRepo.dataStore.setIsIntro(true)
                         startActivity(Intent(this@BaseActivity, LoginActivity::class.java))
                         finishAffinity()
                     }

@@ -1,5 +1,9 @@
 package com.octal.actorpay.ui.splash
 
+//import android.content.pm.PackageManager
+//import android.content.pm.PackageInfo
+//import android.util.Base64
+//import android.util.Log
 import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -12,19 +16,13 @@ import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.databinding.ActivitySplashScreenBinding
 import com.octal.actorpay.ui.auth.LoginActivity
+import com.octal.actorpay.ui.intro.IntroActivity
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-
-//import android.content.pm.PackageManager
-//import android.content.pm.PackageInfo
-//import android.util.Base64
-//import android.util.Log
-import kotlinx.coroutines.flow.collect
-import android.R.id
-
 
 
 //import java.lang.Exception
@@ -48,30 +46,37 @@ class SplashActivity : BaseActivity() {
 //        printHashKey()
         lifecycleScope.launch(Dispatchers.Main) {
             delay(2000L)
-            viewModel.methodRepo.dataStore.isLoggedIn().collect { value ->
-                if (value)
-                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                else
-                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                finishAffinity()
+            viewModel.methodRepo.dataStore.isIntro().collect { isIntro ->
+                if (isIntro) {
+                    viewModel.methodRepo.dataStore.isLoggedIn().collect { value ->
+                        if (value)
+                            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        else
+                            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                        finishAffinity()
+                    }
+                } else {
+                    startActivity(Intent(this@SplashActivity, IntroActivity::class.java))
+                    finishAffinity()
+                }
             }
 
         }
     }
- /*   fun printHashKey() {
-        try {
-            val info: PackageInfo = getPackageManager()
-                .getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES)
-            for (signature in info.signatures) {
-                val md: MessageDigest = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                val hashKey: String = String(Base64.encode(md.digest(), 0))
-                Log.i("Fb Key Hash", "printHashKey() Hash Key: $hashKey")
-            }
-        } catch (e: NoSuchAlgorithmException) {
-            Log.e("Fb Key Hash", "printHashKey()", e)
-        } catch (e: Exception) {
-            Log.e("Fb Key Hash", "printHashKey()", e)
-        }
-    }*/
+    /*   fun printHashKey() {
+           try {
+               val info: PackageInfo = getPackageManager()
+                   .getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES)
+               for (signature in info.signatures) {
+                   val md: MessageDigest = MessageDigest.getInstance("SHA")
+                   md.update(signature.toByteArray())
+                   val hashKey: String = String(Base64.encode(md.digest(), 0))
+                   Log.i("Fb Key Hash", "printHashKey() Hash Key: $hashKey")
+               }
+           } catch (e: NoSuchAlgorithmException) {
+               Log.e("Fb Key Hash", "printHashKey()", e)
+           } catch (e: Exception) {
+               Log.e("Fb Key Hash", "printHashKey()", e)
+           }
+       }*/
 }

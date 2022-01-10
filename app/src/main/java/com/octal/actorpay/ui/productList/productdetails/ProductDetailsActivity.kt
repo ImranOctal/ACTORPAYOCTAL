@@ -243,6 +243,7 @@ class ProductDetailsActivity : AppCompatActivity() {
 //                    viewModel.shared.Logout()
                     lifecycleScope.launchWhenCreated {
                         cartViewModel.methodRepo.dataStore.logOut()
+                        cartViewModel.methodRepo.dataStore.setIsIntro(true)
                         startActivity(
                             Intent(
                                 this@ProductDetailsActivity,

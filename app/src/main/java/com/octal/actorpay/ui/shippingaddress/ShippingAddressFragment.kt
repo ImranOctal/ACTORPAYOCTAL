@@ -1,12 +1,13 @@
 package com.octal.actorpay.ui.shippingaddress
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.octal.actorpay.MainActivity
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentShippingAddressBinding
@@ -14,7 +15,8 @@ import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListData
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
-import com.octal.actorpay.ui.shippingaddress.details.ShippingAddressDetailsFragment
+import com.octal.actorpay.ui.cart.CartActivity
+import com.octal.actorpay.ui.shippingaddress.details.ShippingAddressDetailsActivity
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
@@ -51,15 +53,24 @@ class ShippingAddressFragment : BaseFragment() {
         apiResponse()
 
         binding.addAddress.setOnClickListener {
-            startFragment(
-                ShippingAddressDetailsFragment.newInstance(),
-                true,
-                ShippingAddressDetailsFragment.toString())
+            /*startActivity(
+                Intent(
+                    requireContext(), ShippingAddressDetailsActivity::class.java
+                )
+            )  */
+            val intent = Intent(requireContext(), ShippingAddressDetailsActivity::class.java)
+            resultLauncher.launch(intent)
+
         }
 
 
         return binding.root
     }
+
+    private var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            shippingAddressViewModel.getAddresses()
+        }
 
     fun updateUI(addressListData: ShippingAddressListData) {
         shippingAddressViewModel.shippingAddressList.clear()
@@ -77,16 +88,18 @@ class ShippingAddressFragment : BaseFragment() {
             shippingAddressViewModel.shippingAddressList
         ) { position, action ->
             if (action.equals("Edit")) {
-                ShippingAddressDetailsFragment.shippingAddressItem =
+                ShippingAddressDetailsActivity.shippingAddressItem =
                     shippingAddressViewModel.shippingAddressList.get(position)
-                startFragment(
-                    ShippingAddressDetailsFragment.newInstance(),
-                    true,
-                    ShippingAddressDetailsFragment.toString()
-                )
-            }
-            else if(action.equals("Delete")){
-                val shippingDeleteParams=ShippingDeleteParams(mutableListOf(shippingAddressViewModel.shippingAddressList[position].id!!))
+                /*startActivity(
+                    Intent(
+                        requireContext(), ShippingAddressDetailsActivity::class.java
+                    )
+                )*/
+                val intent = Intent(requireContext(), ShippingAddressDetailsActivity::class.java)
+                resultLauncher.launch(intent)
+            } else if (action.equals("Delete")) {
+                val shippingDeleteParams =
+                    ShippingDeleteParams(mutableListOf(shippingAddressViewModel.shippingAddressList[position].id!!))
                 shippingAddressViewModel.deleteAddress(shippingDeleteParams)
             }
         }

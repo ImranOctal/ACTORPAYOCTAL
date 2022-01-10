@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <data>
+        <variable
+            name="shippingItem"
+            type="com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem" />
+    </data>
+
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/address_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/orderstatus_bg"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:layout_marginHorizontal="@dimen/_2sdp"
+        android:padding="@dimen/_10sdp"
+        >
+
+        <TextView
+            android:id="@+id/address_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/poppins_semibold"
+            android:singleLine="true"
+            android:text="@{shippingItem.name}"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_14ssp"
+            tools:ignore="RtlSymmetry"
+            tools:text="Delivery Address" />
+
+        <ImageView
+            android:id="@+id/address_delete"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/cross"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/address_edit"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/edit"
+            app:layout_constraintEnd_toStartOf="@+id/address_delete"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="@dimen/_5sdp"
+            />
+
+        <ImageView
+            android:id="@+id/address_check"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/address_tick"
+            app:layout_constraintEnd_toStartOf="@+id/address_edit"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="@dimen/_5sdp"
+            />
+
+        <TextView
+            android:id="@+id/address_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_name_text"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="2"
+            android:text='@{shippingItem.addressLine1+", "+shippingItem.addressLine2}'
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_10ssp"
+            tools:ignore="RtlSymmetry"
+            tools:text="@string/dummy_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -9,12 +9,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/_30sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/_50sdp"
+        android:scrollbars="none"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -82,7 +80,72 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:enabled="false"
-                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/gender"
+                        style="@style/RegularTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:background="@android:color/transparent"
+                        android:hint="Gender"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:enabled="false"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/dob"
+                        style="@style/RegularTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:background="@android:color/transparent"
+                        android:hint="DOB"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:enabled="false"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_12sdp" />
 
@@ -213,7 +276,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/mobNumber"
                             app:layout_constraintBottom_toBottomOf="@+id/mobNumber"
-                            android:layout_marginEnd="@dimen/_2sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
                             android:visibility="gone"
                             />
 
@@ -236,6 +299,73 @@
                     android:visibility="gone"
                     />
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/profile_pan"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editPAN"
+                        style="@style/RegularTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:background="@android:color/transparent"
+                        android:hint="Enter PAN"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:enabled="false"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/profile_aadhar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editAdhar"
+                        style="@style/RegularTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:background="@android:color/transparent"
+                        android:hint="Enter Aadhar"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:enabled="false"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                </androidx.cardview.widget.CardView>
+
 
 
 
@@ -253,20 +383,6 @@
                     />
 
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/address"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginHorizontal="@dimen/_20sdp"
-                    app:layout_constraintStart_toEndOf="@+id/buyNow"
-                    app:layout_constraintTop_toBottomOf="@+id/productDisc"
-                    android:backgroundTint="@color/blue_color"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:text="My Addresses"
-                    android:textSize="@dimen/_10ssp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -71,6 +71,11 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
         val matcher: Matcher = pattern.matcher(password)
         return matcher.matches()
     }
+    fun isValidPAN(pan:String):Boolean{
+        val pattern: Pattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+        val matcher: Matcher = pattern.matcher(pan)
+        return matcher.matches()
+    }
     fun makeTextLink(textView: TextView, str: String, underlined: Boolean, color: Int?, action: (() -> Unit)? = null) {
         val spannableString = SpannableString(textView.text)
         val textColor = color ?: textView.currentTextColor

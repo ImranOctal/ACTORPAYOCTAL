@@ -7,6 +7,8 @@ import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
+import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
+import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +23,7 @@ class PlaceOrderViewModel(val dispatcherProvider: CoroutineContextProvider,
 ) {
 
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
+    val shippingAddressList= mutableListOf<ShippingAddressItem>()
 
     fun placeOrder(placeOrderParamas: PlaceOrderParamas) {
         viewModelScope.launch(dispatcherProvider.IO) {
@@ -39,5 +42,38 @@ class PlaceOrderViewModel(val dispatcherProvider: CoroutineContextProvider,
         }
     }
 
+
+    fun getAddresses() {
+
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.getAddresses(token)) {
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> responseLive.value =
+                        ResponseSealed.Success(response.data!!)
+                }
+            }
+        }
+    }
+
+
+    fun deleteAddress(shippingDeleteParams: ShippingDeleteParams) {
+
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.deleteAddress(token,shippingDeleteParams)) {
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> responseLive.value =
+                        ResponseSealed.Success(response.data!!)
+                }
+            }
+        }
+    }
 
 }

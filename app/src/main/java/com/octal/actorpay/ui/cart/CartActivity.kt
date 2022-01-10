@@ -47,6 +47,8 @@ class CartActivity : AppCompatActivity() {
         binding.checkout.setOnClickListener {
             if(cartViewModel.cartData!=null && cartViewModel.cartData!!.totalPrice > 0.0){
                 PlaceOrderActivity.total=cartViewModel.cartData!!.totalPrice
+                PlaceOrderActivity.subTotal=cartViewModel.cartData!!.totalTaxableValue
+                PlaceOrderActivity.gst=cartViewModel.cartData!!.totalSgst+cartViewModel.cartData!!.totalCgst
                 startActivity(Intent(this, PlaceOrderActivity::class.java))
 //                cartViewModel.placeOrder()
             }
@@ -102,9 +104,16 @@ class CartActivity : AppCompatActivity() {
                             }
                             is PlaceOrderResponse->{
                                 cartViewModel.getCartItmes()
-                                PlaceOrderDialog(this@CartActivity,true,event.response.data){
-                                    startActivity(Intent(this@CartActivity,MainActivity::class.java))
-                                    finishAffinity()
+                                PlaceOrderDialog(this@CartActivity,cartViewModel.methodRepo,true,event.response.data){
+                                    if(it.equals("done")) {
+                                        startActivity(
+                                            Intent(
+                                                this@CartActivity,
+                                                MainActivity::class.java
+                                            )
+                                        )
+                                        finishAffinity()
+                                    }
                                 }.show(supportFragmentManager,"Place")
                             }
                         }
@@ -175,6 +184,7 @@ class CartActivity : AppCompatActivity() {
                 override fun onClick() {
                     lifecycleScope.launchWhenCreated {
                         methodRepo.dataStore.logOut()
+                        methodRepo.dataStore.setIsIntro(true)
                         startActivity(Intent(this@CartActivity, LoginActivity::class.java))
                         finishAffinity()
                     }

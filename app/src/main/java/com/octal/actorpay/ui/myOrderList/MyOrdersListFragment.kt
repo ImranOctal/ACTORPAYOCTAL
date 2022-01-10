@@ -12,13 +12,18 @@ import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentMyOrderListBinding
+import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListData
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
+import com.octal.actorpay.utils.OnFilterClick
+import com.techno.taskmanagement.utils.EndlessRecyclerViewScrollListener
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 
- class MyOrdersListFragment : BaseFragment() {
+ class MyOrdersListFragment : BaseFragment(), OnFilterClick {
 
      private lateinit var binding: FragmentMyOrderListBinding
      private val orderViewModel: OrderViewModel by inject()
@@ -26,7 +31,11 @@ import org.koin.android.ext.android.inject
      override fun onCreate(savedInstanceState: Bundle?) {
          super.onCreate(savedInstanceState)
          apiResponse()
-         orderViewModel.getAllOrders()
+         orderViewModel.orderListParams= OrderListParams()
+         orderViewModel.orderListData.pageNumber = 0
+         orderViewModel.orderListData.totalPages = 0
+         orderViewModel.orderListData.items.clear()
+         orderViewModel.getAllOrders(orderViewModel.orderListParams)
      }
 
      companion object {
@@ -48,16 +57,36 @@ import org.koin.android.ext.android.inject
          binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_order_list, container, false)
          showHideBottomNav(false)
          showHideCartIcon(false)
-         showHideFilterIcon(false)
+         showHideFilterIcon(true)
          setAdapter()
+         onFilterClick(this)
 
 
          return binding.root
      }
 
      private fun setAdapter(){
-         val adapter=OrderListAdapter(orderViewModel.orderListData.items,childFragmentManager)
-         binding.recyclerViewOrderList.layoutManager=LinearLayoutManager(requireContext())
+         val adapter=OrderListAdapter(requireActivity(),orderViewModel.methodRepo,orderViewModel.orderListData.items,childFragmentManager){
+             position, action ->
+             if(action.equals("cancel")){
+                 orderViewModel.orderListData.pageNumber = 0
+                 orderViewModel.orderListData.totalPages = 0
+                    orderViewModel.changeOrderStatus("CANCELLED",orderViewModel.orderListData.items[position].orderNo)
+                 orderViewModel.orderListData.items.clear()
+             }
+         }
+         val layoutManager = LinearLayoutManager(requireContext())
+         binding.recyclerViewOrderList.layoutManager=layoutManager
+         val endlessRecyclerViewScrollListener: EndlessRecyclerViewScrollListener =
+             object : EndlessRecyclerViewScrollListener(layoutManager) {
+                 override fun onLoadMore(page: Int, totalItemsCount: Int) {
+                     if (orderViewModel.orderListData.pageNumber < orderViewModel.orderListData.totalPages - 1) {
+                         orderViewModel.orderListData.pageNumber += 1
+                         orderViewModel.getAllOrders(orderViewModel.orderListParams)
+                     }
+                 }
+             }
+         binding.recyclerViewOrderList.addOnScrollListener(endlessRecyclerViewScrollListener)
          binding.recyclerViewOrderList.adapter=adapter
      }
 
@@ -74,14 +103,11 @@ import org.koin.android.ext.android.inject
                          orderViewModel.methodRepo.hideLoadingDialog()
                          when (event.response) {
                              is OrderListResponse -> {
-//                                productViewModel.productData.pageNumber=event.response.data.pageNumber
-                                 orderViewModel.orderListData.pageNumber =
-                                     event.response.data.pageNumber
-                                 orderViewModel.orderListData.totalPages =
-                                     event.response.data.totalPages
-                                 orderViewModel.orderListData.items.addAll(event.response.data.items)
-                                 setAdapter()
-//                                 adapter.notifyItemChanged(orderViewModel.orderListData.items.size - 1)
+                                 updateUI(event.response.data)
+                             }
+
+                             is SuccessResponse -> {
+                                orderViewModel.getAllOrders(orderViewModel.orderListParams)
                              }
                          }
                      }
@@ -91,6 +117,7 @@ import org.koin.android.ext.android.inject
                          }
 
                          orderViewModel.methodRepo.hideLoadingDialog()
+                         showCustomToast(event.message.message)
                      }
                      is ResponseSealed.Empty -> {
                          orderViewModel.methodRepo.hideLoadingDialog()
@@ -99,11 +126,41 @@ import org.koin.android.ext.android.inject
                  }
              }
          }
-
      }
 
+     fun updateUI(orderListData: OrderListData){
+         orderViewModel.orderListData.pageNumber =
+             orderListData.pageNumber
+         orderViewModel.orderListData.totalPages =
+             orderListData.totalPages
+         orderViewModel.orderListData.items.addAll(orderListData.items)
+         binding.recyclerViewOrderList.adapter?.notifyDataSetChanged()
+
+         if(orderViewModel.orderListData.items.size>0){
+             binding.imageEmpty.visibility=View.GONE
+             binding.textEmpty.visibility=View.GONE
+         }
+         else {
+             binding.imageEmpty.visibility=View.VISIBLE
+             binding.textEmpty.visibility=View.VISIBLE
+         }
+     }
+
+
+
+     override fun onClick() {
+         OrderFilterDialog(orderViewModel.orderListParams,requireActivity()){
+             orderViewModel.orderListParams=it
+             orderViewModel.orderListData.pageNumber = 0
+             orderViewModel.orderListData.totalPages = 0
+             orderViewModel.orderListData.items.clear()
+             orderViewModel.getAllOrders(orderViewModel.orderListParams)
+
+         }.show()
+     }
 
      override fun WorkStation() {
 
      }
+
  }
