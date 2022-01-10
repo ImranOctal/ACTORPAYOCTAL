@@ -17,6 +17,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.shipping.Shippi
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpay.ui.cart.CartActivity
 import com.octal.actorpay.ui.shippingaddress.details.ShippingAddressDetailsActivity
+import com.octal.actorpay.utils.CommonDialogsUtils
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
@@ -100,7 +101,17 @@ class ShippingAddressFragment : BaseFragment() {
             } else if (action.equals("Delete")) {
                 val shippingDeleteParams =
                     ShippingDeleteParams(mutableListOf(shippingAddressViewModel.shippingAddressList[position].id!!))
-                shippingAddressViewModel.deleteAddress(shippingDeleteParams)
+                CommonDialogsUtils.showCommonDialog(requireActivity(),shippingAddressViewModel.methodRepo,
+                "Delete Address","Are you sure?",true,true,true,false,object :CommonDialogsUtils.DialogClick{
+                        override fun onClick() {
+                            shippingAddressViewModel.deleteAddress(shippingDeleteParams)
+                        }
+
+                        override fun onCancel() {
+
+                        }
+                    })
+
             }
         }
         binding.shippingRecyclerview.layoutManager = LinearLayoutManager(requireContext())

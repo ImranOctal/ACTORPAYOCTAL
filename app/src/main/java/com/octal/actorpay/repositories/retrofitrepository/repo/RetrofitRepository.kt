@@ -40,7 +40,7 @@ interface RetrofitRepository {
     //Login Suspend Function
     suspend fun LoginNow(loginDetail: LoginParams): RetrofitResource<LoginResponses>
 
-    suspend fun SignUpNow(signupDetails:SignUpParams):RetrofitResource<SignupResponse>
+    suspend fun signUpNow(signupDetails:SignUpParams):RetrofitResource<SignupResponse>
 
     suspend fun socialLogin(signupDetails:SocialParams):RetrofitResource<LoginResponses>
 

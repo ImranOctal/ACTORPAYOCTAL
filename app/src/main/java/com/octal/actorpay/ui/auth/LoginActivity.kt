@@ -51,7 +51,7 @@ class LoginActivity : BaseCommonActivity() {
         super.onCreate(savedInstanceState)
         //Data binding here
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_login)
-//        loginViewModel.getAllCountries()
+        loginViewModel.getAllCountries()
     }
     override fun onResume() {
         super.onResume()

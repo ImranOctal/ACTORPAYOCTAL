@@ -151,45 +151,65 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
         val s_contact=binding.addressSecondaryContact.text.toString().trim()
 
         var isValid=true
-        if(name.equals("")){
-            binding.name.error="Please Enter Name"
+
+        if(s_contact.length<5){
+            binding.addressSecondaryContact.error="Please Enter Valid Contact"
             isValid=false
+            binding.addressSecondaryContact.requestFocus()
+        }
+
+        if(p_contact.length<5){
+            binding.addressPrimaryContact.error="Please Enter Valid Contact"
+            isValid=false
+            binding.addressPrimaryContact.requestFocus()
+        }
+
+
+        if(country.equals("")){
+            binding.addressCountry.error="Please Enter Country"
+            isValid=false
+            binding.addressCountry.requestFocus()
+        }
+
+        if(state.equals("")){
+            binding.addressState.error="Please Enter State"
+            isValid=false
+            binding.addressState.requestFocus()
+        }
+
+        if(city.equals("")){
+            binding.addressCity.error="Please Enter City"
+            isValid=false
+            binding.addressCity.requestFocus()
+        }
+
+        if(area.length<3){
+            binding.addressArea.error="Please Enter Valid Address Area"
+            isValid=false
+            binding.addressArea.requestFocus()
+        }
+
+
+        if(zipcode.length<6){
+            binding.addressZipcode.error="Please Enter Valid Zipcode"
+            isValid=false
+            binding.addressZipcode.requestFocus()
         }
         if(add_line_1.equals("")){
             binding.addressLine1.error="Please Enter Address Line 1"
             isValid=false
+            binding.addressLine1.requestFocus()
         }
-        if(zipcode.length<6){
-            binding.addressZipcode.error="Please Enter Valid Zipcode"
+        if(name.equals("")){
+            binding.name.error="Please Enter Name"
             isValid=false
-        }
-        if(city.equals("")){
-            binding.addressCity.error="Please Enter City"
-            isValid=false
-        }
-        if(state.equals("")){
-            binding.addressState.error="Please Enter State"
-            isValid=false
-        }
-        if(country.equals("")){
-            binding.addressCountry.error="Please Enter Country"
-            isValid=false
-        }
-        if(p_contact.length<5){
-            binding.addressPrimaryContact.error="Please Enter Valid Contact"
-            isValid=false
-        }
-        if(s_contact.length<5){
-            binding.addressSecondaryContact.error="Please Enter Valid Contact"
-            isValid=false
+            binding.name.requestFocus()
         }
         if(title.length<3){
             binding.addressTitle.error="Please Enter Valid Address Type"
             isValid=false
-        }
-        if(area.length<3){
-            binding.addressArea.error="Please Enter Valid Address Area"
-            isValid=false
+            binding.addressTitle.requestFocus()
+
         }
         if(isValid){
 //            Toast.makeText(requireContext(),"done",Toast.LENGTH_SHORT).show()

@@ -65,7 +65,7 @@ interface ApiClient {
     suspend fun LoginNow(@Body loginDetail: LoginParams): Response<LoginResponses>
 
     @POST(SIGNUP)
-    suspend fun SignUp(@Body loginDetail: SignUpParams): Response<SignupResponse>
+    suspend fun signUp(@Body loginDetail: SignUpParams): Response<SignupResponse>
 
 
     @POST(SOCIAL_LOGIN)

@@ -91,7 +91,7 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
                 is RetrofitResource.Error -> loginResponseLive.value =
                     ResponseLoginSealed.ErrorOnResponse(response.message)
                 is RetrofitResource.Success -> loginResponseLive.value =
-                    ResponseLoginSealed.Success(response.data!!.message)
+                    ResponseLoginSealed.Success(response.data!!)
             }
         }
     }

@@ -27,16 +27,29 @@
         >
 
         <TextView
-            android:id="@+id/address_name_text"
+            android:id="@+id/address_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:fontFamily="@font/poppins_semibold"
             android:singleLine="true"
-            android:text="@{shippingItem.name}"
+            android:text="@{shippingItem.title}"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_14ssp"
+            tools:ignore="RtlSymmetry"
+            tools:text="Delivery Address" />
+        <TextView
+            android:id="@+id/address_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_title_text"
+            android:fontFamily="@font/poppins_medium"
+            android:singleLine="true"
+            android:text="@{shippingItem.name}"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_12ssp"
             tools:ignore="RtlSymmetry"
             tools:text="Delivery Address" />
 
@@ -74,12 +87,12 @@
 
         <TextView
             android:id="@+id/address_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/address_name_text"
             android:fontFamily="@font/poppins_regular"
             android:maxLines="2"
+            android:ellipsize="end"
             android:text='@{shippingItem.addressLine1+", "+shippingItem.addressLine2}'
             android:textColor="@color/text_color"
             android:textSize="@dimen/_10ssp"

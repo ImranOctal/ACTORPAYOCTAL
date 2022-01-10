@@ -43,6 +43,11 @@ class ProfileBottomFragment : BaseFragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        apiResponse()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +58,6 @@ class ProfileBottomFragment : BaseFragment() {
 
         profileViewModel.getProfile()
         init()
-        apiResponse()
         return root
         // Inflate the layout for this fragment
     }
@@ -193,7 +197,6 @@ class ProfileBottomFragment : BaseFragment() {
         binding.editEmail.setText(profileReesponse.email)
         binding.mobNumber.setText(profileReesponse.extensionNumber+" "+profileReesponse.contactNumber)
         binding.gender.setText(profileReesponse.gender)
-        binding.dob.setText(profileReesponse.dateOfBirth)
         binding.editAdhar.setText(profileReesponse.aadharNumber)
         binding.editPAN.setText(profileReesponse.panNumber)
         var outputDate=profileReesponse.dateOfBirth
@@ -207,6 +210,7 @@ class ProfileBottomFragment : BaseFragment() {
 
                     }
                 }
+        binding.dob.setText(outputDate)
 
 
 

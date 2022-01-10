@@ -85,7 +85,16 @@ class PlaceOrderActivity : AppCompatActivity() {
             }
             else if(action.equals("Delete")){
                 val shippingDeleteParams= ShippingDeleteParams(mutableListOf(placeOrderViewModel.shippingAddressList[position].id!!))
-                placeOrderViewModel.deleteAddress(shippingDeleteParams)
+                CommonDialogsUtils.showCommonDialog(this,placeOrderViewModel.methodRepo,
+                    "Delete Address","Are you sure?",true,true,true,false,object :CommonDialogsUtils.DialogClick{
+                        override fun onClick() {
+                            placeOrderViewModel.deleteAddress(shippingDeleteParams)
+                        }
+                        override fun onCancel() {
+
+                        }
+                    })
+
             }
         }
         binding.addressRecyclerview.layoutManager = LinearLayoutManager(this)

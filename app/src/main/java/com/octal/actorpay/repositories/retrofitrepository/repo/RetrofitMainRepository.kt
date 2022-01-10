@@ -70,9 +70,9 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
         }
     }
 
-    override suspend fun SignUpNow(signupDetails: SignUpParams): RetrofitResource<SignupResponse> {
+    override suspend fun signUpNow(signupDetails: SignUpParams): RetrofitResource<SignupResponse> {
         try {
-            val signupData = apiClient.SignUp(signupDetails)
+            val signupData = apiClient.signUp(signupDetails)
             val result = signupData.body()
             if (signupData.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)

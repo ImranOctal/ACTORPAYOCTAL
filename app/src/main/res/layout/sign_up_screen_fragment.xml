@@ -6,6 +6,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -76,18 +77,29 @@
                             app:ccp_showNameCode="false"
                             app:ccp_showArrow="true"
                             app:ccp_textSize="@dimen/_10sdp"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/code_picker_spinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
                         <View
                             android:id="@+id/divider"
                             android:layout_width="1dp"
-                            android:layout_height="20dp"
+                            android:layout_height="match_parent"
                             android:background="?android:attr/listDivider"
-                            app:layout_constraintBottom_toBottomOf="@id/ccp"
-                            app:layout_constraintEnd_toEndOf="@id/ccp"
-                            app:layout_constraintTop_toTopOf="@id/ccp" />
+                            app:layout_constraintBottom_toBottomOf="@id/code_picker_spinner"
+                            app:layout_constraintEnd_toEndOf="@id/code_picker_spinner"
+                            app:layout_constraintTop_toTopOf="@id/code_picker_spinner" />
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextMobile"
@@ -523,7 +535,7 @@
                     android:orientation="horizontal"
                     android:layout_marginLeft="@dimen/_35sdp"
                     android:layout_marginRight="@dimen/_35sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     >
 

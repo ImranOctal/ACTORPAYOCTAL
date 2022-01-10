@@ -12,6 +12,7 @@ import android.R.attr.label
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.view.MenuItem
+import android.view.View
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
 
@@ -52,6 +53,11 @@ class ShippingListAdapter(
 
         fun bindView(item: ShippingAddressItem) {
             binding.shippingItem = item
+
+            if(item.addressLine2==null || item.addressLine2.equals("").not())
+            {
+                binding.addressLine2.visibility= View.GONE
+            }
 
 //            binding.selectRadio.isChecked=item.isSelect
             /*binding.options.setOnClickListener {

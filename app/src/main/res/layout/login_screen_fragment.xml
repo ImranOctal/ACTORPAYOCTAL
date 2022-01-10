@@ -87,7 +87,10 @@
         <TextView
             android:id="@+id/errorOnPassword"
             style="@style/errotextViewStyle"
-            android:visibility="visible" />
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonLogin"

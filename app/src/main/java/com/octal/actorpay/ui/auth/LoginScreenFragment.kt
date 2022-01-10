@@ -164,6 +164,7 @@ class LoginScreenFragment : BaseFragment() {
             binding.errorOnName.visibility = View.VISIBLE
             binding.errorOnName.text = getString(R.string.email_empty)
             binding.errorOnPassword.visibility = View.GONE
+            binding.name.requestFocus()
             loginViewModel.methodRepo.setBackGround(
                 requireContext(),
                 binding.loginEmaillay,
@@ -176,6 +177,7 @@ class LoginScreenFragment : BaseFragment() {
             binding.errorOnName.visibility = View.VISIBLE
             binding.errorOnName.text = getString(R.string.invalid_email)
             binding.errorOnPassword.visibility = View.GONE
+            binding.name.requestFocus()
             loginViewModel.methodRepo.setBackGround(
                 requireContext(),
                 binding.loginEmaillay,
@@ -185,6 +187,7 @@ class LoginScreenFragment : BaseFragment() {
             binding.errorOnPassword.visibility = View.VISIBLE
             binding.errorOnPassword.text = getString(R.string.oops_your_password_is_empty)
             binding.errorOnName.visibility = View.GONE
+            binding.password.requestFocus()
             loginViewModel.methodRepo.setBackGround(
                 requireContext(),
                 binding.loginEmaillay,
@@ -195,7 +198,24 @@ class LoginScreenFragment : BaseFragment() {
                 binding.loginPasslay,
                 R.drawable.btn_search_outline
             )
-        } else if (!binding.cbRememberMe.isChecked) {
+        }
+        else if(!loginViewModel.methodRepo.isValidPassword(binding.password.text.toString().trim())){
+            binding.errorOnPassword.visibility = View.VISIBLE
+            binding.errorOnPassword.text = getString(R.string.oops_your_password_is_not_valid2)
+            binding.errorOnName.visibility = View.GONE
+            binding.password.requestFocus()
+            loginViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.loginEmaillay,
+                R.drawable.btn_outline_gray
+            )
+            loginViewModel.methodRepo.setBackGround(
+                requireContext(),
+                binding.loginPasslay,
+                R.drawable.btn_search_outline
+            )
+        }
+        else if (!binding.cbRememberMe.isChecked) {
             binding.errorOnName.visibility = View.GONE
             binding.errorOnPassword.visibility = View.GONE
             loginViewModel.methodRepo.setBackGround(

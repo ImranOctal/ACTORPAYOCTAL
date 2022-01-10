@@ -65,9 +65,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_5sdp"
-
-
         >
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/address_title"
+            style="@style/RegularTextView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/btn_outline_gray"
+            android:hint="Enter Address Type"
+            android:maxLength="25"
+            android:inputType="text"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/name"
@@ -76,15 +91,15 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center_vertical"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/btn_outline_gray"
-            android:hint="Enter Name"
+            android:hint="Enter Address Name"
             android:maxLength="100"
             android:inputType="text"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/address_title" />
 
         <fragment
             android:id="@+id/map"
@@ -105,7 +120,6 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/btn_outline_gray"
             android:hint="Enter Address Line 1"
-            android:maxLength="100"
             android:inputType="text"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
@@ -291,22 +305,7 @@
             app:layout_constraintTop_toBottomOf="@+id/address_primary_contact" />
 
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/address_title"
-            style="@style/RegularTextView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/btn_outline_gray"
-            android:hint="Enter Address Type"
-            android:maxLength="25"
-            android:inputType="text"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/address_secondary_contact" />
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save"
@@ -320,7 +319,7 @@
             android:gravity="center"
             android:text="@string/save"
             android:textSize="@dimen/_10ssp"
-            app:layout_constraintTop_toBottomOf="@+id/address_title"
+            app:layout_constraintTop_toBottomOf="@+id/address_secondary_contact"
 
             />
 

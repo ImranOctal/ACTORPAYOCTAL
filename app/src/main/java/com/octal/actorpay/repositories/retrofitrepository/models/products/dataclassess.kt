@@ -32,6 +32,7 @@ data class ProductItem (
     val dealPrice : Double,
     val image : String,
     val merchantId : String,
+    val merchantName : String,
     val stockCount : Int,
     val taxId : String,
     val stockStatus : String,

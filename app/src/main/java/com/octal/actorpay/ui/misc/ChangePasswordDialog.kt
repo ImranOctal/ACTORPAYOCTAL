@@ -35,27 +35,34 @@ class ChangePasswordDialog {
             val confirmPassword=binding.editChangePasswordConfirm.text.toString().trim()
             if(oldPassword.isEmpty()){
                 binding.editChangePasswordOld.setError(activity.getString(R.string.oops_your_password_is_empty))
+                binding.editChangePasswordOld.requestFocus()
             }
             else if(!methodsRepo.isValidPassword(oldPassword)){
                 binding.editChangePasswordOld.setError(activity.getString(R.string.oops_your_password_is_not_valid2))
+                binding.editChangePasswordOld.requestFocus()
             }
             else if(newPassword.length<8)
             {
                 binding.editChangePasswordNew.setError(activity.getString(R.string.oops_your_password_is_not_valid))
+                binding.editChangePasswordNew.requestFocus()
             }
             else if(!methodsRepo.isValidPassword(newPassword)){
                 binding.editChangePasswordNew.setError(activity.getString(R.string.oops_your_password_is_not_valid2))
+                binding.editChangePasswordNew.requestFocus()
             }
             else if(confirmPassword.length<8)
             {
                 binding.editChangePasswordConfirm.setError(activity.getString(R.string.oops_your_password_is_not_valid))
+                binding.editChangePasswordConfirm.requestFocus()
             }
             else if(!methodsRepo.isValidPassword(confirmPassword)){
                 binding.editChangePasswordConfirm.setError(activity.getString(R.string.oops_your_password_is_not_valid2))
+                binding.editChangePasswordConfirm.requestFocus()
             }
             else if(!confirmPassword.equals(newPassword))
             {
                 binding.editChangePasswordConfirm.setError((activity.getString(R.string.oops_your_password_is_not_matched)))
+                binding.editChangePasswordConfirm.requestFocus()
             }
             else{
                 alertDialog.dismiss()
