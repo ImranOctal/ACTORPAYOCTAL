@@ -21,6 +21,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProfileBottomFragment : BaseFragment() {
     private var _binding: FragmentProfileBottomBinding? = null
@@ -194,6 +196,17 @@ class ProfileBottomFragment : BaseFragment() {
         binding.dob.setText(profileReesponse.dateOfBirth)
         binding.editAdhar.setText(profileReesponse.aadharNumber)
         binding.editPAN.setText(profileReesponse.panNumber)
+        var outputDate=profileReesponse.dateOfBirth
+                if(profileReesponse.dateOfBirth!=null && profileReesponse.dateOfBirth.equals("").not()){
+                    val parser =  SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    val formatter =  SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH);
+                    try {
+                     outputDate = formatter.format(parser.parse(profileReesponse.dateOfBirth)!!);
+                    }
+                    catch (e : Exception){
+
+                    }
+                }
 
 
 
