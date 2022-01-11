@@ -148,6 +148,11 @@ interface ApiClient {
         @Path("id") id: String
     ): Response<CartResponse>
 
+    @DELETE(AppConstance.DELETE_ALL_CART)
+    suspend fun deleteAllCart(
+        @Header("Authorization") token: String,
+    ): Response<CartResponse>
+
     @PUT(UPDATE_CART)
     suspend fun updateCart(
         @Header("Authorization") token: String,

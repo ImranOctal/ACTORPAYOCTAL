@@ -40,6 +40,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
     private val productViewModel: ProductViewModel by inject()
     private val cartViewModel: CartViewModel by inject()
     var isFromBuy=false
+    var futureAddCart=-1
 
     lateinit var adapter: ProductListAdapter
 
@@ -127,12 +128,17 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                     }
                     is ResponseSealed.Success -> {
                         binding.recyclerviewProduct.adapter?.notifyDataSetChanged()
+                        if(futureAddCart >= 0){
+                            addToCart(futureAddCart)
+                            futureAddCart=-1
+                        }
                         if(isFromBuy) {
                             isFromBuy=false
                             goToCart()
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
+                        futureAddCart=-1
                         if(isFromBuy)
                             isFromBuy=false
                         if (event.message!!.code == 403) {
@@ -225,7 +231,8 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                         val merchantId = cartViewModel.cartItems.value[0].merchantId
                         if (product.merchantId != merchantId) {
                             wantsToBuyDialog {
-//                                addToCart(position)
+                                futureAddCart=position
+                                cartViewModel.deleteAllCart()
                             }
                         } else
                             addToCart(position)
@@ -243,8 +250,10 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                          else{
                             val merchantId = cartViewModel.cartItems.value[0].merchantId
                             if (product.merchantId != merchantId) {
-                                wantsToBuyDialog {
-//                                    buyNow(position)
+                                wantsToBuyDialog{
+                                        isFromBuy=true
+                                    futureAddCart=position
+                                    cartViewModel.deleteAllCart()
                                 }
                             } else {
                                 isFromBuy=true

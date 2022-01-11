@@ -76,7 +76,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
-        android:text='@{"$"+productItem.actualPrice}'
+        android:text='@{"₹"+productItem.actualPrice}'
         android:textColor="#ed3460"
         android:textSize="@dimen/_10ssp"
         tools:text="@string/dummy_cancel_amount" />
@@ -91,7 +91,7 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:fontFamily="@font/poppins_medium"
         tools:text="@string/dummy_actual_amount"
-        android:text='@{"$"+productItem.dealPrice}'
+        android:text='@{"₹"+(productItem.dealPrice+productItem.sgst+productItem.cgst)}'
         android:textColor="@color/blue_color"
         android:textSize="@dimen/_12ssp" />
 

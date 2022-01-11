@@ -38,6 +38,7 @@ class AppConstance {
         const val GET_ALL_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"view"
         const val ADD_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"add"
         const val DELETE_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"remove/"
+        const val DELETE_ALL_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"clear"
         const val UPDATE_CART: String = SUB_DOMAIN+ SUB_DOMAIN2+ CART+"update"
 
 

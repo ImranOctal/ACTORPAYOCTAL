@@ -12,6 +12,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -19,10 +21,9 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Base64
 import android.util.DisplayMetrics
-import android.view.Gravity
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -196,5 +197,26 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         return displayMetrics.heightPixels
+    }
+
+    fun showPopUpWindow(root: View,text: String){
+
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.popup_layout, null)
+
+        val textView=view.findViewById<TextView>(R.id.pop_up_text)
+        textView.text=text
+
+        val mpopup = PopupWindow(
+            view, ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT, true
+        ) // Creation of popup
+        mpopup.showAsDropDown(root, 0, -(root.getHeight()+50))
+
+        Handler(Looper.myLooper()!!).postDelayed({
+                              mpopup.dismiss()
+        },4000)
+
+
     }
 }

@@ -51,7 +51,6 @@ class LoginActivity : BaseCommonActivity() {
         super.onCreate(savedInstanceState)
         //Data binding here
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_login)
-        loginViewModel.getAllCountries()
     }
     override fun onResume() {
         super.onResume()
@@ -146,10 +145,6 @@ class LoginActivity : BaseCommonActivity() {
                                 delay(1000)
                                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                 finishAffinity()
-                            }
-                            is CountryResponse->{
-                                    GlobalData.allCountries.clear()
-                                    GlobalData.allCountries.addAll(event.response.data)
                             }
                             is String -> {
                                 loginViewModel.methodRepo.hideLoadingDialog()

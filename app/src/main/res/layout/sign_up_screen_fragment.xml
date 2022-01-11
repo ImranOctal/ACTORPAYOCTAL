@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_view"
@@ -47,11 +48,11 @@
                     android:id="@+id/signup_phone"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
@@ -72,12 +73,12 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
+                            android:visibility="gone"
                             app:ccp_autoDetectCountry="true"
                             app:ccp_clickable="true"
-                            app:ccp_showNameCode="false"
                             app:ccp_showArrow="true"
+                            app:ccp_showNameCode="false"
                             app:ccp_textSize="@dimen/_10sdp"
-                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -86,11 +87,12 @@
                             android:id="@+id/code_picker_spinner"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:background="@null"
                             android:gravity="center_vertical"
                             android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <View
                             android:id="@+id/divider"
@@ -106,20 +108,19 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:background="@null"
+                            android:fontFamily="@font/poppins_regular"
                             android:hint="Phone Number"
                             android:inputType="number"
                             android:maxLength="15"
-                            android:textColor="@color/text_color"
                             android:paddingStart="@dimen/_10sdp"
                             android:paddingEnd="@dimen/_10sdp"
                             android:textAlignment="viewStart"
+                            android:textColor="@color/text_color"
                             android:textSize="@dimen/_11ssp"
-                            android:fontFamily="@font/poppins_regular"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/divider"
                             app:layout_constraintTop_toTopOf="parent" />
-
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -130,104 +131,149 @@
                     android:id="@+id/errorOnPhone"
                     style="@style/errotextViewStyle"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/error_phone"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
+
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/signup_first"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_weight="1"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="@dimen/_10sdp">
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/firstName"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="@string/first_name"
-                        style="@style/RegularTextView"
-                        android:maxLength="50"
-                        android:background="@android:color/transparent"
-                        android:textColor="@color/text_color"
-                        android:paddingStart="@dimen/_10sdp"
-                        android:paddingEnd="@dimen/_10sdp"
-                        android:inputType="text"
-                        android:textSize="@dimen/_12sdp"/>
+                        android:orientation="horizontal"
+
+                        >
+
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/firstName"
+                            style="@style/RegularTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/first_name"
+                            android:inputType="text"
+                            android:maxLength="50"
+                            android:paddingStart="@dimen/_10sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <ImageView
+                            android:id="@+id/first_name_info"
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="@dimen/_5sdp"
+                            android:padding="@dimen/_5sdp"
+                            android:src="@drawable/ic_baseline_info_24" />
+
+
+                    </LinearLayout>
+
 
                 </androidx.cardview.widget.CardView>
+
 
                 <TextView
                     android:id="@+id/errorOnName"
                     style="@style/errotextViewStyle"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/error_name"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/signup_last"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/_8sdp"
-                    android:paddingEnd="@dimen/_8sdp"
-                    app:cardBackgroundColor="#FFFFFF"
-                    app:cardCornerRadius="@dimen/_10sdp">
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/lastName"
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/signup_last"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="@string/last_name"
-                        style="@style/RegularTextView"
-                        android:maxLength="50"
-                        android:background="@android:color/transparent"
-                        android:textColor="@color/text_color"
-                        android:paddingStart="@dimen/_10sdp"
-                        android:paddingEnd="@dimen/_10sdp"
-                        android:inputType="text"
-                        android:textSize="@dimen/_12sdp"/>
+                        android:layout_height="@dimen/_45sdp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginRight="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_8sdp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardCornerRadius="@dimen/_10sdp">
 
-                </androidx.cardview.widget.CardView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+
+                            android:orientation="horizontal"
+
+                            >
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/lastName"
+                            style="@style/RegularTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/last_name"
+                            android:inputType="text"
+                            android:maxLength="50"
+                            android:paddingStart="@dimen/_10sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/_12sdp" />
+
+
+
+                    <ImageView
+                        android:id="@+id/last_name_info"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_baseline_info_24" />
+
+                </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:id="@+id/errorOnLastName"
                     style="@style/errotextViewStyle"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/error_l_name"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/signup_email"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
@@ -240,34 +286,34 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@android:color/transparent"
-                        android:paddingStart="@dimen/_10sdp"
-                        android:paddingEnd="@dimen/_10sdp"
-                        android:maxLength="100"
                         android:hint="@string/email_address"
                         android:inputType="textEmailAddress"
+                        android:maxLength="100"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_12sdp" />
 
                 </androidx.cardview.widget.CardView>
+
                 <TextView
                     android:id="@+id/errorOnEmail"
                     style="@style/errotextViewStyle"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/oops_your_email_is_not_correct_or_empty"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/signup_password"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
@@ -282,28 +328,26 @@
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/password"
+                            style="@style/RegularTextView"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            style="@style/RegularTextView"
                             android:background="@android:color/transparent"
                             android:hint="@string/password"
                             android:inputType="textPassword"
                             android:maxLength="50"
-                            android:textColor="@color/text_color"
                             android:paddingStart="@dimen/_10sdp"
                             android:paddingEnd="@dimen/_10sdp"
-                            android:textSize="@dimen/_12sdp"/>
+                            android:textColor="@color/text_color"
+                            android:textSize="@dimen/_12sdp" />
 
                         <ImageView
                             android:id="@+id/signup_password_show_hide"
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/show"
                             android:layout_gravity="center"
                             android:layout_margin="@dimen/_5sdp"
-                            />
-
+                            android:src="@drawable/show" />
 
 
                     </LinearLayout>
@@ -314,27 +358,26 @@
                     android:id="@+id/errorOnPassword"
                     style="@style/errotextViewStyle"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/oops_your_password_is_not_valid"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/signup_gender"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
-                    app:cardBackgroundColor="#FFFFFF"
                     android:visibility="gone"
+                    app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="@dimen/_10sdp">
 
                     <Spinner
@@ -343,8 +386,7 @@
                         android:layout_height="match_parent"
 
                         android:padding="@dimen/_5sdp"
-                        android:theme="@style/Spinner"
-                        />
+                        android:theme="@style/Spinner" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -352,63 +394,63 @@
                     android:id="@+id/signup_gender_2"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="@dimen/_10sdp">
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/SpinnerStyle"
-                    app:hintTextColor="@color/very_light_grey"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:hintEnabled="false"
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/SpinnerStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:hintEnabled="false"
+                        app:hintTextColor="@color/very_light_grey"
 
 
-                >
+                        >
 
-                <AutoCompleteTextView
-                    android:id="@+id/spinner_autocomplete"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="none"
-                    android:focusable="false"
-                    android:hint="Select Gender"
+                        <AutoCompleteTextView
+                            android:id="@+id/spinner_autocomplete"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:focusable="false"
+                            android:hint="Select Gender"
+                            android:inputType="none"
 
 
-                />
-            </com.google.android.material.textfield.TextInputLayout>
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
                 </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:id="@+id/errorOnGender"
                     style="@style/errotextViewStyle"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/please_select_gender"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/signup_dob"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
                     app:cardBackgroundColor="#FFFFFF"
-                    android:clickable="true"
                     app:cardCornerRadius="@dimen/_10sdp">
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -417,16 +459,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@android:color/transparent"
+                        android:clickable="false"
+                        android:drawableEnd="@drawable/cal_icon"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="@string/date_of_birth"
+                        android:inputType="textEmailAddress"
+                        android:longClickable="false"
+                        android:maxLength="100"
                         android:paddingStart="@dimen/_10sdp"
                         android:paddingEnd="@dimen/_20sdp"
-                        android:maxLength="100"
-                        android:hint="@string/date_of_birth"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:enabled="false"
-                        android:longClickable="false"
-                        android:drawableEnd="@drawable/cal_icon"
-                        android:inputType="textEmailAddress"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_12sdp" />
 
@@ -436,21 +478,22 @@
                     android:id="@+id/errorOnDate"
                     style="@style/errotextViewStyle"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/plase_select_dob"
                     android:visibility="gone"
 
                     />
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/signup_pan"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
@@ -463,11 +506,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@android:color/transparent"
-                        android:paddingStart="@dimen/_10sdp"
-                        android:paddingEnd="@dimen/_20sdp"
-                        android:maxLength="10"
                         android:hint="Enter PAN"
                         android:inputType="textCapCharacters"
+                        android:maxLength="10"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_20sdp"
                         android:textAllCaps="true"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_12sdp" />
@@ -478,21 +521,22 @@
                     android:id="@+id/errorOnPan"
                     style="@style/errotextViewStyle"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/please_valid_pan"
                     android:visibility="gone"
 
                     />
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/signup_adhar"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_45sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
@@ -505,11 +549,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@android:color/transparent"
-                        android:paddingStart="@dimen/_10sdp"
-                        android:paddingEnd="@dimen/_20sdp"
-                        android:maxLength="16"
                         android:hint="Enter Adhar"
                         android:inputType="number"
+                        android:maxLength="16"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_20sdp"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_12sdp" />
 
@@ -519,8 +563,8 @@
                     android:id="@+id/errorOnAdhar"
                     style="@style/errotextViewStyle"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:text="@string/enter_valid_adhar"
                     android:visibility="gone"
@@ -528,32 +572,30 @@
                     />
 
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginLeft="@dimen/_35sdp"
-                    android:layout_marginRight="@dimen/_35sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_35sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
-                    >
+                    android:orientation="horizontal">
 
                     <CheckBox
                         android:id="@+id/sign_check_terms"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
-                        android:checked="true"
-                        />
+                        android:checked="true" />
+
                     <TextView
                         android:id="@+id/signip_terms_privacy"
+                        style="@style/RegularTextView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:layout_gravity="center"
-                        style="@style/RegularTextView"
-                        android:textSize="@dimen/_10ssp"
-                        android:text="@string/terms_of_use_and_privacy_policy"/>
+                        android:gravity="center_vertical"
+                        android:text="@string/terms_of_use_and_privacy_policy"
+                        android:textSize="@dimen/_10ssp" />
 
                 </LinearLayout>
 
@@ -568,16 +610,14 @@
                     android:text="signup"
                     android:textAllCaps="true"
                     android:textSize="@dimen/_12sdp"
-                    app:cornerRadius="@dimen/_5sdp"/>
+                    app:cornerRadius="@dimen/_5sdp" />
 
                 <ProgressBar
                     android:id="@+id/signup_progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:visibility="gone"
-                    />
-
+                    android:visibility="gone" />
 
 
             </LinearLayout>

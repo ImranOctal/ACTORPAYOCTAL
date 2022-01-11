@@ -77,6 +77,12 @@ class SignUpScreenFragment : BaseFragment() {
                 //NavController().navigateWithId(R.id.homeFragment, findNavController())
               validate()
             }
+            firstNameInfo.setOnClickListener {
+                signupViewModel.methodRepo.showPopUpWindow(binding.firstNameInfo,"Enter first name as per government\nrecords or bank")
+            }
+            lastNameInfo.setOnClickListener {
+                signupViewModel.methodRepo.showPopUpWindow(binding.lastNameInfo,"Enter last name as per government\nrecords or bank")
+            }
             signupPasswordShowHide.setOnClickListener {
                 if(showPassword)
                 {
@@ -129,26 +135,9 @@ class SignUpScreenFragment : BaseFragment() {
                 // Specify the layout to use when the list of choices appears
 //                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 // Apply the adapter to the spinner
-                binding.spinnerGender.adapter = adapter
                 binding.spinnerAutocomplete.setAdapter(adapter)
             }
-            binding.spinnerGender.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
 
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-
-                    if(view!=null && position==0){
-                        (view as TextView).setTextColor(requireContext().resources.getColor(R.color.light_grey))
-                    }
-                }
-
-            }
 
 
             signupDob.setOnClickListener {
@@ -283,7 +272,7 @@ class SignUpScreenFragment : BaseFragment() {
             signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupFirst, R.drawable.btn_outline_gray)
         }
 
-        if (binding.editTextMobile.text.toString().trim().length<6) {
+        if (binding.editTextMobile.text.toString().trim().length<7) {
             isValidate=false
             binding.errorOnPhone.visibility = View.VISIBLE
             binding.errorOnPhone.text=getString(R.string.error_phone)
@@ -311,7 +300,6 @@ class SignUpScreenFragment : BaseFragment() {
         if(isValidate){
 
 //            val countryCode=binding.ccp.selectedCountryCodeWithPlus
-
 
             signupViewModel.methodRepo.hideSoftKeypad(requireActivity())
             signupViewModel.SignUpNow(

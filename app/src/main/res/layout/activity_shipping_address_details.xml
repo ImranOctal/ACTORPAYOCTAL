@@ -212,39 +212,33 @@
             android:textSize="@dimen/_12sdp"
             app:layout_constraintTop_toBottomOf="@+id/address_city" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/address_country"
-            style="@style/RegularTextView"
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/country_picker_spinner"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
-            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:visibility="visible"
+            android:background="@drawable/btn_outline_gray"
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/btn_outline_gray"
-            android:hint="Enter Country"
-            android:maxLength="25"
-            android:inputType="text"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/address_state" />
+            app:layout_constraintTop_toBottomOf="@+id/address_state"/>
 
-        <com.hbb20.CountryCodePicker
-            android:id="@+id/ccp"
+
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/code_picker_spinner1"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/_10sdp"
             android:gravity="center_vertical"
-            app:ccp_autoDetectCountry="true"
-            app:ccp_clickable="true"
-            app:ccp_showNameCode="false"
-            app:ccp_showArrow="true"
-            app:ccp_textSize="@dimen/_10sdp"
+            android:visibility="visible"
+            android:background="@drawable/btn_outline_gray"
+            android:layout_marginStart="@dimen/_10sdp"
             app:layout_constraintTop_toTopOf="@+id/address_primary_contact"
             app:layout_constraintBottom_toBottomOf="@+id/address_primary_contact"
             app:layout_constraintStart_toStartOf="parent"
-
             />
+
 
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -252,11 +246,13 @@
             style="@style/RegularTextView"
             android:layout_width="0dp"
             android:layout_height="@dimen/_40sdp"
-            app:layout_constraintStart_toEndOf="@+id/ccp"
+            app:layout_constraintStart_toEndOf="@+id/code_picker_spinner1"
+            app:layout_constraintTop_toBottomOf="@+id/country_picker_spinner"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:background="@drawable/btn_outline_gray"
             android:hint="Enter Primary Contact"
             android:maxLength="15"
@@ -264,25 +260,23 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/address_country" />
+             />
 
 
-        <com.hbb20.CountryCodePicker
-            android:id="@+id/ccp2"
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/code_picker_spinner2"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/_10sdp"
             android:gravity="center_vertical"
-            app:ccp_autoDetectCountry="true"
-            app:ccp_clickable="true"
-            app:ccp_showNameCode="false"
-            app:ccp_showArrow="true"
-            app:ccp_textSize="@dimen/_10sdp"
+            android:visibility="visible"
+            android:background="@drawable/btn_outline_gray"
+            android:layout_marginStart="@dimen/_10sdp"
             app:layout_constraintTop_toTopOf="@+id/address_secondary_contact"
             app:layout_constraintBottom_toBottomOf="@+id/address_secondary_contact"
             app:layout_constraintStart_toStartOf="parent"
-
             />
+
 
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -290,11 +284,12 @@
             style="@style/RegularTextView"
             android:layout_width="0dp"
             android:layout_height="@dimen/_40sdp"
-            app:layout_constraintStart_toEndOf="@+id/ccp"
+            app:layout_constraintStart_toEndOf="@+id/code_picker_spinner2"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:background="@drawable/btn_outline_gray"
             android:hint="Enter Secondary contact"
             android:inputType="number"

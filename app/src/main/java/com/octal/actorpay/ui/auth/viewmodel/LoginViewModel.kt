@@ -84,16 +84,5 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
         }
     }
 
-    fun getAllCountries(){
-        viewModelScope.launch(dispatcherProvider.IO){
-            loginResponseLive.value=ResponseLoginSealed.loading(true)
-            when(val response=apiRepo.getAllCountries()){
-                is RetrofitResource.Error -> loginResponseLive.value =
-                    ResponseLoginSealed.ErrorOnResponse(response.message)
-                is RetrofitResource.Success -> loginResponseLive.value =
-                    ResponseLoginSealed.Success(response.data!!)
-            }
-        }
-    }
 
 }

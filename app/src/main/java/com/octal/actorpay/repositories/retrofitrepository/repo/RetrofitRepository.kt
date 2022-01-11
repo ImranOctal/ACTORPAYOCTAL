@@ -68,6 +68,8 @@ interface RetrofitRepository {
 
     suspend fun deleteCart(token: String,cartId: String):RetrofitResource<CartResponse>
 
+    suspend fun deleteAllCart(token: String):RetrofitResource<CartResponse>
+
     suspend fun updateCart(token: String,cartParams: CartUpdateParams):RetrofitResource<CartResponse>
 
     suspend fun placeOrder(token: String,placeOrderParamas: PlaceOrderParamas):RetrofitResource<PlaceOrderResponse>

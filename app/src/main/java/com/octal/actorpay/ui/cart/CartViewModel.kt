@@ -110,5 +110,25 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
     }
 
 
+    fun deleteAllCart() {
+
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.deleteAllCart(token)) {
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> {
+                        cartItems.emit(response.data!!.data.cartItemDTOList)
+                        responseLive.value =
+                            ResponseSealed.Success(response.data)
+                    }
+                }
+            }
+        }
+    }
+
+
 
 }

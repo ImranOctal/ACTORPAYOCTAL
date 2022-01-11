@@ -6,6 +6,9 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -29,6 +32,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.utils.CommonDialogsUtils
+import com.octal.actorpay.utils.GlobalData
 import com.octal.actorpay.utils.LocationUtils
 import com.octal.actorpay.utils.WorkaroundMapFragment
 import kotlinx.coroutines.flow.collect
@@ -62,6 +66,41 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
         checkLocationPermission()
         apiResponse()
 
+        val codeList= mutableListOf<String>()
+        val countryList= mutableListOf<String>()
+
+        GlobalData.allCountries.forEach {
+            val code=it.countryCode
+            codeList.add(code)
+        }
+        GlobalData.allCountries.forEach {
+            val country=it.country
+            countryList.add(country)
+        }
+        ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_1,
+            countryList
+        ).also {
+                adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            binding.countryPickerSpinner.adapter = adapter
+        }
+        ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_1,
+            codeList
+        ).also {
+                adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            binding.codePickerSpinner1.adapter = adapter
+            binding.codePickerSpinner2.adapter = adapter
+        }
+
         if(shippingAddressItem !=null){
             isSave=false
             binding.save.text=getString(R.string.update)
@@ -73,14 +112,21 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
             binding.addressZipcode.setText(shippingAddressItem!!.zipCode)
             binding.addressCity.setText(shippingAddressItem!!.city)
             binding.addressState.setText(shippingAddressItem!!.state)
-            binding.addressCountry.setText(shippingAddressItem!!.country)
-            binding.addressPrimaryContact.setText(shippingAddressItem!!.primaryContactNumber)
-            if(shippingAddressItem!!.extensionNumber !=null && shippingAddressItem!!.extensionNumber.equals("").not()) {
-                shippingAddressItem!!.extensionNumber =
-                    shippingAddressItem!!.extensionNumber!!.replace("+", "")
-                binding.ccp.setCountryForPhoneCode(shippingAddressItem!!.extensionNumber!!.toInt())
-                binding.ccp2.setCountryForPhoneCode(shippingAddressItem!!.extensionNumber!!.toInt())
+            if(countryList.contains(shippingAddressItem!!.country)){
+                val tempCountryPosition=countryList.indexOfFirst { it.equals(shippingAddressItem!!.country) }
+                binding.countryPickerSpinner.setSelection(tempCountryPosition)
             }
+            if(shippingAddressItem!!.extensionNumber !=null && shippingAddressItem!!.extensionNumber.equals("").not()) {
+
+                if (codeList.contains(shippingAddressItem!!.extensionNumber)) {
+                    val tempCodePosition =
+                        countryList.indexOfFirst { it.equals(shippingAddressItem!!.extensionNumber) }
+                    binding.codePickerSpinner1.setSelection(tempCodePosition)
+                    binding.codePickerSpinner1.setSelection(tempCodePosition)
+                }
+            }
+
+            binding.addressPrimaryContact.setText(shippingAddressItem!!.primaryContactNumber)
             binding.addressSecondaryContact.setText(shippingAddressItem!!.secondaryContactNumber)
         }
 
@@ -102,7 +148,6 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
                     userlat = 0.0
                     userlong = 0.0
                 }
-
             }
 
             val cameraPosition = CameraPosition.Builder()
@@ -122,12 +167,38 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
             getAddress(userlat,userlong)
         }
         mLocationUtils.initConnection()
-        binding.ccp.setOnCountryChangeListener {
-            binding.ccp2.setCountryForPhoneCode(binding.ccp.selectedCountryCode.toInt())
+
+        binding.codePickerSpinner1.onItemSelectedListener=object :AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                binding.codePickerSpinner2.setSelection(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
         }
-        binding.ccp2.setOnCountryChangeListener {
-            binding.ccp.setCountryForPhoneCode(binding.ccp2.selectedCountryCode.toInt())
+        binding.codePickerSpinner2.onItemSelectedListener=object :AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                binding.codePickerSpinner1.setSelection(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
         }
+
         binding.save.setOnClickListener {
             validate()
         }
@@ -146,7 +217,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
         val zipcode=binding.addressZipcode.text.toString().trim()
         val city=binding.addressCity.text.toString().trim()
         val state=binding.addressState.text.toString().trim()
-        val country=binding.addressCountry.text.toString().trim()
+        val country=binding.countryPickerSpinner.selectedItem.toString().trim()
         val p_contact=binding.addressPrimaryContact.text.toString().trim()
         val s_contact=binding.addressSecondaryContact.text.toString().trim()
 
@@ -162,13 +233,6 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
             binding.addressPrimaryContact.error="Please Enter Valid Contact"
             isValid=false
             binding.addressPrimaryContact.requestFocus()
-        }
-
-
-        if(country.equals("")){
-            binding.addressCountry.error="Please Enter Country"
-            isValid=false
-            binding.addressCountry.requestFocus()
         }
 
         if(state.equals("")){
@@ -231,7 +295,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
                                 title,
                                 area,
                                 p_contact,
-                                binding.ccp.selectedCountryCode,
+                                binding.codePickerSpinner1.selectedItem.toString(),
                                 s_contact,
                                 false,
                                 null,
@@ -255,7 +319,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
                                 title,
                                 area,
                                 p_contact,
-                                binding.ccp.selectedCountryCode,
+                                binding.codePickerSpinner1.selectedItem.toString(),
                                 s_contact,
                                 shippingAddressItem!!.primary,
                                 null,
@@ -286,12 +350,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
 
             return false
         } else {
-//            val mapFragment = childFragmentManager.findFragmentById(R.id.map_map) as SupportMapFragment?
-//            mapFragment?.getMapAsync(callback)
-            /*val mLocationUtils = LocationUtils(requireActivity(), false)
-            {
-            }
-            mLocationUtils.initConnection()*/
+
             return true
         }
     }
@@ -317,8 +376,6 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
                     )
                 ) {
                     //Never ask again selected, or device policy prohibits the app from having that permission.
-                    //So, disable that feature, or fall back to another situation...
-//                    CommonDialogsUtils.showPermissionDialog(requireContext())
                 }
             }
         }
@@ -407,7 +464,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
 
             binding.addressLine1.setText(address)
             binding.addressZipcode.setText(postalCode)
-            binding.addressCountry.setText(country)
+//            binding.addressCountry.setText(country)
 
         }
     }

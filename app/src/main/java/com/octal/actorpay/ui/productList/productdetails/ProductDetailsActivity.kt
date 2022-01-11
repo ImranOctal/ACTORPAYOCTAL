@@ -32,6 +32,7 @@ class ProductDetailsActivity : AppCompatActivity() {
     private val cartViewModel: CartViewModel by inject()
     lateinit var adapter: ProductListAdapter
     var isFromBuy=false
+    var futureAddCart=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +88,9 @@ class ProductDetailsActivity : AppCompatActivity() {
             val merchantId = cartViewModel.cartItems.value[0].merchantId
             if (productItem!!.merchantId != merchantId) {
                 wantsToBuyDialog {
-//                                addToCart(position)
+                    futureAddCart=true
+                    cartViewModel.deleteAllCart()
+
                 }
             } else
                 cartViewModel.addCart(productItem!!.productId,productItem!!.dealPrice)
@@ -107,7 +110,9 @@ class ProductDetailsActivity : AppCompatActivity() {
                 val merchantId = cartViewModel.cartItems.value[0].merchantId
                 if (productItem!!.merchantId != merchantId) {
                     wantsToBuyDialog {
-//                                    buyNow(position)
+                        isFromBuy=true
+                        futureAddCart=true
+                        cartViewModel.deleteAllCart()
                     }
                 } else {
                     isFromBuy=true
@@ -145,6 +150,10 @@ class ProductDetailsActivity : AppCompatActivity() {
                     }
                     is ResponseSealed.Success -> {
 //                        binding.recyclerviewSimiliarProduct.adapter?.notifyDataSetChanged()
+                        if(futureAddCart){
+                            addToCart()
+                            futureAddCart=false
+                        }
                         if(isFromBuy) {
                             isFromBuy=false
                             goToCart()
@@ -152,6 +161,7 @@ class ProductDetailsActivity : AppCompatActivity() {
                         initializeCartWork()
                     }
                     is ResponseSealed.ErrorOnResponse -> {
+                        futureAddCart=false
                         if(isFromBuy)
                             isFromBuy=false
                         if (event.message!!.code == 403) {

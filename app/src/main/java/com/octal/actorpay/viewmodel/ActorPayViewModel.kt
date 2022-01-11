@@ -9,6 +9,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.FailResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
+import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.ui.misc.MiscViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
@@ -41,4 +42,15 @@ class ActorPayViewModel(val dispatcherProvider: CoroutineContextProvider, val me
         }
     }
 
+    fun getAllCountries(){
+        viewModelScope.launch(dispatcherProvider.IO){
+            actorcResponseLive.value= ResponseActorSealed.loading()
+            when(val response=apiRepo.getAllCountries()){
+                is RetrofitResource.Error -> actorcResponseLive.value =
+                    ResponseActorSealed.ErrorOnResponse(response.message)
+                is RetrofitResource.Success -> actorcResponseLive.value =
+                    ResponseActorSealed.Success(response.data!!)
+            }
+        }
+    }
 }
