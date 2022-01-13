@@ -47,8 +47,7 @@ import java.util.*
 
 class ShippingAddressDetailsFragment : BaseFragment() {
 
-    private var _binding: FragmentShippingAddressDetailsBinding? = null
-    private val binding get() = _binding!!
+    lateinit var binding: FragmentShippingAddressDetailsBinding
     private val shippingAddressViewModel: ShippingAddressDetailsViewModel by inject()
     var isSave=true
     var isComingFirst=true
@@ -70,7 +69,7 @@ class ShippingAddressDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentShippingAddressDetailsBinding.inflate(inflater, container, false)
+        binding = FragmentShippingAddressDetailsBinding.inflate(inflater, container, false)
         setTitle("My Address")
         showHideBottomNav(false)
         showHideCartIcon(false)

@@ -14,16 +14,15 @@ import org.koin.android.ext.android.inject
 
 
 class HistoryBottomFragment : BaseFragment() {
-    private var _binding: FragmentHistoryBottomBinding? = null
-    private val binding get() = _binding!!
+    lateinit var binding: FragmentHistoryBottomBinding
 
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentHistoryBottomBinding.inflate(inflater, container, false)
+    ): View {
+        binding = FragmentHistoryBottomBinding.inflate(inflater, container, false)
         val root: View = binding.root
         showHideBottomNav(true)
         showHideCartIcon(true)
@@ -48,7 +47,7 @@ class HistoryBottomFragment : BaseFragment() {
     }
     override fun WorkStation() {
         binding.rvItemsHistoryID.apply {
-            var arraylist: ArrayList<String> = arrayListOf("AddMoney", "AddMoney", "AddMoney")
+            val arraylist: ArrayList<String> = arrayListOf("AddMoney", "AddMoney", "AddMoney")
             adapter = AdapterHistory(arraylist, requireActivity())
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 

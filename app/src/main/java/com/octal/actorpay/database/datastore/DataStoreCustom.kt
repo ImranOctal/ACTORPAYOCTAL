@@ -13,6 +13,7 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.octal.actorpay.database.datastore.PreferenceKeys.IS_APP_INTRO
 import com.octal.actorpay.database.datastore.PreferenceKeys.IS_APP_LOGGED_IN
+import com.octal.actorpay.database.datastore.PreferenceKeys.NOTIFICATION_MUTED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -83,6 +84,19 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
 
         context.dataStore.edit { preferences -> preferences.set(PreferenceKeys.REFRESH_TOKEN,value) }
     }
+    override suspend fun setDeviceToken(value: String) {
+
+        context.dataStore.edit { preferences -> preferences.set(PreferenceKeys.DEVICE_TOKEN,value) }
+    }
+
+    override suspend fun setNotificationMuted(value: Boolean) {
+        context.dataStore.edit { mutablePreferences: MutablePreferences -> mutablePreferences.set(
+            NOTIFICATION_MUTED,value) }
+    }
+
+    override suspend fun setNotificationSound(value: String) {
+        context.dataStore.edit { preferences -> preferences.set(PreferenceKeys.NOTIFICATION_SOUND,value) }
+    }
 
     override fun getBoolean() : Flow<Boolean> {
         return getBooleanData(PreferenceKeys.BOOLEAN_KEY)
@@ -132,6 +146,17 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
         return getString(PreferenceKeys.REFRESH_TOKEN)
     }
 
+    override fun getDeviceToken(): Flow<String> {
+        return getString(PreferenceKeys.DEVICE_TOKEN)
+    }
+
+    override fun getNotificationMuted(): Flow<Boolean> {
+        return getBooleanData(NOTIFICATION_MUTED)
+    }
+
+    override fun getNotificationSound(): Flow<String> {
+        return getString(PreferenceKeys.NOTIFICATION_SOUND)
+    }
 
     //Predefine Function to get Data Using Keys
     fun getString(key:Preferences.Key<String> ):Flow<String>{

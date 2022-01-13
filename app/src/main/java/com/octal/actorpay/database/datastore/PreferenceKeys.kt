@@ -27,4 +27,7 @@ object PreferenceKeys {
     val COUNTRY_CODE : Preferences.Key<String> = stringPreferencesKey("countryCode")
     val ACCESS_TOKEN : Preferences.Key<String> = stringPreferencesKey("access_token")
     val REFRESH_TOKEN : Preferences.Key<String> = stringPreferencesKey("refresh_token")
+    val DEVICE_TOKEN : Preferences.Key<String> = stringPreferencesKey("device_token")
+    val NOTIFICATION_MUTED : Preferences.Key<Boolean> = booleanPreferencesKey("notification_muted")
+    val NOTIFICATION_SOUND : Preferences.Key<String> = stringPreferencesKey("notification_sound")
 }

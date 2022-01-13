@@ -18,78 +18,99 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
-import com.octal.actorpay.database.prefrence.SharedPre
+import com.octal.actorpay.database.datastore.DataStoreBase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import java.io.IOException
 
 
 class NotificationManager : FirebaseMessagingService() {
 
-    lateinit var sharedPre: SharedPre
-    private var isMuted = false
-    private var SendNotification = true
     private var uri: Uri? = null
     private var title: String? = null
     private var type: String? = null
     private var body: String? = null
 
-    private var intent: Intent? = null
     private var token: String? = null
+
+    private val dateStore: DataStoreBase by inject()
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Main + job)
+
+
     override fun onNewToken(s: String) {
         super.onNewToken(s)
         token = s
-        if(sharedPre==null){
+       /* if(sharedPre==null){
             sharedPre= SharedPre.getInstance(this)!!
         }
-        sharedPre.setFirebaseToken(s)
+        sharedPre.setFirebaseToken(s)*/
+
+        scope.launch {
+        dateStore.setDeviceToken(s)
+        }
 
     }
 
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        if(sharedPre==null){
+        /*if(sharedPre==null){
             sharedPre= SharedPre.getInstance(this)!!
-        }
-        if (remoteMessage != null) {
-            isMuted = sharedPre!!.isNotificationMuted
-            try {
-                uri = if (isMuted) {
-                    null
-                } else {
-                    val sound = sharedPre!!.notificationSound
-                    if (sound == null || sound == "") {
-                        RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-                    } else {
-                        Uri.parse(sharedPre!!.notificationSound)
+        }*/
+        scope.launch {
+            dateStore.getNotificationMuted().collect { isMuted ->
+                dateStore.getNotificationSound().collect { sound ->
+                    dateStore.isLoggedIn().collect {
+                        isLogin->
+                        try {
+                            uri = if (isMuted) {
+                                null
+                            } else {
+                                if (sound == "") {
+                                    RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                                } else {
+                                    Uri.parse(sound)
+                                }
+                            }
+                        } catch (e: Exception) {
+                            showNotification(
+                                "ActorPay",
+                                "Message in Catch Please check first",
+                                Intent(this@NotificationManager, MainActivity::class.java)
+                            )
+                        }
+                        super.onMessageReceived(remoteMessage)
+                        try {
+
+                            title = getString(R.string.app_name)
+                            NOTIFICATION_ID = System.currentTimeMillis()
+                                .toInt()
+                            type = remoteMessage.notification!!.title
+                            body = remoteMessage.notification!!.body
+
+                            if (isLogin) {
+
+                            } else {
+
+                            }
+                            /* Map<String, String> map = remoteMessage.getData();
+                            handleDataMessage(map);*/
+                        } catch (e: Exception) {
+                            Log.e("error in Notification", e.message.toString())
+
+                        }
                     }
                 }
-            } catch (e: Exception) {
-                showNotification("ActorPay","Message in Catch Please check first",Intent(this,MainActivity::class.java))
-            }
-            super.onMessageReceived(remoteMessage)
-            try {
-                SendNotification = sharedPre!!.isLoggedIn
-                title = getString(R.string.app_name)
-                NOTIFICATION_ID = System.currentTimeMillis()
-                    .toInt()
-                type = remoteMessage.notification!!.title
-                body = remoteMessage.notification!!.body
-
-                if (SendNotification) {
-
-                }else{
-
-                }
-                /* Map<String, String> map = remoteMessage.getData();
-                    handleDataMessage(map);*/
-            } catch (e: Exception) {
-                Log.e("error in Notification",e.message.toString())
-
             }
         }
     }
 
     private fun handleDataMessage(json: Map<String, String>?) {
-        Log.e(getString(R.string.app_name), "push json: " + json.toString())
+       /* Log.e(getString(R.string.app_name), "push json: " + json.toString())
         try {
             if (json != null) {
                 val title = json["title"]
@@ -102,7 +123,7 @@ class NotificationManager : FirebaseMessagingService() {
             }
         } catch (e: Exception) {
             Log.e(getString(R.string.app_name), "Exception: " + e.message)
-        }
+        }*/
     }
 
     fun showNotification(title: String?, body: String?, intent: Intent?) {
@@ -124,7 +145,6 @@ class NotificationManager : FirebaseMessagingService() {
             .setColorized(true)
             .setAutoCancel(true)
             .setSound(null)
-            .setNotificationSilent()
             .setContentIntent(pendingIntent)
             .setPriority(Notification.PRIORITY_DEFAULT)
             .setDefaults(Notification.BADGE_ICON_LARGE)
@@ -152,18 +172,25 @@ class NotificationManager : FirebaseMessagingService() {
             val managerCompat = NotificationManagerCompat.from(this)
             managerCompat.notify(NOTIFICATION_ID, notificationCompat)
         }
-        if (!sharedPre.isNotificationMuted) {
-            playSound(this)
+        scope.launch {
+            dateStore.getNotificationMuted().collect { isNotificationMuted ->
+                dateStore.getNotificationSound().collect {
+                    notificationSound->
+                    if (isNotificationMuted)
+                        playSound(this@NotificationManager,notificationSound)
+                }
+            }
         }
     }
 
-    fun playSound(context: Context) {
+    fun playSound(context: Context,notificationSound:String) {
+
         val myAudioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
         val i = myAudioManager.ringerMode
         if (myAudioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE) uri = Uri.parse(
-            sharedPre!!.notificationSound
+            notificationSound
         )
-        if (sharedPre!!.notificationSound == null || sharedPre!!.notificationSound == "") {
+        if (notificationSound == "") {
             uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         }
         val mediaPlayer = MediaPlayer()

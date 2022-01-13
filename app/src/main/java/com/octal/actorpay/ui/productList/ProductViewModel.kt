@@ -6,15 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
-import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.LoginParams
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieItem
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductData
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductItem
-import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
-import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

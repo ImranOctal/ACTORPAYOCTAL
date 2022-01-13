@@ -25,6 +25,7 @@ import com.octal.actorpay.ui.auth.viewmodel.SignupViewModel
 import com.octal.actorpay.ui.content.ContentActivity
 import com.octal.actorpay.ui.content.ContentViewModel
 import com.octal.actorpay.utils.GlobalData
+import com.octal.actorpay.utils.countrypicker.CountryPicker
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -35,13 +36,12 @@ import java.util.*
 
 class SignUpScreenFragment : BaseFragment() {
 
-    private var _binding: SignUpScreenFragmentBinding? = null
+    lateinit var binding: SignUpScreenFragmentBinding
     private val signupViewModel: SignupViewModel by inject()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private var showPassword=false
-    private val binding get() = _binding!!
     override fun WorkStation() {
 
     }
@@ -58,17 +58,12 @@ class SignUpScreenFragment : BaseFragment() {
     ): View {
 
 
-        _binding = SignUpScreenFragmentBinding.inflate(inflater, container, false)
+        binding = SignUpScreenFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         init()
 
         return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     fun init() {
@@ -114,7 +109,7 @@ class SignUpScreenFragment : BaseFragment() {
                     val code=it.countryCode
                     codeList.add(code)
                 }
-            ArrayAdapter(
+            /*ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_list_item_1,
                 codeList
@@ -124,6 +119,14 @@ class SignUpScreenFragment : BaseFragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 // Apply the adapter to the spinner
                 binding.codePickerSpinner.adapter = adapter
+            }*/
+            if(GlobalData.allCountries.size>0){
+                binding.codePicker.text=GlobalData.allCountries[0].countryCode
+            }
+            binding.countryLayout.setOnClickListener {
+                CountryPicker(requireContext(),viewModel.methodRepo,GlobalData.allCountries){
+                    binding.codePicker.text=GlobalData.allCountries[it].countryCode
+                }.show()
             }
 
             ArrayAdapter.createFromResource(
@@ -138,6 +141,10 @@ class SignUpScreenFragment : BaseFragment() {
                 binding.spinnerAutocomplete.setAdapter(adapter)
             }
 
+            binding.spinnerAutocomplete.setOnItemClickListener { parent, view, position, id ->
+                binding.errorOnGender.visibility = View.GONE
+                signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupGender2, R.drawable.btn_outline_gray)
+            }
 
 
             signupDob.setOnClickListener {
@@ -155,6 +162,8 @@ class SignUpScreenFragment : BaseFragment() {
                      val monthYear=f.format(monthOfYear+1)
 
                     binding.dob.setText("" + dayMonth + "-" + (monthYear) + "-" + yearR)
+                    binding.errorOnDate.visibility = View.GONE
+                    signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupDob, R.drawable.btn_outline_gray)
 
                 }, year, month, day)
                 dpd.show()
@@ -169,13 +178,14 @@ class SignUpScreenFragment : BaseFragment() {
     fun validate(){
         var isValidate=true
 
-        val countryCode=binding.codePickerSpinner.selectedItem.toString()
+        val countryCode=binding.codePicker.text.toString().trim()
 
         if(binding.adhar.text.toString().trim().length<16){
             isValidate=false
-            binding.errorOnAdhar.visibility = View.VISIBLE
-            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupAdhar, R.drawable.btn_search_outline)
-//            binding.adhar.requestFocus()
+//            binding.errorOnAdhar.visibility = View.VISIBLE
+            binding.adhar.error=getString(R.string.enter_valid_adhar)
+//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupAdhar, R.drawable.btn_search_outline)
+            binding.adhar.requestFocus()
 //            binding.scrollView.smoothScrollTo(0,binding.adhar.top)
         }
         else{
@@ -185,9 +195,10 @@ class SignUpScreenFragment : BaseFragment() {
 
         if(!signupViewModel.methodRepo.isValidPAN(binding.pan.text.toString().trim())){
             isValidate=false
-            binding.errorOnPan.visibility = View.VISIBLE
-            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPan, R.drawable.btn_search_outline)
-//            binding.pan.requestFocus()
+            binding.pan.error=getString(R.string.please_valid_pan)
+//            binding.errorOnPan.visibility = View.VISIBLE
+//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPan, R.drawable.btn_search_outline)
+            binding.pan.requestFocus()
 //            binding.scrollView.smoothScrollTo(0,binding.pan.top)
         }
         else{
@@ -220,17 +231,18 @@ class SignUpScreenFragment : BaseFragment() {
         }
         if (binding.password.text.toString().trim().length<8) {
             isValidate=false
-            binding.errorOnPassword.visibility = View.VISIBLE
-            binding.errorOnPassword.text = getString(R.string.oops_your_password_is_not_valid)
-            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPassword, R.drawable.btn_search_outline)
+            binding.password.error=getString(R.string.oops_your_password_is_not_valid)
+//            binding.errorOnPassword.visibility = View.VISIBLE
+//            binding.errorOnPassword.text = getString(R.string.oops_your_password_is_not_valid)
+//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPassword, R.drawable.btn_search_outline)
             binding.password.requestFocus()
         }
         else{
             if (binding.password.text.toString().trim().contains(" ") || !signupViewModel.methodRepo.isValidPassword(binding.password.text.toString().trim())) {
                 isValidate=false
-                binding.errorOnPassword.text = getString(R.string.oops_your_password_is_not_valid2)
-                binding.errorOnPassword.visibility = View.VISIBLE
-                signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPassword, R.drawable.btn_search_outline)
+                binding.password.error = getString(R.string.oops_your_password_is_not_valid2)
+//                binding.errorOnPassword.visibility = View.VISIBLE
+//                signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPassword, R.drawable.btn_search_outline)
                 binding.password.requestFocus()
             }
             else{
@@ -241,8 +253,9 @@ class SignUpScreenFragment : BaseFragment() {
 
         if (binding.email.text.toString().length<3 || !signupViewModel.methodRepo.isValidEmail(binding.email.text.toString())) {
             isValidate=false
-            binding.errorOnEmail.visibility = View.VISIBLE
-            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupEmail, R.drawable.btn_search_outline)
+            binding.email.error=getString(R.string.oops_your_email_is_not_correct_or_empty)
+//            binding.errorOnEmail.visibility = View.VISIBLE
+//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupEmail, R.drawable.btn_search_outline)
             binding.email.requestFocus()
         }
         else{
@@ -252,8 +265,9 @@ class SignUpScreenFragment : BaseFragment() {
 
         if (binding.lastName.text.toString().trim().length<3) {
             isValidate=false
-            binding.errorOnLastName.visibility = View.VISIBLE
-            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupLast, R.drawable.btn_search_outline)
+            binding.lastName.error=getString(R.string.error_l_name)
+//            binding.errorOnLastName.visibility = View.VISIBLE
+//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupLast, R.drawable.btn_search_outline)
             binding.lastName.requestFocus()
         }
         else{
@@ -263,8 +277,9 @@ class SignUpScreenFragment : BaseFragment() {
 
         if (binding.firstName.text.toString().trim().isEmpty()) {
             isValidate=false
-            binding.errorOnName.visibility = View.VISIBLE
-            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupFirst, R.drawable.btn_search_outline)
+            binding.firstName.error=getString(R.string.error_name)
+//            binding.errorOnName.visibility = View.VISIBLE
+//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupFirst, R.drawable.btn_search_outline)
             binding.firstName.requestFocus()
         }
         else{
@@ -274,18 +289,18 @@ class SignUpScreenFragment : BaseFragment() {
 
         if (binding.editTextMobile.text.toString().trim().length<7) {
             isValidate=false
-            binding.errorOnPhone.visibility = View.VISIBLE
-            binding.errorOnPhone.text=getString(R.string.error_phone)
-            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPhone, R.drawable.btn_search_outline)
+//            binding.errorOnPhone.visibility = View.VISIBLE
+            binding.editTextMobile.error=getString(R.string.error_phone)
+//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPhone, R.drawable.btn_search_outline)
             binding.editTextMobile.requestFocus()
         }
         else{
             if(binding.editTextMobile.text.toString().trim()[0].toString() == "0")
             {
                 isValidate=false
-                binding.errorOnPhone.visibility = View.VISIBLE
-                binding.errorOnPhone.text=getString(R.string.mobile_not_start_with_0)
-                signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPhone, R.drawable.btn_search_outline)
+//                binding.errorOnPhone.visibility = View.VISIBLE
+                binding.editTextMobile.error=getString(R.string.mobile_not_start_with_0)
+//                signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPhone, R.drawable.btn_search_outline)
                 binding.editTextMobile.requestFocus()
             }
             else{

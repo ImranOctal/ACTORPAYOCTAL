@@ -26,9 +26,8 @@ class LoginScreenFragment : BaseFragment() {
     }
 
     private val loginViewModel: LoginViewModel by inject()
-    private var _binding: LoginScreenFragmentBinding? = null
+    lateinit var binding: LoginScreenFragmentBinding
 
-    private val binding get() = _binding!!
     private var showPassword = false
 
     override fun onCreateView(
@@ -37,7 +36,7 @@ class LoginScreenFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = LoginScreenFragmentBinding.inflate(inflater, container, false)
+        binding = LoginScreenFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         init()
@@ -127,11 +126,6 @@ class LoginScreenFragment : BaseFragment() {
 
                 }
             })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     fun init() {

@@ -25,8 +25,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ProfileBottomFragment : BaseFragment() {
-    private var _binding: FragmentProfileBottomBinding? = null
-    private val binding get() = _binding!!
+    lateinit var binding: FragmentProfileBottomBinding
     private val profileViewModel: ProfileViewModel by inject()
 
 
@@ -53,7 +52,7 @@ class ProfileBottomFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProfileBottomBinding.inflate(inflater, container, false)
+        binding = FragmentProfileBottomBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         profileViewModel.getProfile()
@@ -238,12 +237,6 @@ class ProfileBottomFragment : BaseFragment() {
         } catch (e: Exception) {
             Log.d("Profile Fragment", "apiResponse: ${e.message}")
         }
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun WorkStation() {

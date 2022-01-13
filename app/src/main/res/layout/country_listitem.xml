@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="countryItem"
+            type="com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryItem" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginHorizontal="@dimen/_1sdp"
+        android:layout_marginBottom="@dimen/_1sdp"
+        android:background="@drawable/btn_outline_gray"
+
+        >
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    >
+
+    <ImageView
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:src="@drawable/flag_india"
+        android:layout_marginStart="@dimen/_5sdp"
+        />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/very_light_grey"
+        android:layout_marginStart="@dimen/_5sdp"
+        />
+
+    <TextView
+        android:id="@+id/code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@{countryItem.countryCode}"
+        tools:text="+91"
+        android:textColor="@color/text_color"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_14ssp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/very_light_grey"
+        android:layout_marginStart="@dimen/_5sdp"
+        />
+
+    <TextView
+        android:id="@+id/listitem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@{countryItem.country}"
+        tools:text="India"
+        android:textColor="@color/text_color"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_14ssp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        />
+
+</LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -1,9 +1,5 @@
 package com.octal.actorpay.database.datastore
-/*
-* © Copyright Ishant Sharma
-* Android Developer
-* JAVA/KOTLIN
-* */
+
 import kotlinx.coroutines.flow.Flow
 
 interface DataStoreBase {
@@ -33,6 +29,12 @@ interface DataStoreBase {
 
     suspend fun setRefreshToken(value:String)
 
+    suspend fun setDeviceToken(value:String)
+
+    suspend fun setNotificationMuted(value:Boolean)
+
+    suspend fun setNotificationSound(value:String)
+
     fun getBoolean(): Flow<Boolean>
 
     fun isLoggedIn(): Flow<Boolean>
@@ -56,5 +58,11 @@ interface DataStoreBase {
     fun getAccessToken(): Flow<String>
 
     fun getRefreshToken(): Flow<String>
+
+    fun getDeviceToken(): Flow<String>
+
+    fun getNotificationMuted(): Flow<Boolean>
+
+    fun getNotificationSound(): Flow<String>
 
 }

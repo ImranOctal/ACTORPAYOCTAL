@@ -24,8 +24,7 @@ import org.koin.android.ext.android.inject
 
 class ShippingAddressFragment : BaseFragment() {
 
-    private var _binding: FragmentShippingAddressBinding? = null
-    private val binding get() = _binding!!
+    lateinit var binding: FragmentShippingAddressBinding
 
     private val shippingAddressViewModel: ShippingAddressViewModel by inject()
     lateinit var adapter: ShippingListAdapter
@@ -43,7 +42,7 @@ class ShippingAddressFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentShippingAddressBinding.inflate(inflater, container, false)
+        binding = FragmentShippingAddressBinding.inflate(inflater, container, false)
 
         setTitle("My Addresses")
         showHideBottomNav(false)
