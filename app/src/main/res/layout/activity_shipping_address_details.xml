@@ -99,6 +99,7 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/address_title" />
 
         <fragment

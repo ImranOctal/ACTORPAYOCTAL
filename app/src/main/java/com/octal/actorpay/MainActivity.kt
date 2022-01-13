@@ -37,6 +37,7 @@ import com.octal.actorpay.ui.promocodes.PromoListFragment
 import com.octal.actorpay.ui.refer_and_earn.ReferAndEarnFragment
 import com.octal.actorpay.ui.remittance.RemittanceFragment
 import com.octal.actorpay.ui.rewards_points.RewardsPointsFragment
+import com.octal.actorpay.ui.settings.SettingsFragment
 import com.octal.actorpay.utils.OnFilterClick
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import kotlinx.coroutines.flow.collect
@@ -242,23 +243,17 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         mTitles.add(
             DrawerItems(
                 getString(R.string.view_available_money_in_wallet),
-                ContextCompat.getDrawable((this), R.drawable.my_profile)!!
+                ContextCompat.getDrawable((this), R.drawable.wallet_statement)!!
             )
         )
-        mTitles.add(
-            DrawerItems(
-                getString(R.string.my_profile),
-                ContextCompat.getDrawable((this), R.drawable.my_profile)!!
 
-            )
-        )
-        mTitles.add(
+       /* mTitles.add(
             DrawerItems(
                 getString(R.string.change_password),
                 ContextCompat.getDrawable((this), R.drawable.my_profile)!!
 
             )
-        )
+        )*/
         mTitles.add(
             DrawerItems(
                 getString(R.string.promo_offers),
@@ -268,8 +263,22 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         )
         mTitles.add(
             DrawerItems(
+                getString(R.string.my_profile),
+                ContextCompat.getDrawable((this), R.drawable.my_profile)!!
+
+            )
+        )
+       /* mTitles.add(
+            DrawerItems(
                 getString(R.string.change_payment_option),
                 ContextCompat.getDrawable((this), R.drawable.my_orders)!!
+
+            )
+        )*/
+        mTitles.add(
+            DrawerItems(
+                getString(R.string.settings),
+                ContextCompat.getDrawable((this), R.drawable.settings)!!
 
             )
         )
@@ -342,12 +351,12 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     override fun onOptionClicked(position: Int, objectClicked: Any?) {
 
         // No need for Change Password UI
-        if(position!=6) {
+//        if(position!=6) {
             // Set the toolbar title
             title = mTitles[position].mTitle
             // Set the right options selected
             mMenuAdapter?.setViewSelected(position, true)
-        }
+//        }
         // Navigate to the right fragment
         when (position) {
 
@@ -419,6 +428,22 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                 // NavController().navigateWithId(R.id.walletFragment, findNavController())
             }
             5 -> {
+
+                if (getCurrentFragment() !is PromoListFragment) {
+                    title = "Promos"
+                    startFragment(
+                        PromoListFragment.newInstance(),
+                        addToBackStack = true,
+                        PromoListFragment.toString()
+                    )
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+
+            }
+            /*6 -> {
+                changePasswordUi()
+            }*/
+            6 -> {
                 if (getCurrentFragment() !is ProfileBottomFragment) {
                     title = "My Profile"
                     startFragment(
@@ -429,24 +454,10 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.profile_fragment)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
-            }
-            6 -> {
-                changePasswordUi()
-            }
-            7 -> {
-                if (getCurrentFragment() !is PromoListFragment) {
-                    title = "Promos"
-                    startFragment(
-                        PromoListFragment.newInstance(),
-                        addToBackStack = true,
-                        PromoListFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
-                }
                /* Navigation.findNavController(binding.root).navigate(R.id.productListFragment)
                 binding.findNavController.rvItemsID.visibility = View.GONE*/
             }
-            8 -> {
+           /* 8 -> {
                 if (getCurrentFragment() !is RemittanceFragment) {
                     title=getString(R.string.change_payment_option)
                     startFragment(
@@ -458,8 +469,21 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                 }
                // Navigation.findNavController(binding.root).navigate(R.id.remittance)
                // binding.layoutMainID.rvItemsID.visibility = View.GONE
+            }*/
+            7 -> {
+                if (getCurrentFragment() !is SettingsFragment) {
+                    title="Settings"
+                    startFragment(
+                        SettingsFragment.newInstance(),
+                        addToBackStack = true,
+                        SettingsFragment.toString()
+                    )
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+               // Navigation.findNavController(binding.root).navigate(R.id.miscFragment)
+               // binding.layoutMainID.rvItemsID.visibility = View.GONE
             }
-            9 -> {
+            8 -> {
                 if (getCurrentFragment() !is MiscFragment) {
                     title="More"
                     startFragment(
@@ -474,6 +498,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
             }
 
         }
+
 
         // Close the drawer
         mViewHolder?.mDuoDrawerLayout?.closeDrawer()

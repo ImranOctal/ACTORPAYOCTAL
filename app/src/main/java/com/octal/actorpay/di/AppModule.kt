@@ -23,6 +23,7 @@ import com.octal.actorpay.ui.productList.ProductViewModel
 import com.octal.actorpay.ui.productList.productdetails.ProductDetailsViewModel
 import com.octal.actorpay.ui.productList.productsfilter.ProductFilterViewModel
 import com.octal.actorpay.ui.promocodes.PromoListViewModel
+import com.octal.actorpay.ui.settings.SettingViewModel
 import com.octal.actorpay.ui.shippingaddress.ShippingAddressViewModel
 import com.octal.actorpay.ui.shippingaddress.details.ShippingAddressDetailsViewModel
 import okhttp3.OkHttpClient
@@ -116,6 +117,9 @@ private val appKoinModule = module {
     }
     viewModel {
         ShippingAddressDetailsViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        SettingViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     single {
         CartViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())

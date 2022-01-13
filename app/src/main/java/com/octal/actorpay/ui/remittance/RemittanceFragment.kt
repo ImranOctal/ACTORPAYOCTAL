@@ -28,10 +28,12 @@ class RemittanceFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentRemittanceBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        setTitle(getString(R.string.change_payment_option))
         showHideBottomNav(false)
         showHideCartIcon(false)
         showHideFilterIcon(false)

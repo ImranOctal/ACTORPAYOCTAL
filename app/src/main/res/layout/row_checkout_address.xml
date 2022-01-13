@@ -51,6 +51,7 @@
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12ssp"
             tools:ignore="RtlSymmetry"
+            android:visibility="gone"
             tools:text="Delivery Address" />
 
         <ImageView

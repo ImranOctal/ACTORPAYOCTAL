@@ -102,7 +102,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
         if(shippingAddressItem !=null){
             isSave=false
             binding.save.text=getString(R.string.update)
-            binding.name.setText(shippingAddressItem!!.name)
+//            binding.name.setText(shippingAddressItem!!.name)
             binding.addressTitle.setText(shippingAddressItem!!.title)
             binding.addressArea.setText(shippingAddressItem!!.area)
             binding.addressLine1.setText(shippingAddressItem!!.addressLine1)
@@ -229,11 +229,11 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
             isValid=false
             binding.addressLine1.requestFocus()
         }
-        if(name.equals("")){
+       /* if(name.equals("")){
             binding.name.error="Please Enter Name"
             isValid=false
             binding.name.requestFocus()
-        }
+        }*/
         if(title.length<3){
             binding.addressTitle.error="Please Enter Valid Address Type"
             isValid=false
@@ -256,7 +256,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
                                 country,
                                 userlat.toString(),
                                 userlong.toString(),
-                                name,
+                                "",
                                 title,
                                 area,
                                 p_contact,
@@ -280,7 +280,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
                                 country,
                                 userlat.toString(),
                                 userlong.toString(),
-                                name,
+                                "",
                                 title,
                                 area,
                                 p_contact,

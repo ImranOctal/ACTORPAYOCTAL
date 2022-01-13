@@ -2,7 +2,7 @@
     <string name="app_name">ActorPayApp</string>
     <string name="facebook_app_id">473779207383239</string>
     <string name="google_map_key">AIzaSyCZGIE2o472ZoYOlLZk6rdPDWYtU3zoBOQ</string>
-<!--    <string name="google_map_key">AIzaSyDF9E6078CB2YHeX3Qc6c4xOTkkQoT7KCY</string>-->
+    <!--    <string name="google_map_key">AIzaSyDF9E6078CB2YHeX3Qc6c4xOTkkQoT7KCY</string>-->
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
