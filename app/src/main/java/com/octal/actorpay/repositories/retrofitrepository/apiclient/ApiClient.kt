@@ -16,7 +16,9 @@ import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_C
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_COUNTRIES
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_FAQ
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_PROFILE
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.GET_SINGLE_PRODUCT
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.LOGIN
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ORDER_CANCEL
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ORDER_STATUS
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.PLACE_ORDER
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.PROMO_LIST
@@ -27,6 +29,7 @@ import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.SOCIA
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.SUB_CATEGORIE_LIST
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.UPDATE_CART
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.UPDATE_PROFILE
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.VAR_ID
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.VERIFY_OTP
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
@@ -52,10 +55,13 @@ import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrde
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
+import com.octal.actorpay.repositories.retrofitrepository.models.products.SingleProductResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -130,6 +136,13 @@ interface ApiClient {
         @Body productParams: ProductParams
     ): Response<ProductListResponse>
 
+
+    @GET(GET_SINGLE_PRODUCT+ VAR_ID)
+    suspend fun getProductById(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+    ): Response<SingleProductResponse>
+
     @GET(GET_ALL_CART)
     suspend fun getCarts(
         @Header("Authorization") token: String,
@@ -179,6 +192,15 @@ interface ApiClient {
         @Header("Authorization") token: String,
         @Path("status") status: String,
         @Query("orderNo") orderNo: String,
+    ): Response<SuccessResponse>
+
+    @Multipart
+    @POST(ORDER_CANCEL+"{order}")
+    suspend fun changeOrderItemsStatus(
+        @Header("Authorization") token: String,
+        @Path("order") order: String,
+        @Part(AppConstance.CANCEL_ORDER) product: RequestBody,
+        @Part file: MultipartBody.Part?,
     ): Response<SuccessResponse>
 
 

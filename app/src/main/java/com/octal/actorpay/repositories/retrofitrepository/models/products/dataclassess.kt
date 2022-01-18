@@ -21,6 +21,13 @@ data class ProductData (
     val pageSize : Int
 )
 
+data class SingleProductResponse(
+    val `data`: ProductItem,
+    val httpStatus: String,
+    val message: String,
+    val status: String
+)
+
 
 data class ProductItem (
     val productId : String,

@@ -8,6 +8,7 @@ package com.octal.actorpay.repositories.methods
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
@@ -216,7 +217,34 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
         Handler(Looper.myLooper()!!).postDelayed({
                               mpopup.dismiss()
         },4000)
+    }
+
+    fun getStatus(status:String):String{
+        if(status.equals("PARTIALLY_CANCELLED"))
+            return "PARTIALLY CANCELLED"
+        else if(status.equals("PARTIALLY_RETURNING"))
+            return "PARTIALLY RETURNING"
+        else if(status.equals("PARTIALLY_RETURNED"))
+            return "PARTIALLY RETURNED"
+        else
+            return status
+    }
+    fun setStatus(status: String):String{
+        if(status.equals("PARTIALLY CANCELLED"))
+            return "PARTIALLY_CANCELLED"
+        else if(status.equals("PARTIALLY RETURNING"))
+            return "PARTIALLY_RETURNING"
+        else if(status.equals("PARTIALLY RETURNED"))
+            return "PARTIALLY_RETURNED"
+        else
+            return status
+    }
 
 
+    fun checkPermission(activity: Activity,permission:String):Boolean {
+        return ContextCompat.checkSelfPermission(
+            activity,
+            permission
+        ) != PackageManager.PERMISSION_DENIED
     }
 }

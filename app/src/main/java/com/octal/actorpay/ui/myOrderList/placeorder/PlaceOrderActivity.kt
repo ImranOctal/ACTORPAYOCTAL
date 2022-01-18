@@ -151,7 +151,7 @@ class PlaceOrderActivity : AppCompatActivity() {
 
                             is PlaceOrderResponse ->{
 //                                cartViewModel.getCartItmes()
-                                PlaceOrderDialog(this@PlaceOrderActivity,placeOrderViewModel.methodRepo,true,event.response.data){
+                                PlaceOrderDialog(this@PlaceOrderActivity,placeOrderViewModel.methodRepo,event.response.data){
                                     startActivity(
                                         Intent(this@PlaceOrderActivity,
                                             MainActivity::class.java)

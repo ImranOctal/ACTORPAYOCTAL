@@ -5,6 +5,8 @@ import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +19,7 @@ import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductItem
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.products.SingleProductResponse
 import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.ui.cart.CartActivity
 import com.octal.actorpay.ui.cart.CartViewModel
@@ -25,6 +28,7 @@ import com.octal.actorpay.utils.CommonDialogsUtils
 import com.techno.taskmanagement.utils.EndlessRecyclerViewScrollListener
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
+import org.koin.core.instance.getArguments
 
 class ProductDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductDetailsBinding
@@ -36,22 +40,19 @@ class ProductDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        window.statusBarColor = ContextCompat.getColor(this,R.color.primary)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_product_details)
 
         setAdapter()
         cartResponse()
         apiResponse()
-//        productDetailsViewModel.getProducts()
-
-
-        productItem.let {
-            binding.productItem = productItem
-            Glide.with(this)
-                .load(productItem!!.image)
-                .error(R.drawable.logo)
-                .into(binding.productImage)
-
+        var id=""
+        if(intent!=null){
+            if(intent.hasExtra("id"))
+                id=intent.getStringExtra("id")!!
         }
+        productDetailsViewModel.getProductById(id)
 
         binding.cancelPriceText.apply {
             paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -60,23 +61,38 @@ class ProductDetailsActivity : AppCompatActivity() {
         binding.back.setOnClickListener {
             finish()
         }
+
+
+
+    }
+
+    fun updateUI(){
+        productDetailsViewModel.product.let {
+            binding.productItem = productDetailsViewModel.product
+            Glide.with(this)
+                .load(productDetailsViewModel.product!!.image)
+                .error(R.drawable.logo)
+                .into(binding.productImage)
+
+        }
         initializeCartWork()
-
-
     }
 
     fun initializeCartWork() {
         binding.addToCart.setOnClickListener {
            addToCart()
         }
-        val cart = cartViewModel.cartItems.value.find { it.productId == productItem!!.productId }
-        if (cart != null) {
-            binding.addToCart.text = getString(R.string.go_to_cart)
-            binding.addToCart.setOnClickListener {
-                goToCart()
+        if(productDetailsViewModel.product != null) {
+            val cart =
+                cartViewModel.cartItems.value.find { it.productId == productDetailsViewModel.product!!.productId }
+            if (cart != null) {
+                binding.addToCart.text = getString(R.string.go_to_cart)
+                binding.addToCart.setOnClickListener {
+                    goToCart()
+                }
+            } else {
+                binding.addToCart.text = getString(R.string.add_to_cart)
             }
-        } else {
-            binding.addToCart.text = getString(R.string.add_to_cart)
         }
         binding.buyNow.setOnClickListener {
             buyNow()
@@ -86,29 +102,29 @@ class ProductDetailsActivity : AppCompatActivity() {
     private fun addToCart() {
         if (cartViewModel.cartItems.value.size > 0) {
             val merchantId = cartViewModel.cartItems.value[0].merchantId
-            if (productItem!!.merchantId != merchantId) {
+            if (productDetailsViewModel.product!!.merchantId != merchantId) {
                 wantsToBuyDialog {
                     futureAddCart=true
                     cartViewModel.deleteAllCart()
 
                 }
             } else
-                cartViewModel.addCart(productItem!!.productId,productItem!!.dealPrice)
+                cartViewModel.addCart(productDetailsViewModel.product!!.productId,productDetailsViewModel.product!!.dealPrice)
         }
         else
-        cartViewModel.addCart(productItem!!.productId,productItem!!.dealPrice)
+        cartViewModel.addCart(productDetailsViewModel.product!!.productId,productDetailsViewModel.product!!.dealPrice)
 
     }
     private fun buyNow() {
         if (cartViewModel.cartItems.value.size > 0) {
             val cartItem=  cartViewModel.cartItems.value.find {
-                it.productId== productItem!!.productId
+                it.productId== productDetailsViewModel.product!!.productId
             }
             if(cartItem!=null)
                 goToCart()
             else{
                 val merchantId = cartViewModel.cartItems.value[0].merchantId
-                if (productItem!!.merchantId != merchantId) {
+                if (productDetailsViewModel.product!!.merchantId != merchantId) {
                     wantsToBuyDialog {
                         isFromBuy=true
                         futureAddCart=true
@@ -116,13 +132,13 @@ class ProductDetailsActivity : AppCompatActivity() {
                     }
                 } else {
                     isFromBuy=true
-                    cartViewModel.addCart(productItem!!.productId,productItem!!.dealPrice)
+                    cartViewModel.addCart(productDetailsViewModel.product!!.productId,productDetailsViewModel.product!!.dealPrice)
                 }
             }
 
         } else {
             isFromBuy=true
-            cartViewModel.addCart(productItem!!.productId,productItem!!.dealPrice)
+            cartViewModel.addCart(productDetailsViewModel.product!!.productId,productDetailsViewModel.product!!.dealPrice)
         }
 
     }
@@ -197,6 +213,10 @@ class ProductDetailsActivity : AppCompatActivity() {
                                 productDetailsViewModel.productData.items.addAll(event.response.data.items)
                                 adapter.notifyItemChanged(productDetailsViewModel.productData.items.size - 1)
                             }
+                            is SingleProductResponse -> {
+                                productDetailsViewModel.product=event.response.data
+                                updateUI()
+                            }
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
@@ -221,8 +241,9 @@ class ProductDetailsActivity : AppCompatActivity() {
         ) { position, click ->
             when (click) {
                 Clicks.Root -> {
-                    productItem = productDetailsViewModel.productData.items[position]
-                    startActivity(Intent(this, ProductDetailsActivity::class.java))
+                    val intent=Intent(this,ProductDetailsActivity::class.java)
+                    intent.putExtra("id",productDetailsViewModel.productData.items[position].productId)
+                    startActivity(intent)
                 }
                 else -> Unit
             }
@@ -267,11 +288,6 @@ class ProductDetailsActivity : AppCompatActivity() {
                 override fun onCancel() {
                 }
             })
-    }
-
-    companion object {
-        var productItem: ProductItem? = null
-
     }
 
     private fun wantsToBuyDialog(onClick: () -> Unit) {

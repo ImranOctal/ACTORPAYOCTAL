@@ -84,6 +84,8 @@
     <string name="error_l_name">Oops! your last name\'s length is less than 3</string>
     <string name="forget_password">Forget Password?</string>
     <string name="forget_password1">Forget Password</string>
+    <string name="return_order">Return Order</string>
+    <string name="cancel_order">Cancel Order</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign up</string>
@@ -136,7 +138,15 @@
     <string-array name="status_array">
         <item>Select Status</item>
         <item>SUCCESS</item>
+        <item>READY</item>
         <item>CANCELLED</item>
+        <item>PARTIALLY CANCELLED</item>
+        <item>DISPATCHED</item>
+        <item>RETURNING</item>
+        <item>PARTIALLY RETURNING</item>
+        <item>RETURNED</item>
+        <item>PARTIALLY RETURNED</item>
+        <item>DELIVERED</item>
         <item>PENDING</item>
         <item>FAILURE</item>
     </string-array>

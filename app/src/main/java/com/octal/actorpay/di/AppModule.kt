@@ -18,6 +18,7 @@ import com.octal.actorpay.ui.content.ContentViewModel
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
 import com.octal.actorpay.ui.misc.MiscViewModel
 import com.octal.actorpay.ui.myOrderList.OrderViewModel
+import com.octal.actorpay.ui.myOrderList.orderdetails.OrderDetailsViewModel
 import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderViewModel
 import com.octal.actorpay.ui.productList.ProductViewModel
 import com.octal.actorpay.ui.productList.productdetails.ProductDetailsViewModel
@@ -105,6 +106,9 @@ private val appKoinModule = module {
     }
     viewModel {
         OrderViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        OrderDetailsViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     viewModel {
         PromoListViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())

@@ -1,5 +1,7 @@
 package com.octal.actorpay.repositories.retrofitrepository.models.shipping
 
+import java.io.Serializable
+
 data class ShippingAddressListResponse(
     var message: String,
     var data: ShippingAddressListData,
@@ -38,7 +40,7 @@ data class ShippingAddressItem(
     var isSelect:Boolean?=false,
     var userId: String,
     var id: String?=null,
-)
+): Serializable
 
 data class ShippingDeleteParams(
     var ids:MutableList<String>

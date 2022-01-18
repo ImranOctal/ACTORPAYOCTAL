@@ -51,6 +51,7 @@ class MiscFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_misc, container, false)
+        setTitle(getString(R.string.more))
         showHideBottomNav(false)
         showHideCartIcon(false)
         showHideFilterIcon(false)

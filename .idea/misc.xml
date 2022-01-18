@@ -27,12 +27,14 @@
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/round_wallet_bg.xml" value="0.37962962962962965" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_cart.xml" value="0.22" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_check_out.xml" value="0.22" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_content.xml" value="0.182370820668693" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_intro.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_main.xml" value="0.18" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_maps.xml" value="0.375" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_place_order.xml" value="0.33" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_product_details.xml" value="0.2" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_shipping_address_details.xml" value="0.33" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/cancel_order_dialog.xml" value="0.33" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/cart_layout.xml" value="0.38697916666666665" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/change_password_dialog.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/common_dialog.xml" value="0.25181159420289856" />
@@ -45,6 +47,7 @@
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_login.xml" value="0.182370820668693" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_misc.xml" value="0.2" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_my_order_list.xml" value="0.33" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_order_details.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_product_details.xml" value="0.38697916666666665" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_product_filter.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_products_list.xml" value="0.25" />
@@ -61,7 +64,7 @@
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/my_oders.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/order_filter_dialog.xml" value="0.375" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/otp_verify_dialog.xml" value="0.25" />
-        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/place_order_dialog.xml" value="0.22" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/place_order_dialog.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/popup_layout.xml" value="0.375" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/popup_window.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/product_list_item.xml" value="0.25" />

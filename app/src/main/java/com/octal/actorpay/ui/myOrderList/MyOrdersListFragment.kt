@@ -12,11 +12,12 @@ import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentMyOrderListBinding
+import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListData
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
+import com.octal.actorpay.ui.myOrderList.orderdetails.OrderDetailsFragment
 import com.octal.actorpay.utils.OnFilterClick
 import com.techno.taskmanagement.utils.EndlessRecyclerViewScrollListener
 import kotlinx.coroutines.flow.collect
@@ -27,6 +28,7 @@ import org.koin.android.ext.android.inject
 
      private lateinit var binding: FragmentMyOrderListBinding
      private val orderViewModel: OrderViewModel by inject()
+     lateinit var adapter: OrderListAdapter
 
      override fun onCreate(savedInstanceState: Bundle?) {
          super.onCreate(savedInstanceState)
@@ -66,16 +68,18 @@ import org.koin.android.ext.android.inject
      }
 
      private fun setAdapter(){
-         val adapter=OrderListAdapter(requireActivity(),orderViewModel.methodRepo,orderViewModel.orderListData.items,childFragmentManager){
+         adapter=OrderListAdapter(requireActivity(),orderViewModel.methodRepo,orderViewModel.orderListData.items,childFragmentManager){
              position, action ->
-             if(action.equals("cancel")){
-                 orderViewModel.orderListData.pageNumber = 0
-                 orderViewModel.orderListData.totalPages = 0
-                    orderViewModel.changeOrderStatus("CANCELLED",orderViewModel.orderListData.items[position].orderNo)
-                 orderViewModel.orderListData.items.clear()
+            if(action.equals(Clicks.Details)){
+                 startFragment(
+                     OrderDetailsFragment.newInstance(orderViewModel.orderListData.items[position]),
+                     addToBackStack = true,
+                     OrderDetailsFragment.toString()
+                 )
              }
          }
          val layoutManager = LinearLayoutManager(requireContext())
+
          binding.recyclerViewOrderList.layoutManager=layoutManager
          val endlessRecyclerViewScrollListener: EndlessRecyclerViewScrollListener =
              object : EndlessRecyclerViewScrollListener(layoutManager) {
@@ -93,7 +97,6 @@ import org.koin.android.ext.android.inject
      fun apiResponse() {
 
          lifecycleScope.launchWhenStarted {
-
              orderViewModel.responseLive.collect { event ->
                  when (event) {
                      is ResponseSealed.loading -> {
@@ -118,6 +121,7 @@ import org.koin.android.ext.android.inject
 
                          orderViewModel.methodRepo.hideLoadingDialog()
                          showCustomToast(event.message.message)
+                         updateUI(orderViewModel.orderListData)
                      }
                      is ResponseSealed.Empty -> {
                          orderViewModel.methodRepo.hideLoadingDialog()
@@ -149,7 +153,7 @@ import org.koin.android.ext.android.inject
 
 
      override fun onClick() {
-         OrderFilterDialog(orderViewModel.orderListParams,requireActivity()){
+         OrderFilterDialog(orderViewModel.orderListParams,requireActivity(),orderViewModel.methodRepo){
              orderViewModel.orderListParams=it
              orderViewModel.orderListData.pageNumber = 0
              orderViewModel.orderListData.totalPages = 0

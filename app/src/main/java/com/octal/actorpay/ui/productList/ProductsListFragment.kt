@@ -222,9 +222,9 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
             val product=productViewModel.productData.items[position]
             when (click) {
                 Clicks.Root -> {
-                    ProductDetailsActivity.productItem =
-                        product
-                    startActivity(Intent(requireActivity(), ProductDetailsActivity::class.java))
+                    val intent=Intent(requireActivity(),ProductDetailsActivity::class.java)
+                    intent.putExtra("id",product.productId)
+                    startActivity(intent)
                 }
                 Clicks.AddCart -> {
                     if (cartViewModel.cartItems.value.size > 0) {

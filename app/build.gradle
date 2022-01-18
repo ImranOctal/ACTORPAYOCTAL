@@ -170,5 +170,7 @@ dependencies {
 
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.1"
 
+    implementation 'com.github.yalantis:ucrop:2.2.6'
+
 
 }

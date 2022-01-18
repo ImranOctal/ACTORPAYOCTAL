@@ -33,12 +33,15 @@ import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrde
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
+import com.octal.actorpay.repositories.retrofitrepository.models.products.SingleProductResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import com.octal.actorpay.retrofitrepository.apiclient.ApiClient
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Response
 
@@ -382,6 +385,37 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
         }
     }
 
+    override suspend fun getProductById(
+        token: String,
+        id: String
+    ): RetrofitResource<SingleProductResponse> {
+
+        try {
+
+            val data = apiClient.getProductById(B_Token + token,id)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), "",
+                )
+            )
+        }
+    }
+
 
     override suspend fun getCarts(token: String): RetrofitResource<CartResponse> {
 
@@ -588,6 +622,34 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
 
         try {
             val data = apiClient.changeOrderStatus(B_Token + token,status,orderNo)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
+
+    override suspend fun changeOrderItemsStatus(token: String, orderNo:String, cancelOrder: RequestBody, product_pic: MultipartBody.Part?): RetrofitResource<SuccessResponse> {
+
+        try {
+            val data = apiClient.changeOrderItemsStatus(B_Token + token,orderNo,cancelOrder,product_pic)
             val result = data.body()
             if (data.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)

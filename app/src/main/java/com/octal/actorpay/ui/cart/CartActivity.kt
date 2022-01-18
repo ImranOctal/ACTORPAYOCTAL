@@ -19,10 +19,7 @@ import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import android.view.View
 import android.widget.Toast
-import com.octal.actorpay.MainActivity
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderActivity
-import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderDialog
 
 
 class CartActivity : AppCompatActivity() {
@@ -101,20 +98,6 @@ class CartActivity : AppCompatActivity() {
                                     updateUI(it)
                                 }
 
-                            }
-                            is PlaceOrderResponse->{
-                                cartViewModel.getCartItmes()
-                                PlaceOrderDialog(this@CartActivity,cartViewModel.methodRepo,true,event.response.data){
-                                    if(it.equals("done")) {
-                                        startActivity(
-                                            Intent(
-                                                this@CartActivity,
-                                                MainActivity::class.java
-                                            )
-                                        )
-                                        finishAffinity()
-                                    }
-                                }.show(supportFragmentManager,"Place")
                             }
                         }
                     }

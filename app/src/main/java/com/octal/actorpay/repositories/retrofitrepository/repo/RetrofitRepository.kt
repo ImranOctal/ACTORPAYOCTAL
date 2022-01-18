@@ -23,11 +23,14 @@ import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrde
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
+import com.octal.actorpay.repositories.retrofitrepository.models.products.SingleProductResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 /*
 * © Copyright Ishant Sharma
@@ -62,6 +65,8 @@ interface RetrofitRepository {
 
     suspend fun getProducts(token: String,pageNo:Int,pageSize:Int,productParams: ProductParams):RetrofitResource<ProductListResponse>
 
+    suspend fun getProductById(token: String,id: String):RetrofitResource<SingleProductResponse>
+
     suspend fun getCarts(token: String):RetrofitResource<CartResponse>
 
     suspend fun addCart(token: String,cartParams: CartParams):RetrofitResource<CartResponse>
@@ -77,6 +82,8 @@ interface RetrofitRepository {
     suspend fun getAllOrders(token: String,pageNo:Int,pageSize:Int,orderListParams: OrderListParams):RetrofitResource<OrderListResponse>
 
     suspend fun changeOrderStatus(token: String,status:String,orderNo:String):RetrofitResource<SuccessResponse>
+
+    suspend fun changeOrderItemsStatus(token: String, orderNo:String, cancelOrder: RequestBody, product_pic: MultipartBody.Part?):RetrofitResource<SuccessResponse>
 
     suspend fun getPromos(token: String,pageNo:Int,pageSize:Int):RetrofitResource<PromoResponse>
 

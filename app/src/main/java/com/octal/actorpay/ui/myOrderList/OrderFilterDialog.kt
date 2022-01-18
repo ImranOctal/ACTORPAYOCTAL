@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.octal.actorpay.R
 import com.octal.actorpay.databinding.OrderFilterDialogBinding
+import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import java.text.DecimalFormat
 import java.util.*
@@ -22,6 +23,7 @@ import java.util.*
 class OrderFilterDialog(
     val params: OrderListParams,
     val mContext: Activity,
+    val methodsRepo: MethodsRepo,
     val onClick: (OrderListParams) -> Unit
 ) : Dialog(mContext) {
     override fun show() {
@@ -67,7 +69,7 @@ class OrderFilterDialog(
             ) {
 
                 if(position==0){
-                    (view as TextView).setTextColor(mContext.resources.getColor(R.color.light_grey))
+                    (view as TextView).setTextColor(mContext.resources.getColor(R.color.gray))
                 }
             }
 
@@ -83,8 +85,8 @@ class OrderFilterDialog(
             binding.endDate.setText(params.endDate)
         val array = mContext.resources.getStringArray(R.array.status_array).toMutableList()
         if (params.orderStatus != null) {
-            if (array.contains(params.orderStatus)) {
-                val pos = array.indexOfFirst { it.equals(params.orderStatus) }
+            if (array.contains(methodsRepo.getStatus(params.orderStatus!!))) {
+                val pos = array.indexOfFirst { it.equals(methodsRepo.getStatus(params.orderStatus!!)) }
                 binding.spinnerStatus.setSelection(pos)
             }
         }
@@ -152,8 +154,10 @@ class OrderFilterDialog(
 
 
             val statusPosition = binding.spinnerStatus.selectedItemPosition
-            if (statusPosition != 0)
+            if (statusPosition != 0) {
                 status = array.get(statusPosition)
+                status=methodsRepo.setStatus(status)
+            }
             onClick(
                 OrderListParams(
                     total,

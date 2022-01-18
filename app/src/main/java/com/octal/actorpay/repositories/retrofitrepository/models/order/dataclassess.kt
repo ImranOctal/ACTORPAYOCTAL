@@ -2,6 +2,7 @@ package com.octal.actorpay.repositories.retrofitrepository.models.order
 
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductItem
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
+import java.io.Serializable
 
 
 data class PlaceOrderResponse(
@@ -66,7 +67,7 @@ data class OrderData(
     var totalTaxableValue: Double,
     val shippingAddressDTO:ShippingAddressItem?
 
-)
+):Serializable
 
 
 data class Customer(
@@ -79,10 +80,12 @@ data class Customer(
     var roles: ArrayList<String>,
     var kycDone: Boolean
 
-)
+):Serializable
 
 data class OrderItemDtos(
 
+    var orderItemId: String,
+    var orderItemStatus: String,
     var createdAt: String,
     var deleted: Boolean,
     var productId: String,
@@ -100,4 +103,4 @@ data class OrderItemDtos(
     var image: String,
     var active: Boolean
 
-)
+):Serializable

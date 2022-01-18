@@ -1,27 +1,21 @@
 package com.octal.actorpay.ui.myOrderList
 
 import android.app.Activity
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.gms.maps.model.CameraPosition
-import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
-import com.octal.actorpay.databinding.RowCartItemBinding
-import com.octal.actorpay.databinding.RowListOrderBinding
 import com.octal.actorpay.databinding.RowOrderListItemBinding
+import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData
-import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderDialog
 import java.lang.Exception
 
-class OrderListAdapter(val mContext: Activity,val methodsRepo: MethodsRepo, val orderList:MutableList<OrderData>, val fragmentManager:FragmentManager, val onClick:(position: Int, action:String)->Unit):RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
+class OrderListAdapter(val mContext: Activity,val methodsRepo: MethodsRepo, val orderList:MutableList<OrderData>, val fragmentManager:FragmentManager, val onClick:(position: Int, action: Clicks)->Unit):RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater= LayoutInflater.from(parent.context)
@@ -95,15 +89,9 @@ class OrderListAdapter(val mContext: Activity,val methodsRepo: MethodsRepo, val 
                     .error(R.drawable.logo)
                     .into(binding.productImage1)
 
-               /* binding.recyclerViewOrder.layoutManager=LinearLayoutManager(binding.root.context)
-                binding.recyclerViewOrder.adapter=OrderSingleAdapter(item.orderItemDtos)
-                    */
+
                 binding.root.setOnClickListener {
-                    PlaceOrderDialog(mContext,methodsRepo,false,item){
-                            if(it.equals("cancel")){
-                                onClick(adapterPosition,"cancel")
-                            }
-                    }.show(fragmentManager,"Place")
+                    onClick(adapterPosition,Clicks.Details)
                 }
 
                 if(item.orderStatus.equals("SUCCESS") || item.orderStatus.equals("COMPLETED"))

@@ -7,6 +7,7 @@ import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductData
+import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductItem
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
@@ -18,6 +19,7 @@ class ProductDetailsViewModel(val dispatcherProvider: CoroutineContextProvider, 
     Application()
 ) {
     var productData= ProductData(0,0, mutableListOf(),1,10)
+    var product:ProductItem?=null
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
 
 
@@ -30,6 +32,22 @@ class ProductDetailsViewModel(val dispatcherProvider: CoroutineContextProvider, 
                     apiRepo.getProducts(token,productData.pageNumber, productData.pageSize,
                         ProductParams()
                     )) {
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> responseLive.value =
+                        ResponseSealed.Success(response.data!!)
+                }
+            }
+        }
+    }
+
+    fun getProductById(productId:String) {
+
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.getProductById(token,productId)) {
                     is RetrofitResource.Error -> responseLive.value =
                         ResponseSealed.ErrorOnResponse(response.message)
                     is RetrofitResource.Success -> responseLive.value =

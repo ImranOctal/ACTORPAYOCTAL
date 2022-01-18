@@ -1,117 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="orderData"
             type="com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData" />
     </data>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    >
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-  >
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cart_toolbar"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/primary"
-        android:orientation="horizontal"
-        android:gravity="center"
-        >
-
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/back_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"
-            android:contentDescription="@string/back" />
-
-        <TextView
-            android:id="@+id/txtToolbarTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="@string/order_summary"
-            android:textSize="@dimen/_14ssp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/poppins_regular"
-
-            />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_100sdp"
-        app:layout_constraintTop_toBottomOf="@+id/cart_toolbar"
-        android:background="@color/primary"
-        />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cart_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/layout_bg"
-        android:paddingTop="@dimen/_20sdp"
-        app:layout_constraintTop_toBottomOf="@+id/cart_toolbar"
-        tools:layout_editor_absoluteX="83dp">
-
-        <ImageView
-            android:id="@+id/success_icon"
-            android:layout_width="@dimen/_75sdp"
-            android:layout_height="@dimen/_75sdp"
-            android:contentDescription="@string/thank_you"
-            android:src="@drawable/success_icon"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/thankyou_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/poppins_semibold"
-            android:gravity="center"
-            android:text="@string/thank_you"
-            android:textColor="@color/green_color"
-            android:textSize="@dimen/_16ssp"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/success_icon" />
-
-
-        <TextView
-            android:id="@+id/thankyou_desc_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/poppins_regular"
-            android:gravity="center"
-            android:text="@string/thank_you_for_your_order"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_12ssp"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@+id/thankyou_text" />
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/order_summary_layout"
@@ -120,7 +22,6 @@
             android:layout_margin="@dimen/_10sdp"
             android:background="@color/light_grey_home"
             android:paddingBottom="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@+id/thankyou_desc_text"
 
             >
 
@@ -143,19 +44,19 @@
                 style="@style/RegularTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@+id/order_summary_text"
-                app:layout_constraintBottom_toBottomOf="@+id/order_summary_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@drawable/my_oder_status_bg"
                 android:letterSpacing="0.01"
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:text="@{orderData.orderStatus}"
-                tools:text="Success"
                 android:textColor="@color/green_color"
                 android:textSize="@dimen/_12ssp"
-                tools:ignore="RelativeOverlap,UnusedAttribute" />
+                app:layout_constraintBottom_toBottomOf="@+id/order_summary_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/order_summary_text"
+                tools:ignore="RelativeOverlap,UnusedAttribute"
+                tools:text="Success" />
 
             <TextView
                 android:id="@+id/merchant_name"
@@ -318,8 +219,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/delivery_address_address2" />
 
 
+
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/done"
+                android:id="@+id/cancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
@@ -327,18 +230,13 @@
                 android:backgroundTint="@color/pink_color"
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="center"
-                android:text="@string/explore_more"
+                android:text="@string/cancel_order"
                 android:textSize="@dimen/_10ssp"
+                android:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@+id/delivery_address_city" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+    </ScrollView>
 </layout>
