@@ -14,7 +14,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData
 
 
 class PlaceOrderDialog(
-    val mContext: Activity,
+    private val mContext: Activity,
     val methodsRepo: MethodsRepo,
     val orderData: OrderData,
     val onDone: (String) -> Unit
@@ -32,7 +32,7 @@ class PlaceOrderDialog(
             false
         )
         dialog.setContentView(binding.root)
-        setCancelable(false)
+        isCancelable = false
 
         binding.back.setOnClickListener {
             dismiss()

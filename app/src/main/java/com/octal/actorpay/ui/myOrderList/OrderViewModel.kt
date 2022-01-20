@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
-import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListData
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository

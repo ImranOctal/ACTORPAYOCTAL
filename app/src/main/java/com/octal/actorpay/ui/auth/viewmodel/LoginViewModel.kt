@@ -4,14 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.octal.actorpay.BuildConfig
+import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-
-import com.octal.actorpay.repositories.retrofitrepository.models.FailResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.*
 import kotlinx.coroutines.flow.collect
 
@@ -22,25 +21,21 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
     companion object{
     var isFromContentPage=false
     }
-    val loginResponseLive = MutableStateFlow<ResponseLoginSealed>(ResponseLoginSealed.Empty)
-    sealed class ResponseLoginSealed {
-        class Success(val response: Any) : ResponseLoginSealed()
-        class ErrorOnResponse(val message: FailResponse?) : ResponseLoginSealed()
-        class loading(val isLoading: Boolean?) : ResponseLoginSealed()
-        object Empty : ResponseLoginSealed()
-    }
-    fun SignInNow(email: String, password: String) {
+
+    val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
+
+    fun signInNow(email: String, password: String) {
 
         viewModelScope.launch(dispatcherProvider.IO) {
             methodRepo.dataStore.getDeviceToken().collect { deviceToken ->
                 val deviceInfo = DeviceInfoParams("Android", BuildConfig.VERSION_CODE.toString(), deviceToken, "")
                 val body = LoginParams(email, password, deviceInfo)
-                loginResponseLive.value = ResponseLoginSealed.loading(true)
-                when (val response = apiRepo.LoginNow(body)) {
-                    is RetrofitResource.Error -> loginResponseLive.value =
-                        ResponseLoginSealed.ErrorOnResponse(response.message)
-                    is RetrofitResource.Success -> loginResponseLive.value =
-                        ResponseLoginSealed.Success(response.data!!)
+                responseLive.value = ResponseSealed.loading(true)
+                when (val response = apiRepo.loginNow(body)) {
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> responseLive.value =
+                        ResponseSealed.Success(response.data!!)
                 }
             }
         }
@@ -50,7 +45,7 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
     fun socialLogin(firstName:String,lastName:String,email:String,socialId:String,imgUrl:String) {
 
         viewModelScope.launch(dispatcherProvider.IO) {
-            loginResponseLive.value = ResponseLoginSealed.loading(true)
+            responseLive.value = ResponseSealed.loading(true)
             methodRepo.dataStore.getDeviceToken().collect { deviceToken ->
                 val deviceInfo = DeviceInfoParams(
                     "Android",
@@ -61,10 +56,10 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
                 val body=SocialParams(firstName,lastName,email,socialId,imgUrl,deviceInfo)
 
                 when (val response = apiRepo.socialLogin(body)) {
-                    is RetrofitResource.Error -> loginResponseLive.value =
-                        ResponseLoginSealed.ErrorOnResponse(response.message)
-                    is RetrofitResource.Success -> loginResponseLive.value =
-                        ResponseLoginSealed.Success(response.data!!)
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> responseLive.value =
+                        ResponseSealed.Success(response.data!!)
                 }
             }
         }
@@ -74,12 +69,12 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
     fun forgetPassword(email: String){
         val body=ForgetPasswordParams(email)
         viewModelScope.launch(dispatcherProvider.IO){
-            loginResponseLive.value=ResponseLoginSealed.loading(true)
-            when(val response=apiRepo.ForgetPassword(body)){
-                is RetrofitResource.Error -> loginResponseLive.value =
-                    ResponseLoginSealed.ErrorOnResponse(response.message)
-                is RetrofitResource.Success -> loginResponseLive.value =
-                    ResponseLoginSealed.Success(response.data!!.message)
+            responseLive.value=ResponseSealed.loading(true)
+            when(val response=apiRepo.forgetPassword(body)){
+                is RetrofitResource.Error -> responseLive.value =
+                    ResponseSealed.ErrorOnResponse(response.message)
+                is RetrofitResource.Success -> responseLive.value =
+                    ResponseSealed.Success(response.data!!.message)
             }
         }
     }
@@ -87,12 +82,12 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
     fun resendOtp(email: String){
         val body=ForgetPasswordParams(email)
         viewModelScope.launch(dispatcherProvider.IO){
-            loginResponseLive.value=ResponseLoginSealed.loading(true)
+            responseLive.value=ResponseSealed.loading(true)
             when(val response=apiRepo.resendOtp(body)){
-                is RetrofitResource.Error -> loginResponseLive.value =
-                    ResponseLoginSealed.ErrorOnResponse(response.message)
-                is RetrofitResource.Success -> loginResponseLive.value =
-                    ResponseLoginSealed.Success(response.data!!.message)
+                is RetrofitResource.Error -> responseLive.value =
+                    ResponseSealed.ErrorOnResponse(response.message)
+                is RetrofitResource.Success -> responseLive.value =
+                    ResponseSealed.Success(response.data!!.message)
             }
         }
     }

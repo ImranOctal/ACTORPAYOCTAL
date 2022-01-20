@@ -1,11 +1,9 @@
 package com.octal.actorpay.ui.myOrderList
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.octal.actorpay.R
@@ -15,7 +13,7 @@ import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData
 import java.lang.Exception
 
-class OrderListAdapter(val mContext: Activity,val methodsRepo: MethodsRepo, val orderList:MutableList<OrderData>, val fragmentManager:FragmentManager, val onClick:(position: Int, action: Clicks)->Unit):RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
+class OrderListAdapter(val methodsRepo: MethodsRepo, private val orderList:MutableList<OrderData>, val onClick:(position: Int, action: Clicks)->Unit):RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater= LayoutInflater.from(parent.context)
@@ -94,16 +92,16 @@ class OrderListAdapter(val mContext: Activity,val methodsRepo: MethodsRepo, val 
                     onClick(adapterPosition,Clicks.Details)
                 }
 
-                if(item.orderStatus.equals("SUCCESS") || item.orderStatus.equals("COMPLETED"))
+                if(item.orderStatus == "SUCCESS" || item.orderStatus == "COMPLETED")
                 {
                     binding.orderStatus.setTextColor(ContextCompat.getColor(binding.root.context,R.color.green_color))
                     binding.orderStatus.setBackgroundResource(R.drawable.my_oder_status_bg)
                 }
-                else if(item.orderStatus.equals("CANCELLED") || item.orderStatus.equals("FAILED") || item.orderStatus.equals("CANCEL")){
+                else if(item.orderStatus == "CANCELLED" || item.orderStatus == "FAILED" || item.orderStatus == "CANCEL"){
                     binding.orderStatus.setTextColor(ContextCompat.getColor(binding.root.context,R.color.red))
                     binding.orderStatus.setBackgroundResource(R.drawable.my_oder_status_bg_red)
                 }
-                else if(item.orderStatus.equals("PENDING") || item.orderStatus.equals("RETURNED") ){
+                else if(item.orderStatus == "PENDING" || item.orderStatus == "RETURNED"){
                     binding.orderStatus.setTextColor(ContextCompat.getColor(binding.root.context,R.color.primary))
                     binding.orderStatus.setBackgroundResource(R.drawable.orderstatus_bg)
                 }

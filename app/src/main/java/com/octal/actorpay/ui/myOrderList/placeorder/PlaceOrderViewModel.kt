@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParams
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
@@ -25,12 +25,12 @@ class PlaceOrderViewModel(val dispatcherProvider: CoroutineContextProvider,
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
     val shippingAddressList= mutableListOf<ShippingAddressItem>()
 
-    fun placeOrder(placeOrderParamas: PlaceOrderParamas) {
+    fun placeOrder(placeOrderParams: PlaceOrderParams) {
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(true)
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
-                    apiRepo.placeOrder(token,placeOrderParamas)) {
+                    apiRepo.placeOrder(token,placeOrderParams)) {
                     is RetrofitResource.Error -> responseLive.value =
                         ResponseSealed.ErrorOnResponse(response.message)
                     is RetrofitResource.Success -> {

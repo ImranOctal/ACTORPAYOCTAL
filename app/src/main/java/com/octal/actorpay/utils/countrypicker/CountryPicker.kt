@@ -2,14 +2,11 @@ package com.octal.actorpay.utils.countrypicker
 
 import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
-import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.octal.actorpay.R
@@ -56,18 +53,18 @@ class CountryPicker(val context: Context,val methodsRepo: MethodsRepo, val list:
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(ss: CharSequence, start: Int, before: Int, count: Int) {
-                val filterdNames = ArrayList<CountryItem>()
+                val filteredNames = ArrayList<CountryItem>()
 
                 for (s in list) {
                     //if the existing elements contains the search input
                     if (s.country.lowercase(Locale.getDefault()).contains(ss.toString()
                             .lowercase(Locale.getDefault()))) {
                         //adding the element to filtered list
-                        filterdNames.add(s)
+                        filteredNames.add(s)
                     }
                 }
                 filterList.clear()
-                filterList.addAll(filterdNames)
+                filterList.addAll(filteredNames)
                 recyclerView.adapter?.notifyDataSetChanged()
             }
 

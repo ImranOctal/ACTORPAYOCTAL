@@ -1,20 +1,15 @@
 package com.octal.actorpay.ui.notification
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.octal.actorpay.R
-import com.octal.actorpay.viewmodel.ActorPayViewModel
-import org.koin.android.ext.android.inject
+import com.octal.actorpay.base.BaseFragment
 
 
-class NotificationFragment : Fragment() {
-    private val viewModel: ActorPayViewModel by  inject()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+class NotificationFragment : BaseFragment() {
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

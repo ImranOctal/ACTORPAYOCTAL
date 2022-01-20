@@ -7,7 +7,6 @@ import com.octal.actorpay.BuildConfig
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
-import com.octal.actorpay.repositories.retrofitrepository.models.FailResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.DeviceInfoParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
@@ -21,7 +20,7 @@ class SignupViewModel(val dispatcherProvider: CoroutineContextProvider, val meth
 
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
 
-    fun SignUpNow(
+    fun signUpNow(
         firstName: String,
         lastName: String,
         email: String,

@@ -1,5 +1,8 @@
 package com.octal.actorpay.repositories.AppConstance
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 class AppConstance {
     companion object{
         const val BASE_URL: String = "http://192.168.1.171:8765/"
@@ -75,6 +78,11 @@ class AppConstance {
         const val STATUS_DELIVERED:String="DELIVERED"
         const val STATUS_PENDING:String="PENDING"
         const val STATUS_FAILED:String="FAILED"
+
+        val dateFormate1= SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        val dateFormate2= SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+        val dateFormate3= SimpleDateFormat("yyyy-MM-dd HH:MM", Locale.ENGLISH)
+        val dateFormate4= SimpleDateFormat("dd MMM yyyy HH:MM", Locale.ENGLISH)
     }
 }
 
@@ -84,7 +92,12 @@ enum class Clicks{
     Minus,
     Plus,
     BuyNow,
+    Edit,
     Delete,
     Cancel,
-    Details
+    Details,
+    Skip,
+    Next,
+    Prev,
+    GetStart
 }

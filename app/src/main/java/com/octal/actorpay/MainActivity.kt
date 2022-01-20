@@ -13,9 +13,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseActivity
+import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.ActivityMainBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.ui.adapter.FeaturesAdapter
@@ -23,21 +24,19 @@ import com.octal.actorpay.ui.adapter.MenuAdapter
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.ui.cart.CartActivity
 import com.octal.actorpay.ui.cart.CartViewModel
-import com.octal.actorpay.ui.dashboard.`interface`.ItemListenr
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.HistoryBottomFragment
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.HomeBottomFragment
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.ProfileBottomFragment
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.WalletBottomFragment
 import com.octal.actorpay.ui.dashboard.models.DrawerItems
-import com.octal.actorpay.ui.misc.ChangePasswordDialog
 import com.octal.actorpay.ui.misc.MiscFragment
 import com.octal.actorpay.ui.myOrderList.MyOrdersListFragment
 import com.octal.actorpay.ui.productList.ProductsListFragment
 import com.octal.actorpay.ui.promocodes.PromoListFragment
 import com.octal.actorpay.ui.refer_and_earn.ReferAndEarnFragment
-import com.octal.actorpay.ui.remittance.RemittanceFragment
 import com.octal.actorpay.ui.rewards_points.RewardsPointsFragment
 import com.octal.actorpay.ui.settings.SettingsFragment
+import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.utils.OnFilterClick
 import com.octal.actorpay.viewmodel.ActorPayViewModel
 import kotlinx.coroutines.flow.collect
@@ -48,42 +47,43 @@ import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
-    AdapterView.OnItemSelectedListener, ItemListenr {
+    AdapterView.OnItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private var mTitles = ArrayList<DrawerItems>()
     private var mViewHolder: ViewHolder? = null
     private var mMenuAdapter: MenuAdapter? = null
-    private var doubleBackToExitPressedOnce = false
-    private lateinit var listner: ItemListenr
-    var navController: NavController? = null
     private lateinit var activity: Context
     private val viewModel: ActorPayViewModel by inject()
     private val cartViewModel: CartViewModel by inject()
-    private lateinit var filterClick:OnFilterClick
-//    private val cartViewModel by sharedViewModel<CartViewModel>()
+    private lateinit var filterClick: OnFilterClick
+
+    private lateinit var navController: NavController
+    private lateinit var navHostFragment: Fragment
+
+    private var isMenuOrBack=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Data binding here
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.container)!!
+        navController = findNavController(R.id.container)
+        setupNavigation()
+
         activity = this
-        listner = this
         val view = binding.root
         setContentView(view)
-        setView(view)
-        startFragment(
-            HomeBottomFragment.newInstance(),
-            HomeBottomFragment.toString(),
-            addToBackStack = true
-        )
-        initiliation()
+
+
+        initialization()
         setBottomNavigationView()
         features()
         title = "ActorPay"
     }
 
     private fun features() {
-        LoginViewModel.isFromContentPage=false
+        LoginViewModel.isFromContentPage = false
         binding.layoutMainID.rvItemsID.apply {
             val arraylist: ArrayList<String> =
                 arrayListOf(
@@ -94,7 +94,10 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     "Online Payment",
                     "Product List"
                 )
-            adapter = FeaturesAdapter(arraylist, activity, listner)
+            adapter = FeaturesAdapter(arraylist){
+                position ->
+                onItemClickListener(position,arraylist)
+            }
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
         }
@@ -102,99 +105,57 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     }
 
     private fun setBottomNavigationView() {
-        /*val bottomnav: BottomNavigationView
-        bottomnav = rootView.findViewById(R.id.bottomNavigationView)*/
+
         binding.layoutMainID.bottomNavigationView.setOnItemSelectedListener { item ->
+            val fragment = navHostFragment.childFragmentManager.fragments[0]
             when (item.itemId) {
                 R.id.home_fragment -> {
-                    title = "ActorPay"
-                    if (getCurrentFragment() !is HomeBottomFragment) {
-                        startFragment(
-                            HomeBottomFragment.newInstance(),
-                            addToBackStack = true,
-                            HomeBottomFragment.toString()
-                        )
-                        binding.layoutMainID.rvItemsID.visibility = View.VISIBLE
+                    if ((fragment is HomeBottomFragment).not()) {
+                        navController.navigate(R.id.homeBottomFragment)
                     }
-                    /*  Navigation.findNavController(binding.root).navigate(R.id.homeBottomFragment)*/
 
-                    /* val fragment = HomeBottomFragment()
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.framelayout, fragment!!, fragment.javaClass.getSimpleName())
-                        .commit()*/
 
                 }
                 R.id.history_fragment -> {
-                    if (getCurrentFragment() !is HistoryBottomFragment) {
-                        title = "My History"
-                        startFragment(
-                            HistoryBottomFragment.newInstance(),
-                            addToBackStack = true,
-                            HistoryBottomFragment.toString()
-                        )
-                        binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    if ((fragment is HistoryBottomFragment).not()) {
+                        navController.navigate(R.id.historyBottomFragment)
                     }
-                    // Navigation.findNavController(binding.root).navigate(R.id.historyBottomFragment)
                 }
                 R.id.wallet_fragment -> {
-                    // Navigation.findNavController(binding.root).navigate(R.id.walletFragment)
-                    if (getCurrentFragment() !is WalletBottomFragment) {
-                        title = "My Wallet"
-                        startFragment(
-                            WalletBottomFragment.newInstance(),
-                            addToBackStack = true,
-                            WalletBottomFragment.toString()
-                        )
-                        binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    if (fragment !is WalletBottomFragment) {
+
+                        navController.navigate(R.id.walletBottomFragment)
                     }
                 }
                 R.id.profile_fragment -> {
-                    if (getCurrentFragment() !is ProfileBottomFragment) {
-                        title = "My Profile"
-                        startFragment(
-                            ProfileBottomFragment.newInstance(),
-                            addToBackStack = true,
-                            ProfileBottomFragment.toString()
-                        )
-                        binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    if (fragment !is ProfileBottomFragment) {
+                        navController.navigate(R.id.profileBottomFragment)
                     }
-
-
                 }
                 else -> {
-                    startFragment(
-                        HomeBottomFragment.newInstance(),
-                        addToBackStack = true,
-                        HomeBottomFragment.toString()
-                    )
+                    navController.navigate(R.id.homeBottomFragment)
                 }
             }
             true
         }
     }
 
-    private inner class ViewHolder internal constructor() {
+    private inner class ViewHolder {
         val mDuoDrawerLayout: DuoDrawerLayout = binding.drawer
-        val mDuoMenuView: DuoMenuView
-        val mToolbar: Toolbar
-        val mFooterLayout: RelativeLayout
-        val mHeaderLayout: RelativeLayout
+        val mDuoMenuView: DuoMenuView = mDuoDrawerLayout.menuView as DuoMenuView
+        val mToolbar: Toolbar = binding.toolbarLayout.toolbar
+        val mFooterLayout: RelativeLayout = mDuoMenuView.footerView as RelativeLayout
+        val mHeaderLayout: RelativeLayout = mDuoMenuView.headerView as RelativeLayout
 
         init {
-            mDuoMenuView = mDuoDrawerLayout.menuView as DuoMenuView
-            mToolbar = binding.toolbarLayout.toolbar
-            mFooterLayout = mDuoMenuView.footerView as RelativeLayout
-            mHeaderLayout = mDuoMenuView.headerView as RelativeLayout
-            val name=mHeaderLayout.findViewById<TextView>(R.id.duo_view_header_text_title)
+            val name = mHeaderLayout.findViewById<TextView>(R.id.duo_view_header_text_title)
             lifecycleScope.launchWhenCreated {
 
 
-            viewModel.methodRepo.dataStore.getFirstName().collect {
-                first->
-                viewModel.methodRepo.dataStore.getLastName().collect {
-                    last->
-                    name.text="$first $last"
-                }
+                viewModel.methodRepo.dataStore.getFirstName().collect { first ->
+                    viewModel.methodRepo.dataStore.getLastName().collect { last ->
+                        name.text = "$first $last"
+                    }
                 }
             }
             mFooterLayout.setOnClickListener {
@@ -206,12 +167,11 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     }
 
 
-
-    private fun initiliation() {
+    private fun initialization() {
         apiResponse()
-        cartViewModel.getCartItmes()
+        cartViewModel.getCartItems()
 
-        mTitles = ArrayList<DrawerItems>()
+        mTitles = ArrayList()
         mTitles.add(
             DrawerItems(
                 getString(R.string.my_orders),
@@ -247,13 +207,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
             )
         )
 
-       /* mTitles.add(
-            DrawerItems(
-                getString(R.string.change_password),
-                ContextCompat.getDrawable((this), R.drawable.my_profile)!!
-
-            )
-        )*/
         mTitles.add(
             DrawerItems(
                 getString(R.string.promo_offers),
@@ -268,13 +221,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
             )
         )
-       /* mTitles.add(
-            DrawerItems(
-                getString(R.string.change_payment_option),
-                ContextCompat.getDrawable((this), R.drawable.my_orders)!!
-
-            )
-        )*/
         mTitles.add(
             DrawerItems(
                 getString(R.string.settings),
@@ -303,6 +249,13 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         //actionView here
         actionView()
 
+        binding.menuBack.setOnClickListener {
+            if(isMenuOrBack)
+                mViewHolder?.mDuoDrawerLayout?.openDrawer()
+            else
+                onBackPressed()
+        }
+
     }
 
     private fun actionView() {
@@ -311,10 +264,10 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
     private fun handleToolbar() {
         setSupportActionBar(mViewHolder?.mToolbar)
-        mViewHolder?.mToolbar?.setTitleTextColor(ContextCompat.getColor(this,R.color.white))
+        mViewHolder?.mToolbar?.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
 
         binding.cart.setOnClickListener {
-            startActivity(Intent(this,CartActivity::class.java))
+            startActivity(Intent(this, CartActivity::class.java))
         }
         binding.filter.setOnClickListener {
             filterClick.onClick()
@@ -350,166 +303,65 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
     override fun onOptionClicked(position: Int, objectClicked: Any?) {
 
-        // No need for Change Password UI
-//        if(position!=6) {
-            // Set the toolbar title
-            title = mTitles[position].mTitle
-            // Set the right options selected
-            mMenuAdapter?.setViewSelected(position, true)
-//        }
-        // Navigate to the right fragment
+
+        title = mTitles[position].mTitle
+        mMenuAdapter?.setViewSelected(position, true)
+        val fragment = navHostFragment.childFragmentManager.fragments[0]
         when (position) {
 
             0 -> {
-                // NavController().navigateWithId(R.id.myOrderFragment, findNavController())
-                if (getCurrentFragment() !is MyOrdersListFragment) {
-                    title = "My Orders"
-                    startFragment(
-                        MyOrdersListFragment.newInstance(),
-                        addToBackStack = true,
-                        MyOrdersListFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is MyOrdersListFragment) {
+                    navController.navigate(R.id.myOrderFragment)
                 }
-                // Navigation.findNavController(binding.root).navigate(R.id.myOrderFragment)
             }
             1 -> {
-                if (getCurrentFragment() !is WalletBottomFragment) {
-                    title = "My Wallet"
-                    startFragment(
-                        WalletBottomFragment.newInstance(),
-                        addToBackStack = true,
-                        WalletBottomFragment.toString()
-                    )
-                    binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.wallet_fragment)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is WalletBottomFragment) {
+                    navController.navigate(R.id.walletBottomFragment)
                 }
-                //  Navigation.findNavController(binding.root).navigate(R.id.walletFragment)
             }
             2 -> {
-                if (getCurrentFragment() !is RewardsPointsFragment) {
-                    title = "Rewards"
-                    startFragment(
-                        RewardsPointsFragment.newInstance(),
-                        addToBackStack = true,
-                        RewardsPointsFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is RewardsPointsFragment) {
+                    navController.navigate(R.id.rewardsFragment)
                 }
-
-                //Navigation.findNavController(binding.root).navigate(R.id.rewardsFragment)
-                //  NavController().navigateWithId(R.id.productListFragment, findNavController())
-
             }
             3 -> {
-                if (getCurrentFragment() !is ReferAndEarnFragment) {
-                    title = "Refer and Earn"
-                    startFragment(
-                        ReferAndEarnFragment.newInstance(),
-                        addToBackStack = true,
-                        ReferAndEarnFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is ReferAndEarnFragment) {
+                    navController.navigate(R.id.referFragment)
                 }
-                // Navigation.findNavController(binding.root).navigate(R.id.referFragment)
-
             }
             4 -> {
-                if (getCurrentFragment() !is WalletBottomFragment) {
-                    title = "My Wallet"
-                    startFragment(
-                        WalletBottomFragment.newInstance(),
-                        addToBackStack = true,
-                        WalletBottomFragment.toString()
-                    )
-                    binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.wallet_fragment)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is WalletBottomFragment) {
+                    navController.navigate(R.id.walletBottomFragment)
                 }
-                // NavController().navigateWithId(R.id.walletFragment, findNavController())
             }
             5 -> {
 
-                if (getCurrentFragment() !is PromoListFragment) {
-                    title = "Promos"
-                    startFragment(
-                        PromoListFragment.newInstance(),
-                        addToBackStack = true,
-                        PromoListFragment.toString()
-                    )
+                if (fragment !is PromoListFragment) {
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    navController.navigate(R.id.promoListFragment)
+                }
+            }
+            6 -> {
+                if (fragment !is ProfileBottomFragment) {
+                    navController.navigate(R.id.profileBottomFragment)
                 }
 
             }
-            /*6 -> {
-                changePasswordUi()
-            }*/
-            6 -> {
-                if (getCurrentFragment() !is ProfileBottomFragment) {
-                    title = "My Profile"
-                    startFragment(
-                        ProfileBottomFragment.newInstance(),
-                        addToBackStack = true,
-                        ProfileBottomFragment.toString()
-                    )
-                    binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.profile_fragment)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
-                }
-               /* Navigation.findNavController(binding.root).navigate(R.id.productListFragment)
-                binding.findNavController.rvItemsID.visibility = View.GONE*/
-            }
-           /* 8 -> {
-                if (getCurrentFragment() !is RemittanceFragment) {
-                    title=getString(R.string.change_payment_option)
-                    startFragment(
-                        RemittanceFragment.newInstance(),
-                        addToBackStack = true,
-                        RemittanceFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
-                }
-               // Navigation.findNavController(binding.root).navigate(R.id.remittance)
-               // binding.layoutMainID.rvItemsID.visibility = View.GONE
-            }*/
             7 -> {
-                if (getCurrentFragment() !is SettingsFragment) {
-                    title="Settings"
-                    startFragment(
-                        SettingsFragment.newInstance(),
-                        addToBackStack = true,
-                        SettingsFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is SettingsFragment) {
+                    navController.navigate(R.id.settingsFragment)
                 }
-               // Navigation.findNavController(binding.root).navigate(R.id.miscFragment)
-               // binding.layoutMainID.rvItemsID.visibility = View.GONE
             }
             8 -> {
-                if (getCurrentFragment() !is MiscFragment) {
-                    title="More"
-                    startFragment(
-                        MiscFragment.newInstance(),
-                        addToBackStack = true,
-                        MiscFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is MiscFragment) {
+                    navController.navigate(R.id.miscFragment)
                 }
-               // Navigation.findNavController(binding.root).navigate(R.id.miscFragment)
-               // binding.layoutMainID.rvItemsID.visibility = View.GONE
             }
 
         }
-
-
-        // Close the drawer
         mViewHolder?.mDuoDrawerLayout?.closeDrawer()
     }
 
-    fun changePasswordUi(){
-        ChangePasswordDialog().show(this,viewModel.methodRepo){
-                oldPassword, newPassword ->
-            viewModel.changePassword(oldPassword,newPassword    )
-        }
-    }
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
     }
 
@@ -517,115 +369,83 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     }
 
 
-    override fun on_ItemClickListner(position: Int, mList: List<String>, view: View) {
+    private fun onItemClickListener(position: Int, mList: List<String>) {
+
+        val fragment = navHostFragment.childFragmentManager.fragments[0]
         when (mList[position]) {
+
             "Add Money" -> {
-                if (getCurrentFragment() !is WalletBottomFragment) {
-                    title = "Add Money"
-                    startFragment(
-                        WalletBottomFragment.newInstance(),
-                        addToBackStack = true,
-                        WalletBottomFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is WalletBottomFragment) {
+//                    title = "Add Money"
+                    navController.navigate(R.id.walletBottomFragment)
+
                 }
             }
             "Send Money" -> {
-                //NavController().navigateWithId(R.id.walletFragment, findNavController())
-                if (getCurrentFragment() !is WalletBottomFragment) {
-                    title = "Send Money"
-                    startFragment(
-                        WalletBottomFragment.newInstance(),
-                        addToBackStack = true,
-                        WalletBottomFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is WalletBottomFragment) {
+//                    title = "Send Money"
+                    navController.navigate(R.id.walletBottomFragment)
                 }
             }
             "Mobile & DTH" -> {
-                //NavController().navigateWithId(R.id.transferMoneyFragment, findNavController())
-                if (getCurrentFragment() !is WalletBottomFragment) {
-                    title = "Mobile and DTH"
-                    startFragment(
-                        WalletBottomFragment.newInstance(),
-                        addToBackStack = true,
-                        WalletBottomFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is WalletBottomFragment) {
+//                    title = "Mobile and DTH"
+                    navController.navigate(R.id.walletBottomFragment)
                 }
             }
             "Utility Bill" -> {
-                if (getCurrentFragment() !is ProductsListFragment) {
-                    title = "Utility Bill"
-                    startFragment(
-                        ProductsListFragment.newInstance(),
-                        addToBackStack = true,
-                        ProductsListFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is WalletBottomFragment) {
+//                    title = "Utility Bill"
+                    navController.navigate(R.id.walletBottomFragment)
                 }
             }
             "Online Payment" -> {
-                if (getCurrentFragment() !is ProductsListFragment) {
-                    title = "Online Payment"
-                    startFragment(
-                        ProductsListFragment.newInstance(),
-                        addToBackStack = true,
-                        ProductsListFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is WalletBottomFragment) {
+//                    title = "Online Payment"
+                    navController.navigate(R.id.walletBottomFragment)
                 }
             }
             "Product List" -> {
-                if (getCurrentFragment() !is ProductsListFragment) {
-                    title = "Products"
-                    startFragment(
-                        ProductsListFragment.newInstance(),
-                        addToBackStack = true,
-                        ProductsListFragment.toString()
-                    )
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                if (fragment !is ProductsListFragment) {
+                    navController.navigate(R.id.productListFragment)
                 }
             }
 
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        if (navController!!.navigateUp() == false) {
-            onBackPressed()
-        }
-        return navController!!.navigateUp()
-    }
 
-
-    private fun apiResponse(){
+    private fun apiResponse() {
         lifecycleScope.launch {
-            viewModel.actorcResponseLive.collect {
-                when(it){
-                    is ActorPayViewModel.ResponseActorSealed.loading->{
+            viewModel.actorResponseLive.collect {
+                when (it) {
+                    is ResponseSealed.loading -> {
                         viewModel.methodRepo.showLoadingDialog(this@MainActivity)
                     }
-                    is ActorPayViewModel.ResponseActorSealed.Success->{
+                    is ResponseSealed.Success -> {
                         viewModel.methodRepo.hideLoadingDialog()
-                        if(it.response is SuccessResponse){
-                            CommonDialogsUtils.showCommonDialog(this@MainActivity,viewModel.methodRepo,"Success",it.response.message)
-                        }
-                        else {
+                        if (it.response is SuccessResponse) {
+                            CommonDialogsUtils.showCommonDialog(
+                                this@MainActivity,
+                                viewModel.methodRepo,
+                                "Success",
+                                it.response.message
+                            )
+                        } else {
                             showCustomAlert(
                                 getString(R.string.please_try_after_sometime),
                                 binding.root
                             )
                         }
                     }
-                    is ActorPayViewModel.ResponseActorSealed.ErrorOnResponse->{
+                    is ResponseSealed.ErrorOnResponse -> {
                         viewModel.methodRepo.hideLoadingDialog()
                         showCustomAlert(
-                            it.failResponse!!.message,
+                            it.message!!.message,
                             binding.root
                         )
                     }
-                    is ActorPayViewModel.ResponseActorSealed.Empty -> {
+                    is ResponseSealed.Empty -> {
                         viewModel.methodRepo.hideLoadingDialog()
                     }
                 }
@@ -633,76 +453,213 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val fragment = getCurrentFragment()
-        if (fragment is HomeBottomFragment) {
-            title = "ActorPay"
-            binding.layoutMainID.rvItemsID.visibility = View.VISIBLE
-            binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.home_fragment)
-        } else if (fragment is HistoryBottomFragment) {
-            title = "My History"
-            binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.history_fragment)
-        } else if (fragment is WalletBottomFragment) {
-            title = "My Wallet"
-            binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.wallet_fragment)
-        } else if (fragment is ProfileBottomFragment) {
-            title = "My Profile"
-            binding.layoutMainID.bottomNavigationView.setSelectedItemId(R.id.profile_fragment)
-        } else if (getCurrentFragment() is ReferAndEarnFragment) {
-            title = "My Refer"
-        }else if (getCurrentFragment() is RewardsPointsFragment) {
-            title = "My Rewards"
-        }else  if (getCurrentFragment() is ProductsListFragment) {
-            title = "Products"
-        }else  if (getCurrentFragment() is RemittanceFragment){
-            title=getString(R.string.change_payment_option)
-        }else   if (getCurrentFragment() is MiscFragment) {
-            title = "More"
+    private fun setupNavigation() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeBottomFragment -> {
+                    title = "ActorPay"
+                    isMenuOrBack=true
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_UNLOCKED)
+                    binding.menuBack.setImageResource(R.drawable.menu)
+                    binding.layoutMainID.rvItemsID.visibility = View.VISIBLE
+                    binding.layoutMainID.bottomNavigationView.menu.getItem(0).isChecked = true
+                    showHideBottomNav(true)
+                    showHideCartIcon(true)
+                    showHideFilterIcon(false)
+                }
+                R.id.historyBottomFragment -> {
+                    title = "My History"
+                    isMenuOrBack=true
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_UNLOCKED)
+                    binding.menuBack.setImageResource(R.drawable.menu)
+                    binding.layoutMainID.bottomNavigationView.menu.getItem(1).isChecked = true
+                    showHideBottomNav(true)
+                    showHideCartIcon(true)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.walletBottomFragment -> {
+                    title = "My Wallet"
+                    isMenuOrBack=true
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_UNLOCKED)
+                    binding.menuBack.setImageResource(R.drawable.menu)
+                    binding.layoutMainID.bottomNavigationView.menu.getItem(3).isChecked = true
+                    showHideBottomNav(true)
+                    showHideCartIcon(true)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.profileBottomFragment -> {
+                    title = "My Profile"
+                    isMenuOrBack=true
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_UNLOCKED)
+                    binding.menuBack.setImageResource(R.drawable.menu)
+                    binding.layoutMainID.bottomNavigationView.menu.getItem(4).isChecked = true
+                    showHideBottomNav(true)
+                    showHideCartIcon(true)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+
+                }
+                R.id.referFragment -> {
+                    title = "My Refer"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.rewardsFragment -> {
+                    title = "My Rewards"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.productListFragment -> {
+                    title = "Products"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    showHideBottomNav(false)
+                    showHideCartIcon(true)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.miscFragment -> {
+                    title = "More"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.myOrderFragment -> {
+                    title = "My Orders"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(true)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.promoListFragment -> {
+                    title = "Promos"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.settingsFragment -> {
+                    title = "Settings"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.faqFragment -> {
+                    title = "FAQ"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.remittance -> {
+                    title = getString(R.string.change_payment_option)
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.shippingAddressFragment -> {
+                    title = "My Addresses"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.orderDetailsFragment -> {
+                    title = "Order Summary"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+
+            }
         }
+
     }
 
-    fun showHideBottomNav(showHide:Boolean){
-        if(showHide) {
+
+    private fun showHideBottomNav(showHide: Boolean) {
+        if (showHide) {
             binding.layoutMainID.bottomNavigation.visibility = View.VISIBLE
             binding.layoutMainID.floating.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             binding.layoutMainID.bottomNavigation.visibility = View.GONE
             binding.layoutMainID.floating.visibility = View.GONE
         }
     }
-    fun showHideCartIcon(showHide: Boolean){
-        if(showHide) {
+
+    private fun showHideCartIcon(showHide: Boolean) {
+        if (showHide) {
             binding.cart.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             binding.cart.visibility = View.GONE
         }
     }
-    fun showHideFilterIcon(showHide: Boolean){
-        if(showHide) {
+
+    private fun showHideFilterIcon(showHide: Boolean) {
+        if (showHide) {
             binding.filter.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             binding.filter.visibility = View.GONE
         }
     }
 
-    fun onFilterClick(filterClick: OnFilterClick){
-        this.filterClick=filterClick
+    fun onFilterClick(filterClick: OnFilterClick) {
+        this.filterClick = filterClick
     }
 
-    override fun onRestart() {
-        super.onRestart()
-    }
+    override fun onBackPressed() {
+        val fragment = navHostFragment.childFragmentManager.fragments[0]
+        if(fragment is HomeBottomFragment){
+            CommonDialogsUtils.showCommonDialog(this,  viewModel.methodRepo,"Exit App","Are you sure?", autoCancelable = true, isCancelAvailable = true, callback = object :CommonDialogsUtils.DialogClick{
+                override fun onClick() {finishAffinity()}
+                override fun onCancel() {}
+            })
+        }
+        else
+        super.onBackPressed()
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
 }

@@ -7,10 +7,8 @@ import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
-import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListData
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
-import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -23,7 +21,6 @@ class ShippingAddressDetailsViewModel(val dispatcherProvider: CoroutineContextPr
 ) {
 
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
-    val shippingAddressList= mutableListOf<ShippingAddressItem>()
 
     fun addAddress(shippingAddressItem: ShippingAddressItem) {
 

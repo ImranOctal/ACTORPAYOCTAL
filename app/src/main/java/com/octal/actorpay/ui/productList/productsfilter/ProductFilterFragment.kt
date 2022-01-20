@@ -1,7 +1,6 @@
 package com.octal.actorpay.ui.productList.productsfilter
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,19 +11,13 @@ import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentProductFilterBinding
-import com.octal.actorpay.databinding.FragmentProductsListBinding
-import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieItem
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.SubCategorieResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 
 class ProductFilterFragment : BaseFragment() {
-    override fun WorkStation() {
-
-    }
 
     private lateinit var binding: FragmentProductFilterBinding
     private val productFilterViewModel: ProductFilterViewModel by inject()
@@ -43,22 +36,22 @@ class ProductFilterFragment : BaseFragment() {
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_product_filter, container, false)
-        setTitle("Filters")
-        showHideBottomNav(false)
-        showHideCartIcon(false)
-        showHideFilterIcon(false)
+//        setTitle("Filters")
+//        showHideBottomNav(false)
+//        showHideCartIcon(false)
+//        showHideFilterIcon(false)
 
 
         return binding.root
     }
 
-    fun setCategorieAdapter(){
+    private fun setCategoriesAdapter(){
         val adapter=ProductFilterCategoryAdapter(productFilterViewModel.categoryList)
         binding.customizationTypeRecyclerView.layoutManager=LinearLayoutManager(requireContext())
         binding.customizationTypeRecyclerView.adapter=adapter
     }
 
-    fun setSubCategorieAdapter(){
+    private fun setSubCategoriesAdapter(){
         /*val newList=productFilterViewModel.subCategoryList.filter { if(productFilterViewModel.v) }*/
         val adapter=ProductFilterSubCategoryAdapter(productFilterViewModel.subCategoryList)
         binding.customizationSubTypeRecyclerView.layoutManager=LinearLayoutManager(requireContext())
@@ -80,12 +73,12 @@ class ProductFilterFragment : BaseFragment() {
 
                             is CategorieResponse ->{
                                 productFilterViewModel.categoryList.addAll(event.response.data)
-                                setCategorieAdapter()
+                                setCategoriesAdapter()
                                productFilterViewModel.getSubCategories()
                             }
                             is SubCategorieResponse ->{
                                 productFilterViewModel.categoryList.addAll(event.response.data)
-                                setSubCategorieAdapter()
+                                setSubCategoriesAdapter()
                             }
                         }
                     }
@@ -103,16 +96,5 @@ class ProductFilterFragment : BaseFragment() {
             }
         }
 
-    }
-
-    companion object {
-        var selectedCategoryId=""
-        var selectedSubCategoryId=""
-
-        @JvmStatic
-        fun newInstance() =
-            ProductFilterFragment().apply {
-
-            }
     }
 }

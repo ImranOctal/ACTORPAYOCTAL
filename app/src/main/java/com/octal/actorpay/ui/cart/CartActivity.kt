@@ -1,7 +1,6 @@
 package com.octal.actorpay.ui.cart
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -10,23 +9,22 @@ import com.octal.actorpay.R
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.ActivityCartBinding
 import com.octal.actorpay.repositories.AppConstance.Clicks
-import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartData
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartResponse
-import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.utils.CommonDialogsUtils
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 import android.view.View
 import android.widget.Toast
+import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderActivity
 
 
-class CartActivity : AppCompatActivity() {
+class CartActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCartBinding
     lateinit var adapter: CartAdapter
-    val cartViewModel: CartViewModel by inject()
+    private val cartViewModel: CartViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +33,7 @@ class CartActivity : AppCompatActivity() {
         setAdapter()
         cartResponse()
         apiResponse()
-        cartViewModel.getCartItmes()
+        cartViewModel.getCartItems()
 
 
         binding.back.setOnClickListener {
@@ -57,7 +55,7 @@ class CartActivity : AppCompatActivity() {
     }
 
 
-    fun cartResponse() {
+    private fun cartResponse() {
         lifecycleScope.launchWhenCreated {
 
             cartViewModel.responseLive.collect { event ->
@@ -114,7 +112,7 @@ class CartActivity : AppCompatActivity() {
 
     }
 
-    fun updateUI(cartData: CartData){
+    private fun updateUI(cartData: CartData){
         cartViewModel.cartData = cartData
         binding.gst.text = getString(R.string.rs).plus(cartData.totalCgst+cartData.totalSgst)
         binding.subTotal.text = getString(R.string.rs).plus(cartData.totalTaxableValue)
@@ -159,24 +157,6 @@ class CartActivity : AppCompatActivity() {
         binding.cartRecyclerview.adapter = adapter
     }
 
-
-    fun forcelogout(methodRepo: MethodsRepo){
-        CommonDialogsUtils.showCommonDialog(this,methodRepo, "Log Out ",
-            "Session Expire", false, false, true, false,
-            object : CommonDialogsUtils.DialogClick {
-                override fun onClick() {
-                    lifecycleScope.launchWhenCreated {
-                        methodRepo.dataStore.logOut()
-                        methodRepo.dataStore.setIsIntro(true)
-                        startActivity(Intent(this@CartActivity, LoginActivity::class.java))
-                        finishAffinity()
-                    }
-                }
-                override fun onCancel() {
-                }
-            })
-    }
-
     private fun deleteCartItemDialog(onClick: () -> Unit) {
         CommonDialogsUtils.showCommonDialog(this,
             cartViewModel.methodRepo,
@@ -195,10 +175,6 @@ class CartActivity : AppCompatActivity() {
 
                 }
             })
-    }
-
-    private fun orderPlacedDialog(){
-
     }
 
     override fun onBackPressed() {

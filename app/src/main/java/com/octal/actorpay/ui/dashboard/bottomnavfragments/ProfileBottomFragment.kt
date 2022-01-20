@@ -6,14 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
 import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.BaseFragment
+import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentProfileBottomBinding
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.dateFormate1
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.dateFormate2
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
+import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponseData
 import com.octal.actorpay.ui.auth.verifyotp.VerifyOtpDialog
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
@@ -21,26 +23,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ProfileBottomFragment : BaseFragment() {
     lateinit var binding: FragmentProfileBottomBinding
     private val profileViewModel: ProfileViewModel by inject()
 
-
-
-    companion object {
-        private var instance: ProfileBottomFragment? = null
-
-        @JvmStatic
-        fun newInstance(): ProfileBottomFragment? {
-            if (instance == null) {
-                instance = ProfileBottomFragment()
-            }
-            return instance
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,10 +49,7 @@ class ProfileBottomFragment : BaseFragment() {
     }
 
     fun init() {
-        (requireActivity() as MainActivity).title="My Profile"
-        showHideBottomNav(true)
-        showHideCartIcon(true)
-        showHideFilterIcon(false)
+
         binding.apply {
           /*  profileSave.setOnClickListener {
                 //NavController().navigateWithId(R.id.homeFragment, findNavController())
@@ -144,25 +128,25 @@ class ProfileBottomFragment : BaseFragment() {
             profileViewModel.profileResponseLive.collect {
                 when (it) {
 
-                    is ProfileViewModel.ResponsProfileSealed.loading -> {
+                    is ResponseSealed.loading -> {
                         profileViewModel.methodRepo.showLoadingDialog(requireContext())
                     }
-                    is ProfileViewModel.ResponsProfileSealed.Success -> {
+                    is ResponseSealed.Success -> {
                         profileViewModel.methodRepo.hideLoadingDialog()
                         when (it.response) {
-                            is ProfileReesponse -> {
+                            is ProfileResponse -> {
                                 val response2=it.response.data
                                 handleProfileResponse(response2)
                             }
                             is SuccessResponse -> {
-                                if(it.response.message.equals("OTP sent successfully"))
-                                    VerifyOtpDialog().show(requireActivity(),profileViewModel.methodRepo){
-                                            profileViewModel.verifyOtp(it)
+                                when (it.response.message) {
+                                    "OTP sent successfully" -> VerifyOtpDialog().show(requireActivity(),profileViewModel.methodRepo){
+                                        otp->
+                                        profileViewModel.verifyOtp(otp)
                                     }
-                                else if(it.response.message.equals("User contact number has been verified successfully"))
-                                    profileViewModel.getProfile()
-                                else
-                                    CommonDialogsUtils.showCommonDialog(requireActivity(),profileViewModel.methodRepo,"Profile Update",it.response.message)
+                                    "User contact number has been verified successfully" -> profileViewModel.getProfile()
+                                    else -> CommonDialogsUtils.showCommonDialog(requireActivity(),profileViewModel.methodRepo,"Profile Update",it.response.message)
+                                }
                             }
                             else -> {
                                 showCustomAlert(
@@ -172,18 +156,18 @@ class ProfileBottomFragment : BaseFragment() {
                             }
                         }
                     }
-                    is ProfileViewModel.ResponsProfileSealed.ErrorOnResponse -> {
+                    is ResponseSealed.ErrorOnResponse -> {
                         profileViewModel.methodRepo.hideLoadingDialog()
-                        if (it.failResponse!!.code == 403) {
+                        if (it.message!!.code == 403) {
                             forcelogout(profileViewModel.methodRepo)
                         }
                         else
                         (requireActivity() as BaseActivity).showCustomAlert(
-                            it.failResponse.message,
+                            it.message.message,
                             binding.root
                         )
                     }
-                    is ProfileViewModel.ResponsProfileSealed.Empty -> {
+                    is ResponseSealed.Empty -> {
                         profileViewModel.methodRepo.hideLoadingDialog()
                     }
                 }
@@ -191,19 +175,17 @@ class ProfileBottomFragment : BaseFragment() {
         }
     }
 
-    fun handleProfileResponse(profileReesponse: ProfileResponseData){
-        binding.firstName.setText("${profileReesponse.firstName} ${profileReesponse.lastName}")
-        binding.editEmail.setText(profileReesponse.email)
-        binding.mobNumber.setText(profileReesponse.extensionNumber+" "+profileReesponse.contactNumber)
-        binding.gender.setText(profileReesponse.gender)
-        binding.editAdhar.setText(profileReesponse.aadharNumber)
-        binding.editPAN.setText(profileReesponse.panNumber)
-        var outputDate=profileReesponse.dateOfBirth
-                if(profileReesponse.dateOfBirth!=null && profileReesponse.dateOfBirth.equals("").not()){
-                    val parser =  SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                    val formatter =  SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH);
+    private fun handleProfileResponse(profileResponse: ProfileResponseData){
+        binding.firstName.setText("${profileResponse.firstName} ${profileResponse.lastName}")
+        binding.editEmail.setText(profileResponse.email)
+        binding.mobNumber.setText(profileResponse.extensionNumber+" "+profileResponse.contactNumber)
+        binding.gender.setText(profileResponse.gender)
+        binding.editAdhar.setText(profileResponse.aadharNumber)
+        binding.editPAN.setText(profileResponse.panNumber)
+        var outputDate=profileResponse.dateOfBirth
+                if(profileResponse.dateOfBirth!=null && (profileResponse.dateOfBirth == "").not()){
                     try {
-                     outputDate = formatter.format(parser.parse(profileReesponse.dateOfBirth)!!);
+                     outputDate = dateFormate2.format(dateFormate1.parse(profileResponse.dateOfBirth)!!)
                     }
                     catch (e : Exception){
 
@@ -215,13 +197,13 @@ class ProfileBottomFragment : BaseFragment() {
 
         binding.mobileUpdate.visibility=View.GONE
 
-        if(profileReesponse.phoneVerified){
+        if(profileResponse.phoneVerified){
             binding.verifyMobile.visibility=View.GONE
         }
         else{
             binding.verifyMobile.visibility=View.VISIBLE
         }
-        if(profileReesponse.contactNumber == null || profileReesponse.contactNumber.equals("")){
+        if(profileResponse.contactNumber == null || profileResponse.contactNumber == ""){
             binding.mobileUpdate.text=getString(R.string.add_mobile_number)
             binding.verifyMobile.visibility=View.GONE
         }
@@ -229,7 +211,7 @@ class ProfileBottomFragment : BaseFragment() {
             binding.mobileUpdate.text=getString(R.string.chnage_mobile_number)
         }
         try {
-            var extContact = profileReesponse.extensionNumber
+            var extContact = profileResponse.extensionNumber
             if (extContact.isNotEmpty()) {
                 extContact = extContact.replace("+", "")
                 binding.profileCcp.setCountryForPhoneCode(extContact.toInt())
@@ -239,7 +221,5 @@ class ProfileBottomFragment : BaseFragment() {
         }
     }
 
-    override fun WorkStation() {
 
-    }
 }

@@ -1,7 +1,6 @@
 package com.octal.actorpay.ui.myOrderList.placeorder
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,22 +9,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
+import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.ActivityPlaceOrderBinding
-import com.octal.actorpay.repositories.methods.MethodsRepo
+import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListData
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
-import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.ui.shippingaddress.details.ShippingAddressDetailsActivity
 import com.octal.actorpay.utils.CommonDialogsUtils
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
-class PlaceOrderActivity : AppCompatActivity() {
+class PlaceOrderActivity : BaseActivity() {
     val placeOrderViewModel: PlaceOrderViewModel by inject()
     private lateinit var binding: ActivityPlaceOrderBinding
 
@@ -70,26 +69,32 @@ class PlaceOrderActivity : AppCompatActivity() {
             this,
             placeOrderViewModel.shippingAddressList
         ) { position, action ->
-            if(action.equals("Root")){
+            if(action == Clicks.Root){
                 placeOrderViewModel.shippingAddressList.onEach {
                     it.isSelect=false
                 }
                 placeOrderViewModel.shippingAddressList[position].isSelect=true
                 binding.addressRecyclerview.adapter?.notifyDataSetChanged()
             }
-            if (action.equals("Edit")) {
-                ShippingAddressDetailsActivity.shippingAddressItem =
-                    placeOrderViewModel.shippingAddressList.get(position)
+            if (action == Clicks.Edit) {
+
                 val intent = Intent(this, ShippingAddressDetailsActivity::class.java)
+                intent.putExtra("shippingItem", placeOrderViewModel.shippingAddressList[position])
                 resultLauncher.launch(intent)
             }
-            else if(action.equals("Delete")){
+            else if(action == Clicks.Delete){
                 val shippingDeleteParams= ShippingDeleteParams(mutableListOf(placeOrderViewModel.shippingAddressList[position].id!!))
                 CommonDialogsUtils.showCommonDialog(this,placeOrderViewModel.methodRepo,
-                    "Delete Address","Are you sure?",true,true,true,false,object :CommonDialogsUtils.DialogClick{
+                    "Delete Address","Are you sure?",
+                    autoCancelable = true,
+                    isCancelAvailable = true,
+                    isOKAvailable = true,
+                    showClickable = false,
+                    callback = object :CommonDialogsUtils.DialogClick{
                         override fun onClick() {
                             placeOrderViewModel.deleteAddress(shippingDeleteParams)
                         }
+
                         override fun onCancel() {
 
                         }
@@ -104,30 +109,29 @@ class PlaceOrderActivity : AppCompatActivity() {
         fun validate(){
             val shippingAddressItem=placeOrderViewModel.shippingAddressList.find { it.isSelect==true }
             if(shippingAddressItem!=null) {
-                val add_line_1 = shippingAddressItem.addressLine1
-                var add_line_2 = ""
+                val addLine1 = shippingAddressItem.addressLine1
+                var addLine2 = ""
                 if(shippingAddressItem.addressLine2!=null)
-                 add_line_2 = shippingAddressItem.addressLine2!!
+                    addLine2 = shippingAddressItem.addressLine2!!
                 val zipcode = shippingAddressItem.zipCode
                 val city = shippingAddressItem.city
                 val state = shippingAddressItem.state
                 val country = shippingAddressItem.country
-                val p_contact = shippingAddressItem.primaryContactNumber
-                val s_contact = shippingAddressItem.secondaryContactNumber
-                var isValid = true
-                if (add_line_1.equals("") || zipcode.length < 6 || city.equals("") || state.equals("") || country.equals("") || p_contact.length < 5 || s_contact.length < 5) {
+                val pContact = shippingAddressItem.primaryContactNumber
+                val sContact = shippingAddressItem.secondaryContactNumber
+                if (addLine1 == "" || zipcode.length < 6 || city == "" || state == "" || country == "" || pContact.length < 5 || sContact.length < 5) {
                     Toast.makeText(this,"Please Update Valid Address",Toast.LENGTH_SHORT).show()
                 }else
                     placeOrderViewModel.placeOrder(
-                        PlaceOrderParamas(
-                            add_line_1,
-                            add_line_2,
+                        PlaceOrderParams(
+                            addLine1,
+                            addLine2,
                             zipcode,
                             city,
                             state,
                             country,
-                            p_contact,
-                            s_contact
+                            pContact,
+                            sContact
                         )
                     )
             }
@@ -138,7 +142,7 @@ class PlaceOrderActivity : AppCompatActivity() {
 
 
 
-    fun cartResponse() {
+    private fun cartResponse() {
         lifecycleScope.launchWhenCreated {
 
             placeOrderViewModel.responseLive.collect { event ->
@@ -150,7 +154,6 @@ class PlaceOrderActivity : AppCompatActivity() {
                         when (event.response) {
 
                             is PlaceOrderResponse ->{
-//                                cartViewModel.getCartItmes()
                                 PlaceOrderDialog(this@PlaceOrderActivity,placeOrderViewModel.methodRepo,event.response.data){
                                     startActivity(
                                         Intent(this@PlaceOrderActivity,
@@ -213,29 +216,12 @@ class PlaceOrderActivity : AppCompatActivity() {
 
     }
 
-    fun updateUI(addressListData: ShippingAddressListData) {
+    private fun updateUI(addressListData: ShippingAddressListData) {
         placeOrderViewModel.shippingAddressList.clear()
         placeOrderViewModel.shippingAddressList.addAll(addressListData.items)
         placeOrderViewModel.shippingAddressList.onEachIndexed { index, shippingAddressItem ->
             shippingAddressItem.isSelect = index==0
         }
         binding.addressRecyclerview.adapter?.notifyDataSetChanged()
-    }
-
-    fun forcelogout(methodRepo: MethodsRepo){
-        CommonDialogsUtils.showCommonDialog(this,methodRepo, "Log Out ",
-            "Session Expire", false, false, true, false,
-            object : CommonDialogsUtils.DialogClick {
-                override fun onClick() {
-                    lifecycleScope.launchWhenCreated {
-                        methodRepo.dataStore.logOut()
-                        methodRepo.dataStore.setIsIntro(true)
-                        startActivity(Intent(this@PlaceOrderActivity, LoginActivity::class.java))
-                        finishAffinity()
-                    }
-                }
-                override fun onCancel() {
-                }
-            })
     }
 }

@@ -8,9 +8,8 @@ import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.octal.actorpay.R
 import com.octal.actorpay.utils.CommonDialogsUtils
@@ -19,7 +18,6 @@ import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.SignUpScreenFragmentBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryItem
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.ui.auth.viewmodel.SignupViewModel
 import com.octal.actorpay.ui.content.ContentActivity
@@ -39,12 +37,9 @@ class SignUpScreenFragment : BaseFragment() {
     lateinit var binding: SignUpScreenFragmentBinding
     private val signupViewModel: SignupViewModel by inject()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private var showPassword=false
-    override fun WorkStation() {
 
-    }
+    private var showPassword=false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,13 +88,14 @@ class SignUpScreenFragment : BaseFragment() {
                     password.setSelection(password.text.toString().length)
                 }
             }
-            signupViewModel.methodRepo.makeTextLink(signipTermsPrivacy,"Terms of Use",false,resources.getColor(R.color.primary)){
+
+            signupViewModel.methodRepo.makeTextLink(signipTermsPrivacy,"Terms of Use",false,ContextCompat.getColor(requireContext(),R.color.primary)){
                 ContentViewModel.type=3
                 LoginViewModel.isFromContentPage=true
                 startActivity(Intent(requireContext(),ContentActivity::class.java))
 
             }
-            signupViewModel.methodRepo.makeTextLink(signipTermsPrivacy,"Privacy Policy",false,resources.getColor(R.color.primary)){
+            signupViewModel.methodRepo.makeTextLink(signipTermsPrivacy,"Privacy Policy",false,ContextCompat.getColor(requireContext(),R.color.primary)){
                 ContentViewModel.type=2
                 startActivity(Intent(requireContext(),ContentActivity::class.java))
             }
@@ -141,35 +137,37 @@ class SignUpScreenFragment : BaseFragment() {
                 binding.spinnerAutocomplete.setAdapter(adapter)
             }
 
-            binding.spinnerAutocomplete.setOnItemClickListener { parent, view, position, id ->
+            binding.spinnerAutocomplete.setOnItemClickListener { _, _, _, _ ->
                 binding.errorOnGender.visibility = View.GONE
                 signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupGender2, R.drawable.btn_outline_gray)
             }
 
 
-            signupDob.setOnClickListener {
+            dob.setOnClickListener {
                 val c = Calendar.getInstance()
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
 
 
-                val dpd = DatePickerDialog(requireActivity(),  { view, yearR, monthOfYear, dayOfMonth ->
+                val dpd = DatePickerDialog(requireActivity(),  { _, yearR, monthOfYear, dayOfMonth ->
 
-                    // Display Selected date in textbox
-                    val f =  DecimalFormat("00");
+                    val f =  DecimalFormat("00")
                     val dayMonth=f.format(dayOfMonth)
                      val monthYear=f.format(monthOfYear+1)
 
-                    binding.dob.setText("" + dayMonth + "-" + (monthYear) + "-" + yearR)
+                    with(binding) {
+
+                        dob.setText("$dayMonth-$monthYear-$yearR")
+                    }
                     binding.errorOnDate.visibility = View.GONE
                     signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupDob, R.drawable.btn_outline_gray)
 
                 }, year, month, day)
                 dpd.show()
-                dpd.getDatePicker().setMaxDate(Date().time)
-                dpd.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-                dpd.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                dpd.datePicker.maxDate = Date().time
+                dpd.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                dpd.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
             }
         }
     }
@@ -182,11 +180,8 @@ class SignUpScreenFragment : BaseFragment() {
 
         if(binding.adhar.text.toString().trim().length<16){
             isValidate=false
-//            binding.errorOnAdhar.visibility = View.VISIBLE
             binding.adhar.error=getString(R.string.enter_valid_adhar)
-//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupAdhar, R.drawable.btn_search_outline)
             binding.adhar.requestFocus()
-//            binding.scrollView.smoothScrollTo(0,binding.adhar.top)
         }
         else{
             binding.errorOnAdhar.visibility = View.GONE
@@ -196,10 +191,7 @@ class SignUpScreenFragment : BaseFragment() {
         if(!signupViewModel.methodRepo.isValidPAN(binding.pan.text.toString().trim())){
             isValidate=false
             binding.pan.error=getString(R.string.please_valid_pan)
-//            binding.errorOnPan.visibility = View.VISIBLE
-//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPan, R.drawable.btn_search_outline)
             binding.pan.requestFocus()
-//            binding.scrollView.smoothScrollTo(0,binding.pan.top)
         }
         else{
             binding.errorOnPan.visibility = View.GONE
@@ -207,7 +199,7 @@ class SignUpScreenFragment : BaseFragment() {
         }
 
 
-        if(binding.dob.text.toString().trim().equals("")){
+        if(binding.dob.text.toString().trim() == ""){
             isValidate=false
             binding.errorOnDate.visibility = View.VISIBLE
             signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupDob, R.drawable.btn_search_outline)
@@ -218,7 +210,7 @@ class SignUpScreenFragment : BaseFragment() {
             binding.errorOnDate.visibility = View.GONE
             signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupDob, R.drawable.btn_outline_gray)
         }
-        if(binding.spinnerAutocomplete.text.toString().trim().equals("")){
+        if(binding.spinnerAutocomplete.text.toString().trim() == ""){
             isValidate=false
             binding.errorOnGender.visibility = View.VISIBLE
             signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupGender2, R.drawable.btn_search_outline)
@@ -317,7 +309,7 @@ class SignUpScreenFragment : BaseFragment() {
 //            val countryCode=binding.ccp.selectedCountryCodeWithPlus
 
             signupViewModel.methodRepo.hideSoftKeypad(requireActivity())
-            signupViewModel.SignUpNow(
+            signupViewModel.signUpNow(
                 binding.firstName.text.toString().trim(),
                 binding.lastName.text.toString().trim(),
                 binding.email.text.toString().trim(),

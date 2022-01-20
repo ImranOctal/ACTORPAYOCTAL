@@ -1,8 +1,6 @@
 package com.octal.actorpay.ui.adapter
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
 import android.view.View
 import android.widget.BaseAdapter
 import nl.psdcompany.duonavigationdrawer.views.DuoOptionView
@@ -12,28 +10,21 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.octal.actorpay.R
 import com.octal.actorpay.ui.dashboard.models.DrawerItems
-
 import androidx.core.content.res.ResourcesCompat
 
 
 
-
-
-class MenuAdapter : BaseAdapter  {
-    private var mOptions = ArrayList<DrawerItems>()
+class MenuAdapter(context: Context, options: ArrayList<DrawerItems>) : BaseAdapter() {
+    private var mOptions = options
     private var mOptionViews = ArrayList<DuoOptionView>()
-    var mContext: Context? = null
-    constructor(context: Context, options: ArrayList<DrawerItems>) {
-        mOptions = options
-        this.mContext = context 
-    }
+    var mContext: Context? = context
 
     override fun getCount(): Int {
         return mOptions.size
     }
 
     override fun getItem(position: Int): Any {
-        return mOptions.get(position)
+        return mOptions[position]
     }
 
     fun setViewSelected(position: Int, selected: Boolean) {
@@ -53,14 +44,13 @@ class MenuAdapter : BaseAdapter  {
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val option = mOptions.get(position)
+        val option = mOptions[position]
 
         // Using the DuoOptionView to easily recreate the demo
-        val optionView: DuoOptionView
-        if (convertView == null) {
-            optionView = DuoOptionView(parent.context)
+        val optionView: DuoOptionView = if (convertView == null) {
+            DuoOptionView(parent.context)
         } else {
-            optionView = convertView as DuoOptionView
+            convertView as DuoOptionView
         }
 
         val textView =(((optionView.getChildAt(0) as RelativeLayout).getChildAt(1) as RelativeLayout).getChildAt(1) as TextView)
@@ -69,7 +59,7 @@ class MenuAdapter : BaseAdapter  {
         ))
         val typeface = ResourcesCompat.getFont(mContext!!, R.font.poppins_regular)
 
-        textView.setTypeface(typeface)
+        textView.typeface = typeface
         textView.textSize = 17F
 
         // Using the DuoOptionView's default selectors

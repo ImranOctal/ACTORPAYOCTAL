@@ -12,7 +12,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.SpannableString
@@ -31,7 +30,9 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.octal.actorpay.R
 import com.octal.actorpay.database.datastore.DataStoreBase
+import com.octal.actorpay.repositories.AppConstance.AppConstance
 import java.io.UnsupportedEncodingException
+import java.lang.Exception
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -125,11 +126,13 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
            progressDialog!!.dismiss()
         }
     }
-    fun getFormattedDate(context: Context?, smsTimeInMilis: Long): String? {
-        val formatter = SimpleDateFormat("yyyy-MM-dd , h:mm aa",Locale.ENGLISH)
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = smsTimeInMilis
-        return formatter.format(calendar.time)
+    fun getFormattedOrderDate(orderDate: String): String? {
+        try {
+        return  AppConstance.dateFormate4.format(AppConstance.dateFormate3.parse(orderDate)!!)
+        }
+        catch (e : Exception){
+            return orderDate
+        }
     }
 
     fun getFormattedDate(smsTimeInMilis: Long, Format: String?): String? {

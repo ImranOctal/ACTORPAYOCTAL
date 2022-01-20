@@ -25,7 +25,7 @@ import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.FailResponse
 
 
-class CommonDialogsUtils() {
+class CommonDialogsUtils {
 
 
     /**
@@ -100,7 +100,7 @@ class CommonDialogsUtils() {
 
             binding.tvSupportMessage.text = span
 
-            binding.tvSupportMessage.setMovementMethod(LinkMovementMethod.getInstance())
+            binding.tvSupportMessage.movementMethod = LinkMovementMethod.getInstance()
             //binding.tvSupportMessage.movementMethod = LinkMovementMethod.getInstance()
             if (showClickable) {
                 binding.tvSupportMessage.visibility = View.VISIBLE
@@ -149,12 +149,13 @@ class CommonDialogsUtils() {
 
         fun showApiErrorDialog(context: Activity, methodsRepo: MethodsRepo, failResponse:  FailResponse?, optionalMessage: String) {
             val message =
-            if (failResponse != null) {
-                failResponse.message
-            } else {
-               optionalMessage
-            }
-            showCommonDialog(context,methodsRepo, "Error", message, true, false, true,false)
+                failResponse?.message ?: optionalMessage
+            showCommonDialog(context,methodsRepo, "Error", message,
+                autoCancelable = true,
+                isCancelAvailable = false,
+                isOKAvailable = true,
+                showClickable = false
+            )
         }
 
     }

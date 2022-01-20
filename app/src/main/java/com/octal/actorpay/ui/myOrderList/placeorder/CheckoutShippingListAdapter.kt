@@ -1,32 +1,20 @@
 package com.octal.actorpay.ui.myOrderList.placeorder
 
-import android.R.attr
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.octal.actorpay.databinding.PromoListItemBinding
-import com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoItem
-import android.R.attr.label
-
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.view.MenuItem
 import android.view.View
-import android.widget.PopupMenu
-import androidx.core.content.ContextCompat
-
-import androidx.core.content.ContextCompat.getSystemService
 import com.octal.actorpay.R
 import com.octal.actorpay.databinding.RowCheckoutAddressBinding
-import com.octal.actorpay.databinding.ShippingListItemBinding
+import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 
 
 class CheckoutShippingListAdapter(
     val context:Context,
     val list: MutableList<ShippingAddressItem>,
-    val onClick:(position:Int,action:String)->Unit
+    val onClick:(position:Int,action:Clicks)->Unit
 ) : RecyclerView.Adapter<CheckoutShippingListAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -69,13 +57,13 @@ class CheckoutShippingListAdapter(
                 binding.addressLayout.setBackgroundResource(R.drawable.btn_outline_gray)
             }
             binding.root.setOnClickListener {
-                onClick(adapterPosition,"Root")
+                onClick(adapterPosition,Clicks.Root)
             }
             binding.addressDelete.setOnClickListener {
-                onClick(adapterPosition,"Delete")
+                onClick(adapterPosition,Clicks.Delete)
             }
             binding.addressEdit.setOnClickListener {
-                onClick(adapterPosition,"Edit")
+                onClick(adapterPosition,Clicks.Edit)
             }
 
 

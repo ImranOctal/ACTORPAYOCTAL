@@ -1,26 +1,22 @@
 package com.octal.actorpay.utils
 
-
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.viewpager.widget.ViewPager
 
-
-
 class CustomPager : ViewPager {
     private var mCurrentView: View? = null
 
-    constructor(context: Context?) : super(context!!) {}
+    constructor(context: Context?) : super(context!!)
     constructor(context: Context?, attrs: AttributeSet?) : super(
         context!!, attrs
-    ) {
-    }
+    )
 
     public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        var heightMeasureSpec = heightMeasureSpec
+        var heightMeasureSpec1 = heightMeasureSpec
         if (mCurrentView == null) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec1)
             return
         }
         var height = 0
@@ -30,18 +26,12 @@ class CustomPager : ViewPager {
         )
         val h = mCurrentView!!.measuredHeight
         if (h > height) height = h
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        heightMeasureSpec1 = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec1)
     }
 
     fun measureCurrentView(currentView: View?) {
         mCurrentView = currentView
         requestLayout()
-    }
-
-    fun measureFragment(view: View?): Int {
-        if (view == null) return 0
-        view.measure(0, 0)
-        return view.measuredHeight
     }
 }

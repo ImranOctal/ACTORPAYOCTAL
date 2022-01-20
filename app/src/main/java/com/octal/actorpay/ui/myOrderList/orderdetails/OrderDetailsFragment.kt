@@ -11,16 +11,9 @@ import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentOrderDetailsBinding
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_SUCCESS
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_READY
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_CANCELLED
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_PARTIALLY_CANCELLED
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_DISPATCHED
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_DELIVERED
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_RETURNING
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_PARTIALLY_RETURNING
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_RETURNED
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_PARTIALLY_RETURNED
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_PENDING
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_FAILED
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData
 import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderAdapter
 import com.octal.actorpay.utils.CommonDialogsUtils
@@ -29,21 +22,18 @@ import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import java.io.File
 
-private const val ARG_PARAM1 = "param1"
 
 
 class OrderDetailsFragment : BaseFragment() {
     private var orderData: OrderData? = null
     private val orderDetailsViewModel: OrderDetailsViewModel by inject()
     private lateinit var binding: FragmentOrderDetailsBinding
-    override fun WorkStation() {
 
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            orderData = it.getSerializable(ARG_PARAM1) as OrderData
+            orderData = it.getSerializable("order") as OrderData
 
         }
     }
@@ -53,11 +43,6 @@ class OrderDetailsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_details, container, false)
-
-        setTitle("Order Summary")
-        showHideBottomNav(false)
-        showHideCartIcon(false)
-        showHideFilterIcon(false)
 
         if(orderData?.orderStatus.equals(STATUS_SUCCESS) || orderData?.orderStatus.equals(STATUS_READY) || orderData?.orderStatus.equals(
                 STATUS_PARTIALLY_CANCELLED)){
@@ -81,9 +66,11 @@ class OrderDetailsFragment : BaseFragment() {
             })
         }
 
+
         binding.orderRecyclerView.layoutManager= LinearLayoutManager(context)
         binding.orderRecyclerView.adapter= PlaceOrderAdapter(orderData!!.orderItemDtos)
         binding.orderData=orderData
+        binding.orderDateText.text="Order Date & Time: "+orderDetailsViewModel.methodRepo.getFormattedOrderDate(orderData!!.createdAt)
         if(orderData?.shippingAddressDTO==null)
         {
             binding.deliveryAddressAddress1.visibility=View.GONE
@@ -114,7 +101,7 @@ class OrderDetailsFragment : BaseFragment() {
         {
             status="CANCELLED"
             orderData?.orderItemDtos?.forEach {
-                if(it.orderItemStatus.equals("SUCCESS") || it.orderItemStatus.equals("READY"))
+                if(it.orderItemStatus == "SUCCESS" || it.orderItemStatus == "READY")
                     orderIdArray.put(it.orderItemId)
             }
         }
@@ -132,17 +119,5 @@ class OrderDetailsFragment : BaseFragment() {
             }.show(childFragmentManager,"Place")
 //                orderDetailsViewModel.changeOrderItemsStatus(orderData!!.orderNo,cancelOrderJson.toString(),prodImage)
         }
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance(orderData: OrderData) =
-            OrderDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(ARG_PARAM1, orderData)
-
-                }
-            }
     }
 }

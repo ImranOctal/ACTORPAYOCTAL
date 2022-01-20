@@ -3,7 +3,6 @@ package com.octal.actorpay.ui.promocodes
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentListPromoBinding
-import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoData
 import com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoResponse
 import kotlinx.coroutines.flow.collect
@@ -26,11 +24,8 @@ class PromoListFragment : BaseFragment() {
     private lateinit var binding: FragmentListPromoBinding
     private val promoListViewModel: PromoListViewModel by inject()
 
-    lateinit var promoListAdapter: PromoListAdapter
+    private lateinit var promoListAdapter: PromoListAdapter
 
-    override fun WorkStation() {
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,9 +39,7 @@ class PromoListFragment : BaseFragment() {
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_list_promo, container, false)
-        showHideBottomNav(false)
-        showHideCartIcon(false)
-        showHideFilterIcon(false)
+
         setAdapter()
         apiResponse()
 
@@ -101,7 +94,7 @@ class PromoListFragment : BaseFragment() {
 
 
     }
-    fun updateUI(promoData: PromoData){
+    private fun updateUI(promoData: PromoData){
         promoListViewModel.promoData.pageNumber =
             promoData.pageNumber
         promoListViewModel.promoData.totalPages =
@@ -117,12 +110,5 @@ class PromoListFragment : BaseFragment() {
             binding.imageEmpty.visibility=View.GONE
             binding.textEmpty.visibility=View.GONE
         }
-    }
-
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            PromoListFragment().apply {}
     }
 }

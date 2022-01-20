@@ -1,16 +1,13 @@
 package com.octal.actorpay.utils
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.core.app.ActivityCompat
@@ -18,17 +15,11 @@ import com.google.android.gms.common.api.*
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.octal.actorpay.MainActivity
-import java.lang.Exception
-import java.util.*
 
 
-class LocationUtils(private var pActivity: Activity, val isFromService: Boolean,val result:(LatLng)->Unit) :
+class LocationUtils(private var pActivity: Activity, private val isFromService: Boolean, val result:(LatLng)->Unit) :
     LocationListener {
 
-    private lateinit var mLocation: Location
     private var mLocationManager: LocationManager? = null
 
     private var mLocationSettingsRequest: LocationSettingsRequest?=null
@@ -37,7 +28,7 @@ class LocationUtils(private var pActivity: Activity, val isFromService: Boolean,
     private val sUINTERVAL = (2 * 1000).toLong()  /* 10 secs */
     private val sFINTERVAL: Long = 2000 /* 2 sec */
     private lateinit var locationManager: LocationManager
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     // Code for make call back using interface from utility to activity       private var pCallback: Callback = MainActivity()
     override fun onLocationChanged(location: Location) {
@@ -54,7 +45,7 @@ class LocationUtils(private var pActivity: Activity, val isFromService: Boolean,
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(pActivity)
         val mLocationRequest = LocationRequest.create().apply {
-            {
+            run {
                 priority = LocationRequest.PRIORITY_HIGH_ACCURACY
                 interval = sUINTERVAL
                 fastestInterval = sFINTERVAL
@@ -66,7 +57,7 @@ class LocationUtils(private var pActivity: Activity, val isFromService: Boolean,
         val builder = LocationSettingsRequest.Builder()
             .addLocationRequest(mLocationRequest)
         mLocationSettingsRequest = builder.build()
-        builder.setAlwaysShow(true);
+        builder.setAlwaysShow(true)
         //---
 
         checkLocation()
@@ -94,7 +85,7 @@ class LocationUtils(private var pActivity: Activity, val isFromService: Boolean,
                 }
             }
         }.addOnFailureListener {
-            Log.d("sdsd", it.message!!)
+            Log.d("tag", it.message!!)
         }*/
     }
 
@@ -113,46 +104,34 @@ class LocationUtils(private var pActivity: Activity, val isFromService: Boolean,
     }
 
     private fun isLocationEnabled(): Boolean {
-        val mSettingsClient = LocationServices.getSettingsClient(pActivity);
+        val mSettingsClient = LocationServices.getSettingsClient(pActivity)
         locationManager = pActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER).not()) {
             mSettingsClient
                 .checkLocationSettings(mLocationSettingsRequest!!)
-                .addOnSuccessListener(pActivity as Activity,
-                    object : OnSuccessListener<LocationSettingsResponse> {
-                        override fun onSuccess(locationSettingsResponse: LocationSettingsResponse) {
-                            Log.d("DFSf", "Dfasdf")
-                        }
-                    })
-                .addOnFailureListener(pActivity as Activity, object : OnFailureListener {
-                    override fun onFailure(e: Exception) {
-                        val statusCode = (e as ApiException).getStatusCode()
-                        when (statusCode) {
-                            LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                                try {
-                                    // Show the dialog by calling startResolutionForResult(), and check the
-                                    // result in onActivityResult().
-                                    val rae: ResolvableApiException = e as ResolvableApiException
-                                    rae.startResolutionForResult(pActivity, 1);
-                                } catch (sie: IntentSender.SendIntentException) {
-                                    Log.d("DFSf", "Dfasdf")
+                .addOnSuccessListener(
+                    pActivity
+                ) {  }
+                .addOnFailureListener(pActivity) { e ->
+                    when ((e as ApiException).getStatusCode()) {
+                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
+                            try {
+                                // Show the dialog by calling startResolutionForResult(), and check the
+                                // result in onActivityResult().
+                                val rae: ResolvableApiException = e as ResolvableApiException
+                                rae.startResolutionForResult(pActivity, 1)
+                            } catch (sie: IntentSender.SendIntentException) {
 
-                                }
+
                             }
                         }
                     }
-                })
+                }
         }
 
 
 
         return true
-
-    }
-
-
-    @SuppressLint("MissingPermission")
-    private fun startLocationUpdates() {
 
     }
 

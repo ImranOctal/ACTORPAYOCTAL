@@ -10,17 +10,17 @@ import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartItemDTO
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class CartAdapter(val cartList: MutableStateFlow<MutableList<CartItemDTO>> = MutableStateFlow(mutableListOf()),val onClick:(position:Int,clicks:Clicks)->Unit):RecyclerView.Adapter<CartAdapter.MyViewholder>() {
+class CartAdapter(private val cartList: MutableStateFlow<MutableList<CartItemDTO>> = MutableStateFlow(mutableListOf()), val onClick:(position:Int, clicks:Clicks)->Unit):RecyclerView.Adapter<CartAdapter.MyViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewholder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater=LayoutInflater.from(parent.context)
             val binding=RowCartItemBinding.inflate(layoutInflater,parent,false)
 
-        return  MyViewholder(binding)
+        return  MyViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MyViewholder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bindView(cartList.value[position])
     }
 
@@ -31,7 +31,7 @@ class CartAdapter(val cartList: MutableStateFlow<MutableList<CartItemDTO>> = Mut
 
 
 
-     inner class MyViewholder(val binding:RowCartItemBinding):RecyclerView.ViewHolder(binding.root) {
+     inner class MyViewHolder(val binding:RowCartItemBinding):RecyclerView.ViewHolder(binding.root) {
 
          fun bindView(item:CartItemDTO){
                 binding.cartItem=item

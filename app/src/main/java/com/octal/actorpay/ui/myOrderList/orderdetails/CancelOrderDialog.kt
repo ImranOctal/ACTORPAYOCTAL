@@ -29,27 +29,27 @@ import java.io.File
 import java.io.IOException
 
 class CancelOrderDialog(
-    val mContext: Activity,
+    private val mContext: Activity,
     val methodsRepo: MethodsRepo,
-    val isOrderCancel:Boolean,
+    private val isOrderCancel:Boolean,
     val onDone: (reason:String,file:File?) -> Unit,
 ): DialogFragment() {
 
-    var PERMISSIONS = Manifest.permission.READ_EXTERNAL_STORAGE
-    var prodImage: File? = null
+    private var permissions = Manifest.permission.READ_EXTERNAL_STORAGE
+    private var prodImage: File? = null
     lateinit var binding:CancelOrderDialogBinding
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(mContext, R.style.MainDialog)
-        binding = DataBindingUtil.inflate<CancelOrderDialogBinding>(
+        binding = DataBindingUtil.inflate(
             layoutInflater,
             R.layout.cancel_order_dialog,
             null,
             false
         )
         dialog.setContentView(binding.root)
-        setCancelable(false)
+        isCancelable = false
         binding.back.setOnClickListener {
             dismiss()
         }
@@ -74,13 +74,13 @@ class CancelOrderDialog(
                 )
             ) {
 
-                permReqLauncher.launch(PERMISSIONS)
+                permReqLauncher.launch(permissions)
             } else {
                 fetchImage()
             }
         }
         binding.done.setOnClickListener {
-            if(binding.editDesc.text.toString().trim().equals(""))
+            if(binding.editDesc.text.toString().trim() == "")
                 Toast.makeText(mContext,"Please write reason",Toast.LENGTH_SHORT).show()
             else{
                 dismiss()
@@ -92,7 +92,7 @@ class CancelOrderDialog(
         return dialog
     }
 
-    fun fetchImage() {
+    private fun fetchImage() {
 
         val galleryIntent = Intent(
             Intent.ACTION_PICK,
@@ -102,7 +102,7 @@ class CancelOrderDialog(
         galleryForResult.launch(galleryIntent)
     }
 
-    val galleryForResult =
+    private val galleryForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
@@ -126,27 +126,27 @@ class CancelOrderDialog(
         val destinationUri: Uri = Uri.fromFile(
             File(
                 getCacheDir(),
-                queryName(mContext.getContentResolver(), sourceUri)
+                queryName(mContext.contentResolver, sourceUri)
             )
         )
-        val options: UCrop.Options = UCrop.Options();
-        options.setCompressionQuality(80);
-        options.setToolbarColor(ContextCompat.getColor(mContext, R.color.black));
-        options.setStatusBarColor(ContextCompat.getColor(mContext, R.color.black));
-        options.setToolbarWidgetColor(ContextCompat.getColor(mContext, R.color.white));
+        val options: UCrop.Options = UCrop.Options()
+        options.setCompressionQuality(80)
+        options.setToolbarColor(ContextCompat.getColor(mContext, R.color.black))
+        options.setStatusBarColor(ContextCompat.getColor(mContext, R.color.black))
+        options.setToolbarWidgetColor(ContextCompat.getColor(mContext, R.color.white))
 
-        options.withAspectRatio(1f, 1f);
+        options.withAspectRatio(1f, 1f)
 
         val uCrop = UCrop.of(sourceUri, destinationUri)
             .withOptions(options)
 
         val intent = uCrop.getIntent(mContext)
-        croporResult.launch(intent)
+        cropResult.launch(intent)
 
 
     }
 
-    val croporResult =
+    private val cropResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
@@ -156,7 +156,7 @@ class CancelOrderDialog(
 
                     prodImage = resultUri?.toFile()
 
-                    binding.uploadImage.text = "Edit Image"
+                    binding.uploadImage.text = getString(R.string.edit_image)
                     Glide.with(this).load(resultUri).error(R.drawable.logo)
                         .into(binding.image)
 
@@ -171,7 +171,7 @@ class CancelOrderDialog(
                 fetchImage()
             } else {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(
-                        mContext, PERMISSIONS
+                        mContext, permissions
                     )
                 ) {
                     Toast.makeText(mContext,"Permission Denied, Go to setting to give access",Toast.LENGTH_SHORT).show()
@@ -184,15 +184,16 @@ class CancelOrderDialog(
 
     private fun queryName(resolver: ContentResolver, uri: Uri): String {
         val returnCursor: Cursor? =
-            resolver.query(uri, null, null, null, null);
+            resolver.query(uri, null, null, null, null)
 
         returnCursor.let {
 
-            val nameIndex: Int = returnCursor!!.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-            returnCursor.moveToFirst();
-            val name: String = returnCursor.getString(nameIndex);
-            returnCursor.close();
-            return name;
+            val nameIndex: Int = returnCursor!!.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            returnCursor.moveToFirst()
+            val name: String = returnCursor.getString(nameIndex)
+            returnCursor.close()
+            return name
         }
     }
+
 }

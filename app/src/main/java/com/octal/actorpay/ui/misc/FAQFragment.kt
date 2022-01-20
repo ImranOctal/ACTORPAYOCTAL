@@ -1,7 +1,6 @@
 package com.octal.actorpay.ui.misc
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,31 +12,21 @@ import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.BaseFragment
+import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentFAQBinding
-import com.octal.actorpay.databinding.FragmentMiscBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.utils.CommonDialogsUtils
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
-import okhttp3.internal.notifyAll
 import org.koin.android.ext.android.inject
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FAQFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FAQFragment : BaseFragment() {
 
 
     private val miscViewModel: MiscViewModel by inject()
     private lateinit var binding: FragmentFAQBinding
-    override fun WorkStation() {
-
-    }
 
 
     override fun onCreateView(
@@ -52,12 +41,12 @@ class FAQFragment : BaseFragment() {
         miscViewModel.getFAQ()
         }
 
-        ApiResponse()
+        apiResponse()
 
         return binding.root
     }
 
-    fun initExpandableList(){
+    private fun initExpandableList(){
         val adapter:ExpandableListAdapter = CustomExpandableListAdapter(requireContext(), miscViewModel.faqList)
         binding.
             expendableList.setAdapter(adapter)
@@ -67,24 +56,24 @@ class FAQFragment : BaseFragment() {
                 var flag = false
                 override fun onGroupExpand(groupPosition: Int) {
                     if (groupPosition != previousGroup && flag) {
-                        binding.expendableList.collapseGroup(previousGroup);
+                        binding.expendableList.collapseGroup(previousGroup)
                     }
-                    previousGroup = groupPosition;
+                    previousGroup = groupPosition
 
-                    flag = true;
+                    flag = true
                 }
             })
     }
 
 
-    private fun ApiResponse(){
+    private fun apiResponse(){
         lifecycleScope.launch {
             miscViewModel.miscResponseLive.collect {
                 when(it){
-                    is MiscViewModel.ResponseMiscSealed.loading->{
+                    is ResponseSealed.loading->{
                         miscViewModel.methodRepo.showLoadingDialog(requireContext())
                     }
-                    is MiscViewModel.ResponseMiscSealed.Success->{
+                    is ResponseSealed.Success->{
                         miscViewModel.methodRepo.hideLoadingDialog()
 
                         when (it.response) {
@@ -102,14 +91,14 @@ class FAQFragment : BaseFragment() {
                             }
                         }
                     }
-                    is MiscViewModel.ResponseMiscSealed.ErrorOnResponse->{
+                    is ResponseSealed.ErrorOnResponse->{
                         miscViewModel.methodRepo.hideLoadingDialog()
                         (requireActivity() as BaseActivity).showCustomAlert(
-                            it.failResponse!!.message,
+                            it.message!!.message,
                             binding.root
                         )
                     }
-                    is MiscViewModel.ResponseMiscSealed.Empty -> {
+                    is ResponseSealed.Empty -> {
                         miscViewModel.methodRepo.hideLoadingDialog()
                     }
                 }

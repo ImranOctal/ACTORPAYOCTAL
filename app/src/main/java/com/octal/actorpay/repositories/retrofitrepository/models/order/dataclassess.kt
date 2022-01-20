@@ -1,6 +1,5 @@
 package com.octal.actorpay.repositories.retrofitrepository.models.order
 
-import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductItem
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import java.io.Serializable
 
@@ -14,7 +13,7 @@ data class PlaceOrderResponse(
 
 )
 
-data class PlaceOrderParamas(
+data class PlaceOrderParams(
     var addressLine1:String,
     var addressLine2:String,
     var zipCode:String,

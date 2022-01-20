@@ -1,6 +1,5 @@
 package com.octal.actorpay.repositories.retrofitrepository.models
 
-import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.Data
 
 data class FailResponse(
     val message: String,

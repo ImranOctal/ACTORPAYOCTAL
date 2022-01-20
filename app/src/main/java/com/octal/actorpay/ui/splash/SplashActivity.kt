@@ -1,9 +1,5 @@
 package com.octal.actorpay.ui.splash
 
-//import android.content.pm.PackageManager
-//import android.content.pm.PackageInfo
-//import android.util.Base64
-//import android.util.Log
 import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -14,11 +10,9 @@ import com.google.firebase.messaging.ktx.messaging
 import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseActivity
-import com.octal.actorpay.base.BaseCommonActivity
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.ActivitySplashScreenBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryResponse
 import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.ui.intro.IntroActivity
@@ -32,15 +26,9 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 
-//import java.lang.Exception
-//import java.security.MessageDigest
-//import java.security.NoSuchAlgorithmException
-
-
 class SplashActivity : BaseActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
     private val viewModel: ActorPayViewModel by inject()
-    var goTo=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +56,7 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-    fun gotoNextActivity(){
+    private fun gotoNextActivity(){
 
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.methodRepo.dataStore.isIntro().collect { isIntro ->
@@ -94,39 +82,37 @@ class SplashActivity : BaseActivity() {
 
     private fun apiResponse(){
         lifecycleScope.launch {
-            viewModel.actorcResponseLive.collect {
+            viewModel.actorResponseLive.collect {
                 when(it){
-                    is ActorPayViewModel.ResponseActorSealed.loading->{
-//                        viewModel.methodRepo.showLoadingDialog(this@SplashActivity)
+                    is ResponseSealed.loading->{
                     }
-                    is ActorPayViewModel.ResponseActorSealed.Success->{
-//                        viewModel.methodRepo.hideLoadingDialog()
-                        if(it.response is SuccessResponse){
-                            CommonDialogsUtils.showCommonDialog(this@SplashActivity,viewModel.methodRepo,"Success",it.response.message)
-                        }
-                        else if(it.response is CountryResponse){
+                    is ResponseSealed.Success->{
+                        when (it.response) {
+                            is SuccessResponse -> {
+                                CommonDialogsUtils.showCommonDialog(this@SplashActivity,viewModel.methodRepo,"Success",it.response.message)
+                            }
+                            is CountryResponse -> {
 
-                            GlobalData.allCountries.clear()
-                            GlobalData.allCountries.addAll(it.response.data)
-                            gotoNextActivity()
+                                GlobalData.allCountries.clear()
+                                GlobalData.allCountries.addAll(it.response.data)
+                                gotoNextActivity()
 
-                        }
-                        else {
-                            showCustomAlert(
-                                getString(R.string.please_try_after_sometime),
-                                binding.root
-                            )
+                            }
+                            else -> {
+                                showCustomAlert(
+                                    getString(R.string.please_try_after_sometime),
+                                    binding.root
+                                )
+                            }
                         }
                     }
-                    is ActorPayViewModel.ResponseActorSealed.ErrorOnResponse->{
-//                        viewModel.methodRepo.hideLoadingDialog()
+                    is ResponseSealed.ErrorOnResponse->{
                         showCustomAlert(
-                            it.failResponse!!.message,
+                            it.message!!.message,
                             binding.root
                         )
                     }
-                    is ActorPayViewModel.ResponseActorSealed.Empty -> {
-//                        viewModel.methodRepo.hideLoadingDialog()
+                    is ResponseSealed.Empty -> {
                     }
                 }
             }

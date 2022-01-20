@@ -1,22 +1,10 @@
 package com.octal.actorpay.ui.shippingaddress
 
-import android.R.attr
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.octal.actorpay.databinding.PromoListItemBinding
-import com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoItem
-import android.R.attr.label
-
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.view.MenuItem
 import android.view.View
-import android.widget.PopupMenu
-import androidx.core.content.ContextCompat
-
-import androidx.core.content.ContextCompat.getSystemService
 import com.octal.actorpay.databinding.ShippingListItemBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 

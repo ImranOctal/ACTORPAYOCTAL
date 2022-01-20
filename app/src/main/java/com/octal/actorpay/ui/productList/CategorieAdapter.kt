@@ -1,15 +1,13 @@
 package com.octal.actorpay.ui.productList
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.octal.actorpay.R
-import com.octal.actorpay.databinding.ProductListItemBinding
 import com.octal.actorpay.databinding.RowCategoriesItemBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieItem
 
-class CategorieAdapter(val list:MutableList<CategorieItem>,val onClick:(Int)->Unit):RecyclerView.Adapter<CategorieAdapter.MyViewHolder>() {
+class CategoryAdapter(val list:MutableList<CategorieItem>,val onClick:(position:Int)->Unit):RecyclerView.Adapter<CategoryAdapter.MyViewHolder>() {
 
 
 
@@ -28,9 +26,9 @@ class CategorieAdapter(val list:MutableList<CategorieItem>,val onClick:(Int)->Un
     }
 
     inner class MyViewHolder(val binding: RowCategoriesItemBinding):RecyclerView.ViewHolder(binding.root) {
-            fun bindView(categorieItem: CategorieItem){
-                binding.categorieText.text=categorieItem.name
-                if(categorieItem.isSelected){
+            fun bindView(categoriesItem: CategorieItem){
+                binding.categorieText.text=categoriesItem.name
+                if(categoriesItem.isSelected){
                     binding.root.setBackgroundResource(R.drawable.orderstatus_bg)
                 }
                 else {

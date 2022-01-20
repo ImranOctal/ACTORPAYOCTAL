@@ -4,8 +4,6 @@ import android.app.*
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.RingtoneManager
@@ -92,13 +90,8 @@ class NotificationManager : FirebaseMessagingService() {
                             type = remoteMessage.notification!!.title
                             body = remoteMessage.notification!!.body
 
-                            if (isLogin) {
 
-                            } else {
 
-                            }
-                            /* Map<String, String> map = remoteMessage.getData();
-                            handleDataMessage(map);*/
                         } catch (e: Exception) {
                             Log.e("error in Notification", e.message.toString())
 
@@ -109,25 +102,9 @@ class NotificationManager : FirebaseMessagingService() {
         }
     }
 
-    private fun handleDataMessage(json: Map<String, String>?) {
-       /* Log.e(getString(R.string.app_name), "push json: " + json.toString())
-        try {
-            if (json != null) {
-                val title = json["title"]
-                val message = json["body"]
-                // String badge = json.get("badge");
-                if (SendNotification) {
-                    //intent = Intent(this, HomeActivity::class.java)
-                    showNotification(title, message, intent)
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(getString(R.string.app_name), "Exception: " + e.message)
-        }*/
-    }
+
 
     fun showNotification(title: String?, body: String?, intent: Intent?) {
-        val logo: Bitmap
         val stackBuilder = TaskStackBuilder.create(this)
         stackBuilder.addParentStack(MainActivity::class.java)
         stackBuilder.addNextIntent(intent)
@@ -138,7 +115,6 @@ class NotificationManager : FirebaseMessagingService() {
             NotificationCompat.Builder(this, getString(R.string.app_name))
         builder.setSmallIcon(R.mipmap.ic_launcher)
 
-        logo = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
         builder.setContentTitle(title)
             .setContentText(body)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -146,8 +122,6 @@ class NotificationManager : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setSound(null)
             .setContentIntent(pendingIntent)
-            .setPriority(Notification.PRIORITY_DEFAULT)
-            .setDefaults(Notification.BADGE_ICON_LARGE)
             .setLights(1, 1, 1)
             .setOngoing(false)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
@@ -167,7 +141,7 @@ class NotificationManager : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
             notificationManager.notify(NOTIFICATION_ID, builder.build())
         } else {
-            val notificationManager = NotificationManagerCompat.from(this)
+//            val notificationManager = NotificationManagerCompat.from(this)
             val notificationCompat = builder.build()
             val managerCompat = NotificationManagerCompat.from(this)
             managerCompat.notify(NOTIFICATION_ID, notificationCompat)
@@ -186,7 +160,6 @@ class NotificationManager : FirebaseMessagingService() {
     fun playSound(context: Context,notificationSound:String) {
 
         val myAudioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
-        val i = myAudioManager.ringerMode
         if (myAudioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE) uri = Uri.parse(
             notificationSound
         )
@@ -196,7 +169,6 @@ class NotificationManager : FirebaseMessagingService() {
         val mediaPlayer = MediaPlayer()
         try {
             mediaPlayer.setDataSource(context, uri!!)
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION)
             mediaPlayer.prepare()
             mediaPlayer.setOnCompletionListener { mp -> mp.release() }
             mediaPlayer.start()

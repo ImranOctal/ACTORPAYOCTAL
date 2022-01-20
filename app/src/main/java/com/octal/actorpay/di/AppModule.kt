@@ -10,7 +10,7 @@ import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.BASE_
 import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitMainRepository
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
-import com.octal.actorpay.retrofitrepository.apiclient.ApiClient
+import com.octal.actorpay.repositories.retrofitrepository.apiclient.ApiClient
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.ui.auth.viewmodel.SignupViewModel
 import com.octal.actorpay.ui.cart.CartViewModel

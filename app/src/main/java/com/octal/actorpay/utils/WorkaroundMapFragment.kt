@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.SupportMapFragment
 import com.octal.actorpay.R
 
@@ -19,10 +20,10 @@ class WorkaroundMapFragment : SupportMapFragment() {
         savedInstance: Bundle?
     ): View {
         val layout = super.onCreateView(layoutInflater, viewGroup, savedInstance)
-        val frameLayout: TouchableWrapper = TouchableWrapper(
+        val frameLayout = TouchableWrapper(
             activity
         )
-        frameLayout.setBackgroundColor(resources.getColor(R.color.transparent))
+        frameLayout.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.transparent))
         (layout as ViewGroup).addView(
             frameLayout,
             ViewGroup.LayoutParams(

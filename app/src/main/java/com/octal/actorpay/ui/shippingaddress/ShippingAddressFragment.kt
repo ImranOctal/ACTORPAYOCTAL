@@ -15,7 +15,6 @@ import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListData
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
-import com.octal.actorpay.ui.cart.CartActivity
 import com.octal.actorpay.ui.shippingaddress.details.ShippingAddressDetailsActivity
 import com.octal.actorpay.utils.CommonDialogsUtils
 import kotlinx.coroutines.flow.collect
@@ -29,25 +28,13 @@ class ShippingAddressFragment : BaseFragment() {
     private val shippingAddressViewModel: ShippingAddressViewModel by inject()
     lateinit var adapter: ShippingListAdapter
 
-    override fun WorkStation() {
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentShippingAddressBinding.inflate(inflater, container, false)
 
-        setTitle("My Addresses")
-        showHideBottomNav(false)
-        showHideCartIcon(false)
-        showHideFilterIcon(false)
+
         shippingAddressViewModel.getAddresses()
         setAdapter()
         apiResponse()
@@ -72,7 +59,7 @@ class ShippingAddressFragment : BaseFragment() {
             shippingAddressViewModel.getAddresses()
         }
 
-    fun updateUI(addressListData: ShippingAddressListData) {
+    private fun updateUI(addressListData: ShippingAddressListData) {
         shippingAddressViewModel.shippingAddressList.clear()
         shippingAddressViewModel.shippingAddressList.addAll(addressListData.items)
         shippingAddressViewModel.shippingAddressList.forEach {
@@ -87,21 +74,28 @@ class ShippingAddressFragment : BaseFragment() {
             requireContext(),
             shippingAddressViewModel.shippingAddressList
         ) { position, action ->
-            if (action.equals("Edit")) {
-                ShippingAddressDetailsActivity.shippingAddressItem =
-                    shippingAddressViewModel.shippingAddressList.get(position)
+            if (action == "Edit") {
+
                 /*startActivity(
                     Intent(
                         requireContext(), ShippingAddressDetailsActivity::class.java
                     )
                 )*/
                 val intent = Intent(requireContext(), ShippingAddressDetailsActivity::class.java)
+                intent.putExtra("shippingItem",
+                    shippingAddressViewModel.shippingAddressList[position]
+                )
                 resultLauncher.launch(intent)
-            } else if (action.equals("Delete")) {
+            } else if (action == "Delete") {
                 val shippingDeleteParams =
                     ShippingDeleteParams(mutableListOf(shippingAddressViewModel.shippingAddressList[position].id!!))
                 CommonDialogsUtils.showCommonDialog(requireActivity(),shippingAddressViewModel.methodRepo,
-                "Delete Address","Are you sure?",true,true,true,false,object :CommonDialogsUtils.DialogClick{
+                "Delete Address","Are you sure?",
+                    autoCancelable = true,
+                    isCancelAvailable = true,
+                    isOKAvailable = true,
+                    showClickable = false,
+                    callback = object :CommonDialogsUtils.DialogClick{
                         override fun onClick() {
                             shippingAddressViewModel.deleteAddress(shippingDeleteParams)
                         }
@@ -154,15 +148,5 @@ class ShippingAddressFragment : BaseFragment() {
         }
 
 
-    }
-
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            ShippingAddressFragment().apply {
-
-            }
     }
 }

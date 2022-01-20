@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -100,17 +101,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_20sdp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:layout_marginRight="@dimen/_20sdp"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        >
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:gravity="center">
 
                             <ImageView
                                 android:id="@+id/imFacebook"
@@ -121,7 +117,8 @@
                                 android:layout_marginEnd="@dimen/_5sdp"
                                 android:background="@drawable/fb_bg"
                                 android:padding="@dimen/_10sdp"
-                                android:src="@drawable/facebook" />
+                                android:src="@drawable/facebook"
+                                android:contentDescription="@string/facebook" />
 
                             <ImageView
                                 android:id="@+id/imTwitter"
@@ -133,7 +130,8 @@
                                 android:background="@drawable/twitter_bg"
                                 android:padding="@dimen/_10sdp"
                                 android:visibility="gone"
-                                android:src="@drawable/twitter" />
+                                android:src="@drawable/twitter"
+                                android:contentDescription="@string/twitter" />
 
                             <ImageView
                                 android:id="@+id/imGoogle"
@@ -144,9 +142,10 @@
                                 android:layout_marginEnd="@dimen/_5sdp"
                                 android:background="@drawable/edittext_bg"
                                 android:padding="@dimen/_10sdp"
-                                android:src="@drawable/google" />
+                                android:src="@drawable/google"
+                                android:contentDescription="@string/google" />
 
-                        </LinearLayout>
+
 
                     </LinearLayout>
 

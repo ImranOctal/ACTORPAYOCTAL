@@ -15,17 +15,17 @@ class CountryPickerAdapter(val list:MutableList<CountryItem>,val onClick:(positi
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindView(list.get(position))
+        holder.bindView(list[position])
     }
 
     override fun getItemCount(): Int {
        return list.size
     }
 
-    inner class MyViewHolder(val countryListitemBinding: CountryListitemBinding):RecyclerView.ViewHolder(countryListitemBinding.root) {
+    inner class MyViewHolder(private val countryListItemBinding: CountryListitemBinding):RecyclerView.ViewHolder(countryListItemBinding.root) {
             fun bindView(item: CountryItem){
-                countryListitemBinding.countryItem=item
-                countryListitemBinding.root.setOnClickListener {
+                countryListItemBinding.countryItem=item
+                countryListItemBinding.root.setOnClickListener {
                     onClick(adapterPosition)
                 }
             }

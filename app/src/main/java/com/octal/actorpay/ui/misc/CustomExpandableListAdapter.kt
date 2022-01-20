@@ -1,7 +1,6 @@
 package com.octal.actorpay.ui.misc
 
 import android.content.Context
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import com.octal.actorpay.R
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponseData
-import java.util.HashMap
 
 
 class CustomExpandableListAdapter internal constructor(

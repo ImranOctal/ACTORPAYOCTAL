@@ -12,6 +12,7 @@ import android.view.Window
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.octal.actorpay.R
 import com.octal.actorpay.databinding.OrderFilterDialogBinding
@@ -21,7 +22,7 @@ import java.text.DecimalFormat
 import java.util.*
 
 class OrderFilterDialog(
-    val params: OrderListParams,
+    private val params: OrderListParams,
     val mContext: Activity,
     val methodsRepo: MethodsRepo,
     val onClick: (OrderListParams) -> Unit
@@ -69,7 +70,7 @@ class OrderFilterDialog(
             ) {
 
                 if(position==0){
-                    (view as TextView).setTextColor(mContext.resources.getColor(R.color.gray))
+                    (view as TextView).setTextColor(ContextCompat.getColor(mContext,R.color.gray))
                 }
             }
 
@@ -91,17 +92,16 @@ class OrderFilterDialog(
             }
         }
 
-        binding.startLayout.setOnClickListener {
+        binding.startDate.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
 
 
-            val dpd = DatePickerDialog(mContext,  { view, yearR, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(mContext,  { _, yearR, monthOfYear, dayOfMonth ->
 
-                // Display Selected date in textbox
-                val f =  DecimalFormat("00");
+                val f =  DecimalFormat("00")
                 val dayMonth=f.format(dayOfMonth)
                 val monthYear=f.format(monthOfYear+1)
 
@@ -109,21 +109,20 @@ class OrderFilterDialog(
 
             }, year, month, day)
             dpd.show()
-            dpd.getDatePicker().setMaxDate(Date().time)
-            dpd.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-            dpd.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+            dpd.datePicker.maxDate = Date().time
+            dpd.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+            dpd.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
         }
-        binding.endLayout.setOnClickListener {
+        binding.endDate.setOnClickListener {
             val c = Calendar.getInstance()
             val year = c.get(Calendar.YEAR)
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
 
 
-            val dpd = DatePickerDialog(mContext,  { view, yearR, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(mContext,  { _, yearR, monthOfYear, dayOfMonth ->
 
-                // Display Selected date in textbox
-                val f =  DecimalFormat("00");
+                val f =  DecimalFormat("00")
                 val dayMonth=f.format(dayOfMonth)
                 val monthYear=f.format(monthOfYear+1)
 
@@ -132,9 +131,9 @@ class OrderFilterDialog(
             }, year, month, day)
 
             dpd.show()
-            dpd.getDatePicker().setMaxDate(Date().time)
-            dpd.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-            dpd.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+            dpd.datePicker.maxDate = Date().time
+            dpd.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+            dpd.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
         }
 
         binding.apply.setOnClickListener {
@@ -143,19 +142,19 @@ class OrderFilterDialog(
             var startDate: String? = null
             var endDate: String? = null
             var status: String? = null
-            if (binding.orderNumber.text.toString().trim().equals("").not())
+            if ((binding.orderNumber.text.toString().trim() == "").not())
                 orderNo = binding.orderNumber.text.toString().trim()
-            if (binding.total.text.toString().trim().equals("").not())
+            if ((binding.total.text.toString().trim() == "").not())
                 total = binding.total.text.toString().trim().toDouble()
-            if (binding.startDate.text.toString().trim().equals("").not())
+            if ((binding.startDate.text.toString().trim() == "").not())
                 startDate = binding.startDate.text.toString().trim()
-            if (binding.endDate.text.toString().trim().equals("").not())
+            if ((binding.endDate.text.toString().trim() == "").not())
                 endDate = binding.endDate.text.toString().trim()
 
 
             val statusPosition = binding.spinnerStatus.selectedItemPosition
             if (statusPosition != 0) {
-                status = array.get(statusPosition)
+                status = array[statusPosition]
                 status=methodsRepo.setStatus(status)
             }
             onClick(

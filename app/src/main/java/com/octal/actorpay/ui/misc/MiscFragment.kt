@@ -12,11 +12,11 @@ import com.octal.actorpay.R
 import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.BaseFragment
+import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentMiscBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.ui.content.ContentActivity
 import com.octal.actorpay.ui.content.ContentViewModel
-import com.octal.actorpay.ui.shippingaddress.ShippingAddressFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -26,37 +26,14 @@ class MiscFragment : BaseFragment() {
     private lateinit var binding:FragmentMiscBinding
 
 
-    override fun WorkStation() {
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-    companion object {
-        private var instance: MiscFragment? = null
-        @JvmStatic
-        fun newInstance(): MiscFragment? {
-
-            if (instance == null) {
-                instance = MiscFragment()
-            }
-            return instance
-        }
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_misc, container, false)
-        setTitle(getString(R.string.more))
-        showHideBottomNav(false)
-        showHideCartIcon(false)
-        showHideFilterIcon(false)
         init()
-        ApiResponse()
+        apiResponse()
 
 
         return binding.root
@@ -77,14 +54,11 @@ class MiscFragment : BaseFragment() {
                 startActivity(Intent(requireContext(), ContentActivity::class.java))
             }
             faqText.setOnClickListener {
-
-                val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.container, FAQFragment())
-                transaction.addToBackStack("faq")
-                transaction.commit()
+                Navigation.findNavController(requireView()).navigate(R.id.faqFragment)
             }
             myAddress.setOnClickListener {
-                startFragment(ShippingAddressFragment.newInstance(),true, ShippingAddressFragment.toString())
+                Navigation.findNavController(requireView()).navigate(R.id.shippingAddressFragment)
+
             }
 
         }
@@ -92,14 +66,14 @@ class MiscFragment : BaseFragment() {
 
 
 
-    private fun ApiResponse(){
+    private fun apiResponse(){
         lifecycleScope.launch {
             miscViewModel.miscResponseLive.collect {
                 when(it){
-                    is MiscViewModel.ResponseMiscSealed.loading->{
+                    is ResponseSealed.loading->{
                         miscViewModel.methodRepo.showLoadingDialog(requireContext())
                     }
-                    is MiscViewModel.ResponseMiscSealed.Success->{
+                    is ResponseSealed.Success->{
                         miscViewModel.methodRepo.hideLoadingDialog()
                         if(it.response is SuccessResponse){
                             CommonDialogsUtils.showCommonDialog(requireActivity(),miscViewModel.methodRepo,"Success",it.response.message)
@@ -112,14 +86,14 @@ class MiscFragment : BaseFragment() {
                             )
                         }
                     }
-                    is MiscViewModel.ResponseMiscSealed.ErrorOnResponse->{
+                    is ResponseSealed.ErrorOnResponse->{
                         miscViewModel.methodRepo.hideLoadingDialog()
                         (requireActivity() as BaseActivity).showCustomAlert(
-                            it.failResponse!!.message,
+                            it.message!!.message,
                             binding.root
                         )
                     }
-                    is MiscViewModel.ResponseMiscSealed.Empty -> {
+                    is ResponseSealed.Empty -> {
                         miscViewModel.methodRepo.hideLoadingDialog()
                     }
                 }

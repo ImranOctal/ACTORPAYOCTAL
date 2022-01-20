@@ -1,4 +1,4 @@
-package com.octal.actorpay.retrofitrepository.apiclient
+package com.octal.actorpay.repositories.retrofitrepository.apiclient
 
 import com.octal.actorpay.repositories.AppConstance.AppConstance
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ADDRESS_ADD
@@ -39,7 +39,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.Soci
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileParams
-import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
+import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartParams
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdateParams
@@ -51,7 +51,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQRespons
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
@@ -68,7 +68,7 @@ import retrofit2.http.*
 interface ApiClient {
 
     @POST(LOGIN)
-    suspend fun LoginNow(@Body loginDetail: LoginParams): Response<LoginResponses>
+    suspend fun loginNow(@Body loginDetail: LoginParams): Response<LoginResponses>
 
     @POST(SIGNUP)
     suspend fun signUp(@Body loginDetail: SignUpParams): Response<SignupResponse>
@@ -84,11 +84,11 @@ interface ApiClient {
     @POST(RESEND_OTP)
     suspend fun resendOtp(@Body forgetPasswordParams: ForgetPasswordParams): Response<LoginResponses>
 
-    @GET(GET_PROFILE + "{id}")
+    @GET("$GET_PROFILE{id}")
     suspend fun getProfile(
         @Header("Authorization") token: String,
         @Path("id") id: String
-    ): Response<ProfileReesponse>
+    ): Response<ProfileResponse>
 
     @PUT(UPDATE_PROFILE)
     suspend fun saveProfile(
@@ -175,7 +175,7 @@ interface ApiClient {
     @POST(PLACE_ORDER)
     suspend fun placeOrder(
         @Header("Authorization") token: String,
-        @Body placeOrderParamas: PlaceOrderParamas
+        @Body placeOrderParams: PlaceOrderParams
     ): Response<PlaceOrderResponse>
 
     @POST(GET_ALL_ORDERS)
@@ -187,7 +187,7 @@ interface ApiClient {
     ): Response<OrderListResponse>
 
 
-    @PUT(ORDER_STATUS+"{status}")
+    @PUT("""$ORDER_STATUS{status}""")
     suspend fun changeOrderStatus(
         @Header("Authorization") token: String,
         @Path("status") status: String,
@@ -195,7 +195,7 @@ interface ApiClient {
     ): Response<SuccessResponse>
 
     @Multipart
-    @POST(ORDER_CANCEL+"{order}")
+    @POST("$ORDER_CANCEL{order}")
     suspend fun changeOrderItemsStatus(
         @Header("Authorization") token: String,
         @Path("order") order: String,

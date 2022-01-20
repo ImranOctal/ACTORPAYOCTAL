@@ -126,7 +126,7 @@
     <string name="add_mobile_number">Add mobile number</string>
     <string name="please_select_gender">Please select gender</string>
     <string name="please_valid_pan">Please enter valid PAN no</string>
-    <string name="enter_valid_adhar">please enter valid Adhar no</string>
+    <string name="enter_valid_adhar">please enter valid Aadhar no</string>
     <string name="plase_select_dob">Please select DOB</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="update">Update</string>
@@ -152,5 +152,10 @@
     </string-array>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="price">Price</string>
+    <string name="no_orders_found">No orders found</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="google">Google</string>
+    <string name="edit_image">Edit Image</string>
 
 </resources>

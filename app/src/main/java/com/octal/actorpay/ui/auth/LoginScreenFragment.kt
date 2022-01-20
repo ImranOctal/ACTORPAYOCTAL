@@ -11,6 +11,7 @@ import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseCommonActivity
 import com.octal.actorpay.base.BaseFragment
+import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.LoginScreenFragmentBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.LoginResponses
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
@@ -21,9 +22,6 @@ import org.koin.android.ext.android.inject
 
 
 class LoginScreenFragment : BaseFragment() {
-    override fun WorkStation() {
-
-    }
 
     private val loginViewModel: LoginViewModel by inject()
     lateinit var binding: LoginScreenFragmentBinding
@@ -46,12 +44,12 @@ class LoginScreenFragment : BaseFragment() {
 
     private fun apiResponse() {
         lifecycleScope.launchWhenStarted {
-            loginViewModel.loginResponseLive.collect { event ->
+            loginViewModel.responseLive.collect { event ->
                 when (event) {
-                    is LoginViewModel.ResponseLoginSealed.loading -> {
+                    is ResponseSealed.loading -> {
                         loginViewModel.methodRepo.showLoadingDialog(requireContext())
                     }
-                    is LoginViewModel.ResponseLoginSealed.Success -> {
+                    is ResponseSealed.Success -> {
                         loginViewModel.methodRepo.hideLoadingDialog()
                         when (event.response) {
                             is LoginResponses -> {
@@ -88,9 +86,9 @@ class LoginScreenFragment : BaseFragment() {
                             }
                         }
                     }
-                    is LoginViewModel.ResponseLoginSealed.ErrorOnResponse -> {
+                    is ResponseSealed.ErrorOnResponse -> {
                         loginViewModel.methodRepo.hideLoadingDialog()
-                        if (event.message!!.message.equals("Use account is not verified")) {
+                        if (event.message!!.message == "Use account is not verified") {
                             resendOtpUI()
                         } else
                             (requireActivity() as BaseCommonActivity).showCustomAlert(
@@ -107,17 +105,17 @@ class LoginScreenFragment : BaseFragment() {
         }
     }
 
-    fun resendOtpUI() {
+    private fun resendOtpUI() {
         CommonDialogsUtils.showCommonDialog(
             requireActivity(),
             loginViewModel.methodRepo,
             "Resend OTP",
             "Your Account is not verified.\nResend OTP on email?",
-            true,
-            true,
-            true,
-            false,
-            object : CommonDialogsUtils.DialogClick {
+            autoCancelable = true,
+            isCancelAvailable = true,
+            isOKAvailable = true,
+            showClickable = false,
+            callback = object : CommonDialogsUtils.DialogClick {
                 override fun onClick() {
                     loginViewModel.resendOtp(binding.name.text.toString().trim())
                 }
@@ -155,35 +153,24 @@ class LoginScreenFragment : BaseFragment() {
 
     private fun validateLogin() {
         if (binding.name.text.toString().trim().isEmpty()) {
-//            binding.errorOnName.visibility = View.VISIBLE
             binding.name.error = getString(R.string.email_empty)
             binding.errorOnPassword.visibility = View.GONE
             binding.name.requestFocus()
-//            loginViewModel.methodRepo.setBackGround(requireContext(), binding.loginEmaillay, R.drawable.btn_search_outline)
         } else if (!loginViewModel.methodRepo.isValidEmail(
                 binding.name.text.toString().trim()
             )
         ) {
-//            binding.errorOnName.visibility = View.VISIBLE
             binding.name.error = getString(R.string.invalid_email)
             binding.errorOnPassword.visibility = View.GONE
             binding.name.requestFocus()
-//            loginViewModel.methodRepo.setBackGround(requireContext(), binding.loginEmaillay, R.drawable.btn_search_outline)
         } else if (binding.password.text.toString().trim().isEmpty()) {
-//            binding.errorOnPassword.visibility = View.VISIBLE
             binding.password.error = getString(R.string.oops_your_password_is_empty)
             binding.errorOnName.visibility = View.GONE
             binding.password.requestFocus()
-//            loginViewModel.methodRepo.setBackGround(requireContext(), binding.loginEmaillay, R.drawable.btn_outline_gray)
-//            loginViewModel.methodRepo.setBackGround(requireContext(), binding.loginPasslay, R.drawable.btn_search_outline)
         }
         else if(!loginViewModel.methodRepo.isValidPassword(binding.password.text.toString().trim())){
-//            binding.errorOnPassword.visibility = View.VISIBLE
             binding.password.error = getString(R.string.oops_your_password_is_not_valid2)
-//            binding.errorOnName.visibility = View.GONE
             binding.password.requestFocus()
-//            loginViewModel.methodRepo.setBackGround(requireContext(), binding.loginEmaillay, R.drawable.btn_outline_gray)
-//            loginViewModel.methodRepo.setBackGround(requireContext(), binding.loginPasslay, R.drawable.btn_search_outline)
         }
         else if (!binding.cbRememberMe.isChecked) {
             binding.errorOnName.visibility = View.GONE
@@ -218,7 +205,7 @@ class LoginScreenFragment : BaseFragment() {
 
     fun login() {
         loginViewModel.methodRepo.hideSoftKeypad(requireActivity())
-        loginViewModel.SignInNow(
+        loginViewModel.signInNow(
             binding.name.text.toString().trim(),
             binding.password.text.toString().trim()
         )

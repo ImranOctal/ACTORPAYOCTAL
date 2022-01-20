@@ -1,11 +1,9 @@
 package com.octal.actorpay.ui.productList.productsfilter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.octal.actorpay.databinding.FilterCustomizationListItemBinding
-import com.octal.actorpay.databinding.ProductListItemBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieItem
 
 class ProductFilterCategoryAdapter(val list: MutableList<CategorieItem>):RecyclerView.Adapter<ProductFilterCategoryAdapter.MyViewHolder>() {
@@ -18,7 +16,7 @@ class ProductFilterCategoryAdapter(val list: MutableList<CategorieItem>):Recycle
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindView(list.get(position))
+        holder.bindView(list[position])
     }
 
     override fun getItemCount(): Int {
@@ -26,8 +24,8 @@ class ProductFilterCategoryAdapter(val list: MutableList<CategorieItem>):Recycle
     }
 
     inner class MyViewHolder(val binding: FilterCustomizationListItemBinding):RecyclerView.ViewHolder(binding.root) {
-            fun bindView(categorieItem: CategorieItem){
-                binding.name=categorieItem.name
+            fun bindView(categoriesItem: CategorieItem){
+                binding.name=categoriesItem.name
             }
     }
 

@@ -1,22 +1,11 @@
-package com.octal.actorpay.ui.adapter
+package com.octal.actorpay.ui.dashboard.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.octal.actorpay.databinding.AdapterTransactionBinding
 
-class TransactionAdapter(private var mList: List<String>,
-                         private var mContext: Context
-) : RecyclerView.Adapter<TransactionAdapter.ViewHolder>(){
-    inner class ViewHolder(val binding: AdapterTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: String) {
-            with(binding) {
-                /* Glide.with(mContext).load(data.company_logo).into(image)
-                 txtNameID.setText(data.company_name)*/
-            }
-        }
-    }
+class TransactionAdapter : RecyclerView.Adapter<TransactionAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -31,4 +20,6 @@ class TransactionAdapter(private var mList: List<String>,
     override fun getItemCount(): Int {
         return 4
     }
+
+    inner class ViewHolder(val binding: AdapterTransactionBinding) : RecyclerView.ViewHolder(binding.root)
 }

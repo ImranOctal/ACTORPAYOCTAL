@@ -9,6 +9,7 @@ import com.octal.actorpay.base.BaseCommonActivity
 import com.octal.actorpay.databinding.ActivityIntroBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SnapHelper
+import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.utils.SnapHelperOneByOne
@@ -18,7 +19,7 @@ import org.koin.android.ext.android.inject
 
 class IntroActivity : BaseCommonActivity() {
     private lateinit var binding: ActivityIntroBinding
-    val introList= mutableListOf<IntroModel>()
+    private val introList= mutableListOf<IntroModel>()
     private val loginViewModel: LoginViewModel by  inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +31,8 @@ class IntroActivity : BaseCommonActivity() {
 
     }
 
-    fun feedList(){
-        introList.add(IntroModel("Add Acount to Manage",getString(R.string.dummy_text),R.drawable.intro_1))
+    private fun feedList(){
+        introList.add(IntroModel("Add Account to Manage",getString(R.string.dummy_text),R.drawable.intro_1))
         introList.add(IntroModel("Track your Activity",getString(R.string.dummy_text),R.drawable.intro_2))
         introList.add(IntroModel("Make online Payment",getString(R.string.dummy_text),R.drawable.intro_3))
         introList.add(IntroModel("Safely Withdraw",getString(R.string.dummy_text),R.drawable.intro_4))
@@ -46,18 +47,19 @@ class IntroActivity : BaseCommonActivity() {
         val recyclerAdapter = IntroAdapter(introList){
             action,position->
             when(action){
-                "skip"->{
+                Clicks.Skip->{
                     goToLogin()
                 }
-                "next"->{
+                Clicks.Next->{
                     binding.introRecyclerview.smoothScrollToPosition(position+1)
                 }
-                "prev"->{
+                Clicks.Prev->{
                     binding.introRecyclerview.smoothScrollToPosition(position-1)
                 }
-                "getstart"->{
+                Clicks.GetStart->{
                     goToLogin()
                 }
+                else->Unit
             }
         }
         binding.introRecyclerview.adapter = recyclerAdapter
@@ -65,7 +67,7 @@ class IntroActivity : BaseCommonActivity() {
         val helper: SnapHelper = SnapHelperOneByOne()
         helper.attachToRecyclerView(binding.introRecyclerview)
     }
-    fun goToLogin(){
+    private fun goToLogin(){
         lifecycleScope.launch {
             loginViewModel.methodRepo.dataStore.setIsIntro(true)
             startActivity(Intent(this@IntroActivity, LoginActivity::class.java))

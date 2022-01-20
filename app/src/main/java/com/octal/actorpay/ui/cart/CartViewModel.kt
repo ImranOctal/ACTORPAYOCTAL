@@ -2,7 +2,6 @@ package com.octal.actorpay.ui.cart
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
@@ -11,13 +10,10 @@ import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartData
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartItemDTO
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartParams
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdateParams
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val methodRepo: MethodsRepo, val apiRepo: RetrofitRepository)  : AndroidViewModel(
@@ -25,13 +21,12 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
 ) {
 
     val cartItems= MutableStateFlow<MutableList<CartItemDTO>> (mutableListOf())
-//    val cartItems= MutableLiveData<MutableList<CartItemDTO>>(mutableListOf())
     var cartData:CartData? =null
 
 
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
 
-    fun getCartItmes() {
+    fun getCartItems() {
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(true)
             methodRepo.dataStore.getAccessToken().collect { token ->

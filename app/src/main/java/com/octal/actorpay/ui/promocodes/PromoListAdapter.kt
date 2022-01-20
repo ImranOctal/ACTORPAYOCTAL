@@ -1,22 +1,11 @@
 package com.octal.actorpay.ui.promocodes
 
-import android.R.attr
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.octal.actorpay.databinding.PromoListItemBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoItem
-import android.R.attr.label
-
-import android.content.ClipData
-import android.content.ClipboardManager
-import androidx.core.content.ContextCompat
-
-import androidx.core.content.ContextCompat.getSystemService
-
-
-
 
 class PromoListAdapter(
     val context:Context,

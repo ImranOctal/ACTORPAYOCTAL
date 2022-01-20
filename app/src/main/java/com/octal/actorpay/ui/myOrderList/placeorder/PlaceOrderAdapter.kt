@@ -8,7 +8,7 @@ import com.octal.actorpay.R
 import com.octal.actorpay.databinding.RowOrderItemBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderItemDtos
 
-class PlaceOrderAdapter(var orderList: ArrayList<OrderItemDtos>):RecyclerView.Adapter<PlaceOrderAdapter.MyViewHolder>() {
+class PlaceOrderAdapter(private var orderList: ArrayList<OrderItemDtos>):RecyclerView.Adapter<PlaceOrderAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater= LayoutInflater.from(parent.context)

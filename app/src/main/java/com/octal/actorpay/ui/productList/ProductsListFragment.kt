@@ -4,12 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +21,7 @@ import com.octal.actorpay.ui.cart.CartActivity
 import com.octal.actorpay.ui.cart.CartViewModel
 import com.octal.actorpay.ui.productList.productdetails.ProductDetailsActivity
 import com.octal.actorpay.utils.CommonDialogsUtils
-import com.techno.taskmanagement.utils.EndlessRecyclerViewScrollListener
+import com.octal.actorpay.utils.EndlessRecyclerViewScrollListener
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
@@ -31,7 +29,6 @@ import androidx.activity.result.contract.ActivityResultContracts.StartActivityFo
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieItem
 import com.octal.actorpay.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductData
-import com.octal.actorpay.ui.productList.productsfilter.ProductFilterFragment
 import com.octal.actorpay.utils.OnFilterClick
 
 
@@ -39,12 +36,11 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
     private lateinit var binding: FragmentProductsListBinding
     private val productViewModel: ProductViewModel by inject()
     private val cartViewModel: CartViewModel by inject()
-    var isFromBuy=false
-    var futureAddCart=-1
+    private var isFromBuy=false
+    private var futureAddCart=-1
 
     lateinit var adapter: ProductListAdapter
 
-    override fun WorkStation() {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,18 +56,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
         },200)
     }
 
-    companion object {
-        private var instance: ProductsListFragment? = null
 
-        @JvmStatic
-        fun newInstance(): ProductsListFragment? {
-
-            if (instance == null) {
-                instance = ProductsListFragment()
-            }
-            return instance
-        }
-    }
 
 
     override fun onCreateView(
@@ -81,31 +66,26 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_products_list, container, false)
-        showHideBottomNav(false)
-        showHideCartIcon(true)
-        showHideFilterIcon(false)
+
         onFilterClick(this)
         setCategoriesAdapter()
         setAdapter()
         cartResponse()
         apiResponse()
 
-        binding.productSearch.setOnEditorActionListener(object :TextView.OnEditorActionListener{
-            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    val name=binding.productSearch.text.toString().trim()
-                    productViewModel.name=name
-                    productViewModel.productData.pageNumber = 0
-                    productViewModel.productData.totalPages = 0
-                    productViewModel.productData.items.clear()
-                    productViewModel.getProducts()
-                    productViewModel.methodRepo.hideSoftKeypad(requireActivity())
+        binding.productSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val name = binding.productSearch.text.toString().trim()
+                productViewModel.name = name
+                productViewModel.productData.pageNumber = 0
+                productViewModel.productData.totalPages = 0
+                productViewModel.productData.items.clear()
+                productViewModel.getProducts()
+                productViewModel.methodRepo.hideSoftKeypad(requireActivity())
 
-                }
-                return false;
             }
-
-        })
+            false
+        }
 
 
         return binding.root
@@ -195,7 +175,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
             }
     }
 
-    fun updateUI(productData: ProductData){
+    private fun updateUI(productData: ProductData){
         productViewModel.productData.pageNumber =
             productData.pageNumber
         productViewModel.productData.totalPages =
@@ -288,18 +268,19 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
 
     }
 
-    fun setCategoriesAdapter(){
+    private fun setCategoriesAdapter(){
 
-        val categorieAdapter=CategorieAdapter(productViewModel.categoryList){
-            if(productViewModel.categoryList[it].isSelected.not()){
-                productViewModel.categoryList.forEach(){
+        val categoryAdapter=CategoryAdapter(productViewModel.categoryList){
+            position->
+            if(productViewModel.categoryList[position].isSelected.not()){
+                productViewModel.categoryList.forEach{
                     it.isSelected=false
                 }
-                var cat=productViewModel.categoryList[it].name
-                if(cat.equals("All"))
+                var cat=productViewModel.categoryList[position].name
+                if(cat == "All")
                     cat=""
                 productViewModel.category=cat
-                productViewModel.categoryList[it].isSelected=true
+                productViewModel.categoryList[position].isSelected=true
                 productViewModel.productData.pageNumber = 0
                 productViewModel.productData.totalPages = 0
                 productViewModel.productData.items.clear()
@@ -311,7 +292,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
 
 
         binding.recyclerviewCategories.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-        binding.recyclerviewCategories.adapter=categorieAdapter
+        binding.recyclerviewCategories.adapter=categoryAdapter
 
     }
 
@@ -321,7 +302,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
 
     }
 
-    fun goToCart() {
+    private fun goToCart() {
 
         val intent = Intent(requireActivity(), CartActivity::class.java)
         resultLauncher.launch(intent)
@@ -348,9 +329,9 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
     }
 
     override fun onClick() {
-        startFragment(
+        /*startFragment(
             ProductFilterFragment.newInstance(),
             true,
-            ProductFilterFragment.toString())
+            ProductFilterFragment.toString())*/
     }
 }

@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseFragment
@@ -17,9 +19,8 @@ import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListData
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
-import com.octal.actorpay.ui.myOrderList.orderdetails.OrderDetailsFragment
 import com.octal.actorpay.utils.OnFilterClick
-import com.techno.taskmanagement.utils.EndlessRecyclerViewScrollListener
+import com.octal.actorpay.utils.EndlessRecyclerViewScrollListener
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
@@ -40,26 +41,13 @@ import org.koin.android.ext.android.inject
          orderViewModel.getAllOrders(orderViewModel.orderListParams)
      }
 
-     companion object {
-         private var instance: MyOrdersListFragment? = null
-
-         @JvmStatic
-         fun newInstance(): MyOrdersListFragment? {
-             if (instance == null) {
-                 instance = MyOrdersListFragment()
-             }
-             return instance
-         }
-     }
 
      override fun onCreateView(
          inflater: LayoutInflater, container: ViewGroup?,
          savedInstanceState: Bundle?
      ): View {
          binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_order_list, container, false)
-         showHideBottomNav(false)
-         showHideCartIcon(false)
-         showHideFilterIcon(true)
+
          setAdapter()
          onFilterClick(this)
 
@@ -68,14 +56,12 @@ import org.koin.android.ext.android.inject
      }
 
      private fun setAdapter(){
-         adapter=OrderListAdapter(requireActivity(),orderViewModel.methodRepo,orderViewModel.orderListData.items,childFragmentManager){
+         adapter=OrderListAdapter(orderViewModel.methodRepo,orderViewModel.orderListData.items){
              position, action ->
-            if(action.equals(Clicks.Details)){
-                 startFragment(
-                     OrderDetailsFragment.newInstance(orderViewModel.orderListData.items[position]),
-                     addToBackStack = true,
-                     OrderDetailsFragment.toString()
-                 )
+            if(action == Clicks.Details){
+                val bundle = bundleOf("order" to orderViewModel.orderListData.items[position])
+                Navigation.findNavController(requireView()).navigate(R.id.orderDetailsFragment,bundle)
+
              }
          }
          val layoutManager = LinearLayoutManager(requireContext())
@@ -132,7 +118,7 @@ import org.koin.android.ext.android.inject
          }
      }
 
-     fun updateUI(orderListData: OrderListData){
+     private fun updateUI(orderListData: OrderListData){
          orderViewModel.orderListData.pageNumber =
              orderListData.pageNumber
          orderViewModel.orderListData.totalPages =
@@ -163,8 +149,5 @@ import org.koin.android.ext.android.inject
          }.show()
      }
 
-     override fun WorkStation() {
-
-     }
 
  }

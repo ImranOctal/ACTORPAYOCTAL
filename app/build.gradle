@@ -38,24 +38,24 @@ android {
 dependencies {
     implementation 'com.google.firebase:firebase-messaging:23.0.0'
     implementation 'com.google.firebase:firebase-inappmessaging-display:20.1.1'
-    implementation 'com.google.firebase:firebase-analytics:20.0.1'
-    implementation 'com.google.android.gms:play-services-maps:18.0.1'
-    implementation 'com.google.android.gms:play-services-location:19.0.0'
+    implementation 'com.google.firebase:firebase-analytics:20.0.2'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
     def nav_version = "2.3.5"
 
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     //Nav graph
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     //noinspection GradleCompatible
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'com.google.android.material:material:1.5.0-alpha04'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.6.0-alpha01'
 
-    implementation 'com.hbb20:ccp:2.4.5'
+    implementation 'com.hbb20:ccp:2.5.0'
 
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
 
@@ -86,8 +86,7 @@ dependencies {
     //Multi-Dex
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.github.bumptech.glide:glide:4.12.0' // Glide For Image
-    //kapt 'com.github.bumptech.glide:compiler:4.12.0'
-    implementation 'com.tapadoo.android:alerter:3.0.0'// Alert bar
+
     // OkHttp & GSON
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     implementation 'com.google.code.gson:gson:2.8.7'
@@ -95,62 +94,32 @@ dependencies {
     def koin_version = "3.1.2"
     // Koin core features
     implementation "io.insert-koin:koin-core:$koin_version"
-// Koin test features
-    testImplementation "io.insert-koin:koin-test:$koin_version"
-    // Koin for JUnit 4
-    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
-// Koin for JUnit 5
-    testImplementation "io.insert-koin:koin-test-junit5:$koin_version"
     // Koin main features for Android (Scope,ViewModel ...)
     implementation "io.insert-koin:koin-android:$koin_version"
-// Koin Java Compatibility
-    implementation "io.insert-koin:koin-android-compat:$koin_version"
-// Koin for Jetpack WorkManager
-    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+
 // Koin for Jetpack Compose
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
-    // Koin for Ktor
-    implementation "io.insert-koin:koin-ktor:$koin_version"
-// SLF4J Logger
-    implementation "io.insert-koin:koin-logger-slf4j:$koin_version"
 
     // Coroutines
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.30"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
+
     //Kotlin Library
-    implementation "androidx.core:core-ktx:1.6.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.30"
-    // Coroutine Lifecycle Scopes
-    def lifecycle_version = "2.4.0-rc01"
-    def arch_version = "2.1.0"
+    implementation "androidx.core:core-ktx:1.7.0"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.0"
 
     // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
     // LiveData
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    // Lifecycles only (without ViewModel or LiveData)
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
 
     // Saved state module for ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.0"
 
     // Annotation processor
    // kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     // alternately - if using Java8, use the following instead of lifecycle-compiler
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.4.0"
 
-    // optional - helpers for implementing LifecycleOwner in a Service
-    implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
-
-    // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
-    implementation "androidx.lifecycle:lifecycle-process:$lifecycle_version"
-
-    // optional - ReactiveStreams support for LiveData
-    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
-
-    // optional - Test helpers for LiveData
-    testImplementation "androidx.arch.core:core-testing:$arch_version"
     // Preferences DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation "androidx.datastore:datastore-core:1.0.0"
@@ -158,7 +127,7 @@ dependencies {
 
     implementation 'com.github.dominicg666:WrappingViewPager:1.2'
 
-    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.google.android.gms:play-services-auth:20.0.1'
 
     implementation 'com.facebook.android:facebook-login:12.0.0'
     implementation platform('com.google.firebase:firebase-bom:29.0.2')

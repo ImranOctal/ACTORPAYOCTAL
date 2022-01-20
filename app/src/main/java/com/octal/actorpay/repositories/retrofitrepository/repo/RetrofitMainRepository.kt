@@ -17,7 +17,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.Soci
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileParams
-import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
+import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartParams
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdateParams
@@ -29,7 +29,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQRespons
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
@@ -39,17 +39,16 @@ import com.octal.actorpay.repositories.retrofitrepository.models.shipping.Shippi
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
-import com.octal.actorpay.retrofitrepository.apiclient.ApiClient
+import com.octal.actorpay.repositories.retrofitrepository.apiclient.ApiClient
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
-import retrofit2.Response
 
 class RetrofitMainRepository constructor(var context: Context, private var apiClient: ApiClient) :
     RetrofitRepository {
-    override suspend fun LoginNow(loginDetail: LoginParams): RetrofitResource<LoginResponses> {
+    override suspend fun loginNow(loginDetail: LoginParams): RetrofitResource<LoginResponses> {
         try {
-            val loginData = apiClient.LoginNow(loginDetail)
+            val loginData = apiClient.loginNow(loginDetail)
             val result = loginData.body()
             if (loginData.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)
@@ -125,7 +124,7 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
         }
     }
 
-    override suspend fun ForgetPassword(forgetPasswordParams: ForgetPasswordParams): RetrofitResource<LoginResponses> {
+    override suspend fun forgetPassword(forgetPasswordParams: ForgetPasswordParams): RetrofitResource<LoginResponses> {
         try {
             val forgetData = apiClient.forgetPassword(forgetPasswordParams)
             val result = forgetData.body()
@@ -151,7 +150,7 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
         }
     }
 
-    override suspend fun getProfile(id: String, token: String): RetrofitResource<ProfileReesponse> {
+    override suspend fun getProfile(id: String, token: String): RetrofitResource<ProfileResponse> {
         try {
 
             val data = apiClient.getProfile(B_Token + token, id)
@@ -565,10 +564,10 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
     }
 
 
-    override suspend fun placeOrder(token: String,placeOrderParamas: PlaceOrderParamas): RetrofitResource<PlaceOrderResponse> {
+    override suspend fun placeOrder(token: String,placeOrderParams: PlaceOrderParams): RetrofitResource<PlaceOrderResponse> {
 
         try {
-            val data = apiClient.placeOrder(B_Token + token,placeOrderParamas)
+            val data = apiClient.placeOrder(B_Token + token,placeOrderParams)
             val result = data.body()
             if (data.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)

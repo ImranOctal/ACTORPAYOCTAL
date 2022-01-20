@@ -96,9 +96,29 @@
         android:label="@string/remittance"
         tools:layout="@layout/fragment_remittance"/>
     <fragment
-        android:id="@+id/FAQFragment"
+        android:id="@+id/faqFragment"
         android:name="com.octal.actorpay.ui.misc.FAQFragment"
         android:label="fragment_f_a_q"
         tools:layout="@layout/fragment_f_a_q" />
+    <fragment
+        android:id="@+id/walletBottomFragment"
+        android:name="com.octal.actorpay.ui.dashboard.bottomnavfragments.WalletBottomFragment"
+        android:label="WalletBottomFragment" />
+    <fragment
+        android:id="@+id/promoListFragment"
+        android:name="com.octal.actorpay.ui.promocodes.PromoListFragment"
+        android:label="PromoListFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.octal.actorpay.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/shippingAddressFragment"
+        android:name="com.octal.actorpay.ui.shippingaddress.ShippingAddressFragment"
+        android:label="ShippingAddressFragment" />
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="com.octal.actorpay.ui.myOrderList.orderdetails.OrderDetailsFragment"
+        android:label="OrderDetailsFragment" />
 
 </navigation>

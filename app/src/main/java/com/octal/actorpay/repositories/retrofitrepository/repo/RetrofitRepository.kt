@@ -7,7 +7,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.Logi
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.login.SocialParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpay.repositories.retrofitrepository.models.auth.signup.SignupResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileReesponse
+import com.octal.actorpay.repositories.retrofitrepository.models.bottomfragments.ProfileResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartParams
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartUpdateParams
@@ -19,7 +19,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQRespons
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParamas
+import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
@@ -32,24 +32,18 @@ import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResou
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-/*
-* © Copyright Ishant Sharma
-* Android Developer
-* JAVA/KOTLIN
-* */
-
 
 interface RetrofitRepository {
     //Login Suspend Function
-    suspend fun LoginNow(loginDetail: LoginParams): RetrofitResource<LoginResponses>
+    suspend fun loginNow(loginDetail: LoginParams): RetrofitResource<LoginResponses>
 
     suspend fun signUpNow(signupDetails:SignUpParams):RetrofitResource<SignupResponse>
 
     suspend fun socialLogin(signupDetails:SocialParams):RetrofitResource<LoginResponses>
 
-    suspend fun ForgetPassword(forgetPasswordParams:ForgetPasswordParams):RetrofitResource<LoginResponses>
+    suspend fun forgetPassword(forgetPasswordParams:ForgetPasswordParams):RetrofitResource<LoginResponses>
 
-    suspend fun getProfile(id:String,token:String):RetrofitResource<ProfileReesponse>
+    suspend fun getProfile(id:String,token:String):RetrofitResource<ProfileResponse>
 
     suspend fun saveProfile(email:String,extensionNumber:String,contactNumber:String,id:String,token: String):RetrofitResource<SuccessResponse>
 
@@ -77,7 +71,7 @@ interface RetrofitRepository {
 
     suspend fun updateCart(token: String,cartParams: CartUpdateParams):RetrofitResource<CartResponse>
 
-    suspend fun placeOrder(token: String,placeOrderParamas: PlaceOrderParamas):RetrofitResource<PlaceOrderResponse>
+    suspend fun placeOrder(token: String,placeOrderParams: PlaceOrderParams):RetrofitResource<PlaceOrderResponse>
 
     suspend fun getAllOrders(token: String,pageNo:Int,pageSize:Int,orderListParams: OrderListParams):RetrofitResource<OrderListResponse>
 

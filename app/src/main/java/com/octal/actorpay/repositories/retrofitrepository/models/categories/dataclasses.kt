@@ -1,6 +1,5 @@
 package com.octal.actorpay.repositories.retrofitrepository.models.categories
 
-import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartData
 
 data class CategorieResponse(
     var message: String,

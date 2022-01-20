@@ -93,13 +93,13 @@
 
             <TextView
                 android:id="@+id/order_date_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_bold"
-                android:gravity="center"
-                android:text='@{"Order Date &amp; Time: "+orderData.createdAt}'
+                android:gravity="center_vertical"
+                android:text=''
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="parent"

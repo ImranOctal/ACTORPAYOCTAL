@@ -1,13 +1,12 @@
 package com.octal.actorpay.ui.auth.verifyotp
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.text.Editable;
-import android.util.AttributeSet;
-import android.view.ActionMode;
-import android.view.View;
-import androidx.appcompat.widget.AppCompatEditText;
+import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.util.AttributeSet
+import android.view.ActionMode
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.ContextCompat
 import com.octal.actorpay.R
 
 
@@ -20,10 +19,10 @@ class OtpEditText : AppCompatEditText {
     private var mLinesPaint: Paint? = null
     private var mClickListener: OnClickListener? = null
 
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(context, attrs)
+        init(context)
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -31,18 +30,18 @@ class OtpEditText : AppCompatEditText {
         attrs,
         defStyleAttr
     ) {
-        init(context, attrs)
+        init(context)
     }
 
-    private fun init(context: Context, attrs: AttributeSet?) {
-        val multi: Float = context.getResources().getDisplayMetrics().density
-        mLineStroke = multi * mLineStroke
+    private fun init(context: Context) {
+        val multi: Float = context.resources.displayMetrics.density
+        mLineStroke *= multi
         mLinesPaint = Paint(paint)
-        mLinesPaint?.setStrokeWidth(mLineStroke)
-        mLinesPaint?.setColor(resources.getColor(R.color.primary))
+        mLinesPaint?.strokeWidth = mLineStroke
+        mLinesPaint?.color = ContextCompat.getColor(context,R.color.primary)
         setBackgroundResource(0)
-        mSpace = multi * mSpace //convert to pixels for our density
-        mLineSpacing = multi * mLineSpacing //convert to pixels for our density
+        mSpace *= multi //convert to pixels for our density
+        mLineSpacing *= multi //convert to pixels for our density
         mNumChars = mMaxLength.toFloat()
         super.setOnClickListener { v -> // When tapped, move cursor to end of text.
             setSelection(text!!.length)
@@ -62,8 +61,7 @@ class OtpEditText : AppCompatEditText {
 
     override fun onDraw(canvas: Canvas) {
         val availableWidth = width - paddingRight - paddingLeft
-        val mCharSize: Float
-        mCharSize = if (mSpace < 0) {
+        val mCharSize: Float = if (mSpace < 0) {
             availableWidth / (mNumChars * 2 - 1)
         } else {
             (availableWidth - mSpace * (mNumChars - 1)) / mNumChars

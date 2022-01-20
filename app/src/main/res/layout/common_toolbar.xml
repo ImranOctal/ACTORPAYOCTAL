@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools">
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    android:layout_height="wrap_content">
+    android:gravity="center"
+    android:orientation="horizontal"
+    >
 
     <ImageView
         android:id="@+id/backIcon"
@@ -16,14 +19,17 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/poppins_semibold"
         tools:text="@string/transfer_money"
         android:textColor="@color/white"
-        android:textSize="@dimen/_18ssp" />
-    <TextView
+        android:textSize="@dimen/_18ssp"
+        android:gravity="center"
+        />
+ <!--   <TextView
         android:id="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +39,7 @@
         android:textColor="#C8FFFFFF"
         android:visibility="invisible"
         android:fontFamily="@font/poppins_light"
-        android:text="@string/account_balance"/>
+        android:text="@string/account_balance"/>-->
 
-</RelativeLayout>
+</LinearLayout>
 </layout>

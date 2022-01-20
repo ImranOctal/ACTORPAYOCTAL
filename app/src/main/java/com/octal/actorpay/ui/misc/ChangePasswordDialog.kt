@@ -10,7 +10,6 @@ import android.view.Window
 import androidx.databinding.DataBindingUtil
 import com.octal.actorpay.R
 import com.octal.actorpay.databinding.ChangePasswordDialogBinding
-import com.octal.actorpay.databinding.ForgetPasswordDialogBinding
 import com.octal.actorpay.repositories.methods.MethodsRepo
 
 class ChangePasswordDialog {
@@ -34,34 +33,34 @@ class ChangePasswordDialog {
             val newPassword=binding.editChangePasswordNew.text.toString().trim()
             val confirmPassword=binding.editChangePasswordConfirm.text.toString().trim()
             if(oldPassword.isEmpty()){
-                binding.editChangePasswordOld.setError(activity.getString(R.string.oops_your_password_is_empty))
+                binding.editChangePasswordOld.error = activity.getString(R.string.oops_your_password_is_empty)
                 binding.editChangePasswordOld.requestFocus()
             }
             else if(!methodsRepo.isValidPassword(oldPassword)){
-                binding.editChangePasswordOld.setError(activity.getString(R.string.oops_your_password_is_not_valid2))
+                binding.editChangePasswordOld.error = activity.getString(R.string.oops_your_password_is_not_valid2)
                 binding.editChangePasswordOld.requestFocus()
             }
             else if(newPassword.length<8)
             {
-                binding.editChangePasswordNew.setError(activity.getString(R.string.oops_your_password_is_not_valid))
+                binding.editChangePasswordNew.error = activity.getString(R.string.oops_your_password_is_not_valid)
                 binding.editChangePasswordNew.requestFocus()
             }
             else if(!methodsRepo.isValidPassword(newPassword)){
-                binding.editChangePasswordNew.setError(activity.getString(R.string.oops_your_password_is_not_valid2))
+                binding.editChangePasswordNew.error = activity.getString(R.string.oops_your_password_is_not_valid2)
                 binding.editChangePasswordNew.requestFocus()
             }
             else if(confirmPassword.length<8)
             {
-                binding.editChangePasswordConfirm.setError(activity.getString(R.string.oops_your_password_is_not_valid))
+                binding.editChangePasswordConfirm.error = activity.getString(R.string.oops_your_password_is_not_valid)
                 binding.editChangePasswordConfirm.requestFocus()
             }
             else if(!methodsRepo.isValidPassword(confirmPassword)){
-                binding.editChangePasswordConfirm.setError(activity.getString(R.string.oops_your_password_is_not_valid2))
+                binding.editChangePasswordConfirm.error = activity.getString(R.string.oops_your_password_is_not_valid2)
                 binding.editChangePasswordConfirm.requestFocus()
             }
-            else if(!confirmPassword.equals(newPassword))
+            else if(confirmPassword != newPassword)
             {
-                binding.editChangePasswordConfirm.setError((activity.getString(R.string.oops_your_password_is_not_matched)))
+                binding.editChangePasswordConfirm.error = (activity.getString(R.string.oops_your_password_is_not_matched))
                 binding.editChangePasswordConfirm.requestFocus()
             }
             else{

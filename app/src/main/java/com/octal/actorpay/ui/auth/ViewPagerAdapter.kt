@@ -4,13 +4,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.PagerAdapter
 import com.octal.actorpay.utils.CustomPager
 
-class ViewPagerAdapter internal constructor(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class ViewPagerAdapter internal constructor(fm: FragmentManager) : FragmentPagerAdapter(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val COUNT = 2
-    val tab = arrayOf("Login", "Signup")
+    private val tab = arrayOf("Login", "Signup")
     private var mCurrentPosition = -1
 
     override fun getItem(position: Int): Fragment {
@@ -24,7 +22,7 @@ class ViewPagerAdapter internal constructor(fm: FragmentManager) : FragmentPager
     }
 
     override fun getCount(): Int {
-        return COUNT
+        return 2
     }
 
     override fun getPageTitle(position: Int): CharSequence {
@@ -32,17 +30,17 @@ class ViewPagerAdapter internal constructor(fm: FragmentManager) : FragmentPager
     }
 
     override fun getItemPosition(`object`: Any): Int {
-        return POSITION_NONE;
+        return POSITION_NONE
     }
 
     override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any) {
         super.setPrimaryItem(container, position, `object`)
             if (position != mCurrentPosition) {
                 val fragment = `object` as Fragment
-                val pager =  container as CustomPager;
-                if (fragment.getView() != null) {
-                    mCurrentPosition = position;
-                    pager.measureCurrentView(fragment.getView());
+                val pager =  container as CustomPager
+                if (fragment.view != null) {
+                    mCurrentPosition = position
+                    pager.measureCurrentView(fragment.view)
                 }
             }
         }

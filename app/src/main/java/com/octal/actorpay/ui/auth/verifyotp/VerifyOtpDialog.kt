@@ -9,14 +9,13 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.databinding.DataBindingUtil
 import com.octal.actorpay.R
-import com.octal.actorpay.databinding.ForgetPasswordDialogBinding
 import com.octal.actorpay.databinding.OtpVerifyDialogBinding
 import com.octal.actorpay.repositories.methods.MethodsRepo
 
-class VerifyOtpDialog() {
+class VerifyOtpDialog {
 
 
-    fun show(activity: Activity, methodsRepo: MethodsRepo, onClick:(email:String)->Unit){
+    fun show(activity: Activity, methodsRepo: MethodsRepo, onClick:(otp:String)->Unit){
         val alertDialog = Dialog(activity)
 
         val binding = DataBindingUtil.inflate<OtpVerifyDialogBinding>(

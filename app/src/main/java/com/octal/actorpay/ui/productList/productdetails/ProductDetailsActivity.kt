@@ -2,7 +2,6 @@ package com.octal.actorpay.ui.productList.productdetails
 
 import android.content.Intent
 import android.graphics.Paint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
@@ -16,27 +15,23 @@ import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.ActivityProductDetailsBinding
 import com.octal.actorpay.repositories.AppConstance.Clicks
-import com.octal.actorpay.repositories.methods.MethodsRepo
-import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductItem
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.SingleProductResponse
-import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.ui.cart.CartActivity
 import com.octal.actorpay.ui.cart.CartViewModel
 import com.octal.actorpay.ui.productList.ProductListAdapter
 import com.octal.actorpay.utils.CommonDialogsUtils
-import com.techno.taskmanagement.utils.EndlessRecyclerViewScrollListener
+import com.octal.actorpay.utils.EndlessRecyclerViewScrollListener
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
-import org.koin.core.instance.getArguments
 
-class ProductDetailsActivity : AppCompatActivity() {
+class ProductDetailsActivity : BaseActivity() {
     private lateinit var binding: ActivityProductDetailsBinding
     private val productDetailsViewModel: ProductDetailsViewModel by inject()
     private val cartViewModel: CartViewModel by inject()
     lateinit var adapter: ProductListAdapter
-    var isFromBuy=false
-    var futureAddCart=false
+    private var isFromBuy=false
+    private var futureAddCart=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +61,7 @@ class ProductDetailsActivity : AppCompatActivity() {
 
     }
 
-    fun updateUI(){
+    private fun updateUI(){
         productDetailsViewModel.product.let {
             binding.productItem = productDetailsViewModel.product
             Glide.with(this)
@@ -78,7 +73,7 @@ class ProductDetailsActivity : AppCompatActivity() {
         initializeCartWork()
     }
 
-    fun initializeCartWork() {
+    private fun initializeCartWork() {
         binding.addToCart.setOnClickListener {
            addToCart()
         }
@@ -143,7 +138,7 @@ class ProductDetailsActivity : AppCompatActivity() {
 
     }
 
-    fun goToCart() {
+    private fun goToCart() {
 
         val intent = Intent(this, CartActivity::class.java)
         resultLauncher.launch(intent)
@@ -156,7 +151,7 @@ class ProductDetailsActivity : AppCompatActivity() {
         }
 
 
-    fun cartResponse() {
+    private fun cartResponse() {
         lifecycleScope.launchWhenCreated {
 
             cartViewModel.responseLive.collect { event ->
@@ -165,7 +160,6 @@ class ProductDetailsActivity : AppCompatActivity() {
                         cartViewModel.methodRepo.showLoadingDialog(this@ProductDetailsActivity)
                     }
                     is ResponseSealed.Success -> {
-//                        binding.recyclerviewSimiliarProduct.adapter?.notifyDataSetChanged()
                         if(futureAddCart){
                             addToCart()
                             futureAddCart=false
@@ -181,7 +175,7 @@ class ProductDetailsActivity : AppCompatActivity() {
                         if(isFromBuy)
                             isFromBuy=false
                         if (event.message!!.code == 403) {
-                            forcelogout()
+                            forcelogout(productDetailsViewModel.methodRepo)
                         }
                         cartViewModel.methodRepo.hideLoadingDialog()
                     }
@@ -264,30 +258,6 @@ class ProductDetailsActivity : AppCompatActivity() {
         binding.recyclerviewSimiliarProduct.adapter = adapter
 
 
-    }
-
-    fun forcelogout() {
-        CommonDialogsUtils.showCommonDialog(this, cartViewModel.methodRepo, "Log Out ",
-            "Session Expire", false, false, true, false,
-            object : CommonDialogsUtils.DialogClick {
-                override fun onClick() {
-//                    viewModel.shared.Logout()
-                    lifecycleScope.launchWhenCreated {
-                        cartViewModel.methodRepo.dataStore.logOut()
-                        cartViewModel.methodRepo.dataStore.setIsIntro(true)
-                        startActivity(
-                            Intent(
-                                this@ProductDetailsActivity,
-                                LoginActivity::class.java
-                            )
-                        )
-                        finishAffinity()
-                    }
-                }
-
-                override fun onCancel() {
-                }
-            })
     }
 
     private fun wantsToBuyDialog(onClick: () -> Unit) {

@@ -1,23 +1,19 @@
 package com.octal.actorpay.ui.settings
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentSettingsBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.ui.misc.ChangePasswordDialog
-import com.octal.actorpay.ui.misc.MiscViewModel
-import com.octal.actorpay.ui.remittance.RemittanceFragment
-import com.octal.actorpay.ui.shippingaddress.ShippingAddressFragment
 import com.octal.actorpay.utils.CommonDialogsUtils
-import com.octal.actorpay.viewmodel.ActorPayViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -27,9 +23,7 @@ class SettingsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSettingsBinding
     private val settingViewModel: SettingViewModel by inject()
-    override fun WorkStation() {
 
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,25 +38,20 @@ class SettingsFragment : BaseFragment() {
 
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_settings, container, false)
 
-//        setTitle(getString(R.string.settings))
-        showHideBottomNav(false)
-        showHideCartIcon(false)
-        showHideFilterIcon(false)
-
         binding.changePassword.setOnClickListener {
             changePasswordUi()
         }
         binding.changePaymentOption.setOnClickListener {
-            startFragment(RemittanceFragment.newInstance(),true, RemittanceFragment.toString())
+            Navigation.findNavController(requireView()).navigate(R.id.remittance)
         }
         binding.myAddress.setOnClickListener {
-            startFragment(ShippingAddressFragment.newInstance(),true, ShippingAddressFragment.toString())
+            Navigation.findNavController(requireView()).navigate(R.id.shippingAddressFragment)
         }
 
         return binding.root
     }
 
-    fun changePasswordUi(){
+    private fun changePasswordUi(){
         ChangePasswordDialog().show(requireActivity(),settingViewModel.methodRepo){
                 oldPassword, newPassword ->
             settingViewModel.changePassword(oldPassword,newPassword    )
@@ -103,12 +92,4 @@ class SettingsFragment : BaseFragment() {
         }
     }
 
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            SettingsFragment().apply {
-
-            }
-    }
 }

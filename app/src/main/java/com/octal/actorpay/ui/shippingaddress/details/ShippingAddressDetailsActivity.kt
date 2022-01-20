@@ -1,37 +1,27 @@
 package com.octal.actorpay.ui.shippingaddress.details
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.octal.actorpay.R
-import com.octal.actorpay.app.MyApplication
+import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.ResponseSealed
-import com.octal.actorpay.databinding.ActivityPlaceOrderBinding
 import com.octal.actorpay.databinding.ActivityShippingAddressDetailsBinding
-import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem
-import com.octal.actorpay.ui.auth.LoginActivity
-import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.utils.GlobalData
 import com.octal.actorpay.utils.LocationUtils
 import com.octal.actorpay.utils.WorkaroundMapFragment
@@ -41,24 +31,30 @@ import org.koin.android.ext.android.inject
 import java.lang.Exception
 import java.util.*
 
-
-
-
-
-class ShippingAddressDetailsActivity : FragmentActivity() {
+class ShippingAddressDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityShippingAddressDetailsBinding
     private val shippingAddressViewModel: ShippingAddressDetailsViewModel by inject()
-    var isSave=true
-    var isComingFirst=true
+    private var isSave=true
+    private var isComingFirst=true
     private var mMap: GoogleMap? = null
-    lateinit var mLocationUtils: LocationUtils
-    var userlat = 0.0
-    var userlong = 0.0
+    private lateinit var mLocationUtils: LocationUtils
+    private var userLat = 0.0
+    private var userLong = 0.0
+
+    var shippingAddressItem: ShippingAddressItem?=null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shipping_address_details)
+
+        if(intent!=null){
+            if(intent.hasExtra("shippingItem"))
+                shippingAddressItem=intent.getSerializableExtra("shippingItem") as ShippingAddressItem
+
+        }
+
         checkLocationPermission()
         apiResponse()
 
@@ -132,25 +128,25 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
         mLocationUtils = LocationUtils(this, false)
         {
             if(isSave) {
-                userlat = it.latitude
-                userlong = it.longitude
+                userLat = it.latitude
+                userLong = it.longitude
             }
             else{
                 try {
-                    userlat= shippingAddressItem!!.latitude.toDouble()
-                    userlong= shippingAddressItem!!.longitude.toDouble()
+                    userLat= shippingAddressItem!!.latitude.toDouble()
+                    userLong= shippingAddressItem!!.longitude.toDouble()
                 }
                 catch (e: Exception){
-                    userlat = 0.0
-                    userlong = 0.0
+                    userLat = 0.0
+                    userLong = 0.0
                 }
             }
 
             val cameraPosition = CameraPosition.Builder()
                 .target(
                     LatLng(
-                        userlat,
-                        userlong
+                        userLat,
+                        userLong
                     )
                 ) // Sets the center of the map to Mountain View
                 .zoom(15f) // Sets the zoom // Sets the orientation of the camera to east // Sets the tilt of the camera to 30 degrees
@@ -160,7 +156,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
 
             mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
-            getAddress(userlat,userlong)
+            getAddress(userLat,userLong)
         }
         mLocationUtils.initConnection()
 
@@ -174,39 +170,39 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
     }
 
     fun validate(){
-        val name=binding.name.text.toString().trim()
+//        val name=binding.name.text.toString().trim()
         val title=binding.addressTitle.text.toString().trim()
         val area=binding.addressArea.text.toString().trim()
-        val add_line_1=binding.addressLine1.text.toString().trim()
-        val add_line_2=binding.addressLine2.text.toString().trim()
+        val addLine1=binding.addressLine1.text.toString().trim()
+        val addLine2=binding.addressLine2.text.toString().trim()
         val zipcode=binding.addressZipcode.text.toString().trim()
         val city=binding.addressCity.text.toString().trim()
         val state=binding.addressState.text.toString().trim()
         val country=binding.countryPicker.text.toString().trim()
-        val p_contact=binding.addressPrimaryContact.text.toString().trim()
-        val s_contact=binding.addressSecondaryContact.text.toString().trim()
+        val pContact=binding.addressPrimaryContact.text.toString().trim()
+        val sContact=binding.addressSecondaryContact.text.toString().trim()
 
         var isValid=true
 
-        if(s_contact.length<5){
+        if(sContact.length<5){
             binding.addressSecondaryContact.error="Please Enter Valid Contact"
             isValid=false
             binding.addressSecondaryContact.requestFocus()
         }
 
-        if(p_contact.length<5){
+        if(pContact.length<5){
             binding.addressPrimaryContact.error="Please Enter Valid Contact"
             isValid=false
             binding.addressPrimaryContact.requestFocus()
         }
 
-        if(state.equals("")){
+        if(state == ""){
             binding.addressState.error="Please Enter State"
             isValid=false
             binding.addressState.requestFocus()
         }
 
-        if(city.equals("")){
+        if(city == ""){
             binding.addressCity.error="Please Enter City"
             isValid=false
             binding.addressCity.requestFocus()
@@ -224,7 +220,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
             isValid=false
             binding.addressZipcode.requestFocus()
         }
-        if(add_line_1.equals("")){
+        if(addLine1 == ""){
             binding.addressLine1.error="Please Enter Address Line 1"
             isValid=false
             binding.addressLine1.requestFocus()
@@ -248,20 +244,20 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
                     if(isSave){
                         shippingAddressViewModel.addAddress(
                             ShippingAddressItem(
-                                add_line_1,
-                                add_line_2,
+                                addLine1,
+                                addLine2,
                                 zipcode,
                                 city,
                                 state,
                                 country,
-                                userlat.toString(),
-                                userlong.toString(),
+                                userLat.toString(),
+                                userLong.toString(),
                                 "",
                                 title,
                                 area,
-                                p_contact,
+                                pContact,
                                 binding.codePicker.text.toString().trim(),
-                                s_contact,
+                                sContact,
                                 false,
                                 null,
                                 userID,
@@ -272,20 +268,20 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
                     else {
                         shippingAddressViewModel.updateAddress(
                             ShippingAddressItem(
-                                add_line_1,
-                                add_line_2,
+                                addLine1,
+                                addLine2,
                                 zipcode,
                                 city,
                                 state,
                                 country,
-                                userlat.toString(),
-                                userlong.toString(),
+                                userLat.toString(),
+                                userLong.toString(),
                                 "",
                                 title,
                                 area,
-                                p_contact,
+                                pContact,
                                 binding.codePicker.text.toString().trim(),
-                                s_contact,
+                                sContact,
                                 shippingAddressItem!!.primary,
                                 null,
                                 userID,
@@ -300,14 +296,14 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
         }
     }
 
-    fun checkLocationPermission(): Boolean {
+    private fun checkLocationPermission(): Boolean {
 
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            permReqLuncher.launch(
+            permReqLauncher.launch(
                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
                 )
@@ -320,7 +316,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
         }
     }
 
-    val permReqLuncher =
+    private val permReqLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { it ->
             var count = 0
             val totalCount=1
@@ -340,6 +336,7 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
                         Manifest.permission.ACCESS_FINE_LOCATION
                     )
                 ) {
+                    Log.d("ShippingDetails : ", "Never Ask again Selected")
                     //Never ask again selected, or device policy prohibits the app from having that permission.
                 }
             }
@@ -364,15 +361,16 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
 
             mMap!!.setOnCameraIdleListener {
                 mMap!!.projection.visibleRegion.latLngBounds.center.let {
+                    latLng->
                     if(!isComingFirst) {
-                        userlat = it.latitude
-                        userlong = it.longitude
-                        getAddress(userlat, userlong)
+                        userLat = latLng.latitude
+                        userLong = latLng.longitude
+                        getAddress(userLat, userLong)
                     }
                     else if(isSave){
-                        userlat = it.latitude
-                        userlong = it.longitude
-                        getAddress(userlat, userlong)
+                        userLat = latLng.latitude
+                        userLong = latLng.longitude
+                        getAddress(userLat, userLong)
                     } else
                     {
                         isComingFirst=false
@@ -387,19 +385,19 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
         if(!isSave) {
 
             try {
-                userlat= shippingAddressItem!!.latitude.toDouble()
-                userlong= shippingAddressItem!!.longitude.toDouble()
+                userLat= shippingAddressItem!!.latitude.toDouble()
+                userLong= shippingAddressItem!!.longitude.toDouble()
             }
             catch (e:Exception){
-                userlat = 0.0
-                userlong = 0.0
+                userLat = 0.0
+                userLong = 0.0
             }
 
             val cameraPosition = CameraPosition.Builder()
                 .target(
                     LatLng(
-                        userlat,
-                        userlong
+                        userLat,
+                        userLong
                     )
                 ) // Sets the center of the map to Mountain View
                 .zoom(17f) // Sets the zoom // Sets the orientation of the camera to east // Sets the tilt of the camera to 30 degrees
@@ -414,18 +412,18 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
     }
 
 
-    fun getAddress(lat: Double, lng: Double) {
+    private fun getAddress(lat: Double, lng: Double) {
 
 
-        val geocoder = Geocoder(MyApplication.application, Locale.getDefault())
+        val geocoder = Geocoder(this, Locale.getDefault())
 
         val    // TODO: 11/1/20 find address
                 addresses =
             geocoder.getFromLocation(lat, lng, 1)
         if (addresses.size > 0) {
-            val address = addresses.get(0).getAddressLine(0);
-            val country = addresses.get(0).countryName;
-            val postalCode=addresses.get(0).postalCode
+            val address = addresses[0].getAddressLine(0)
+//            val country = addresses.get(0).countryName;
+            val postalCode= addresses[0].postalCode
 
             binding.addressLine1.setText(address)
             binding.addressZipcode.setText(postalCode)
@@ -475,32 +473,4 @@ class ShippingAddressDetailsActivity : FragmentActivity() {
         finish()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        shippingAddressItem =null
-    }
-
-    fun forcelogout(methodRepo: MethodsRepo){
-        CommonDialogsUtils.showCommonDialog(this,methodRepo, "Log Out ",
-            "Session Expire", false, false, true, false,
-            object : CommonDialogsUtils.DialogClick {
-                override fun onClick() {
-//                    viewModel.shared.Logout()
-                    lifecycleScope.launchWhenCreated {
-                        methodRepo.dataStore.logOut()
-                        methodRepo.dataStore.setIsIntro(true)
-                        startActivity(Intent(this@ShippingAddressDetailsActivity, LoginActivity::class.java))
-                        finishAffinity()
-                    }
-                }
-                override fun onCancel() {
-                }
-            })
-    }
-
-
-
-    companion object {
-        var shippingAddressItem: ShippingAddressItem?=null
-    }
 }

@@ -3,13 +3,10 @@ package com.octal.actorpay.ui.productList
 import android.content.Context
 import android.graphics.Paint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.octal.actorpay.R
-import com.octal.actorpay.databinding.AdapterWalletstatementBinding
 import com.octal.actorpay.databinding.ProductListItemBinding
 import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.repositories.retrofitrepository.models.cart.CartItemDTO

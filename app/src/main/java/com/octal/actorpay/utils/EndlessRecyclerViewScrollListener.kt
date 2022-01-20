@@ -1,4 +1,4 @@
-package com.techno.taskmanagement.utils
+package com.octal.actorpay.utils
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 
 /**
- * @Details used for pagination in recylerview
+ * @Details used for pagination in recyclerview
  * @author Iftekhar Ahmed
  * @Date 04-October -2019
  */
@@ -31,7 +31,7 @@ public abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollL
     private var totalItemCount = 0
     private var lastVisibleItemPosition = 0
 
-    var mLayoutManager: RecyclerView.LayoutManager
+    private var mLayoutManager: RecyclerView.LayoutManager
 
     public constructor(layoutManager: GridLayoutManager) {
         this.mLayoutManager = layoutManager
@@ -39,7 +39,7 @@ public abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollL
 
     public constructor(layoutManager: StaggeredGridLayoutManager) {
         this.mLayoutManager = layoutManager
-        visibleThreshold = visibleThreshold * layoutManager.spanCount
+        visibleThreshold *= layoutManager.spanCount
     }
 
     public constructor(layoutManager: LinearLayoutManager) {
@@ -56,7 +56,7 @@ public abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollL
         startingPageIndex = 0
     }
 
-    fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {
+    private fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {
         var maxSize = 0
         for (i in lastVisibleItemPositions.indices) {
             if (i == 0) {
@@ -72,17 +72,21 @@ public abstract class EndlessRecyclerViewScrollListener : RecyclerView.OnScrollL
         lastVisibleItemPosition = 0
         totalItemCount = mLayoutManager.itemCount
 
-        if (mLayoutManager is LinearLayoutManager) {
-            lastVisibleItemPosition =
-                (mLayoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-        } else if (mLayoutManager is GridLayoutManager) {
-            lastVisibleItemPosition =
-                (mLayoutManager as GridLayoutManager).findLastVisibleItemPosition()
-        } else if (mLayoutManager is StaggeredGridLayoutManager) {
-            val lastVisibleItemPositions =
-                (mLayoutManager as StaggeredGridLayoutManager).findLastVisibleItemPositions(null);
-            // get maximum element within the list
-            lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
+        when (mLayoutManager) {
+            is LinearLayoutManager -> {
+                lastVisibleItemPosition =
+                    (mLayoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+            }
+            is GridLayoutManager -> {
+                lastVisibleItemPosition =
+                    (mLayoutManager as GridLayoutManager).findLastVisibleItemPosition()
+            }
+            is StaggeredGridLayoutManager -> {
+                val lastVisibleItemPositions =
+                    (mLayoutManager as StaggeredGridLayoutManager).findLastVisibleItemPositions(null)
+                // get maximum element within the list
+                lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions)
+            }
         }
         if (totalItemCount < previousTotalItemCount) {
             this.currentPage = this.startingPageIndex

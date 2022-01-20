@@ -35,8 +35,7 @@ import org.json.JSONException
 import android.util.Log
 import androidx.viewpager.widget.ViewPager
 import com.octal.actorpay.base.BaseCommonActivity
-import com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryResponse
-import com.octal.actorpay.utils.GlobalData
+import com.octal.actorpay.base.ResponseSealed
 
 import java.lang.Exception
 
@@ -101,7 +100,7 @@ class LoginActivity : BaseCommonActivity() {
                 }
             })
             if(LoginViewModel.isFromContentPage)
-            viewPager.setCurrentItem(1)
+                viewPager.currentItem = 1
 
             imGoogle.setOnClickListener {
                 val intent =  mGoogleSignInClient.signInIntent
@@ -121,13 +120,13 @@ class LoginActivity : BaseCommonActivity() {
 
     private fun apiResponse() {
         lifecycleScope.launch {
-            loginViewModel.loginResponseLive.collect { event ->
+            loginViewModel.responseLive.collect { event ->
                 when (event) {
-                    is LoginViewModel.ResponseLoginSealed.loading -> {
+                    is ResponseSealed.loading -> {
                         //(requireActivity() as BaseActivity).showLoading(true)
                         loginViewModel.methodRepo.showLoadingDialog(this@LoginActivity)
                     }
-                    is LoginViewModel.ResponseLoginSealed.Success -> {
+                    is ResponseSealed.Success -> {
                         loginViewModel.methodRepo.hideLoadingDialog()
                         when (event.response) {
                             is LoginResponses -> {
@@ -164,7 +163,7 @@ class LoginActivity : BaseCommonActivity() {
                             }
                         }
                     }
-                    is LoginViewModel.ResponseLoginSealed.ErrorOnResponse -> {
+                    is ResponseSealed.ErrorOnResponse -> {
                         //(requireActivity() as BaseActivity).showLoading(false)
 
                         showCustomAlert(
