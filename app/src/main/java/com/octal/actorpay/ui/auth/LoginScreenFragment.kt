@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import com.actorpay.merchant.utils.SingleClickListener
 import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseCommonActivity
@@ -128,9 +129,15 @@ class LoginScreenFragment : BaseFragment() {
 
     fun init() {
         binding.apply {
-            buttonLogin.setOnClickListener {
+            /*buttonLogin.setOnClickListener {
                 validateLogin()
-            }
+            }*/
+            buttonLogin.setOnClickListener(object : SingleClickListener() {
+                override fun performClick(v: View?) {
+                    validateLogin()
+                }
+            })
+
             loginForget.setOnClickListener {
                 forgetPassword()
             }

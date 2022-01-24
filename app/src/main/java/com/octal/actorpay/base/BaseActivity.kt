@@ -2,11 +2,15 @@ package com.octal.actorpay.base
 
 
 import android.app.Activity
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
@@ -35,6 +39,8 @@ abstract class BaseActivity : AppCompatActivity() {
     private var manager: FragmentManager? = null
     private var transaction: FragmentTransaction? = null
     private lateinit var snackBar: Snackbar
+
+    private var  progressDialog: Dialog?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,12 +132,33 @@ abstract class BaseActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    protected fun showSnackBar(message: String?) {
-        Snackbar.make(view, message!!, Snackbar.LENGTH_SHORT).show()
-    }
+    fun showLoadingDialog() {
+        if(progressDialog==null){
+            progressDialog = Dialog(this)
+            if (progressDialog!!.window != null) {
+                val window = progressDialog!!.window
+                window!!.setLayout(
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT
+                )
+                window.setGravity(Gravity.CENTER)
+                progressDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
+            progressDialog!!.setContentView(R.layout.progress_dialog)
+            progressDialog!!.setCancelable(false)
+            progressDialog!!.setCanceledOnTouchOutside(false)
+            progressDialog!!.show()
+        }
+        else{
+            progressDialog!!.show()
+        }
 
-    private val view: View
-        get() = findViewById(R.id.content)
+    }
+    fun hideLoadingDialog() {
+        if(progressDialog!=null){
+            progressDialog!!.dismiss()
+        }
+    }
 
 
 }

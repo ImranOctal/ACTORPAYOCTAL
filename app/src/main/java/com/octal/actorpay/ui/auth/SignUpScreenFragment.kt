@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.actorpay.merchant.utils.SingleClickListener
 import com.octal.actorpay.R
 import com.octal.actorpay.utils.CommonDialogsUtils
 import com.octal.actorpay.base.BaseCommonActivity
@@ -63,10 +64,15 @@ class SignUpScreenFragment : BaseFragment() {
 
     fun init() {
         binding.apply {
-            buttonSignUp.setOnClickListener {
+            /*buttonSignUp.setOnClickListener {
                 //NavController().navigateWithId(R.id.homeFragment, findNavController())
               validate()
-            }
+            }*/
+            buttonSignUp.setOnClickListener(object : SingleClickListener() {
+                override fun performClick(v: View?) {
+                    validate()
+                }
+            })
             firstNameInfo.setOnClickListener {
                 signupViewModel.methodRepo.showPopUpWindow(binding.firstNameInfo,"Enter first name as per government\nrecords or bank")
             }

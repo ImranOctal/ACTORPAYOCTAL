@@ -19,9 +19,6 @@ class TransferMoneyFragment : BaseFragment() {
     ): View {
         // Inflate the layout for this fragment
         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_transfer_money, container, false)
-        binding.toolbar.backIcon.setOnClickListener {
-            findNavController().popBackStack()
-        }
         return binding.root
     }
 

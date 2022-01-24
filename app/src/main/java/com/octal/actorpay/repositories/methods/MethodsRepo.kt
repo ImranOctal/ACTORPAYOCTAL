@@ -102,14 +102,15 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         return cm!!.activeNetworkInfo != null && cm.activeNetworkInfo!!.isConnected
     }
-    fun showLoadingDialog(context: Context?): Dialog? {
-        if(progressDialog==null){
+    fun showLoadingDialog(context: Context?) {
+
+        if(progressDialog !=null) {
             progressDialog = Dialog(context!!)
             if (progressDialog!!.window != null) {
                 val window = progressDialog!!.window
                 window!!.setLayout(
-                        WindowManager.LayoutParams.MATCH_PARENT,
-                        WindowManager.LayoutParams.WRAP_CONTENT
+                    WindowManager.LayoutParams.MATCH_PARENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT
                 )
                 window.setGravity(Gravity.CENTER)
                 progressDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -119,7 +120,9 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
             progressDialog!!.setCanceledOnTouchOutside(false)
             progressDialog!!.show()
         }
-        return progressDialog
+        else
+            progressDialog!!.show()
+
     }
     fun hideLoadingDialog() {
         if(progressDialog!=null){
@@ -221,28 +224,6 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
                               mpopup.dismiss()
         },4000)
     }
-
-    fun getStatus(status:String):String{
-        if(status.equals("PARTIALLY_CANCELLED"))
-            return "PARTIALLY CANCELLED"
-        else if(status.equals("PARTIALLY_RETURNING"))
-            return "PARTIALLY RETURNING"
-        else if(status.equals("PARTIALLY_RETURNED"))
-            return "PARTIALLY RETURNED"
-        else
-            return status
-    }
-    fun setStatus(status: String):String{
-        if(status.equals("PARTIALLY CANCELLED"))
-            return "PARTIALLY_CANCELLED"
-        else if(status.equals("PARTIALLY RETURNING"))
-            return "PARTIALLY_RETURNING"
-        else if(status.equals("PARTIALLY RETURNED"))
-            return "PARTIALLY_RETURNED"
-        else
-            return status
-    }
-
 
     fun checkPermission(activity: Activity,permission:String):Boolean {
         return ContextCompat.checkSelfPermission(

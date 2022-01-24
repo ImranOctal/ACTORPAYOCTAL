@@ -73,11 +73,15 @@ class AppConstance {
         const val STATUS_DISPATCHED:String="DISPATCHED"
         const val STATUS_RETURNING:String="RETURNING"
         const val STATUS_PARTIALLY_RETURNING:String="PARTIALLY_RETURNING"
-        const val STATUS_RETURNED :String="RETURNED "
+        const val STATUS_RETURNED :String="RETURNED"
         const val STATUS_PARTIALLY_RETURNED:String="PARTIALLY_RETURNED"
         const val STATUS_DELIVERED:String="DELIVERED"
         const val STATUS_PENDING:String="PENDING"
         const val STATUS_FAILED:String="FAILED"
+        const val STATUS_COMPLETE:String="COMPLETE"
+
+        const val STATUS_CANCEL_ORDER:String="Cancel Order"
+        const val STATUS_RETURN_ORDER:String="Return Order"
 
         val dateFormate1= SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
         val dateFormate2= SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
@@ -94,6 +98,7 @@ enum class Clicks{
     BuyNow,
     Edit,
     Delete,
+    Success,
     Cancel,
     Details,
     Skip,

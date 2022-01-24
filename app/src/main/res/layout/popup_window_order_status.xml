@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+   android:background="@color/transparent"
+    >
+
+    <RelativeLayout
+        android:id="@+id/root_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="@drawable/orderstatus_bg_white"
+>
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingVertical="@dimen/_5sdp"
+        android:paddingHorizontal="@dimen/_8sdp"
+        android:textSize="@dimen/_10sdp"
+        android:text=""
+        android:textColor="@color/text_color"
+        android:fontFamily="@font/poppins_regular"
+        />
+    </RelativeLayout>
+</RelativeLayout>

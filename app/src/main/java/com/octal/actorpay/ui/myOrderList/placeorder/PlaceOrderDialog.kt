@@ -39,7 +39,9 @@ class PlaceOrderDialog(
         }
 
         binding.orderRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.orderRecyclerView.adapter = PlaceOrderAdapter(orderData.orderItemDtos)
+        binding.orderRecyclerView.adapter = PlaceOrderAdapter(mContext,orderData.orderItemDtos){
+                pos, action ->
+        }
         binding.orderData = orderData
         if (orderData.shippingAddressDTO == null) {
             binding.deliveryAddressAddress1.visibility = View.GONE

@@ -31,6 +31,13 @@ data class OrderListResponse(
     var httpStatus: String
 )
 
+data class SingleOrderResponse(
+    var message: String,
+    var data: OrderData,
+    var status: String,
+    var httpStatus: String
+)
+
 data class OrderListParams(
     var totalPrice:Double?=null,
     var merchantId:String?=null,
@@ -58,6 +65,7 @@ data class OrderData(
     var totalSgst: Double,
     var totalCgst: Double,
     var customer: Customer,
+    var merchantDTO: Merchant,
     var merchantId: String,
     var merchantName: String,
     var orderStatus: String,
@@ -78,6 +86,19 @@ data class Customer(
     var contactNumber: String,
     var roles: ArrayList<String>,
     var kycDone: Boolean
+
+):Serializable
+
+data class Merchant(
+    var id: String,
+    var email: String,
+    var merchantId: String,
+    var extensionNumber: String,
+    var contactNumber: String,
+    var businessName: String,
+    var fullAddress: String,
+    var shopAddress: String,
+    var licenceNumber: String,
 
 ):Serializable
 

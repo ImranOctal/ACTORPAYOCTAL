@@ -49,10 +49,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.content.Content
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
-import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
-import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParams
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.order.*
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
 import com.octal.actorpay.repositories.retrofitrepository.models.products.SingleProductResponse
@@ -185,6 +182,12 @@ interface ApiClient {
         @Query("pageSize") pageSize: Int,
         @Body orderListParams: OrderListParams
     ): Response<OrderListResponse>
+
+  @GET("$PLACE_ORDER{order}")
+    suspend fun getOrder(
+        @Header("Authorization") token: String,
+        @Path("order") order: String,
+    ): Response<SingleOrderResponse>
 
 
     @PUT("""$ORDER_STATUS{status}""")

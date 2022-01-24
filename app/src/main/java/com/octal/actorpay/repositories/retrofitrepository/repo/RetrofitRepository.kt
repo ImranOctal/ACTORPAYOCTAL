@@ -17,10 +17,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.content.Content
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
-import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
-import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParams
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.order.*
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
 import com.octal.actorpay.repositories.retrofitrepository.models.products.SingleProductResponse
@@ -74,6 +71,8 @@ interface RetrofitRepository {
     suspend fun placeOrder(token: String,placeOrderParams: PlaceOrderParams):RetrofitResource<PlaceOrderResponse>
 
     suspend fun getAllOrders(token: String,pageNo:Int,pageSize:Int,orderListParams: OrderListParams):RetrofitResource<OrderListResponse>
+
+    suspend fun getOrder(token: String,orderNo: String):RetrofitResource<SingleOrderResponse>
 
     suspend fun changeOrderStatus(token: String,status:String,orderNo:String):RetrofitResource<SuccessResponse>
 

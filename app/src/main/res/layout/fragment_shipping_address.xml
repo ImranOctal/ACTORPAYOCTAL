@@ -6,7 +6,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.shippingaddress.ShippingAddressFragment">
+    tools:context=".ui.shippingaddress.ShippingAddressFragment"
+    android:layout_marginHorizontal="@dimen/_15sdp"
+    android:layout_marginTop="@dimen/_20sdp"
+    >
 
     <androidx.cardview.widget.CardView
         android:id="@+id/add_address"

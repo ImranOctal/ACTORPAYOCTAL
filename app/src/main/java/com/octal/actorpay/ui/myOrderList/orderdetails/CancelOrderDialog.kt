@@ -49,7 +49,7 @@ class CancelOrderDialog(
             false
         )
         dialog.setContentView(binding.root)
-        isCancelable = false
+
         binding.back.setOnClickListener {
             dismiss()
         }

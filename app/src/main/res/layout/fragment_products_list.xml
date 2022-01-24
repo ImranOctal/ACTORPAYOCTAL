@@ -7,7 +7,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.productList.ProductsListFragment">
+    tools:context=".ui.productList.ProductsListFragment"
+    android:layout_marginHorizontal="@dimen/_15sdp"
+    android:layout_marginTop="@dimen/_20sdp"
+    >
 
 <EditText
     android:id="@+id/product_search"
@@ -37,7 +40,7 @@
     app:layout_constraintTop_toBottomOf="@+id/product_search"
     tools:itemCount="5"
     tools:listitem="@layout/row_categories_item"
-    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginTop="@dimen/_10sdp"
     android:layout_marginBottom="@dimen/_10sdp"
     android:paddingEnd="@dimen/_10sdp"
     android:clipToPadding="false"

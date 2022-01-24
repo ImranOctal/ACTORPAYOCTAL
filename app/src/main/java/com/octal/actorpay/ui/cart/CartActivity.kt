@@ -31,7 +31,6 @@ class CartActivity : BaseActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_cart)
         setAdapter()
-        cartResponse()
         apiResponse()
         cartViewModel.getCartItems()
 
@@ -64,6 +63,7 @@ class CartActivity : BaseActivity() {
                         cartViewModel.methodRepo.showLoadingDialog(this@CartActivity)
                     }
                     is ResponseSealed.Success -> {
+                        cartViewModel.methodRepo.hideLoadingDialog()
                         binding.cartRecyclerview.adapter?.notifyDataSetChanged()
                     }
                     is ResponseSealed.ErrorOnResponse -> {
@@ -96,6 +96,10 @@ class CartActivity : BaseActivity() {
                                     updateUI(it)
                                 }
 
+                            }
+                            is ResponseSealed.Success -> {
+                                cartViewModel.methodRepo.hideLoadingDialog()
+                                binding.cartRecyclerview.adapter?.notifyDataSetChanged()
                             }
                         }
                     }

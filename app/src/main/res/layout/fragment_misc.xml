@@ -5,7 +5,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.transferMoney.TransferMoneyFragment">
+    tools:context=".ui.transferMoney.TransferMoneyFragment"
+    android:layout_marginHorizontal="@dimen/_15sdp"
+    android:layout_marginTop="@dimen/_20sdp"
+    >
 
 
     <LinearLayout

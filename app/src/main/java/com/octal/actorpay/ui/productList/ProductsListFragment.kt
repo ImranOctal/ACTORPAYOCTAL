@@ -107,6 +107,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                         cartViewModel.methodRepo.showLoadingDialog(requireContext())
                     }
                     is ResponseSealed.Success -> {
+                        cartViewModel.methodRepo.hideLoadingDialog()
                         binding.recyclerviewProduct.adapter?.notifyDataSetChanged()
                         if(futureAddCart >= 0){
                             addToCart(futureAddCart)
@@ -150,8 +151,6 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                             when (event.response) {
                                 is ProductListResponse -> {
                                   updateUI(event.response.data)
-
-
                                 }
                                 is CategorieResponse->{
                                     productViewModel.categoryList.add(CategorieItem("","All","","",true))

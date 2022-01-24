@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    >
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.addmoney.AddMoneyFragment">
+
+    <TextView
+        android:id="@+id/enter_amount_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/enter_amount"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/_12ssp"
+
+        />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/enter_amount_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/enter_amount_text"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_2sdp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_10sdp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/enter_amount"
+            style="@style/RegularTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:text="@string/rs"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_10sdp"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_14sdp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/enter_amount_edt"
+            style="@style/RegularTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:hint="@string/amount"
+            android:maxLength="5"
+            android:inputType="numberDecimal"
+            android:paddingStart="@dimen/_25sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_10sdp"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_14sdp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/enter_amount_card"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        >
+
+    <TextView
+        android:id="@+id/amount50"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="50"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/poppins_regular"
+        android:background="@drawable/orderstatus_bg"
+        android:paddingVertical="@dimen/_6sdp"
+        />
+
+
+    <TextView
+        android:id="@+id/amount100"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:gravity="center"
+        android:text="100"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/poppins_regular"
+        android:background="@drawable/orderstatus_bg"
+        android:paddingVertical="@dimen/_6sdp"
+        />
+
+
+    <TextView
+        android:id="@+id/amount200"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="200"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/poppins_regular"
+        android:background="@drawable/orderstatus_bg"
+        android:paddingVertical="@dimen/_6sdp"
+        />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/layout1"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        >
+
+    <TextView
+        android:id="@+id/amount500"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="500"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/poppins_regular"
+        android:background="@drawable/orderstatus_bg"
+        android:paddingVertical="@dimen/_6sdp"
+        />
+
+
+    <TextView
+        android:id="@+id/amount1000"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:gravity="center"
+        android:text="1000"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/poppins_regular"
+        android:background="@drawable/orderstatus_bg"
+        android:paddingVertical="@dimen/_6sdp"
+        />
+
+
+    <TextView
+        android:id="@+id/amount2000"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="2000"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/poppins_regular"
+        android:background="@drawable/orderstatus_bg"
+        android:paddingVertical="@dimen/_6sdp"
+
+        />
+
+
+    </LinearLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonAddMoney"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:backgroundTint="#ED335F"
+        android:text="@string/add_money"
+        android:fontFamily="@font/poppins_regular"
+        android:textAllCaps="true"
+        android:textSize="@dimen/_12sdp"
+        app:cornerRadius="@dimen/_5sdp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

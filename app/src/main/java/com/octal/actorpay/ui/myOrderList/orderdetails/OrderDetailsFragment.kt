@@ -4,37 +4,45 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseFragment
+import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.FragmentOrderDetailsBinding
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_SUCCESS
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_READY
+import com.octal.actorpay.repositories.AppConstance.AppConstance
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_CANCELLED
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_PARTIALLY_CANCELLED
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_DISPATCHED
-import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_DELIVERED
-import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_READY
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_SUCCESS
+import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.order.SingleOrderResponse
 import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderAdapter
-import com.octal.actorpay.utils.CommonDialogsUtils
+import kotlinx.coroutines.flow.collect
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
-import java.io.File
-
 
 
 class OrderDetailsFragment : BaseFragment() {
-    private var orderData: OrderData? = null
+    private var orderNo: String =""
     private val orderDetailsViewModel: OrderDetailsViewModel by inject()
     private lateinit var binding: FragmentOrderDetailsBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        apiResponse()
         arguments?.let {
-            orderData = it.getSerializable("order") as OrderData
-
+            orderNo = it.getString("orderNo")!!
+        }
+        if(orderNo != ""){
+            orderDetailsViewModel.getOrder(orderNo)
+        }
+        else{
+            showCustomToast("Something went wrong")
         }
     }
 
@@ -42,82 +50,118 @@ class OrderDetailsFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_details, container, false)
-
-        if(orderData?.orderStatus.equals(STATUS_SUCCESS) || orderData?.orderStatus.equals(STATUS_READY) || orderData?.orderStatus.equals(
-                STATUS_PARTIALLY_CANCELLED)){
-            binding.cancel.text=getString(R.string.cancel)
-            binding.cancel.visibility=View.VISIBLE
-        }
-        else if(orderData?.orderStatus.equals(STATUS_DELIVERED) || orderData?.orderStatus.equals(STATUS_DISPATCHED)){
-            binding.cancel.text=getString(R.string.return_order)
-            binding.cancel.visibility=View.VISIBLE
-        }
-
-        binding.cancel.setOnClickListener {
-
-            CommonDialogsUtils.showCommonDialog(requireActivity(),orderDetailsViewModel.methodRepo,"Cancel Order","Are you sure?", isCancelAvailable = true, callback = object :CommonDialogsUtils.DialogClick{
-                override fun onClick() {
-                    cancelReturnOrder()
-                }
-                override fun onCancel() {
-
-                }
-            })
-        }
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_order_details, container, false)
 
 
-        binding.orderRecyclerView.layoutManager= LinearLayoutManager(context)
-        binding.orderRecyclerView.adapter= PlaceOrderAdapter(orderData!!.orderItemDtos)
-        binding.orderData=orderData
-        binding.orderDateText.text="Order Date & Time: "+orderDetailsViewModel.methodRepo.getFormattedOrderDate(orderData!!.createdAt)
-        if(orderData?.shippingAddressDTO==null)
-        {
-            binding.deliveryAddressAddress1.visibility=View.GONE
-            binding.deliveryAddressAddress2.visibility=View.GONE
-            binding.deliveryAddressCity.visibility=View.GONE
-        }
-        else if(orderData?.shippingAddressDTO?.addressLine2==null || orderData?.shippingAddressDTO?.addressLine2.equals("")){
-            binding.deliveryAddressAddress2.visibility=View.GONE
-        }
 
         return binding.root
     }
 
-    fun cancelReturnOrder(){
-        var status=""
-        val orderIdArray=JSONArray()
+    fun updateUI(){
+        binding.orderNumber.text=orderDetailsViewModel.orderData!!.orderNo
+        binding.orderAmount.text=getString(R.string.rs).plus(orderDetailsViewModel.orderData!!.totalPrice)
+        binding.bussinessName.text="Business Name: "+orderDetailsViewModel.orderData!!.merchantDTO.businessName
+        binding.licenceNo.text="Licence No: "+orderDetailsViewModel.orderData!!.merchantDTO.licenceNumber
+        binding.email.text="Email: "+orderDetailsViewModel.orderData!!.merchantDTO.email
+        binding.email.text="Contact No: "+orderDetailsViewModel.orderData!!.merchantDTO.extensionNumber+""+orderDetailsViewModel.orderData!!.merchantDTO.contactNumber
+        binding.deliveryAddressAddress1.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine1
+        binding.deliveryAddressAddress2.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine2
+        binding.deliveryAddressCity.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.city+", "+orderDetailsViewModel.orderData!!.shippingAddressDTO!!.state
 
+        binding.orderStatus.text=orderDetailsViewModel.orderData!!.orderStatus.replace("_"," ")
 
-        if(orderData?.orderStatus.equals(STATUS_SUCCESS) || orderData?.orderStatus.equals(STATUS_READY))
+        if(orderDetailsViewModel.orderData!!.orderStatus == STATUS_SUCCESS || orderDetailsViewModel.orderData!!.orderStatus == STATUS_READY || orderDetailsViewModel.orderData!!.orderStatus == AppConstance.STATUS_COMPLETE || orderDetailsViewModel.orderData!!.orderStatus == AppConstance.STATUS_DISPATCHED || orderDetailsViewModel.orderData!!.orderStatus == AppConstance.STATUS_DELIVERED)
         {
-            status="CANCELLED"
-            orderData?.orderItemDtos!!.forEach {
-                orderIdArray.put(it.orderItemId)
+            binding.orderStatus.setTextColor(ContextCompat.getColor(binding.root.context,R.color.green_color))
+            binding.orderStatus.setBackgroundResource(R.drawable.my_oder_status_bg)
+        }
+        else if(orderDetailsViewModel.orderData!!.orderStatus == STATUS_CANCELLED || orderDetailsViewModel.orderData!!.orderStatus == STATUS_PARTIALLY_CANCELLED || orderDetailsViewModel.orderData!!.orderStatus == AppConstance.STATUS_FAILED){
+            binding.orderStatus.setTextColor(ContextCompat.getColor(binding.root.context,R.color.red))
+            binding.orderStatus.setBackgroundResource(R.drawable.my_oder_status_bg_red)
+        }
+        else if(orderDetailsViewModel.orderData!!.orderStatus == AppConstance.STATUS_PENDING || orderDetailsViewModel.orderData!!.orderStatus == AppConstance.STATUS_RETURNED || orderDetailsViewModel.orderData!!.orderStatus == AppConstance.STATUS_RETURNING || orderDetailsViewModel.orderData!!.orderStatus == AppConstance.STATUS_PARTIALLY_RETURNING || orderDetailsViewModel.orderData!!.orderStatus == AppConstance.STATUS_PARTIALLY_RETURNED){
+            binding.orderStatus.setTextColor(ContextCompat.getColor(binding.root.context,R.color.primary))
+            binding.orderStatus.setBackgroundResource(R.drawable.orderstatus_bg)
+        }
+
+        binding.orderRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.orderRecyclerView.adapter =
+            PlaceOrderAdapter(requireContext(),orderDetailsViewModel.orderData!!.orderItemDtos, false) {
+                    pos,status ->
+                cancelReturnOrder(status,orderDetailsViewModel.orderData!!.orderItemDtos[pos].orderItemId)
+            }
+
+        binding.orderDateText.text =
+            "Order Date: " + orderDetailsViewModel.methodRepo.getFormattedOrderDate(orderDetailsViewModel.orderData!!.createdAt)
+
+
+        if (orderDetailsViewModel.orderData?.shippingAddressDTO == null) {
+            binding.deliveryAddressAddress1.visibility = View.GONE
+            binding.deliveryAddressAddress2.visibility = View.GONE
+            binding.deliveryAddressCity.visibility = View.GONE
+        } else if (orderDetailsViewModel.orderData?.shippingAddressDTO?.addressLine2 == null || orderDetailsViewModel.orderData?.shippingAddressDTO?.addressLine2.equals(
+                ""
+            )
+        ) {
+            binding.deliveryAddressAddress2.visibility = View.GONE
+        }
+    }
+
+    fun apiResponse() {
+
+        lifecycleScope.launchWhenStarted {
+            orderDetailsViewModel.responseLive.collect { event ->
+                when (event) {
+                    is ResponseSealed.loading -> {
+                        orderDetailsViewModel.methodRepo.showLoadingDialog(requireContext())
+                    }
+                    is ResponseSealed.Success -> {
+                        orderDetailsViewModel.methodRepo.hideLoadingDialog()
+                        when (event.response) {
+                            is SingleOrderResponse -> {
+                               orderDetailsViewModel.orderData=event.response.data
+                                updateUI()
+                            }
+                            is SuccessResponse ->{
+                                orderDetailsViewModel.getOrder(orderNo)
+                            }
+                        }
+                    }
+                    is ResponseSealed.ErrorOnResponse -> {
+                        orderDetailsViewModel.methodRepo.hideLoadingDialog()
+                        showCustomToast(event.message!!.message)
+
+                    }
+                    is ResponseSealed.Empty -> {
+                        orderDetailsViewModel.methodRepo.hideLoadingDialog()
+                    }
+                }
             }
         }
-        else if(orderData?.orderStatus.equals(
-                STATUS_PARTIALLY_CANCELLED))
-        {
-            status="CANCELLED"
-            orderData?.orderItemDtos?.forEach {
-                if(it.orderItemStatus == "SUCCESS" || it.orderItemStatus == "READY")
-                    orderIdArray.put(it.orderItemId)
-            }
-        }
+    }
 
-        if(status.isNotEmpty()) {
-            var prodImage: File? = null
+    fun cancelReturnOrder(status:String,orderId:String) {
+
+        val orderIdArray = JSONArray()
+        orderIdArray.put(orderId)
+
+        if (status.isNotEmpty()) {
+
             val cancelOrderJson = JSONObject()
 
-            CancelOrderDialog(requireActivity(),orderDetailsViewModel.methodRepo,false){
-                    reason, file ->
-                cancelOrderJson.put("cancellationRequest",status)
-                cancelOrderJson.put("cancelReason",reason)
-                cancelOrderJson.put("orderItemIds",orderIdArray)
-                showCustomToast(reason)
-            }.show(childFragmentManager,"Place")
-//                orderDetailsViewModel.changeOrderItemsStatus(orderData!!.orderNo,cancelOrderJson.toString(),prodImage)
+            CancelOrderDialog(
+                requireActivity(),
+                orderDetailsViewModel.methodRepo,
+                status == STATUS_CANCELLED
+            ) { reason, file ->
+
+                cancelOrderJson.put("cancellationRequest", status)
+                cancelOrderJson.put("cancelReason", reason)
+                cancelOrderJson.put("orderItemIds", orderIdArray)
+                orderDetailsViewModel.changeOrderItemsStatus(orderDetailsViewModel.orderData!!.orderNo,cancelOrderJson.toString(),file)
+//                showCustomToast(reason)
+            }.show(childFragmentManager, "Place")
         }
     }
 }

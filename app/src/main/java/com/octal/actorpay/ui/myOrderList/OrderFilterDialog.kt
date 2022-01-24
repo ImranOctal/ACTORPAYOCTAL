@@ -86,8 +86,8 @@ class OrderFilterDialog(
             binding.endDate.setText(params.endDate)
         val array = mContext.resources.getStringArray(R.array.status_array).toMutableList()
         if (params.orderStatus != null) {
-            if (array.contains(methodsRepo.getStatus(params.orderStatus!!))) {
-                val pos = array.indexOfFirst { it.equals(methodsRepo.getStatus(params.orderStatus!!)) }
+            if (array.contains(params.orderStatus!!.replace("_"," "))) {
+                val pos = array.indexOfFirst { it.equals(params.orderStatus!!.replace("_"," ")) }
                 binding.spinnerStatus.setSelection(pos)
             }
         }
@@ -155,7 +155,7 @@ class OrderFilterDialog(
             val statusPosition = binding.spinnerStatus.selectedItemPosition
             if (statusPosition != 0) {
                 status = array[statusPosition]
-                status=methodsRepo.setStatus(status)
+                status=status!!.replace(" ","_")
             }
             onClick(
                 OrderListParams(

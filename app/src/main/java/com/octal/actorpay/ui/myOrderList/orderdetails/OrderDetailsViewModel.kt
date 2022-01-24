@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +28,7 @@ class OrderDetailsViewModel(
     Application()
 ) {
 
+    var orderData:OrderData? =null
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
 
     fun changeOrderItemsStatus(orderNo:String,cancelOrder: String,file: File?) {
@@ -48,6 +51,23 @@ class OrderDetailsViewModel(
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
                     apiRepo.changeOrderItemsStatus(token, orderNo,prod,f1)) {
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> {
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                    }
+                }
+            }
+        }
+    }
+
+    fun getOrder(orderNo: String) {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.getOrder(token,orderNo)) {
                     is RetrofitResource.Error -> responseLive.value =
                         ResponseSealed.ErrorOnResponse(response.message)
                     is RetrofitResource.Success -> {

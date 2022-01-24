@@ -3,41 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
 
-        <variable
-            name="orderData"
-            type="com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData" />
-    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        >
+
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="none"
         android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/order_summary_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
             android:background="@color/light_grey_home"
             android:paddingBottom="@dimen/_10sdp"
 
             >
 
             <TextView
-                android:id="@+id/order_summary_text"
+                android:id="@+id/order_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
-                android:text="@string/order_summary"
+                android:text=''
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Order Number: " />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/orderStatus"
@@ -49,46 +54,18 @@
                 android:background="@drawable/my_oder_status_bg"
                 android:letterSpacing="0.01"
                 android:paddingHorizontal="@dimen/_5sdp"
-                android:text="@{orderData.orderStatus}"
+                android:text=""
                 android:textColor="@color/green_color"
                 android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/order_summary_text"
+                app:layout_constraintBottom_toBottomOf="@+id/order_number"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/order_summary_text"
+                app:layout_constraintTop_toTopOf="@+id/order_number"
                 tools:ignore="RelativeOverlap,UnusedAttribute"
                 tools:text="Success" />
 
-            <TextView
-                android:id="@+id/merchant_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:ellipsize="end"
-                android:fontFamily="@font/poppins_regular"
-                android:maxLines="1"
-                android:text='@{"Merchant: "+orderData.customer.firstName+" "+orderData.customer.lastName}'
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/_14ssp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_summary_text"
-                tools:text="Merchant Name" />
 
 
-            <TextView
-                android:id="@+id/order_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/poppins_bold"
-                android:gravity="center"
-                android:text='@{"Order Number: "+orderData.orderNo}'
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/merchant_name"
-                tools:text="Order Number: " />
+
 
 
             <TextView
@@ -96,15 +73,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/poppins_bold"
+                android:fontFamily="@font/poppins_regular"
                 android:gravity="center_vertical"
                 android:text=''
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_11ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/order_number"
                 tools:text="Order Date &amp; Time:" />
+
+            <TextView
+                android:id="@+id/order_amount_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:text="Order Total:"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_date_text"
+                 />
+
+            <TextView
+                android:id="@+id/order_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:text=''
+                android:textColor="@color/primary"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/order_amount_text"
+                app:layout_constraintStart_toEndOf="@+id/order_amount_text"
+                app:layout_constraintTop_toTopOf="@+id/order_amount_text"
+                tools:text="Order Price" />
+
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -112,111 +118,240 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@+id/order_date_text"
-                tools:itemCount="0"
+                app:layout_constraintTop_toBottomOf="@+id/order_amount_text"
+                tools:itemCount="2"
                 tools:listitem="@layout/row_order_item" />
 
 
-            <TextView
-                android:id="@+id/order_amount_text"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardMerchantDetail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_5ssp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/poppins_bold"
-                android:gravity="center"
-                android:text="@string/order_amount"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/_14ssp"
+                android:elevation="@dimen/_5ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_recycler_view"
-                tools:text="Order Number: " />
+                app:layout_constraintTop_toBottomOf="@+id/order_recycler_view">
 
-            <TextView
-                android:id="@+id/order_amount"
-                android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/llCustomerDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/_6ssp"
+                    android:text="Merchant Details"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textSize="@dimen/_12ssp" />
+
+
+                <TextView
+                    android:id="@+id/bussiness_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:text=''
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_11ssp" />
+
+                <TextView
+                    android:id="@+id/licence_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:text=''
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_11ssp" />
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:text=''
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_11ssp" />
+
+
+                <TextView
+                    android:id="@+id/contact_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/_6ssp"
+                    android:text=''
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_11ssp" />
+
+                </LinearLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/shippingDetails"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:fontFamily="@font/poppins_bold"
-                android:gravity="center"
-                android:text='@{"₹"+orderData.totalPrice}'
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/_14ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/order_amount_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/order_amount_text"
-                tools:text="Order Price" />
-
-
-            <ImageView
-                android:id="@+id/delivery_address_location"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_5ssp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:contentDescription="@string/delivery_address_and_time"
-                android:src="@drawable/address_icon"
+                android:elevation="@dimen/_5ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_amount_text" />
+                app:layout_constraintTop_toBottomOf="@+id/cardMerchantDetail">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/delivery_address_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:padding="@dimen/_6sdp"
+                        android:gravity="center_vertical"
+                        android:text="@string/delivery_address_and_time"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12ssp"
+                        />
+
+                    <TextView
+                        android:id="@+id/delivery_address_address1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:paddingStart="@dimen/_6sdp"
+                        android:paddingEnd="@dimen/_6sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:text=""
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="dsfasdf"
+                        />
+
+                    <TextView
+                        android:id="@+id/delivery_address_address2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_6sdp"
+                        android:paddingStart="@dimen/_6sdp"
+                        android:paddingEnd="@dimen/_6sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:text=""
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="dsfasdf"
+                       />
+
+                    <TextView
+                        android:id="@+id/delivery_address_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_6sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:paddingStart="@dimen/_6sdp"
+                        android:paddingEnd="@dimen/_6sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:gravity="center_vertical"
+                        android:text=''
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12ssp"
+                        tools:text="dsfasdf"
+                        />
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5ssp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:elevation="@dimen/_5ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shippingDetails">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
 
             <TextView
-                android:id="@+id/delivery_address_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/_6ssp"
+                android:text="Notes"
                 android:layout_marginHorizontal="@dimen/_5sdp"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center"
-                android:text="@string/delivery_address_and_time"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/delivery_address_location"
-                app:layout_constraintStart_toEndOf="@+id/delivery_address_location"
-                app:layout_constraintTop_toTopOf="@+id/delivery_address_location" />
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="@dimen/_12ssp" />
 
-            <TextView
-                android:id="@+id/delivery_address_address1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center_vertical"
-                android:text="@{orderData.shippingAddressDTO.addressLine1}"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/delivery_address_text"
-                app:layout_constraintTop_toBottomOf="@+id/delivery_address_text" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_6sdp"
+                    android:paddingStart="@dimen/_6sdp"
+                    android:paddingEnd="@dimen/_6sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center_vertical"
+                    android:text="Note 1 Description Text"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_12ssp"
+                    />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:background="@color/gray_dark"
+                    />
 
-            <TextView
-                android:id="@+id/delivery_address_address2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center_vertical"
-                android:text="@{orderData.shippingAddressDTO.addressLine2}"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/delivery_address_text"
-                app:layout_constraintTop_toBottomOf="@+id/delivery_address_address1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_6sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:paddingStart="@dimen/_6sdp"
+                    android:paddingEnd="@dimen/_6sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center_vertical"
+                    android:text="Note 2 Description Text"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_12ssp"
+                    />
 
-            <TextView
-                android:id="@+id/delivery_address_city"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center_vertical"
-                android:text='@{orderData.shippingAddressDTO.city+", "+orderData.shippingAddressDTO.state}'
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/delivery_address_text"
-                app:layout_constraintTop_toBottomOf="@+id/delivery_address_address2" />
+            </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
 
 
 
@@ -232,11 +367,13 @@
                 android:gravity="center"
                 android:text="@string/cancel_order"
                 android:textSize="@dimen/_10ssp"
-                android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@+id/delivery_address_city" />
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/cardNotes" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </ScrollView>
+
+    </RelativeLayout>
 </layout>

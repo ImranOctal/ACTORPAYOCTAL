@@ -39,7 +39,7 @@ class PlaceOrderActivity : BaseActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_place_order)
         apiResponse()
-        cartResponse()
+//        cartResponse()
         setAdapter()
 
         placeOrderViewModel.getAddresses()
@@ -48,6 +48,10 @@ class PlaceOrderActivity : BaseActivity() {
         binding.total.text="₹$total"
         binding.subTotal.text="₹$subTotal"
         binding.gst.text="₹$gst"
+
+        binding.back.setOnClickListener {
+            onBackPressed()
+        }
 
         binding.checkout.setOnClickListener {
             validate()
@@ -153,15 +157,7 @@ class PlaceOrderActivity : BaseActivity() {
                     is ResponseSealed.Success -> {
                         when (event.response) {
 
-                            is PlaceOrderResponse ->{
-                                PlaceOrderDialog(this@PlaceOrderActivity,placeOrderViewModel.methodRepo,event.response.data){
-                                    startActivity(
-                                        Intent(this@PlaceOrderActivity,
-                                            MainActivity::class.java)
-                                    )
-                                    finishAffinity()
-                                }.show(supportFragmentManager,"Place")
-                            }
+
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
@@ -196,14 +192,20 @@ class PlaceOrderActivity : BaseActivity() {
                             is SuccessResponse -> {
                                 placeOrderViewModel.getAddresses()
                             }
+                            is PlaceOrderResponse ->{
+                                PlaceOrderDialog(this@PlaceOrderActivity,placeOrderViewModel.methodRepo,event.response.data){
+                                    startActivity(
+                                        Intent(this@PlaceOrderActivity,
+                                            MainActivity::class.java)
+                                    )
+                                    finishAffinity()
+                                }.show(supportFragmentManager,"Place")
+                            }
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        if (event.message!!.code == 403) {
-                            forcelogout(placeOrderViewModel.methodRepo)
-                        }
                         placeOrderViewModel.methodRepo.hideLoadingDialog()
-                        Toast.makeText(this@PlaceOrderActivity,event.message.message,Toast.LENGTH_SHORT).show()
+                        showCustomToast(event.message!!.message)
                     }
                     is ResponseSealed.Empty -> {
                         placeOrderViewModel.methodRepo.hideLoadingDialog()

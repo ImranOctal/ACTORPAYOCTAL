@@ -21,6 +21,7 @@ import com.octal.actorpay.databinding.ActivityMainBinding
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.ui.adapter.FeaturesAdapter
 import com.octal.actorpay.ui.adapter.MenuAdapter
+import com.octal.actorpay.ui.addmoney.AddMoneyFragment
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.ui.cart.CartActivity
 import com.octal.actorpay.ui.cart.CartViewModel
@@ -375,16 +376,14 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         when (mList[position]) {
 
             "Add Money" -> {
-                if (fragment !is WalletBottomFragment) {
-//                    title = "Add Money"
-                    navController.navigate(R.id.walletBottomFragment)
-
+                if (fragment !is AddMoneyFragment) {
+                    navController.navigate(R.id.addMoneyFragment)
                 }
             }
             "Send Money" -> {
                 if (fragment !is WalletBottomFragment) {
 //                    title = "Send Money"
-                    navController.navigate(R.id.walletBottomFragment)
+                    navController.navigate(R.id.transferMoneyFragment)
                 }
             }
             "Mobile & DTH" -> {
@@ -466,6 +465,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(true)
                     showHideCartIcon(true)
                     showHideFilterIcon(false)
+                    binding.layoutMainID.constraintLayout.setBackgroundResource(R.drawable.layout_bg)
                 }
                 R.id.historyBottomFragment -> {
                     title = "My History"
@@ -611,6 +611,27 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.addMoneyFragment -> {
+                    title = "Add Money In Wallet"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.transferMoneyFragment -> {
+                    title = "Transfer Money"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    binding.layoutMainID.constraintLayout.setBackgroundResource(R.color.white)
                 }
 
             }

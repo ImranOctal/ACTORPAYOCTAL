@@ -11,6 +11,7 @@ import com.octal.actorpay.repositories.methods.MethodsRepo
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitMainRepository
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpay.repositories.retrofitrepository.apiclient.ApiClient
+import com.octal.actorpay.ui.addmoney.AddMoneyViewModel
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.ui.auth.viewmodel.SignupViewModel
 import com.octal.actorpay.ui.cart.CartViewModel
@@ -124,6 +125,9 @@ private val appKoinModule = module {
     }
     viewModel {
         SettingViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        AddMoneyViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     single {
         CartViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())

@@ -56,6 +56,12 @@ abstract class BaseFragment : Fragment(){
     fun forcelogout(methodRepo: MethodsRepo){
         (requireActivity() as BaseActivity).forcelogout(methodRepo)
     }
+    fun showLoading(){
+        (requireActivity() as BaseActivity).showLoadingDialog()
+    }
+    fun hideLoading(){
+        (requireActivity() as BaseActivity).hideLoadingDialog()
+    }
 
 
 }

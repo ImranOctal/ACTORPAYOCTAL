@@ -157,5 +157,7 @@
     <string name="twitter">Twitter</string>
     <string name="google">Google</string>
     <string name="edit_image">Edit Image</string>
+    <string name="add_money">Add Money</string>
+    <string name="amount">Amount</string>
 
 </resources>

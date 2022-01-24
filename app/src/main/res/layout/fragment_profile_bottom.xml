@@ -5,7 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.bottomnavfragments.ProfileBottomFragment">
+    tools:context=".ui.dashboard.bottomnavfragments.ProfileBottomFragment"
+    android:layout_marginHorizontal="@dimen/_15sdp"
+    android:layout_marginTop="@dimen/_20sdp"
+    >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -40,7 +43,7 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="JORDEN NIELSEN"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

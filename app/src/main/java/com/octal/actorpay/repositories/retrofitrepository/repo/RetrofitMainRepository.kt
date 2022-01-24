@@ -27,10 +27,6 @@ import com.octal.actorpay.repositories.retrofitrepository.models.content.Content
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
-import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
-import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderParams
-import com.octal.actorpay.repositories.retrofitrepository.models.order.PlaceOrderResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.products.ProductParams
 import com.octal.actorpay.repositories.retrofitrepository.models.products.SingleProductResponse
@@ -40,6 +36,7 @@ import com.octal.actorpay.repositories.retrofitrepository.models.shipping.Shippi
 import com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpay.repositories.retrofitrepository.resource.RetrofitResource
 import com.octal.actorpay.repositories.retrofitrepository.apiclient.ApiClient
+import com.octal.actorpay.repositories.retrofitrepository.models.order.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -617,6 +614,37 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
             )
         }
     }
+
+    override suspend fun getOrder(
+        token: String,
+        orderNo: String
+    ): RetrofitResource<SingleOrderResponse> {
+
+        try {
+            val data = apiClient.getOrder(B_Token + token,orderNo)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
     override suspend fun changeOrderStatus(token: String,status:String,orderNo:String): RetrofitResource<SuccessResponse> {
 
         try {
