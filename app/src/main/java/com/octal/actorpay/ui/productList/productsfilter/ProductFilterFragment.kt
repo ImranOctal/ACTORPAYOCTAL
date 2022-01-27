@@ -65,10 +65,10 @@ class ProductFilterFragment : BaseFragment() {
             productFilterViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        productFilterViewModel.methodRepo.showLoadingDialog(requireContext())
+                        showLoading()
                     }
                     is ResponseSealed.Success -> {
-                        productFilterViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         when (event.response) {
 
                             is CategorieResponse ->{
@@ -83,13 +83,13 @@ class ProductFilterFragment : BaseFragment() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
+                        hideLoading()
                         if (event.message!!.code == 403) {
                             forcelogout(productFilterViewModel.methodRepo)
                         }
-                        productFilterViewModel.methodRepo.hideLoadingDialog()
                     }
                     is ResponseSealed.Empty -> {
-                        productFilterViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
 
                     }
                 }

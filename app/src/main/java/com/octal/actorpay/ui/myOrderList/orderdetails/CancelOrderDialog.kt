@@ -24,6 +24,7 @@ import com.facebook.FacebookSdk.getCacheDir
 import com.octal.actorpay.R
 import com.octal.actorpay.databinding.CancelOrderDialogBinding
 import com.octal.actorpay.repositories.methods.MethodsRepo
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.io.IOException
@@ -32,6 +33,8 @@ class CancelOrderDialog(
     private val mContext: Activity,
     val methodsRepo: MethodsRepo,
     private val isOrderCancel:Boolean,
+    private val orderData: OrderData?,
+    private val pos:Int,
     val onDone: (reason:String,file:File?) -> Unit,
 ): DialogFragment() {
 
@@ -49,6 +52,13 @@ class CancelOrderDialog(
             false
         )
         dialog.setContentView(binding.root)
+
+        binding.orderItem=orderData!!.orderItemDtos[pos]
+        binding.orderNumber.text=orderData.orderNo
+        binding.orderAmount.text=getString(R.string.rs).plus(orderData.totalPrice)
+        binding.orderDateText.text =
+            "Order Date: " + methodsRepo.getFormattedOrderDate(orderData.createdAt)
+
 
         binding.back.setOnClickListener {
             dismiss()

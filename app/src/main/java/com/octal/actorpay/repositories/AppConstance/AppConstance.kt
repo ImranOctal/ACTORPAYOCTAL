@@ -87,6 +87,13 @@ class AppConstance {
         val dateFormate2= SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
         val dateFormate3= SimpleDateFormat("yyyy-MM-dd HH:MM", Locale.ENGLISH)
         val dateFormate4= SimpleDateFormat("dd MMM yyyy HH:MM", Locale.ENGLISH)
+
+
+        const val KEY_KEY="key"
+        const val KEY_NAME="name"
+        const val KEY_QR="qr"
+        const val KEY_MOBILE="mobile"
+        const val KEY_EMAIL="email"
     }
 }
 

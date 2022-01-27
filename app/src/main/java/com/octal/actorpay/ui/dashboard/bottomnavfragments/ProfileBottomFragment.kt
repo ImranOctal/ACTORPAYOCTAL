@@ -129,10 +129,10 @@ class ProfileBottomFragment : BaseFragment() {
                 when (it) {
 
                     is ResponseSealed.loading -> {
-                        profileViewModel.methodRepo.showLoadingDialog(requireContext())
+                        showLoading()
                     }
                     is ResponseSealed.Success -> {
-                        profileViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         when (it.response) {
                             is ProfileResponse -> {
                                 val response2=it.response.data
@@ -157,7 +157,7 @@ class ProfileBottomFragment : BaseFragment() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        profileViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         if (it.message!!.code == 403) {
                             forcelogout(profileViewModel.methodRepo)
                         }
@@ -168,7 +168,7 @@ class ProfileBottomFragment : BaseFragment() {
                         )
                     }
                     is ResponseSealed.Empty -> {
-                        profileViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                     }
                 }
             }

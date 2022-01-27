@@ -35,11 +35,8 @@ import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
 abstract class BaseActivity : AppCompatActivity() {
-    private var addToBackStack = false
-    private var manager: FragmentManager? = null
-    private var transaction: FragmentTransaction? = null
-    private lateinit var snackBar: Snackbar
 
+    private lateinit var snackBar: Snackbar
     private var  progressDialog: Dialog?=null
 
 
@@ -58,20 +55,6 @@ abstract class BaseActivity : AppCompatActivity() {
         myToast.show()
     }
 
-
-    fun showMsg(connected: Boolean) {
-        if (connected == false) {
-            val myToast = Toast.makeText(
-                applicationContext,
-                getString(R.string.not_connected_internet),
-                Toast.LENGTH_SHORT
-            )
-            myToast.setGravity(Gravity.CENTER, 0, 0)
-            myToast.show()
-            //showAlertBar(getString(R.string.not_connected_internet))
-        }
-
-    }
 
     fun logout(methodRepo: MethodsRepo){
         CommonDialogsUtils.showCommonDialog(this,methodRepo, "Logout ",

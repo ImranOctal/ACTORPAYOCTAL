@@ -94,6 +94,7 @@ class PlaceOrderAdapter(
             status.text=orderStatus
 
             rootLayout.setOnClickListener {
+                mpopup.dismiss()
                 if(orderStatus == STATUS_CANCEL_ORDER)
                     onClick(pos,STATUS_CANCELLED)
                 else if(orderStatus == STATUS_RETURN_ORDER)

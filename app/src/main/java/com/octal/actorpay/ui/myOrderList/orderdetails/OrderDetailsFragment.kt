@@ -59,12 +59,13 @@ class OrderDetailsFragment : BaseFragment() {
     }
 
     fun updateUI(){
+        binding.orderStatus.visibility=View.VISIBLE
         binding.orderNumber.text=orderDetailsViewModel.orderData!!.orderNo
         binding.orderAmount.text=getString(R.string.rs).plus(orderDetailsViewModel.orderData!!.totalPrice)
         binding.bussinessName.text="Business Name: "+orderDetailsViewModel.orderData!!.merchantDTO.businessName
         binding.licenceNo.text="Licence No: "+orderDetailsViewModel.orderData!!.merchantDTO.licenceNumber
         binding.email.text="Email: "+orderDetailsViewModel.orderData!!.merchantDTO.email
-        binding.email.text="Contact No: "+orderDetailsViewModel.orderData!!.merchantDTO.extensionNumber+""+orderDetailsViewModel.orderData!!.merchantDTO.contactNumber
+        binding.contactNo.text="Contact No: "+orderDetailsViewModel.orderData!!.merchantDTO.extensionNumber+""+orderDetailsViewModel.orderData!!.merchantDTO.contactNumber
         binding.deliveryAddressAddress1.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine1
         binding.deliveryAddressAddress2.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine2
         binding.deliveryAddressCity.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.city+", "+orderDetailsViewModel.orderData!!.shippingAddressDTO!!.state
@@ -89,7 +90,7 @@ class OrderDetailsFragment : BaseFragment() {
         binding.orderRecyclerView.adapter =
             PlaceOrderAdapter(requireContext(),orderDetailsViewModel.orderData!!.orderItemDtos, false) {
                     pos,status ->
-                cancelReturnOrder(status,orderDetailsViewModel.orderData!!.orderItemDtos[pos].orderItemId)
+                cancelReturnOrder(status,pos)
             }
 
         binding.orderDateText.text =
@@ -114,10 +115,10 @@ class OrderDetailsFragment : BaseFragment() {
             orderDetailsViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        orderDetailsViewModel.methodRepo.showLoadingDialog(requireContext())
+                       showLoading()
                     }
                     is ResponseSealed.Success -> {
-                        orderDetailsViewModel.methodRepo.hideLoadingDialog()
+                       hideLoading()
                         when (event.response) {
                             is SingleOrderResponse -> {
                                orderDetailsViewModel.orderData=event.response.data
@@ -129,22 +130,22 @@ class OrderDetailsFragment : BaseFragment() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        orderDetailsViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         showCustomToast(event.message!!.message)
 
                     }
                     is ResponseSealed.Empty -> {
-                        orderDetailsViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                     }
                 }
             }
         }
     }
 
-    fun cancelReturnOrder(status:String,orderId:String) {
+    fun cancelReturnOrder(status:String,pos:Int) {
 
         val orderIdArray = JSONArray()
-        orderIdArray.put(orderId)
+        orderIdArray.put(orderDetailsViewModel.orderData!!.orderItemDtos[pos].orderItemId)
 
         if (status.isNotEmpty()) {
 
@@ -153,7 +154,9 @@ class OrderDetailsFragment : BaseFragment() {
             CancelOrderDialog(
                 requireActivity(),
                 orderDetailsViewModel.methodRepo,
-                status == STATUS_CANCELLED
+                status == STATUS_CANCELLED,
+                orderDetailsViewModel.orderData,
+                pos,
             ) { reason, file ->
 
                 cancelOrderJson.put("cancellationRequest", status)

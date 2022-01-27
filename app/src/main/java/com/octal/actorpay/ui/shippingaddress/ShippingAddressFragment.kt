@@ -119,10 +119,10 @@ class ShippingAddressFragment : BaseFragment() {
             shippingAddressViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        shippingAddressViewModel.methodRepo.showLoadingDialog(requireContext())
+                        showLoading()
                     }
                     is ResponseSealed.Success -> {
-                        shippingAddressViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         when (event.response) {
                             is ShippingAddressListResponse -> {
                                 updateUI(event.response.data)
@@ -133,14 +133,15 @@ class ShippingAddressFragment : BaseFragment() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
+                        hideLoading()
                         if (event.message!!.code == 403) {
                             forcelogout(shippingAddressViewModel.methodRepo)
                         }
-                        shippingAddressViewModel.methodRepo.hideLoadingDialog()
+                        else
                         showCustomToast(event.message.message)
                     }
                     is ResponseSealed.Empty -> {
-                        shippingAddressViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
 
                     }
                 }

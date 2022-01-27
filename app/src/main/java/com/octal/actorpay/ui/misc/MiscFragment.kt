@@ -71,10 +71,10 @@ class MiscFragment : BaseFragment() {
             miscViewModel.miscResponseLive.collect {
                 when(it){
                     is ResponseSealed.loading->{
-                        miscViewModel.methodRepo.showLoadingDialog(requireContext())
+                        showLoading()
                     }
                     is ResponseSealed.Success->{
-                        miscViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         if(it.response is SuccessResponse){
                             CommonDialogsUtils.showCommonDialog(requireActivity(),miscViewModel.methodRepo,"Success",it.response.message)
                         }
@@ -87,14 +87,14 @@ class MiscFragment : BaseFragment() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse->{
-                        miscViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         (requireActivity() as BaseActivity).showCustomAlert(
                             it.message!!.message,
                             binding.root
                         )
                     }
                     is ResponseSealed.Empty -> {
-                        miscViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                     }
                 }
             }

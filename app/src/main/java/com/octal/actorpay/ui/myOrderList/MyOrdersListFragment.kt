@@ -34,10 +34,7 @@ class MyOrdersListFragment : BaseFragment(), OnFilterClick {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-         orderViewModel.orderListParams= OrderListParams()
-         orderViewModel.orderListData.pageNumber = 0
-         orderViewModel.orderListData.totalPages = 0
-         orderViewModel.orderListData.items.clear()
+
 //         orderViewModel.getAllOrders(orderViewModel.orderListParams)
     }
 
@@ -50,6 +47,10 @@ class MyOrdersListFragment : BaseFragment(), OnFilterClick {
             DataBindingUtil.inflate(inflater, R.layout.fragment_my_order_list, container, false)
 
         apiResponse()
+        orderViewModel.orderListParams= OrderListParams()
+        orderViewModel.orderListData.pageNumber = 0
+        orderViewModel.orderListData.totalPages = 0
+        orderViewModel.orderListData.items.clear()
         orderViewModel.getAllOrders(orderViewModel.orderListParams)
 
         setAdapter()

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable-hdpi/round_wallet_blue_bg.xml" value="0.3851282051282051" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable-xxxhdpi/drawable_menu.xml" value="0.24537037037037038" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/back_icon.xml" value="0.33425925925925926" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/bg_outline_gray.xml" value="0.3851282051282051" />
@@ -18,6 +19,7 @@
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/ic_baseline_arrow_forward_24.xml" value="0.3851282051282051" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/ic_baseline_error_outline_24.xml" value="0.325" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.32037037037037036" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.22291666666666668" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.32037037037037036" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/layout_bg.xml" value="0.403125" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/drawable/my_oder_bg.xml" value="0.23148148148148148" />
@@ -38,7 +40,7 @@
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_place_order.xml" value="0.33" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_product_details.xml" value="0.2" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/activity_shipping_address_details.xml" value="0.33" />
-        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/cancel_order_dialog.xml" value="0.33" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/cancel_order_dialog.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/cart_layout.xml" value="0.38697916666666665" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/change_password_dialog.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/common_dialog.xml" value="0.25181159420289856" />
@@ -62,11 +64,12 @@
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_my_order_list.xml" value="0.33" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_notification.xml" value="0.375" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_order_details.xml" value="0.33" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_pay.xml" value="0.375" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_pay_via_nfc.xml" value="0.375" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_product_details.xml" value="0.38697916666666665" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_product_filter.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_products_list.xml" value="0.25" />
-        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_profile_bottom.xml" value="0.25" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_profile_bottom.xml" value="0.33" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_promo.xml" value="0.22" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_raise_concerns.xml" value="0.14" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_refer_and_earn.xml" value="0.25" />
@@ -76,7 +79,7 @@
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_settings.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_shipping_address.xml" value="0.3609375" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_shipping_address_details.xml" value="0.375" />
-        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_transfer_money.xml" value="0.25" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_transfer_money.xml" value="0.33" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_wallet_bottom.xml" value="0.375" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/fragment_walletw_statement.xml" value="0.25" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/item_features.xml" value="0.375" />
@@ -108,6 +111,7 @@
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/test_layout.xml" value="0.1814814814814815" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/toolbar_trans.xml" value="0.18819655521783182" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/transaction_process_dialog.xml" value="0.22" />
+        <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/layout/transaction_status_dialog.xml" value="0.375" />
         <entry key="..\:/Iftekhar/Android Projects/ishant/ACTORPAYOCTAL/app/src/main/res/menu/demo_menu.xml" value="0.14791666666666667" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/activity_content.xml" value="0.19270833333333334" />
         <entry key="..\:/developement/projects/ACTORPAYOCTAL/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />

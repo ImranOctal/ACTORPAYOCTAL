@@ -145,35 +145,6 @@ class PlaceOrderActivity : BaseActivity() {
     }
 
 
-
-    private fun cartResponse() {
-        lifecycleScope.launchWhenCreated {
-
-            placeOrderViewModel.responseLive.collect { event ->
-                when (event) {
-                    is ResponseSealed.loading -> {
-                        placeOrderViewModel.methodRepo.showLoadingDialog(this@PlaceOrderActivity)
-                    }
-                    is ResponseSealed.Success -> {
-                        when (event.response) {
-
-
-                        }
-                    }
-                    is ResponseSealed.ErrorOnResponse -> {
-                        if (event.message!!.code == 403) {
-                            forcelogout(placeOrderViewModel.methodRepo)
-                        }
-                        placeOrderViewModel.methodRepo.hideLoadingDialog()
-                    }
-                    is ResponseSealed.Empty -> {
-                        placeOrderViewModel.methodRepo.hideLoadingDialog()
-                    }
-                }
-            }
-        }
-    }
-
     fun apiResponse() {
 
         lifecycleScope.launchWhenStarted {
@@ -181,10 +152,10 @@ class PlaceOrderActivity : BaseActivity() {
             placeOrderViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        placeOrderViewModel.methodRepo.showLoadingDialog(this@PlaceOrderActivity)
+                        showLoadingDialog()
                     }
                     is ResponseSealed.Success -> {
-                        placeOrderViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
                         when (event.response) {
                             is ShippingAddressListResponse -> {
                                 updateUI(event.response.data)
@@ -204,11 +175,11 @@ class PlaceOrderActivity : BaseActivity() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        placeOrderViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
                         showCustomToast(event.message!!.message)
                     }
                     is ResponseSealed.Empty -> {
-                        placeOrderViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
 
                     }
                 }

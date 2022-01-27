@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import com.actorpay.merchant.utils.SingleClickListener
 import com.octal.actorpay.R
 import com.octal.actorpay.utils.CommonDialogsUtils
-import com.octal.actorpay.base.BaseCommonActivity
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.SignUpScreenFragmentBinding
@@ -336,10 +335,10 @@ class SignUpScreenFragment : BaseFragment() {
             signupViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                       signupViewModel.methodRepo.showLoadingDialog(requireContext())
+                       showLoading()
                     }
                     is ResponseSealed.Success -> {
-                        signupViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         when(event.response){
                             is SignupResponse->{
                                 CommonDialogsUtils.showCommonDialog(
@@ -372,14 +371,14 @@ class SignUpScreenFragment : BaseFragment() {
 
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        signupViewModel.methodRepo.hideLoadingDialog()
-                        (requireActivity() as BaseCommonActivity).showCustomAlert(
+                        hideLoading()
+                        showCustomAlert(
                             event.message!!.message,
                             binding.root
                         )
                     }
                     else -> {
-                        signupViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                     }
                 }
             }

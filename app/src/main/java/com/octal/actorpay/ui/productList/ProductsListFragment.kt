@@ -94,6 +94,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
 
 
     private var resultLauncher = registerForActivityResult(StartActivityForResult()) {
+
         binding.recyclerviewProduct.adapter?.notifyDataSetChanged()
 
     }
@@ -104,10 +105,10 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
             cartViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        cartViewModel.methodRepo.showLoadingDialog(requireContext())
+                        showLoading()
                     }
                     is ResponseSealed.Success -> {
-                        cartViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         binding.recyclerviewProduct.adapter?.notifyDataSetChanged()
                         if(futureAddCart >= 0){
                             addToCart(futureAddCart)
@@ -119,16 +120,16 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
+                        hideLoading()
                         futureAddCart=-1
                         if(isFromBuy)
                             isFromBuy=false
                         if (event.message!!.code == 403) {
                             forcelogout(productViewModel.methodRepo)
                         }
-                        cartViewModel.methodRepo.hideLoadingDialog()
                     }
                     is ResponseSealed.Empty -> {
-                        cartViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
 
                     }
 
@@ -144,10 +145,10 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                 productViewModel.responseLive.collect { event ->
                     when (event) {
                         is ResponseSealed.loading -> {
-                            productViewModel.methodRepo.showLoadingDialog(requireContext())
+                            showLoading()
                         }
                         is ResponseSealed.Success -> {
-                            productViewModel.methodRepo.hideLoadingDialog()
+                            hideLoading()
                             when (event.response) {
                                 is ProductListResponse -> {
                                   updateUI(event.response.data)
@@ -160,13 +161,13 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                             }
                         }
                         is ResponseSealed.ErrorOnResponse -> {
+                            hideLoading()
                             if (event.message!!.code == 403) {
                                 forcelogout(productViewModel.methodRepo)
                             }
-                            productViewModel.methodRepo.hideLoadingDialog()
                         }
                         is ResponseSealed.Empty -> {
-                            productViewModel.methodRepo.hideLoadingDialog()
+                            hideLoading()
 
                         }
                     }

@@ -439,10 +439,10 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             shippingAddressViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        shippingAddressViewModel.methodRepo.showLoadingDialog(this@ShippingAddressDetailsActivity)
+                        showLoadingDialog()
                     }
                     is ResponseSealed.Success -> {
-                        shippingAddressViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
                         when (event.response) {
                             is SuccessResponse -> {
                                 onBackPressed()
@@ -450,14 +450,15 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
+                        hideLoadingDialog()
                         if (event.message!!.code == 403) {
                             forcelogout(shippingAddressViewModel.methodRepo)
                         }
-                        shippingAddressViewModel.methodRepo.hideLoadingDialog()
-                        Toast.makeText(this@ShippingAddressDetailsActivity,event.message.message,Toast.LENGTH_SHORT).show()
+                        else
+                        showCustomToast(event.message.message)
                     }
                     is ResponseSealed.Empty -> {
-                        shippingAddressViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
 
                     }
                 }

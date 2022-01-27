@@ -419,10 +419,10 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
             viewModel.actorResponseLive.collect {
                 when (it) {
                     is ResponseSealed.loading -> {
-                        viewModel.methodRepo.showLoadingDialog(this@MainActivity)
+                        showLoadingDialog()
                     }
                     is ResponseSealed.Success -> {
-                        viewModel.methodRepo.hideLoadingDialog()
+                      hideLoadingDialog()
                         if (it.response is SuccessResponse) {
                             CommonDialogsUtils.showCommonDialog(
                                 this@MainActivity,
@@ -438,14 +438,14 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        viewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
                         showCustomAlert(
                             it.message!!.message,
                             binding.root
                         )
                     }
                     is ResponseSealed.Empty -> {
-                        viewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
                     }
                 }
             }
@@ -623,6 +623,17 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.transferMoneyFragment -> {
+                    title = "Transfer Money"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    binding.layoutMainID.constraintLayout.setBackgroundResource(R.color.white)
+                }
+                R.id.payFragment -> {
                     title = "Transfer Money"
                     isMenuOrBack=false
                     mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)

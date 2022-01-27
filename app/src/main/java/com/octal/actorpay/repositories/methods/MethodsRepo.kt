@@ -61,8 +61,10 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
     }
 
     fun isValidPhoneNumber(phone: String): Boolean {
-        val mobilePattern = "[0-9]{10}"
-        return Pattern.matches(mobilePattern, phone)
+        if(Pattern.matches("[0-9]+", phone)) {
+            return phone.length > 6 && phone.length <= 13;
+        }
+        return false
     }
     fun isValidName(name: String):Boolean{
         val pattern = Pattern.compile("^[a-zA-Z\\s]*$")

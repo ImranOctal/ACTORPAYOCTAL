@@ -5,10 +5,10 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.octal.actorpay.R
-import com.octal.actorpay.base.BaseCommonActivity
 import com.octal.actorpay.databinding.ActivityIntroBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SnapHelper
+import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.ui.auth.LoginActivity
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 
-class IntroActivity : BaseCommonActivity() {
+class IntroActivity : BaseActivity() {
     private lateinit var binding: ActivityIntroBinding
     private val introList= mutableListOf<IntroModel>()
     private val loginViewModel: LoginViewModel by  inject()

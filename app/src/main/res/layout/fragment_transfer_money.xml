@@ -18,24 +18,26 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/wallet_to_wallet_btn"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/_10sdp"
             android:layout_marginEnd="8dp"
-            android:textSize="15sp"
+            android:textSize="@dimen/_10sdp"
             android:fontFamily="@font/poppins_bold"
             android:textColor="@color/text_color"
             android:background="@drawable/round_wallet_bg"
             android:layout_height="wrap_content"
             android:text="@string/wallet_to_wallet"/>
         <TextView
+            android:id="@+id/wallet_to_bank_btn"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/_10sdp"
             android:layout_marginStart="8dp"
-            android:textSize="15sp"
+            android:textSize="@dimen/_10sdp"
             android:fontFamily="@font/poppins_bold"
             android:textColor="@color/text_color"
             android:background="@drawable/round_wallet_blue_bg"
@@ -44,41 +46,257 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/enterMobileText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/linear_layout"
         android:gravity="center"
-        android:padding="15dp"
-        android:id="@+id/enterMobileText"
-        android:textSize="14sp"
-        android:layout_marginTop="15dp"
+        android:paddingHorizontal="@dimen/_15sdp"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:fontFamily="@font/poppins_light"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/linear_layout"
         android:text="@string/enter_mobile_no_or_email"
         tools:ignore="MissingConstraints" />
 
     <EditText
+        android:id="@+id/emailNumberField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/emailNumberField"
         app:layout_constraintTop_toBottomOf="@id/enterMobileText"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:paddingVertical="@dimen/_10sdp"
         android:background="@drawable/round_wallet_bg"
-        android:paddingStart="10dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:singleLine="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
+        android:inputType="textEmailAddress"
+        android:imeOptions="actionDone"
+        android:maxLength="60"
         android:drawableEnd="@drawable/ic_baseline_contact_mail_24" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/_20sdp"
         app:layout_constraintTop_toBottomOf="@id/emailNumberField"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@drawable/round_corner_white_bg"/>
+        android:background="@drawable/round_corner_white_bg">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_scan_qr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/scan"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:backgroundTint="#ED335F"
+                android:text="Scan QR Code"
+                android:fontFamily="@font/poppins_regular"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_12sdp"
+                app:cornerRadius="@dimen/_5sdp" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/layout_bank"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                >
+
+                <TextView
+                    android:id="@+id/bank_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:text="Beneficiary Account Details"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_12ssp"
+                    />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/beneficiary_name"
+                        style="@style/RegularTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:background="@android:color/transparent"
+                        android:hint="Enter Beneficiary Name"
+                       android:inputType="text"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/beneficiary_account_no"
+                        style="@style/RegularTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:background="@android:color/transparent"
+                        android:hint="Enter Beneficiary Account No"
+                        android:inputType="text"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                </androidx.cardview.widget.CardView>
+
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/beneficiary_ifsc"
+                        style="@style/RegularTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:background="@android:color/transparent"
+                        android:hint="Enter IFSC code"
+                        android:inputType="text"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/beneficiary_branch"
+                        style="@style/RegularTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start|center"
+                        android:background="@android:color/transparent"
+                        android:hint="Enter Branch Name"
+                        android:inputType="text"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/beneficiary_reason"
+                        style="@style/RegularTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="start"
+                        android:background="@android:color/transparent"
+                        android:hint="Reason for sending Money"
+                        android:lines="4"
+                        android:maxLines="4"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/payNow"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:backgroundTint="#ED335F"
+                    android:text="Pay Now"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/_12sdp"
+                    app:cornerRadius="@dimen/_5sdp" />
+
+            </LinearLayout>
+
+
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

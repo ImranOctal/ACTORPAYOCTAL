@@ -63,10 +63,10 @@ class SettingsFragment : BaseFragment() {
             settingViewModel.responseLive.collect {
                 when(it){
                     is ResponseSealed.loading->{
-                        settingViewModel.methodRepo.showLoadingDialog(requireContext())
+                        showLoading()
                     }
                     is ResponseSealed.Success->{
-                        settingViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         if(it.response is SuccessResponse){
                             CommonDialogsUtils.showCommonDialog(requireActivity(),settingViewModel.methodRepo,"Success",it.response.message)
                         }
@@ -78,14 +78,14 @@ class SettingsFragment : BaseFragment() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse->{
-                        settingViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         showCustomAlert(
                             it.message!!.message,
                             binding.root
                         )
                     }
                     is ResponseSealed.Empty -> {
-                        settingViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                     }
                 }
             }

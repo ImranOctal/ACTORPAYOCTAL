@@ -28,6 +28,7 @@ import com.octal.actorpay.ui.promocodes.PromoListViewModel
 import com.octal.actorpay.ui.settings.SettingViewModel
 import com.octal.actorpay.ui.shippingaddress.ShippingAddressViewModel
 import com.octal.actorpay.ui.shippingaddress.details.ShippingAddressDetailsViewModel
+import com.octal.actorpay.ui.transferMoney.TransferMoneyViewModel
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import retrofit2.Retrofit
@@ -128,6 +129,9 @@ private val appKoinModule = module {
     }
     viewModel {
         AddMoneyViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        TransferMoneyViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     single {
         CartViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())

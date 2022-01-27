@@ -68,10 +68,10 @@ class PromoListFragment : BaseFragment() {
             promoListViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        promoListViewModel.methodRepo.showLoadingDialog(requireContext())
+                        showLoading()
                     }
                     is ResponseSealed.Success -> {
-                        promoListViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         when (event.response) {
                             is PromoResponse -> {
                                updateUI(event.response.data)
@@ -79,13 +79,13 @@ class PromoListFragment : BaseFragment() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
+                        hideLoading()
                         if (event.message!!.code == 403) {
                             forcelogout(promoListViewModel.methodRepo)
                         }
-                        promoListViewModel.methodRepo.hideLoadingDialog()
                     }
                     is ResponseSealed.Empty -> {
-                        promoListViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
 
                     }
                 }

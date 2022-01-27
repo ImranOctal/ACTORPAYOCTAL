@@ -80,7 +80,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
-            android:text="The desired amount has been\n addedd to your wallet"
+            android:text="Transaction has been done successfully"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="parent"

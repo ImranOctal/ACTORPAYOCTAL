@@ -34,13 +34,13 @@ import org.json.JSONException
 
 import android.util.Log
 import androidx.viewpager.widget.ViewPager
-import com.octal.actorpay.base.BaseCommonActivity
+import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.ResponseSealed
 
 import java.lang.Exception
 
 
-class LoginActivity : BaseCommonActivity() {
+class LoginActivity : BaseActivity() {
     private lateinit var binding: FragmentLoginBinding
     private val loginViewModel: LoginViewModel by  inject()
     private lateinit var mGoogleSignInClient:GoogleSignInClient
@@ -124,10 +124,10 @@ class LoginActivity : BaseCommonActivity() {
                 when (event) {
                     is ResponseSealed.loading -> {
                         //(requireActivity() as BaseActivity).showLoading(true)
-                        loginViewModel.methodRepo.showLoadingDialog(this@LoginActivity)
+                        showLoadingDialog()
                     }
                     is ResponseSealed.Success -> {
-                        loginViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
                         when (event.response) {
                             is LoginResponses -> {
                                 loginViewModel.methodRepo.dataStore.setUserId(event.response.data.id)
@@ -146,7 +146,6 @@ class LoginActivity : BaseCommonActivity() {
                                 finishAffinity()
                             }
                             is String -> {
-                                loginViewModel.methodRepo.hideLoadingDialog()
                                 CommonDialogsUtils.showCommonDialog(
                                     this@LoginActivity,
                                     loginViewModel.methodRepo,
@@ -155,7 +154,6 @@ class LoginActivity : BaseCommonActivity() {
                                 )
                             }
                             else -> {
-                                loginViewModel.methodRepo.hideLoadingDialog()
                                 showCustomAlert(
                                     getString(R.string.please_try_after_sometime),
                                     binding.root
@@ -164,8 +162,7 @@ class LoginActivity : BaseCommonActivity() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        //(requireActivity() as BaseActivity).showLoading(false)
-
+                        hideLoadingDialog()
                         showCustomAlert(
                             event.message!!.message,
                             binding.root

@@ -157,7 +157,7 @@ class ProductDetailsActivity : BaseActivity() {
             cartViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        cartViewModel.methodRepo.showLoadingDialog(this@ProductDetailsActivity)
+                        showLoadingDialog()
                     }
                     is ResponseSealed.Success -> {
                         if(futureAddCart){
@@ -171,16 +171,16 @@ class ProductDetailsActivity : BaseActivity() {
                         initializeCartWork()
                     }
                     is ResponseSealed.ErrorOnResponse -> {
+                        hideLoadingDialog()
                         futureAddCart=false
                         if(isFromBuy)
                             isFromBuy=false
                         if (event.message!!.code == 403) {
                             forcelogout(productDetailsViewModel.methodRepo)
                         }
-                        cartViewModel.methodRepo.hideLoadingDialog()
                     }
                     is ResponseSealed.Empty -> {
-                        cartViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
 
                     }
 
@@ -194,10 +194,10 @@ class ProductDetailsActivity : BaseActivity() {
             productDetailsViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        productDetailsViewModel.methodRepo.showLoadingDialog(this@ProductDetailsActivity)
+                        showLoadingDialog()
                     }
                     is ResponseSealed.Success -> {
-                        productDetailsViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
                         when (event.response) {
                             is ProductListResponse -> {
                                 productDetailsViewModel.productData.pageNumber =
@@ -214,11 +214,11 @@ class ProductDetailsActivity : BaseActivity() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        productDetailsViewModel.methodRepo.hideLoadingDialog()
-                        productDetailsViewModel.methodRepo.showCustomToast(event.message!!.message)
+                        hideLoadingDialog()
+                        showCustomToast(event.message!!.message)
                     }
                     is ResponseSealed.Empty -> {
-                        productDetailsViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
                     }
                 }
             }

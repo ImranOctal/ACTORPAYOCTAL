@@ -54,41 +54,15 @@ class CartActivity : BaseActivity() {
     }
 
 
-    private fun cartResponse() {
-        lifecycleScope.launchWhenCreated {
-
-            cartViewModel.responseLive.collect { event ->
-                when (event) {
-                    is ResponseSealed.loading -> {
-                        cartViewModel.methodRepo.showLoadingDialog(this@CartActivity)
-                    }
-                    is ResponseSealed.Success -> {
-                        cartViewModel.methodRepo.hideLoadingDialog()
-                        binding.cartRecyclerview.adapter?.notifyDataSetChanged()
-                    }
-                    is ResponseSealed.ErrorOnResponse -> {
-                        if (event.message!!.code == 403) {
-                            forcelogout(cartViewModel.methodRepo)
-                        }
-                        cartViewModel.methodRepo.hideLoadingDialog()
-                    }
-                    is ResponseSealed.Empty -> {
-                        cartViewModel.methodRepo.hideLoadingDialog()
-                    }
-                }
-            }
-        }
-    }
-
     fun apiResponse() {
         lifecycleScope.launchWhenCreated {
             cartViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        cartViewModel.methodRepo.showLoadingDialog(this@CartActivity)
+                        showLoadingDialog()
                     }
                     is ResponseSealed.Success -> {
-                        cartViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
                         when (event.response) {
                             is CartResponse -> {
 
@@ -98,17 +72,16 @@ class CartActivity : BaseActivity() {
 
                             }
                             is ResponseSealed.Success -> {
-                                cartViewModel.methodRepo.hideLoadingDialog()
                                 binding.cartRecyclerview.adapter?.notifyDataSetChanged()
                             }
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        cartViewModel.methodRepo.hideLoadingDialog()
-                        cartViewModel.methodRepo.showCustomToast(event.message!!.message)
+                        hideLoadingDialog()
+                        showCustomToast(event.message!!.message)
                     }
                     is ResponseSealed.Empty -> {
-                        cartViewModel.methodRepo.hideLoadingDialog()
+                        hideLoadingDialog()
                     }
                 }
             }

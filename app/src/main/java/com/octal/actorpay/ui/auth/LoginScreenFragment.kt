@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import com.actorpay.merchant.utils.SingleClickListener
 import com.octal.actorpay.MainActivity
 import com.octal.actorpay.R
-import com.octal.actorpay.base.BaseCommonActivity
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.LoginScreenFragmentBinding
@@ -48,10 +47,11 @@ class LoginScreenFragment : BaseFragment() {
             loginViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        loginViewModel.methodRepo.showLoadingDialog(requireContext())
+
+                        showLoading()
                     }
                     is ResponseSealed.Success -> {
-                        loginViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         when (event.response) {
                             is LoginResponses -> {
 
@@ -63,7 +63,7 @@ class LoginScreenFragment : BaseFragment() {
                                 viewModel.methodRepo.dataStore.setAccessToken(event.response.data.access_token)
                                 viewModel.methodRepo.dataStore.setRefreshToken(event.response.data.refresh_token)
 
-                                (requireActivity() as BaseCommonActivity).showCustomAlert(
+                                showCustomAlert(
                                     "Logged in Successfully",
                                     binding.root
                                 )
@@ -88,17 +88,17 @@ class LoginScreenFragment : BaseFragment() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        loginViewModel.methodRepo.hideLoadingDialog()
+                        hideLoading()
                         if (event.message!!.message == "Use account is not verified") {
                             resendOtpUI()
                         } else
-                            (requireActivity() as BaseCommonActivity).showCustomAlert(
+                            showCustomAlert(
                                 event.message.message,
                                 binding.root
                             )
                     }
                     else -> {
-                        loginViewModel.methodRepo.hideLoadingDialog()
+                     hideLoading()
                     }
                 }
             }
