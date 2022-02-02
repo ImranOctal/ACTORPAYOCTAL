@@ -585,7 +585,7 @@
                         android:background="@android:color/transparent"
                         android:hint="Enter Adhar"
                         android:inputType="number"
-                        android:maxLength="16"
+                        android:maxLength="12"
                         android:paddingStart="@dimen/_10sdp"
                         android:paddingEnd="@dimen/_20sdp"
                         android:textColor="@color/text_color"

@@ -72,7 +72,7 @@
         android:background="@drawable/round_wallet_bg"
         android:inputType="textEmailAddress"
         android:imeOptions="actionDone"
-        android:maxLength="60"
+        android:maxLength="100"
         android:drawableEnd="@drawable/ic_baseline_contact_mail_24" />
 
 

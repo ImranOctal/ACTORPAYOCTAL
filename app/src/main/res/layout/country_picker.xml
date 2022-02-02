@@ -46,6 +46,7 @@
             android:fontFamily="@font/poppins_regular"
             android:background="@null"
             android:inputType="text"
+            android:maxLength="100"
            />
 
     </LinearLayout>

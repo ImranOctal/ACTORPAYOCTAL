@@ -27,6 +27,7 @@
                 android:textSize="@dimen/_12ssp"
                 style="@style/regular1Full"
                 android:inputType="textEmailAddress"
+                android:maxLength="100"
                 />
 
         </LinearLayout>
@@ -69,6 +70,7 @@
                     android:textSize="@dimen/_12ssp"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:maxLength="100"
                     />
 
                 <ImageView

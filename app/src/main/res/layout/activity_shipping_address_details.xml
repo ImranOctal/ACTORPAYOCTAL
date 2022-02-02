@@ -125,6 +125,7 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
+            android:maxLength="100"
             app:layout_constraintTop_toBottomOf="@+id/map" />
 
 

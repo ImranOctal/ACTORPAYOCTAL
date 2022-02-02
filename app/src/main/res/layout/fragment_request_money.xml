@@ -44,6 +44,7 @@
                 android:paddingHorizontal="@dimen/_12sdp"
                 android:paddingVertical="@dimen/_14sdp"
                 android:singleLine="true"
+                android:maxLength="5"
                 android:textColor="@color/light_dark_grey"
                 android:textSize="@dimen/_12sdp" />
             </androidx.cardview.widget.CardView>
@@ -67,6 +68,7 @@
                     android:paddingHorizontal="@dimen/_12sdp"
                     android:paddingVertical="@dimen/_14sdp"
                     android:singleLine="true"
+                    android:maxLength="100"
                     android:textColor="@color/light_dark_grey"
                     android:textSize="@dimen/_12sdp" />
             </androidx.cardview.widget.CardView>

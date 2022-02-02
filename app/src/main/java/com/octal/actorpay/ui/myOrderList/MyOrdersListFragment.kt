@@ -18,7 +18,6 @@ import com.octal.actorpay.repositories.AppConstance.Clicks
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListData
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListResponse
-import com.octal.actorpay.ui.myOrderList.orderdetails.OrderDetailsFragment
 import com.octal.actorpay.utils.EndlessRecyclerViewScrollListener
 import com.octal.actorpay.utils.OnFilterClick
 import kotlinx.coroutines.flow.collect

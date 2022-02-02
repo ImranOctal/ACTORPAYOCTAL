@@ -29,6 +29,7 @@
     android:textColor="@color/white"
     android:fontFamily="@font/poppins_regular"
     android:textSize="@dimen/_12ssp"
+    android:maxLength="100"
 
     />
 

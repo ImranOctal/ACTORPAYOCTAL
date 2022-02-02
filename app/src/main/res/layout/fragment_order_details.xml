@@ -311,50 +311,22 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="@dimen/_6ssp"
-                android:text="Notes"
+                android:text="Order Notes"
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:textColor="@color/text_color"
                 android:fontFamily="@font/poppins_bold"
                 android:textSize="@dimen/_12ssp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/order_notes_recycler_view"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_6sdp"
-                    android:paddingStart="@dimen/_6sdp"
-                    android:paddingEnd="@dimen/_6sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:text="Note 1 Description Text"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/_12ssp"
-                    />
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="@dimen/_10sdp"
-                    android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:background="@color/gray_dark"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_6sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:paddingStart="@dimen/_6sdp"
-                    android:paddingEnd="@dimen/_6sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_vertical"
-                    android:text="Note 2 Description Text"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/_12ssp"
+                    tools:listitem="@layout/row_order_note"
                     />
 
             </LinearLayout>

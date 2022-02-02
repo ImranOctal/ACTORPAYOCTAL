@@ -20,6 +20,7 @@
         android:textColor="@color/text_color"
         android:textSize="@dimen/_12ssp"
         android:fontFamily="@font/poppins_medium"
+        android:maxLength="100"
         />
 
 
@@ -90,7 +91,9 @@
             android:paddingStart="@dimen/_25sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:textColor="@color/text_color"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_12sdp"
+            android:maxLength="5"
+            />
 
     </androidx.cardview.widget.CardView>
 
@@ -115,6 +118,7 @@
             android:hint="Reason for sending Money"
             android:lines="4"
             android:maxLines="4"
+            android:maxLength="500"
             android:paddingHorizontal="@dimen/_10sdp"
             android:paddingVertical="@dimen/_10sdp"
             android:textColor="@color/text_color"

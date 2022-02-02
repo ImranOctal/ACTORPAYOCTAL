@@ -297,6 +297,7 @@
                         android:background="@color/white"
                         android:maxLines="5"
                         android:minLines="5"
+                        android:maxLength="500"
                         android:hint="Enter Cancel Reason"
                         android:gravity="start"
                         />

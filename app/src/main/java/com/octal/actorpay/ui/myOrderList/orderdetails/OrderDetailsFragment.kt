@@ -107,6 +107,8 @@ class OrderDetailsFragment : BaseFragment() {
         ) {
             binding.deliveryAddressAddress2.visibility = View.GONE
         }
+        binding.orderNotesRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.orderNotesRecyclerView.adapter=OrderNoteAdapter(orderDetailsViewModel.orderData!!.orderNotesDtos)
     }
 
     fun apiResponse() {

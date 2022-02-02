@@ -72,10 +72,17 @@ data class OrderData(
     var orderItemDtos: ArrayList<OrderItemDtos>,
     var createdAt: String,
     var totalTaxableValue: Double,
-    val shippingAddressDTO:ShippingAddressItem?
+    val shippingAddressDTO:ShippingAddressItem?,
+    var orderNotesDtos: ArrayList<OrderNote>,
 
 ):Serializable
 
+data class OrderNote(
+    var orderNoteBy: String,
+    var orderNoteDescription: String,
+    var orderStatus: String,
+    var createdAt: String,
+):Serializable
 
 data class Customer(
 

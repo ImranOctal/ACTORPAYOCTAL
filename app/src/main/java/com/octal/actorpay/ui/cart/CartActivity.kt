@@ -23,7 +23,6 @@ import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderActivity
 class CartActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCartBinding
-    lateinit var adapter: CartAdapter
     private val cartViewModel: CartViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,11 +43,10 @@ class CartActivity : BaseActivity() {
                 PlaceOrderActivity.subTotal=cartViewModel.cartData!!.totalTaxableValue
                 PlaceOrderActivity.gst=cartViewModel.cartData!!.totalSgst+cartViewModel.cartData!!.totalCgst
                 startActivity(Intent(this, PlaceOrderActivity::class.java))
-//                cartViewModel.placeOrder()
             }
             else
             {
-                Toast.makeText(this,"Cart is Empty",Toast.LENGTH_SHORT).show()
+                showCustomToast("Cart is Empty")
             }
         }
     }
@@ -94,7 +92,7 @@ class CartActivity : BaseActivity() {
         binding.gst.text = getString(R.string.rs).plus(cartData.totalCgst+cartData.totalSgst)
         binding.subTotal.text = getString(R.string.rs).plus(cartData.totalTaxableValue)
         binding.total.text = getString(R.string.rs).plus(cartData.totalPrice)
-        adapter.notifyItemChanged(cartViewModel.cartItems.value.size)
+        binding.cartRecyclerview.adapter?.notifyDataSetChanged()
 
         if(cartViewModel.cartData!!.cartItemDTOList.size==0){
             binding.imageEmpty.visibility=View.VISIBLE
@@ -107,7 +105,7 @@ class CartActivity : BaseActivity() {
     }
 
     fun setAdapter() {
-        adapter = CartAdapter(cartViewModel.cartItems){
+       val adapter = CartAdapter(cartViewModel.cartItems){
             position, clicks ->
             val currentCart=cartViewModel.cartItems.value[position]
             when(clicks){
