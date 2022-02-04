@@ -14,14 +14,14 @@ data class PlaceOrderResponse(
 )
 
 data class PlaceOrderParams(
-    var addressLine1:String,
-    var addressLine2:String,
-    var zipCode:String,
-    var city:String,
-    var state:String,
-    var country:String,
-    var primaryContactNumber:String,
-    var secondaryContactNumber:String
+    var addressLine1: String,
+    var addressLine2: String,
+    var zipCode: String,
+    var city: String,
+    var state: String,
+    var country: String,
+    var primaryContactNumber: String,
+    var secondaryContactNumber: String
 )
 
 data class OrderListResponse(
@@ -39,20 +39,20 @@ data class SingleOrderResponse(
 )
 
 data class OrderListParams(
-    var totalPrice:Double?=null,
-    var merchantId:String?=null,
-    var startDate:String?=null,
-    var endDate:String?=null,
-    var orderNo:String?=null,
-    var orderStatus:String?=null,
+    var totalPrice: Double? = null,
+    var merchantId: String? = null,
+    var startDate: String? = null,
+    var endDate: String? = null,
+    var orderNo: String? = null,
+    var orderStatus: String? = null,
 )
 
-data class OrderListData (
-    var totalPages : Int,
-    var totalItems : Int,
-    var items : MutableList<OrderData>,
-    var pageNumber : Int,
-    val pageSize : Int
+data class OrderListData(
+    var totalPages: Int,
+    var totalItems: Int,
+    var items: MutableList<OrderData>,
+    var pageNumber: Int,
+    val pageSize: Int
 )
 
 
@@ -72,17 +72,18 @@ data class OrderData(
     var orderItemDtos: ArrayList<OrderItemDtos>,
     var createdAt: String,
     var totalTaxableValue: Double,
-    val shippingAddressDTO:ShippingAddressItem?,
+    val shippingAddressDTO: ShippingAddressItem?,
     var orderNotesDtos: ArrayList<OrderNote>,
 
-):Serializable
+    ) : Serializable
 
 data class OrderNote(
     var orderNoteBy: String,
     var orderNoteDescription: String,
     var orderStatus: String,
     var createdAt: String,
-):Serializable
+    var userType: String,
+) : Serializable
 
 data class Customer(
 
@@ -94,7 +95,7 @@ data class Customer(
     var roles: ArrayList<String>,
     var kycDone: Boolean
 
-):Serializable
+) : Serializable
 
 data class Merchant(
     var id: String,
@@ -107,7 +108,7 @@ data class Merchant(
     var shopAddress: String,
     var licenceNumber: String,
 
-):Serializable
+    ) : Serializable
 
 data class OrderItemDtos(
 
@@ -130,4 +131,28 @@ data class OrderItemDtos(
     var image: String,
     var active: Boolean
 
-):Serializable
+) : Serializable
+
+data class AddNoteParam(
+    val orderNoteDescription: String, val orderNo: String?,
+)
+
+data class OrderNoteResponse(
+    val `data`: NoteData,
+    val httpStatus: String,
+    val message: String,
+    val status: String
+)
+
+data class NoteData(
+    val active: Boolean,
+    val createdAt: String,
+    val merchantId: String,
+    val orderId: String,
+    val orderNo: String,
+    val orderNoteBy: String,
+    val orderNoteDescription: String,
+    val orderNoteId: String,
+    val userId: String,
+    val userType: String
+)

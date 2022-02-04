@@ -1,7 +1,12 @@
 package com.octal.actorpay.ui.splash
 
+import android.app.Activity
+import android.app.KeyguardManager
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -30,6 +35,8 @@ class SplashActivity : BaseActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
     private val viewModel: ActorPayViewModel by inject()
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash_screen)
@@ -55,6 +62,10 @@ class SplashActivity : BaseActivity() {
 
         }
     }
+
+
+
+
 
     private fun gotoNextActivity(){
 
@@ -118,6 +129,8 @@ class SplashActivity : BaseActivity() {
             }
         }
     }
+
+
 
 
     /*   fun printHashKey() {

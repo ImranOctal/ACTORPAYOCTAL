@@ -33,6 +33,28 @@
     >
 
 
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/order_note_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingStart="@dimen/_6ssp"
+            android:text=""
+            android:textColor="@color/text_color"
+            android:fontFamily="@font/poppins_light"
+            android:textSize="@dimen/_10ssp"
+            android:visibility="gone"
+            />
+
     <TextView
         android:id="@+id/order_note_status"
         android:layout_width="wrap_content"
@@ -44,20 +66,39 @@
         android:fontFamily="@font/poppins_semibold"
         android:textSize="@dimen/_10ssp"
         tools:text="@string/similiar_products"
+        android:visibility="gone"
         />
+
+
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/order_note_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:layout_marginBottom="@dimen/_5sdp"
         android:paddingHorizontal="@dimen/_6ssp"
         android:text="@{orderNote.orderNoteDescription}"
         android:textColor="@color/text_color"
         android:fontFamily="@font/poppins_regular"
-        android:textSize="@dimen/_10ssp"
+        android:textSize="@dimen/_11ssp"
         tools:text="@string/similiar_products"
+        />
+
+    <TextView
+        android:id="@+id/order_note_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_6ssp"
+        android:text=""
+        android:textColor="@color/text_color"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/_10ssp"
+        tools:text="date"
         />
 
 </LinearLayout>

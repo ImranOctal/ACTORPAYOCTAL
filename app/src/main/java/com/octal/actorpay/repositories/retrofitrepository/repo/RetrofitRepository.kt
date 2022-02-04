@@ -74,6 +74,8 @@ interface RetrofitRepository {
 
     suspend fun getOrder(token: String,orderNo: String):RetrofitResource<SingleOrderResponse>
 
+    suspend fun addNote(token: String, note: AddNoteParam): RetrofitResource<OrderNoteResponse>
+
     suspend fun changeOrderStatus(token: String,status:String,orderNo:String):RetrofitResource<SuccessResponse>
 
     suspend fun changeOrderItemsStatus(token: String, orderNo:String, cancelOrder: RequestBody, product_pic: MultipartBody.Part?):RetrofitResource<SuccessResponse>

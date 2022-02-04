@@ -8,16 +8,20 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.base.ResponseSealed
+import com.octal.actorpay.databinding.CancelBottomsheetBinding
 import com.octal.actorpay.databinding.FragmentOrderDetailsBinding
 import com.octal.actorpay.repositories.AppConstance.AppConstance
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_CANCELLED
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_PARTIALLY_CANCELLED
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_READY
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.STATUS_SUCCESS
+import com.octal.actorpay.repositories.retrofitrepository.models.FailResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
+import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderNoteResponse
 import com.octal.actorpay.repositories.retrofitrepository.models.order.SingleOrderResponse
 import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderAdapter
 import kotlinx.coroutines.flow.collect
@@ -53,7 +57,9 @@ class OrderDetailsFragment : BaseFragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_order_details, container, false)
 
-
+        binding.btnNote.setOnClickListener {
+            addNote()
+        }
 
         return binding.root
     }
@@ -108,7 +114,10 @@ class OrderDetailsFragment : BaseFragment() {
             binding.deliveryAddressAddress2.visibility = View.GONE
         }
         binding.orderNotesRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.orderNotesRecyclerView.adapter=OrderNoteAdapter(orderDetailsViewModel.orderData!!.orderNotesDtos)
+        val notesList=orderDetailsViewModel.orderData!!.orderNotesDtos.filter {
+            it.orderNoteDescription!=null && it.orderNoteDescription != ""
+        }.toMutableList()
+        binding.orderNotesRecyclerView.adapter=OrderNoteAdapter(orderDetailsViewModel.methodRepo,notesList)
     }
 
     fun apiResponse() {
@@ -126,6 +135,10 @@ class OrderDetailsFragment : BaseFragment() {
                                orderDetailsViewModel.orderData=event.response.data
                                 updateUI()
                             }
+                            is OrderNoteResponse ->{
+                                showCustomToast("Add Order Note Successfully")
+                                orderDetailsViewModel.getOrder(orderNo)
+                            }
                             is SuccessResponse ->{
                                 orderDetailsViewModel.getOrder(orderNo)
                             }
@@ -141,7 +154,28 @@ class OrderDetailsFragment : BaseFragment() {
                     }
                 }
             }
+
         }
+    }
+
+
+    private fun addNote() {
+        val binding: CancelBottomsheetBinding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()), R.layout.cancel_bottomsheet, null, false)
+        val dialog = BottomSheetDialog(requireContext(), R.style.MainDialog)
+        binding.btnSubmit.setOnClickListener {
+            if (binding.etNote.text.isEmpty()) {
+                showCustomToast(getString(R.string.add_note_description))
+            } else {
+                dialog.dismiss()
+                orderDetailsViewModel.addNote(binding.etNote.text.toString().trim(), orderDetailsViewModel.orderData!!.orderNo)
+            }
+        }
+        binding.btnCancnel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setContentView(binding.root)
+        dialog.show()
+
     }
 
     fun cancelReturnOrder(status:String,pos:Int) {

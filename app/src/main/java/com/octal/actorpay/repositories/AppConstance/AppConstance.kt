@@ -51,6 +51,7 @@ class AppConstance {
         const val PLACE_ORDER: String = SUB_DOMAIN+ SUB_DOMAIN2+ ORDER
         const val GET_ALL_ORDERS: String = SUB_DOMAIN+ SUB_DOMAIN2+ ORDER+"list/paged"
         const val ORDER_STATUS: String = SUB_DOMAIN+ SUB_DOMAIN2+ ORDER+"status/"
+        const val Add_Note:String=SUB_DOMAIN+SUB_DOMAIN2+"orderNotes/post"
 
         const val ORDER_CANCEL: String = SUB_DOMAIN+ SUB_DOMAIN2+ ORDER+"cancel/"
 
@@ -85,8 +86,8 @@ class AppConstance {
 
         val dateFormate1= SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
         val dateFormate2= SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
-        val dateFormate3= SimpleDateFormat("yyyy-MM-dd HH:MM", Locale.ENGLISH)
-        val dateFormate4= SimpleDateFormat("dd MMM yyyy HH:MM", Locale.ENGLISH)
+        val dateFormate3= SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH)
+        val dateFormate4= SimpleDateFormat("dd MMM yyyy hh:mm", Locale.ENGLISH)
 
 
         const val KEY_KEY="key"
@@ -94,6 +95,10 @@ class AppConstance {
         const val KEY_QR="qr"
         const val KEY_MOBILE="mobile"
         const val KEY_EMAIL="email"
+
+
+        var IS_APP_IN_BACKGROUD=false
+        var IS_APP_FROM_SPLASH=true
     }
 }
 

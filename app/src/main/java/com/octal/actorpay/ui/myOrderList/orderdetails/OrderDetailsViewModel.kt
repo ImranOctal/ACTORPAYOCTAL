@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.di.models.CoroutineContextProvider
 import com.octal.actorpay.repositories.methods.MethodsRepo
+import com.octal.actorpay.repositories.retrofitrepository.models.order.AddNoteParam
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderData
 import com.octal.actorpay.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpay.repositories.retrofitrepository.repo.RetrofitRepository
@@ -74,6 +75,20 @@ class OrderDetailsViewModel(
                         responseLive.value =
                             ResponseSealed.Success(response.data!!)
                     }
+                }
+            }
+        }
+    }
+
+    fun addNote(note: String, orderNo: String) {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            val body= AddNoteParam(note,orderNo)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response = apiRepo.addNote(token,body)) {
+                    is RetrofitResource.Error -> responseLive.value = ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> responseLive.value =
+                        ResponseSealed.Success(response.data!!)
                 }
             }
         }

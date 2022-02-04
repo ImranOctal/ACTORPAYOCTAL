@@ -32,6 +32,7 @@
     <string name="change_password">Change Password</string>
     <string name="user_type">User Type</string>
     <string name="redeem">Redeem</string>
+    <string name="add_note_description">Add Note Description</string>
 
     <string name="not_connected_internet">Not connected to Internet</string>
     <string name="logout">Logout</string>
@@ -159,5 +160,9 @@
     <string name="edit_image">Edit Image</string>
     <string name="add_money">Add Money</string>
     <string name="amount">Amount</string>
+    <string name="add_note">Add Note</string>
+    <string name="continues">Continue</string>
+    <string name="use_your_pincode_to_authenticate_with_actorpay">Use your pincode to authenticate with ActorPay.</string>
+    <string name="sign_in_with_your_pincode">Sign in with your Pincode?</string>
 
 </resources>

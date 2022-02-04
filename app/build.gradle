@@ -134,5 +134,8 @@ dependencies {
 
     implementation 'com.github.yalantis:ucrop:2.2.6'
 
+    //biometric
+    implementation 'androidx.biometric:biometric:1.2.0-alpha04'
+
 
 }

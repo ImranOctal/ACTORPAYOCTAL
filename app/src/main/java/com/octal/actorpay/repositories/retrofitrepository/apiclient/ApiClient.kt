@@ -6,6 +6,7 @@ import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ADDRE
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ADDRESS_LIST
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ADDRESS_UPDATE
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.ADD_CART
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.Add_Note
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.CATEGORIE_LIST
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.CHANGE_PASSWORD
 import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.FORGETPASSWORD
@@ -188,6 +189,13 @@ interface ApiClient {
         @Header("Authorization") token: String,
         @Path("order") order: String,
     ): Response<SingleOrderResponse>
+
+
+    @POST(Add_Note)
+    suspend fun addNote(
+        @Header("Authorization") token: String,
+        @Body  addNoteParam: AddNoteParam,
+    ): Response<OrderNoteResponse>
 
 
     @PUT("""$ORDER_STATUS{status}""")

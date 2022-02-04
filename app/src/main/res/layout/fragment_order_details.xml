@@ -251,7 +251,7 @@
                         android:gravity="center_vertical"
                         android:text=""
                         android:textColor="@color/text_color"
-                        android:textSize="@dimen/_12ssp"
+                        android:textSize="@dimen/_11ssp"
                         tools:text="dsfasdf"
                         />
 
@@ -266,7 +266,7 @@
                         android:gravity="center_vertical"
                         android:text=""
                         android:textColor="@color/text_color"
-                        android:textSize="@dimen/_12ssp"
+                        android:textSize="@dimen/_11ssp"
                         tools:text="dsfasdf"
                        />
 
@@ -282,7 +282,7 @@
                         android:gravity="center_vertical"
                         android:text=''
                         android:textColor="@color/text_color"
-                        android:textSize="@dimen/_12ssp"
+                        android:textSize="@dimen/_11ssp"
                         tools:text="dsfasdf"
                         />
 
@@ -311,16 +311,42 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="@dimen/_6ssp"
-                android:text="Order Notes"
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:textColor="@color/text_color"
-                android:fontFamily="@font/poppins_bold"
-                android:textSize="@dimen/_12ssp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="start"
+                        android:layout_weight="1"
+                        android:padding="@dimen/_6ssp"
+                        android:text="Order Notes"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/_12ssp" />
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnNote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_30sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/productDisc"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:backgroundTint="@color/pink_color"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:gravity="center"
+                        android:text="@string/add_note"
+                        android:textSize="@dimen/_9ssp"
+                        android:layout_marginHorizontal="@dimen/_16sdp"
+                        />
+
+
+
+
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/order_notes_recycler_view"

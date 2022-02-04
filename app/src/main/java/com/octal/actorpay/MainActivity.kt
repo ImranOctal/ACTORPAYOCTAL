@@ -1,13 +1,21 @@
 package com.octal.actorpay
 
+import android.app.Activity
+import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.*
+import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
@@ -19,10 +27,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpay.base.BaseActivity
 import com.octal.actorpay.base.ResponseSealed
 import com.octal.actorpay.databinding.ActivityMainBinding
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.IS_APP_FROM_SPLASH
+import com.octal.actorpay.repositories.AppConstance.AppConstance.Companion.IS_APP_IN_BACKGROUD
 import com.octal.actorpay.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpay.ui.adapter.FeaturesAdapter
 import com.octal.actorpay.ui.adapter.MenuAdapter
 import com.octal.actorpay.ui.addmoney.AddMoneyFragment
+import com.octal.actorpay.ui.auth.biometric.AuthBottomSheetDialog
 import com.octal.actorpay.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpay.ui.cart.CartActivity
 import com.octal.actorpay.ui.cart.CartViewModel
@@ -63,6 +74,10 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     private lateinit var navHostFragment: Fragment
 
     private var isMenuOrBack=false
+
+    private var biometricPrompt: BiometricPrompt?=null
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private var authSheet:AuthBottomSheetDialog?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -693,6 +708,128 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         else
         super.onBackPressed()
 
+    }
+
+    fun isBioMetricAvailable():Boolean{
+        val biometricManager: BiometricManager = BiometricManager.from(this)
+        when (biometricManager.canAuthenticate(BIOMETRIC_WEAK)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                return true
+
+            }
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
+                return false
+            }
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
+                return false
+
+            }
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                return false
+            }
+        }
+        return false
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (IS_APP_FROM_SPLASH ) {
+            IS_APP_FROM_SPLASH=false
+
+            if(!isBioMetricAvailable())
+                return
+
+
+            try {
+                    biometricAuth()
+
+                    if (authSheet == null) {
+                        authSheet = AuthBottomSheetDialog {
+                            biometricPrompt?.authenticate(promptInfo)
+                        }
+                        authSheet?.isCancelable = false
+                        authSheet?.show(supportFragmentManager, "auth sheet")
+                        biometricPrompt?.authenticate(promptInfo)
+                    } else {
+                        if (authSheet?.isVisible!!.not())
+                            authSheet?.show(supportFragmentManager, "auth sheet")
+                    }
+
+            } catch (ex: Exception) {
+                Log.e("MainActivity--ERROR--", "${ex.message}")
+            }
+
+        }
+
+    }
+
+    fun keyGuard() {
+        val km = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+        if (km.isKeyguardSecure) {
+            val i =
+                km.createConfirmDeviceCredentialIntent("Authentication required", "password")
+            // startActivityForResult(i, Constants.CODE_AUTHENTICATION_VERIFICATION)
+            resultLauncher.launch(i)
+
+        } else {
+//            authSheet!!.dismiss()
+//            showCustomToast("No any security setup. please setup it.")
+        }
+
+    }
+
+    private fun biometricAuth() {
+
+
+        val executor = ContextCompat.getMainExecutor(this)
+        biometricPrompt = BiometricPrompt(this, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(
+                    errorCode: Int,
+                    errString: CharSequence
+                ) {
+                    super.onAuthenticationError(errorCode, errString)
+                    keyGuard()
+                }
+
+                override fun onAuthenticationSucceeded(
+                    result: BiometricPrompt.AuthenticationResult
+                ) {
+                    super.onAuthenticationSucceeded(result)
+
+                    authSheet?.dismiss()
+//                    isBioAuth = true
+                    IS_APP_IN_BACKGROUD = false
+
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+//                    isBioAuth = false
+                    showCustomToast("Authentication failed")
+
+                }
+            })
+
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Unlock Blytics app")
+            .setSubtitle("Log in using biometric credential")
+            .setNegativeButtonText("Use pattern lock")
+            .setConfirmationRequired(false)
+            .build()
+
+
+    }
+
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            authSheet?.dismiss()
+
+        }
+        if (result.resultCode == Activity.RESULT_CANCELED) {
+
+        }
     }
 
 }
