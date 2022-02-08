@@ -43,6 +43,7 @@ import com.octal.actorpay.ui.dashboard.bottomnavfragments.ProfileBottomFragment
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.WalletBottomFragment
 import com.octal.actorpay.ui.dashboard.models.DrawerItems
 import com.octal.actorpay.ui.misc.MiscFragment
+import com.octal.actorpay.ui.mobileanddth.MobileAndDTHFragment
 import com.octal.actorpay.ui.myOrderList.MyOrdersListFragment
 import com.octal.actorpay.ui.productList.ProductsListFragment
 import com.octal.actorpay.ui.promocodes.PromoListFragment
@@ -130,8 +131,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     if ((fragment is HomeBottomFragment).not()) {
                         navController.navigate(R.id.homeBottomFragment)
                     }
-
-
                 }
                 R.id.history_fragment -> {
                     if ((fragment is HistoryBottomFragment).not()) {
@@ -140,7 +139,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                 }
                 R.id.wallet_fragment -> {
                     if (fragment !is WalletBottomFragment) {
-
                         navController.navigate(R.id.walletBottomFragment)
                     }
                 }
@@ -167,8 +165,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         init {
             val name = mHeaderLayout.findViewById<TextView>(R.id.duo_view_header_text_title)
             lifecycleScope.launchWhenCreated {
-
-
                 viewModel.methodRepo.dataStore.getFirstName().collect { first ->
                     viewModel.methodRepo.dataStore.getLastName().collect { last ->
                         name.text = "$first $last"
@@ -289,6 +285,9 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         binding.filter.setOnClickListener {
             filterClick.onClick()
         }
+        binding.notification.setOnClickListener {
+            navController.navigate(R.id.notificationFragment)
+        }
     }
 
 
@@ -398,14 +397,12 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
             }
             "Send Money" -> {
                 if (fragment !is WalletBottomFragment) {
-//                    title = "Send Money"
                     navController.navigate(R.id.transferMoneyFragment)
                 }
             }
             "Mobile & DTH" -> {
-                if (fragment !is WalletBottomFragment) {
-//                    title = "Mobile and DTH"
-                    navController.navigate(R.id.walletBottomFragment)
+                if (fragment !is MobileAndDTHFragment) {
+                    navController.navigate(R.id.mobileAndDTHFragment)
                 }
             }
             "Utility Bill" -> {
@@ -481,6 +478,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(true)
                     showHideCartIcon(true)
                     showHideFilterIcon(false)
+                    showNotificationIcon(true)
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.drawable.layout_bg)
                 }
                 R.id.historyBottomFragment -> {
@@ -492,6 +490,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(true)
                     showHideCartIcon(true)
                     showHideFilterIcon(false)
+                    showNotificationIcon(true)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.walletBottomFragment -> {
@@ -503,6 +502,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(true)
                     showHideCartIcon(true)
                     showHideFilterIcon(false)
+                    showNotificationIcon(true)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.profileBottomFragment -> {
@@ -514,6 +514,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(true)
                     showHideCartIcon(true)
                     showHideFilterIcon(false)
+                    showNotificationIcon(true)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
 
                 }
@@ -525,6 +526,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.rewardsFragment -> {
@@ -535,6 +537,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.productListFragment -> {
@@ -546,6 +549,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(true)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.miscFragment -> {
@@ -556,6 +560,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.myOrderFragment -> {
@@ -566,6 +571,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(true)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.promoListFragment -> {
@@ -576,6 +582,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.settingsFragment -> {
@@ -586,6 +593,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.faqFragment -> {
@@ -596,6 +604,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.remittance -> {
@@ -606,6 +615,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.shippingAddressFragment -> {
@@ -616,6 +626,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.orderDetailsFragment -> {
@@ -626,6 +637,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.addMoneyFragment -> {
@@ -636,6 +648,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
                 R.id.transferMoneyFragment -> {
@@ -646,6 +659,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.color.white)
                 }
@@ -657,13 +671,34 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showHideBottomNav(false)
                     showHideCartIcon(false)
                     showHideFilterIcon(false)
+                    showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.color.white)
                 }
-
+                R.id.mobileAndDTHFragment -> {
+                    title = "Mobile and DTH Recharge"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    showNotificationIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.notificationFragment -> {
+                    title = "Notifications"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    showNotificationIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
             }
         }
-
     }
 
 
@@ -690,6 +725,13 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
             binding.filter.visibility = View.VISIBLE
         } else {
             binding.filter.visibility = View.GONE
+        }
+    }
+    private fun showNotificationIcon(showHide: Boolean) {
+        if (showHide) {
+            binding.notification.visibility = View.VISIBLE
+        } else {
+            binding.notification.visibility = View.GONE
         }
     }
 

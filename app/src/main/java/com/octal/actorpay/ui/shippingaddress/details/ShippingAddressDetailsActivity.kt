@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,52 +27,52 @@ import com.octal.actorpay.utils.WorkaroundMapFragment
 import com.octal.actorpay.utils.countrypicker.CountryPicker
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
-import java.lang.Exception
 import java.util.*
 
 class ShippingAddressDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityShippingAddressDetailsBinding
     private val shippingAddressViewModel: ShippingAddressDetailsViewModel by inject()
-    private var isSave=true
-    private var isComingFirst=true
+    private var isSave = true
+    private var isComingFirst = true
     private var mMap: GoogleMap? = null
     private lateinit var mLocationUtils: LocationUtils
     private var userLat = 0.0
     private var userLong = 0.0
 
-    var shippingAddressItem: ShippingAddressItem?=null
+    var shippingAddressItem: ShippingAddressItem? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shipping_address_details)
 
-        if(intent!=null){
-            if(intent.hasExtra("shippingItem"))
-                shippingAddressItem=intent.getSerializableExtra("shippingItem") as ShippingAddressItem
+        if (intent != null) {
+            if (intent.hasExtra("shippingItem"))
+                shippingAddressItem =
+                    intent.getSerializableExtra("shippingItem") as ShippingAddressItem
 
         }
 
         checkLocationPermission()
         apiResponse()
 
-        val codeList= mutableListOf<String>()
-        val countryList= mutableListOf<String>()
+        val codeList = mutableListOf<String>()
+        val countryList = mutableListOf<String>()
 
         GlobalData.allCountries.forEach {
-            val code=it.countryCode
+            val code = it.countryCode
             codeList.add(code)
         }
         GlobalData.allCountries.forEach {
-            val country=it.country
+            val country = it.country
             countryList.add(country)
         }
 
-        if(GlobalData.allCountries.size>0){
-            binding.codePicker.text=GlobalData.allCountries[0].countryCode
-            binding.codePicker2.text=GlobalData.allCountries[0].countryCode
-            binding.countryPicker.text=GlobalData.allCountries[0].country
+        if (GlobalData.allCountries.size > 0) {
+            binding.codePicker.text = GlobalData.allCountries[0].countryCode
+            binding.codePicker2.text = GlobalData.allCountries[0].countryCode
+            binding.countryPicker.text = GlobalData.allCountries[0].country
         }
         /*binding.codeLayout1.setOnClickListener {
             CountryPicker(this,shippingAddressViewModel.methodRepo,GlobalData.allCountries){
@@ -88,16 +87,16 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             }.show()
         }*/
         binding.countryLayout.setOnClickListener {
-            CountryPicker(this,shippingAddressViewModel.methodRepo,GlobalData.allCountries){
-                binding.countryPicker.text=GlobalData.allCountries[it].country
-                binding.codePicker.text=GlobalData.allCountries[it].countryCode
-                binding.codePicker2.text=GlobalData.allCountries[it].countryCode
+            CountryPicker(this, shippingAddressViewModel.methodRepo, GlobalData.allCountries) {
+                binding.countryPicker.text = GlobalData.allCountries[it].country
+                binding.codePicker.text = GlobalData.allCountries[it].countryCode
+                binding.codePicker2.text = GlobalData.allCountries[it].countryCode
 
             }.show()
         }
-        if(shippingAddressItem !=null){
-            isSave=false
-            binding.save.text=getString(R.string.update)
+        if (shippingAddressItem != null) {
+            isSave = false
+            binding.save.text = getString(R.string.update)
 //            binding.name.setText(shippingAddressItem!!.name)
             binding.addressTitle.setText(shippingAddressItem!!.title)
             binding.addressArea.setText(shippingAddressItem!!.area)
@@ -106,15 +105,18 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             binding.addressZipcode.setText(shippingAddressItem!!.zipCode)
             binding.addressCity.setText(shippingAddressItem!!.city)
             binding.addressState.setText(shippingAddressItem!!.state)
-            if(countryList.contains(shippingAddressItem!!.country)){
-                binding.countryPicker.text=shippingAddressItem!!.country
+            if (countryList.contains(shippingAddressItem!!.country)) {
+                binding.countryPicker.text = shippingAddressItem!!.country
             }
-            if(shippingAddressItem!!.extensionNumber !=null && shippingAddressItem!!.extensionNumber.equals("").not()) {
+            if (shippingAddressItem!!.extensionNumber != null && shippingAddressItem!!.extensionNumber.equals(
+                    ""
+                ).not()
+            ) {
 
                 if (codeList.contains(shippingAddressItem!!.extensionNumber)) {
 
-                    binding.codePicker.text=shippingAddressItem!!.extensionNumber
-                    binding.codePicker2.text=shippingAddressItem!!.extensionNumber
+                    binding.codePicker.text = shippingAddressItem!!.extensionNumber
+                    binding.codePicker2.text = shippingAddressItem!!.extensionNumber
                 }
             }
 
@@ -122,21 +124,20 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             binding.addressSecondaryContact.setText(shippingAddressItem!!.secondaryContactNumber)
         }
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as WorkaroundMapFragment?
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.map) as WorkaroundMapFragment?
         mapFragment?.getMapAsync(callback)
 
         mLocationUtils = LocationUtils(this, false)
         {
-            if(isSave) {
+            if (isSave) {
                 userLat = it.latitude
                 userLong = it.longitude
-            }
-            else{
+            } else {
                 try {
-                    userLat= shippingAddressItem!!.latitude.toDouble()
-                    userLong= shippingAddressItem!!.longitude.toDouble()
-                }
-                catch (e: Exception){
+                    userLat = shippingAddressItem!!.latitude.toDouble()
+                    userLong = shippingAddressItem!!.longitude.toDouble()
+                } catch (e: Exception) {
                     userLat = 0.0
                     userLong = 0.0
                 }
@@ -156,7 +157,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
             mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
-            getAddress(userLat,userLong)
+            getAddress(userLat, userLong)
         }
         mLocationUtils.initConnection()
 
@@ -169,79 +170,78 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
     }
 
-    fun validate(){
+    fun validate() {
 //        val name=binding.name.text.toString().trim()
-        val title=binding.addressTitle.text.toString().trim()
-        val area=binding.addressArea.text.toString().trim()
-        val addLine1=binding.addressLine1.text.toString().trim()
-        val addLine2=binding.addressLine2.text.toString().trim()
-        val zipcode=binding.addressZipcode.text.toString().trim()
-        val city=binding.addressCity.text.toString().trim()
-        val state=binding.addressState.text.toString().trim()
-        val country=binding.countryPicker.text.toString().trim()
-        val pContact=binding.addressPrimaryContact.text.toString().trim()
-        val sContact=binding.addressSecondaryContact.text.toString().trim()
+        val title = binding.addressTitle.text.toString().trim()
+        val area = binding.addressArea.text.toString().trim()
+        val addLine1 = binding.addressLine1.text.toString().trim()
+        val addLine2 = binding.addressLine2.text.toString().trim()
+        val zipcode = binding.addressZipcode.text.toString().trim()
+        val city = binding.addressCity.text.toString().trim()
+        val state = binding.addressState.text.toString().trim()
+        val country = binding.countryPicker.text.toString().trim()
+        val pContact = binding.addressPrimaryContact.text.toString().trim()
+        val sContact = binding.addressSecondaryContact.text.toString().trim()
 
-        var isValid=true
+        var isValid = true
 
-        if(sContact.length<5){
-            binding.addressSecondaryContact.error="Please Enter Valid Contact"
-            isValid=false
+        if (sContact.length < 5) {
+            binding.addressSecondaryContact.error = "Please Enter Valid Contact"
+            isValid = false
             binding.addressSecondaryContact.requestFocus()
         }
 
-        if(pContact.length<5){
-            binding.addressPrimaryContact.error="Please Enter Valid Contact"
-            isValid=false
+        if (pContact.length < 5) {
+            binding.addressPrimaryContact.error = "Please Enter Valid Contact"
+            isValid = false
             binding.addressPrimaryContact.requestFocus()
         }
 
-        if(state == ""){
-            binding.addressState.error="Please Enter State"
-            isValid=false
+        if (state == "") {
+            binding.addressState.error = "Please Enter State"
+            isValid = false
             binding.addressState.requestFocus()
         }
 
-        if(city == ""){
-            binding.addressCity.error="Please Enter City"
-            isValid=false
+        if (city == "") {
+            binding.addressCity.error = "Please Enter City"
+            isValid = false
             binding.addressCity.requestFocus()
         }
 
-        if(area.length<3){
-            binding.addressArea.error="Please Enter Valid Address Area"
-            isValid=false
+        if (area.length < 3) {
+            binding.addressArea.error = "Please Enter Valid Address Area"
+            isValid = false
             binding.addressArea.requestFocus()
         }
 
 
-        if(zipcode.length<6){
-            binding.addressZipcode.error="Please Enter Valid Zipcode"
-            isValid=false
+        if (zipcode.length < 6) {
+            binding.addressZipcode.error = "Please Enter Valid Zipcode"
+            isValid = false
             binding.addressZipcode.requestFocus()
         }
-        if(addLine1 == ""){
-            binding.addressLine1.error="Please Enter Address Line 1"
-            isValid=false
+        if (addLine1 == "") {
+            binding.addressLine1.error = "Please Enter Address Line 1"
+            isValid = false
             binding.addressLine1.requestFocus()
         }
-       /* if(name.equals("")){
-            binding.name.error="Please Enter Name"
-            isValid=false
-            binding.name.requestFocus()
-        }*/
-        if(title.length<3){
-            binding.addressTitle.error="Please Enter Valid Address Type"
-            isValid=false
+        /* if(name.equals("")){
+             binding.name.error="Please Enter Name"
+             isValid=false
+             binding.name.requestFocus()
+         }*/
+        if (title.length < 3) {
+            binding.addressTitle.error = "Please Enter Valid Address Type"
+            isValid = false
             binding.addressTitle.requestFocus()
 
         }
-        if(isValid){
+        if (isValid) {
 //            Toast.makeText(requireContext(),"done",Toast.LENGTH_SHORT).show()
             lifecycleScope.launchWhenCreated {
-                shippingAddressViewModel.methodRepo.dataStore.getUserId().collect {
-                        userID->
-                    if(isSave){
+                shippingAddressViewModel.methodRepo.dataStore.getUserId().collect { userID ->
+                    if (isSave) {
                         shippingAddressViewModel.addAddress(
                             ShippingAddressItem(
                                 addLine1,
@@ -264,8 +264,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                                 null
                             )
                         )
-                    }
-                    else {
+                    } else {
                         shippingAddressViewModel.updateAddress(
                             ShippingAddressItem(
                                 addLine1,
@@ -319,7 +318,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
     private val permReqLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { it ->
             var count = 0
-            val totalCount=1
+            val totalCount = 1
             it.entries.forEach {
                 if (it.value) {
                     count++
@@ -329,8 +328,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             if (count == totalCount) {
 //                showCustomToast("Permission Granted")
                 mLocationUtils.initConnection()
-            }
-            else {
+            } else {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(
                         this,
                         Manifest.permission.ACCESS_FINE_LOCATION
@@ -360,20 +358,17 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
 
             mMap!!.setOnCameraIdleListener {
-                mMap!!.projection.visibleRegion.latLngBounds.center.let {
-                    latLng->
-                    if(!isComingFirst) {
+                mMap!!.projection.visibleRegion.latLngBounds.center.let { latLng ->
+                    if (!isComingFirst) {
                         userLat = latLng.latitude
                         userLong = latLng.longitude
                         getAddress(userLat, userLong)
-                    }
-                    else if(isSave){
+                    } else if (isSave) {
                         userLat = latLng.latitude
                         userLong = latLng.longitude
                         getAddress(userLat, userLong)
-                    } else
-                    {
-                        isComingFirst=false
+                    } else {
+                        isComingFirst = false
                     }
                     //AppLogger.w("Latitude is : $latitude Longitude is$longitude")
 
@@ -382,13 +377,12 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
         }
 
-        if(!isSave) {
+        if (!isSave) {
 
             try {
-                userLat= shippingAddressItem!!.latitude.toDouble()
-                userLong= shippingAddressItem!!.longitude.toDouble()
-            }
-            catch (e:Exception){
+                userLat = shippingAddressItem!!.latitude.toDouble()
+                userLong = shippingAddressItem!!.longitude.toDouble()
+            } catch (e: Exception) {
                 userLat = 0.0
                 userLong = 0.0
             }
@@ -417,13 +411,12 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
         val geocoder = Geocoder(this, Locale.getDefault())
 
-        val    // TODO: 11/1/20 find address
-                addresses =
-            geocoder.getFromLocation(lat, lng, 1)
+        // TODO: 11/1/20 find address
+        val addresses = geocoder.getFromLocation(lat, lng, 1)
         if (addresses.size > 0) {
             val address = addresses[0].getAddressLine(0)
 //            val country = addresses.get(0).countryName;
-            val postalCode= addresses[0].postalCode
+            val postalCode = addresses[0].postalCode
 
             binding.addressLine1.setText(address)
             binding.addressZipcode.setText(postalCode)
@@ -453,9 +446,8 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                         hideLoadingDialog()
                         if (event.message!!.code == 403) {
                             forcelogout(shippingAddressViewModel.methodRepo)
-                        }
-                        else
-                        showCustomToast(event.message.message)
+                        } else
+                            showCustomToast(event.message.message)
                     }
                     is ResponseSealed.Empty -> {
                         hideLoadingDialog()

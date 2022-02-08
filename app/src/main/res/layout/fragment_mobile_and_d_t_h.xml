@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_20sdp"
+        tools:context=".ui.mobileanddth.MobileAndDTHFragment">
+
+
+        <LinearLayout
+            android:id="@+id/layout_radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/radio_mobile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Mobile Recharge"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_12ssp"
+
+                />
+
+
+            <RadioButton
+                android:id="@+id/radio_dth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_regular"
+                android:text="DTH Recharge"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_12ssp" />
+
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/enter_number_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_radio">
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/enter_number_edt"
+                style="@style/RegularTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:hint="@string/enter_mobile_number"
+                android:inputType="text"
+                android:paddingHorizontal="@dimen/_10ssp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14sdp" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/select_operator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/enter_number_card"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/_20ssp"
+            android:fontFamily="@font/poppins_light"
+            android:text="Select Operator"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_10ssp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_select_operator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_90sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_operator"
+            tools:listitem="@layout/row_operator_layout"
+            />
+
+
+
+        <LinearLayout
+            android:id="@+id/layout_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/rv_select_operator"
+            android:layout_marginTop="@dimen/_10ssp"
+            >
+
+            <RadioButton
+                android:id="@+id/radio_prepaid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Prepaid"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_12ssp"
+
+                />
+
+
+            <RadioButton
+                android:id="@+id/radio_postpaid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Postpaid"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_12ssp" />
+
+
+        </LinearLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/enter_amount_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_type">
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/enter_amount_edt"
+                style="@style/RegularTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:hint="@string/enter_amount"
+                android:inputType="numberDecimal"
+                android:maxLength="5"
+                android:paddingHorizontal="@dimen/_10ssp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14sdp" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/recharge"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            app:layout_constraintTop_toBottomOf="@+id/enter_amount_card"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:backgroundTint="#ED335F"
+            android:text="Recharge Now"
+            android:fontFamily="@font/poppins_regular"
+            android:textAllCaps="true"
+            android:textSize="@dimen/_12sdp"
+            app:cornerRadius="@dimen/_5sdp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

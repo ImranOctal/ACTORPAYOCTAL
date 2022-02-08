@@ -94,8 +94,7 @@
                 android:background="@drawable/notification_item_grey_bg"
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/my_profile"
-                app:tint="@color/text_color"
-                />
+                app:tint="@color/text_color" />
 
             <TextView
                 android:layout_width="match_parent"

@@ -8,7 +8,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.addmoney.AddMoneyFragment">
+    tools:context=".ui.addmoney.AddMoneyFragment"
+    android:layout_marginTop="@dimen/_20sdp"
+    android:paddingHorizontal="@dimen/_10sdp"
+    >
 
     <TextView
         android:id="@+id/enter_amount_text"

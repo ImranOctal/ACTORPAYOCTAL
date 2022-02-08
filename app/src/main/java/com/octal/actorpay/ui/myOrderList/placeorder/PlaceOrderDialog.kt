@@ -43,6 +43,7 @@ class PlaceOrderDialog(
                 pos, action ->
         }
         binding.orderData = orderData
+        binding.orderDateText.text="Order Date & Time: "+methodsRepo.getFormattedOrderDate(orderData.createdAt)
         if (orderData.shippingAddressDTO == null) {
             binding.deliveryAddressAddress1.visibility = View.GONE
             binding.deliveryAddressAddress2.visibility = View.GONE

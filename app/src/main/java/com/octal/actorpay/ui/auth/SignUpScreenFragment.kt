@@ -183,7 +183,7 @@ class SignUpScreenFragment : BaseFragment() {
 
         val countryCode=binding.codePicker.text.toString().trim()
 
-        if(binding.adhar.text.toString().trim().length<16){
+        if(binding.adhar.text.toString().trim().length<12){
             isValidate=false
             binding.adhar.error=getString(R.string.enter_valid_adhar)
             binding.adhar.requestFocus()

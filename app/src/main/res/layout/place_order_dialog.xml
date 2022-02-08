@@ -198,7 +198,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
-                android:text='@{"Order Date &amp; Time: "+orderData.createdAt}'
+                android:text=""
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintStart_toStartOf="parent"

@@ -1,13 +1,20 @@
 package com.octal.actorpay.ui.transferMoney
 
+import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
+import com.budiyev.android.codescanner.CodeScanner
+import com.budiyev.android.codescanner.DecodeCallback
+import com.budiyev.android.codescanner.ErrorCallback
 import com.octal.actorpay.R
 import com.octal.actorpay.base.BaseFragment
 import com.octal.actorpay.databinding.FragmentTransferMoneyBinding
@@ -22,24 +29,61 @@ import com.octal.actorpay.ui.dummytransactionprocess.DummyTransactionStatusDialo
 import org.koin.android.ext.android.inject
 
 class TransferMoneyFragment : BaseFragment() {
-    private lateinit var binding:FragmentTransferMoneyBinding
+    private lateinit var binding: FragmentTransferMoneyBinding
     private val transferMoneyViewModel: TransferMoneyViewModel by inject()
 
-    private var isWalletToWallet=true
+    private var isWalletToWallet = true
+    private var permissions = Manifest.permission.CAMERA
+    lateinit var codeScanner: CodeScanner
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_transfer_money, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_transfer_money, container, false)
         init()
 
+        codeScanner = CodeScanner(requireContext(), binding.codeScannerView)
+        codeScanner.decodeCallback = DecodeCallback {
+            requireActivity().runOnUiThread {
+                binding.scan.visibility = View.VISIBLE
+                codeScanner.stopPreview()
+                showCustomToast("Scan result: ${it.text}")
+                val bundle =
+                    bundleOf(KEY_KEY to KEY_QR, KEY_NAME to "John")
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.payFragment, bundle)
+
+            }
+        }
+        codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
+            requireActivity().runOnUiThread {
+                showCustomToast("Camera initialization error: ${it.message}")
+
+            }
+        }
+
+
         binding.scan.setOnClickListener {
-            val bundle =
-                bundleOf(KEY_KEY to KEY_QR, KEY_NAME to "John")
-            Navigation.findNavController(requireView())
-                .navigate(R.id.payFragment, bundle)
+
+            if (!transferMoneyViewModel.methodRepo.checkPermission(
+                    requireActivity(),
+                    permissions
+                )
+            ) {
+
+                permReqLauncher.launch(permissions)
+            } else {
+                binding.scan.visibility = View.GONE
+                codeScanner.startPreview()
+            }
+//            val bundle =
+//                bundleOf(KEY_KEY to KEY_QR, KEY_NAME to "John")
+//            Navigation.findNavController(requireView())
+//                .navigate(R.id.payFragment, bundle)
+
         }
         binding.emailNumberField.setOnEditorActionListener { _, actionId, _ ->
 
@@ -51,70 +95,96 @@ class TransferMoneyFragment : BaseFragment() {
 
         }
         binding.payNow.setOnClickListener {
-            DummyTransactionProcessDialog(requireActivity(),transferMoneyViewModel.methodRepo){
-                    action ->
-                when(action){
-                    Clicks.Success->{
+            DummyTransactionProcessDialog(
+                requireActivity(),
+                transferMoneyViewModel.methodRepo
+            ) { action ->
+                when (action) {
+                    Clicks.Success -> {
                         binding.beneficiaryName.setText("")
                         binding.beneficiaryAccountNo.setText("")
                         binding.beneficiaryIfsc.setText("")
                         binding.beneficiaryBranch.setText("")
                         binding.beneficiaryReason.setText("")
-                        DummyTransactionStatusDialog(requireActivity(),transferMoneyViewModel.methodRepo,true).show(childFragmentManager,"status")
+                        DummyTransactionStatusDialog(
+                            requireActivity(),
+                            transferMoneyViewModel.methodRepo,
+                            true
+                        ).show(childFragmentManager, "status")
                     }
-                    Clicks.Cancel->{
-                        DummyTransactionStatusDialog(requireActivity(),transferMoneyViewModel.methodRepo,false).show(childFragmentManager,"status")
+                    Clicks.Cancel -> {
+                        DummyTransactionStatusDialog(
+                            requireActivity(),
+                            transferMoneyViewModel.methodRepo,
+                            false
+                        ).show(childFragmentManager, "status")
                     }
-                    else ->Unit
+                    else -> Unit
                 }
-            }.show(childFragmentManager,"process")
+            }.show(childFragmentManager, "process")
         }
 
         return binding.root
     }
 
-    fun init(){
+    private val permReqLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { permission ->
+
+            if (permission) {
+                binding.scan.visibility = View.GONE
+                codeScanner.startPreview()
+            } else {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(
+                        requireActivity(), permissions
+                    )
+                ) {
+                    Toast.makeText(
+                        requireContext(), "Permission Denied, Go to setting to give access",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        }
+
+    fun init() {
         binding.walletToWalletBtn.setOnClickListener {
-            if(!isWalletToWallet)
-            {
-                isWalletToWallet=true
+            if (!isWalletToWallet) {
+                isWalletToWallet = true
                 binding.walletToWalletBtn.setBackgroundResource(R.drawable.round_wallet_bg)
                 binding.walletToBankBtn.setBackgroundResource(R.drawable.round_wallet_blue_bg)
-                binding.layoutScanQr.visibility=View.VISIBLE
-                binding.layoutBank.visibility=View.GONE
+                binding.layoutScanQr.visibility = View.VISIBLE
+                binding.layoutBank.visibility = View.GONE
             }
         }
         binding.walletToBankBtn.setOnClickListener {
-            if(isWalletToWallet)
-            {
-                isWalletToWallet=false
+            if (isWalletToWallet) {
+                isWalletToWallet = false
                 binding.walletToWalletBtn.setBackgroundResource(R.drawable.round_wallet_blue_bg)
                 binding.walletToBankBtn.setBackgroundResource(R.drawable.round_wallet_bg)
-                binding.layoutScanQr.visibility=View.GONE
-                binding.layoutBank.visibility=View.VISIBLE
+                binding.layoutScanQr.visibility = View.GONE
+                binding.layoutBank.visibility = View.VISIBLE
             }
         }
     }
 
-    fun validate(){
+    fun validate() {
         transferMoneyViewModel.methodRepo.hideSoftKeypad(requireActivity())
-        val contact=binding.emailNumberField.text.toString().trim()
-        if(transferMoneyViewModel.methodRepo.isValidEmail(contact))
-        {
+        val contact = binding.emailNumberField.text.toString().trim()
+        if (transferMoneyViewModel.methodRepo.isValidEmail(contact)) {
             val bundle =
-                bundleOf(KEY_KEY to KEY_EMAIL,KEY_NAME to "")
+                bundleOf(KEY_KEY to KEY_EMAIL, KEY_NAME to "")
             Navigation.findNavController(requireView())
                 .navigate(R.id.payFragment, bundle)
-        }
-        else if(transferMoneyViewModel.methodRepo.isValidPhoneNumber(contact))
-        {
+        } else if (transferMoneyViewModel.methodRepo.isValidPhoneNumber(contact)) {
             val bundle =
                 bundleOf(KEY_KEY to KEY_MOBILE, KEY_NAME to "")
             Navigation.findNavController(requireView())
                 .navigate(R.id.payFragment, bundle)
-        }
-        else {
-            binding.emailNumberField.error="Please enter valid input"
+        } else {
+            binding.emailNumberField.error = "Please enter valid input"
         }
     }
 

@@ -18,9 +18,11 @@ import com.octal.actorpay.ui.cart.CartViewModel
 import com.octal.actorpay.ui.content.ContentViewModel
 import com.octal.actorpay.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
 import com.octal.actorpay.ui.misc.MiscViewModel
+import com.octal.actorpay.ui.mobileanddth.MobileAndDthViewModel
 import com.octal.actorpay.ui.myOrderList.OrderViewModel
 import com.octal.actorpay.ui.myOrderList.orderdetails.OrderDetailsViewModel
 import com.octal.actorpay.ui.myOrderList.placeorder.PlaceOrderViewModel
+import com.octal.actorpay.ui.notification.NotificationViewModel
 import com.octal.actorpay.ui.productList.ProductViewModel
 import com.octal.actorpay.ui.productList.productdetails.ProductDetailsViewModel
 import com.octal.actorpay.ui.productList.productsfilter.ProductFilterViewModel
@@ -78,7 +80,9 @@ private val appKoinModule = module {
     single<RetrofitRepository> {
         RetrofitMainRepository(androidContext(), apiClient = get())
     }
-
+    single {
+        CartViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
     viewModel {
         ActorPayViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
@@ -133,9 +137,13 @@ private val appKoinModule = module {
     viewModel {
         TransferMoneyViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
-    single {
-        CartViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    viewModel {
+        MobileAndDthViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
+    viewModel {
+        NotificationViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+
 
 }
 

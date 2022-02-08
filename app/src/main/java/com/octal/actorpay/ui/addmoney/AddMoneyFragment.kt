@@ -69,9 +69,9 @@ class AddMoneyFragment : BaseFragment() {
             binding.enterAmountEdt.error="Please Enter Amount"
             binding.enterAmountEdt.requestFocus()
         }
-        else if(amount.toDouble()<10)
+        else if(amount.toDouble()<1)
         {
-            binding.enterAmountEdt.error="Amount should not less 10"
+            binding.enterAmountEdt.error="Amount should not less 1"
             binding.enterAmountEdt.requestFocus()
         }
         else{

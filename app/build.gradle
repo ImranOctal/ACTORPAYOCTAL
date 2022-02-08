@@ -137,5 +137,7 @@ dependencies {
     //biometric
     implementation 'androidx.biometric:biometric:1.2.0-alpha04'
 
+    implementation 'com.budiyev.android:code-scanner:2.1.0'
+
 
 }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
@@ -72,15 +73,23 @@ class SplashActivity : BaseActivity() {
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.methodRepo.dataStore.isIntro().collect { isIntro ->
                 viewModel.methodRepo.dataStore.isLoggedIn().collect { isLoggedIn ->
-                    if (isIntro) {
-                        if (isLoggedIn)
-                            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                        else
-                            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                        finishAffinity()
-                    } else {
-                        startActivity(Intent(this@SplashActivity, IntroActivity::class.java))
-                        finishAffinity()
+                    viewModel.methodRepo.dataStore.getDeviceToken().collect { token ->
+                        Log.d("FCM", "token: $token")
+                        if (isIntro) {
+                            if (isLoggedIn)
+                                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                            else
+                                startActivity(
+                                    Intent(
+                                        this@SplashActivity,
+                                        LoginActivity::class.java
+                                    )
+                                )
+                            finishAffinity()
+                        } else {
+                            startActivity(Intent(this@SplashActivity, IntroActivity::class.java))
+                            finishAffinity()
+                        }
                     }
                 }
 

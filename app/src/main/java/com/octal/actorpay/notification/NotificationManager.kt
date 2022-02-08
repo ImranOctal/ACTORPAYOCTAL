@@ -47,6 +47,7 @@ class NotificationManager : FirebaseMessagingService() {
             sharedPre= SharedPre.getInstance(this)!!
         }
         sharedPre.setFirebaseToken(s)*/
+        Log.e("Firebase Messaging", "onNewToken: $token", )
 
         scope.launch {
         dateStore.setDeviceToken(s)

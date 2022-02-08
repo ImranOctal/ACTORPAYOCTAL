@@ -128,5 +128,9 @@
         android:id="@+id/payFragment"
         android:name="com.octal.actorpay.ui.transferMoney.PayFragment"
         android:label="PayFragment" />
+    <fragment
+        android:id="@+id/mobileAndDTHFragment"
+        android:name="com.octal.actorpay.ui.mobileanddth.MobileAndDTHFragment"
+        android:label="MobileAndDTHFragment" />
 
 </navigation>
