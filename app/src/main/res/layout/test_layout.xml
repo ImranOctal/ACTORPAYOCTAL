@@ -51,7 +51,7 @@
             android:orientation="vertical"
             >
 
-            <com.octal.actorpay.utils.CustomPager
+            <com.octal.actorpayuser.utils.CustomPager
                 android:id="@+id/custom_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

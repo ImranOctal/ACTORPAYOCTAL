@@ -6,7 +6,7 @@
     <data>
         <variable
             name="intromodel"
-            type="com.octal.actorpay.ui.intro.IntroModel" />
+            type="com.octal.actorpayuser.ui.intro.IntroModel" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout

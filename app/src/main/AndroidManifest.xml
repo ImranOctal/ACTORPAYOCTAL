@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.octal.actorpay">
+    package="com.octal.actorpayuser">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -12,7 +12,7 @@
 
 
     <application
-        android:name=".app.MyApplication"
+        android:name="com.octal.actorpayuser.app.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,12 +21,12 @@
         android:theme="@style/Theme.ActorPayApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.intro.IntroActivity"
+            android:name="com.octal.actorpayuser.ui.intro.IntroActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ui.shippingaddress.details.ShippingAddressDetailsActivity"
+            android:name="com.octal.actorpayuser.ui.shippingaddress.details.ShippingAddressDetailsActivity"
             android:exported="false" />
 
         <meta-data
@@ -34,34 +34,34 @@
             android:value="@string/google_map_key" />
 
         <activity
-            android:name=".ui.myOrderList.placeorder.PlaceOrderActivity"
+            android:name="com.octal.actorpayuser.ui.myOrderList.placeorder.PlaceOrderActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             />
 
         <activity
-            android:name=".ui.cart.CartActivity"
+            android:name="com.octal.actorpayuser.ui.cart.CartActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ui.productList.productdetails.ProductDetailsActivity"
+            android:name="com.octal.actorpayuser.ui.productList.productdetails.ProductDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.content.ContentActivity"
+            android:name="com.octal.actorpayuser.ui.content.ContentActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ui.auth.LoginActivity"
+            android:name="com.octal.actorpayuser.ui.auth.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.octal.actorpayuser.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name="com.octal.actorpayuser.ui.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -79,7 +79,7 @@
             android:value="@string/facebook_app_id" />
 
         <service
-            android:name=".notification.NotificationManager"
+            android:name="com.octal.actorpayuser.notification.NotificationManager"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

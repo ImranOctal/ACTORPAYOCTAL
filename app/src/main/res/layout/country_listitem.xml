@@ -4,7 +4,7 @@
     <data>
         <variable
             name="countryItem"
-            type="com.octal.actorpay.repositories.retrofitrepository.models.misc.CountryItem" />
+            type="com.octal.actorpayuser.repositories.retrofitrepository.models.misc.CountryItem" />
     </data>
 
     <androidx.cardview.widget.CardView

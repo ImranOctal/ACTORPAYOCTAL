@@ -7,7 +7,7 @@
     <data>
         <variable
             name="shippingItem"
-            type="com.octal.actorpay.repositories.retrofitrepository.models.shipping.ShippingAddressItem" />
+            type="com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressItem" />
     </data>
 
 

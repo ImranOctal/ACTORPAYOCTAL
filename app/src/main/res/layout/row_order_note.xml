@@ -4,7 +4,7 @@
     <data>
         <variable
             name="orderNote"
-            type="com.octal.actorpay.repositories.retrofitrepository.models.order.OrderNote" />
+            type="com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderNote" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"

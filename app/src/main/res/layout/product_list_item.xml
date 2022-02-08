@@ -7,7 +7,7 @@
     <data>
         <variable
             name="productItem"
-            type="com.octal.actorpay.repositories.retrofitrepository.models.products.ProductItem" />
+            type="com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductItem" />
     </data>
 
 

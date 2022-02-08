@@ -7,7 +7,7 @@
     <data>
         <variable
             name="promoItem"
-            type="com.octal.actorpay.repositories.retrofitrepository.models.promocodes.PromoItem" />
+            type="com.octal.actorpayuser.repositories.retrofitrepository.models.promocodes.PromoItem" />
     </data>
 
 

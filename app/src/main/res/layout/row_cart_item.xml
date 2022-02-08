@@ -7,7 +7,7 @@
     <data>
         <variable
             name="cartItem"
-            type="com.octal.actorpay.repositories.retrofitrepository.models.cart.CartItemDTO" />
+            type="com.octal.actorpayuser.repositories.retrofitrepository.models.cart.CartItemDTO" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

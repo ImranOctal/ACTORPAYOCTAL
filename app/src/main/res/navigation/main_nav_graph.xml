@@ -9,21 +9,21 @@
 
     <fragment
         android:id="@+id/homeBottomFragment"
-        android:name="com.octal.actorpay.ui.dashboard.bottomnavfragments.HomeBottomFragment"
+        android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HomeBottomFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home_bottom">
 
     </fragment>
     <fragment
         android:id="@+id/profileBottomFragment"
-        android:name="com.octal.actorpay.ui.dashboard.bottomnavfragments.ProfileBottomFragment"
+        android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.ProfileBottomFragment"
         android:label="@string/my_profile"
         tools:layout="@layout/fragment_profile_bottom">
 
     </fragment>
     <fragment
         android:id="@+id/historyBottomFragment"
-        android:name="com.octal.actorpay.ui.dashboard.bottomnavfragments.HistoryBottomFragment"
+        android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HistoryBottomFragment"
         android:label="@string/history"
         tools:layout="@layout/fragment_history_bottom">
 
@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/walletFragment"
-        android:name="com.octal.actorpay.ui.walletStatement.WalletStatementFragment"
+        android:name="com.octal.actorpayuser.ui.walletStatement.WalletStatementFragment"
         android:label="@string/wallet_statement"
         tools:layout="@layout/fragment_walletw_statement">
 
@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/transferMoneyFragment"
-        android:name="com.octal.actorpay.ui.transferMoney.TransferMoneyFragment"
+        android:name="com.octal.actorpayuser.ui.transferMoney.TransferMoneyFragment"
         android:label="@string/transfer_money"
         tools:layout="@layout/fragment_transfer_money">
         <!-- <action
@@ -57,80 +57,80 @@
 
     <fragment
         android:id="@+id/productListFragment"
-        android:name="com.octal.actorpay.ui.productList.ProductsListFragment"
+        android:name="com.octal.actorpayuser.ui.productList.ProductsListFragment"
         android:label="@string/product_list"
         tools:layout="@layout/fragment_products_list" />
 
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.octal.actorpay.ui.notification.NotificationFragment"
+        android:name="com.octal.actorpayuser.ui.notification.NotificationFragment"
         android:label="@string/notification"
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/referFragment"
-        android:name="com.octal.actorpay.ui.refer_and_earn.ReferAndEarnFragment"
+        android:name="com.octal.actorpayuser.ui.refer_and_earn.ReferAndEarnFragment"
         android:label="@string/referral"
         tools:layout="@layout/fragment_refer_and_earn" />
 
 
     <fragment
         android:id="@+id/myOrderFragment"
-        android:name="com.octal.actorpay.ui.myOrderList.MyOrdersListFragment"
+        android:name="com.octal.actorpayuser.ui.myOrderList.MyOrdersListFragment"
         android:label="@string/my_order"
         tools:layout="@layout/fragment_my_order_list" />
     <fragment
         android:id="@+id/rewardsFragment"
-        android:name="com.octal.actorpay.ui.rewards_points.RewardsPointsFragment"
+        android:name="com.octal.actorpayuser.ui.rewards_points.RewardsPointsFragment"
         android:label="@string/rewards"
         tools:layout="@layout/fragment_rewards_points" />
 
     <fragment
         android:id="@+id/miscFragment"
-        android:name="com.octal.actorpay.ui.misc.MiscFragment"
+        android:name="com.octal.actorpayuser.ui.misc.MiscFragment"
         android:label="@string/misc"
         tools:layout="@layout/fragment_misc" />
 
     <fragment
         android:id="@+id/remittance"
-        android:name="com.octal.actorpay.ui.remittance.RemittanceFragment"
+        android:name="com.octal.actorpayuser.ui.remittance.RemittanceFragment"
         android:label="@string/remittance"
         tools:layout="@layout/fragment_remittance"/>
     <fragment
         android:id="@+id/faqFragment"
-        android:name="com.octal.actorpay.ui.misc.FAQFragment"
+        android:name="com.octal.actorpayuser.ui.misc.FAQFragment"
         android:label="fragment_f_a_q"
         tools:layout="@layout/fragment_f_a_q" />
     <fragment
         android:id="@+id/walletBottomFragment"
-        android:name="com.octal.actorpay.ui.dashboard.bottomnavfragments.WalletBottomFragment"
+        android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.WalletBottomFragment"
         android:label="WalletBottomFragment" />
     <fragment
         android:id="@+id/promoListFragment"
-        android:name="com.octal.actorpay.ui.promocodes.PromoListFragment"
+        android:name="com.octal.actorpayuser.ui.promocodes.PromoListFragment"
         android:label="PromoListFragment" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.octal.actorpay.ui.settings.SettingsFragment"
+        android:name="com.octal.actorpayuser.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/shippingAddressFragment"
-        android:name="com.octal.actorpay.ui.shippingaddress.ShippingAddressFragment"
+        android:name="com.octal.actorpayuser.ui.shippingaddress.ShippingAddressFragment"
         android:label="ShippingAddressFragment" />
     <fragment
         android:id="@+id/orderDetailsFragment"
-        android:name="com.octal.actorpay.ui.myOrderList.orderdetails.OrderDetailsFragment"
+        android:name="com.octal.actorpayuser.ui.myOrderList.orderdetails.OrderDetailsFragment"
         android:label="OrderDetailsFragment" />
     <fragment
         android:id="@+id/addMoneyFragment"
-        android:name="com.octal.actorpay.ui.addmoney.AddMoneyFragment"
+        android:name="com.octal.actorpayuser.ui.addmoney.AddMoneyFragment"
         android:label="AddMoneyFragment" />
     <fragment
         android:id="@+id/payFragment"
-        android:name="com.octal.actorpay.ui.transferMoney.PayFragment"
+        android:name="com.octal.actorpayuser.ui.transferMoney.PayFragment"
         android:label="PayFragment" />
     <fragment
         android:id="@+id/mobileAndDTHFragment"
-        android:name="com.octal.actorpay.ui.mobileanddth.MobileAndDTHFragment"
+        android:name="com.octal.actorpayuser.ui.mobileanddth.MobileAndDTHFragment"
         android:label="MobileAndDTHFragment" />
 
 </navigation>

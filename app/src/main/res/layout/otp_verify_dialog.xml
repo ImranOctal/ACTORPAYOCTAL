@@ -45,7 +45,7 @@
                 android:layout_marginStart="@dimen/_20sdp"
                 />
 
-            <com.octal.actorpay.ui.auth.verifyotp.OtpEditText
+            <com.octal.actorpayuser.ui.auth.verifyotp.OtpEditText
                 android:id="@+id/edtOtp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
