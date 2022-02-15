@@ -18,10 +18,15 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_CANCELLED
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_PARTIALLY_CANCELLED
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_READY
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_RETURNING
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_SUCCESS
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeData
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.RaiseDisputeResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderNoteResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.SingleOrderResponse
+import com.octal.actorpayuser.ui.dispute.RaiseDisputeDialog
+import com.octal.actorpayuser.ui.dispute.RaiseDisputeSuccessDialog
 import com.octal.actorpayuser.ui.myOrderList.placeorder.PlaceOrderAdapter
 import kotlinx.coroutines.flow.collect
 import org.json.JSONArray
@@ -55,6 +60,10 @@ class OrderDetailsFragment : BaseFragment() {
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_order_details, container, false)
+        binding.pullToRefresh.setOnRefreshListener {
+            orderDetailsViewModel.getOrder(orderNo)
+            binding.pullToRefresh.isRefreshing=false
+        }
 
         binding.btnNote.setOnClickListener {
             addNote()
@@ -95,7 +104,10 @@ class OrderDetailsFragment : BaseFragment() {
         binding.orderRecyclerView.adapter =
             PlaceOrderAdapter(requireContext(),orderDetailsViewModel.orderData!!.orderItemDtos, false) {
                     pos,status ->
+                if(status == STATUS_CANCELLED || status== STATUS_RETURNING)
                 cancelReturnOrder(status,pos)
+                else if(status == AppConstance.STATUS_DISPUTE)
+                    raiseDispute(pos)
             }
 
         binding.orderDateText.text =
@@ -141,6 +153,10 @@ class OrderDetailsFragment : BaseFragment() {
                             is SuccessResponse ->{
                                 orderDetailsViewModel.getOrder(orderNo)
                             }
+                            is RaiseDisputeResponse ->{
+                                showCustomToast("success")
+                                showRaisedDiputeDialog(event.response.data)
+                            }
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
@@ -156,6 +172,11 @@ class OrderDetailsFragment : BaseFragment() {
 
         }
     }
+
+    fun showRaisedDiputeDialog(disputeData: DisputeData){
+            RaiseDisputeSuccessDialog().showDialog(requireActivity(),orderDetailsViewModel.methodRepo,disputeData)
+    }
+
 
 
     private fun addNote() {
@@ -202,4 +223,25 @@ class OrderDetailsFragment : BaseFragment() {
             }.show(childFragmentManager, "Place")
         }
     }
+
+    fun raiseDispute(pos:Int){
+
+            val raiseDiputeJson = JSONObject()
+
+            RaiseDisputeDialog(
+                requireActivity(),
+                orderDetailsViewModel.methodRepo,
+                orderDetailsViewModel.orderData,
+                pos,
+            ) { title, reason, file ->
+
+                raiseDiputeJson.put("title", title)
+                raiseDiputeJson.put("description", reason)
+                raiseDiputeJson.put("orderItemId", orderDetailsViewModel.orderData!!.orderItemDtos[pos].orderItemId)
+                orderDetailsViewModel.raiseDipute(raiseDiputeJson.toString(),file)
+//                showCustomToast(reason)
+            }.show(childFragmentManager, "Place")
+
+    }
+
 }

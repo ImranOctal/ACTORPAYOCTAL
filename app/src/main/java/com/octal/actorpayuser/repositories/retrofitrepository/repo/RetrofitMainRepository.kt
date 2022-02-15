@@ -37,6 +37,9 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.Sh
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
 import com.octal.actorpayuser.repositories.retrofitrepository.apiclient.ApiClient
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.RaiseDisputeResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -951,6 +954,67 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
     override suspend fun getAllCountries(): RetrofitResource<CountryResponse> {
         try {
             val data = apiClient.getAllCountries()
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
+    override suspend fun getAllDisputes(
+        token: String,
+        pageNo: Int,
+        pageSize: Int,
+        disputeListParams: DisputeListParams
+    ): RetrofitResource<DisputeListResponse> {
+        try {
+            val data = apiClient.getAllDispute(B_Token +token,pageNo, pageSize, disputeListParams)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
+    override suspend fun raiseDipute(
+        token: String,
+        disputeJson: RequestBody,
+        file: MultipartBody.Part?
+    ): RetrofitResource<RaiseDisputeResponse> {
+        try {
+            val data = apiClient.raiseDipute(B_Token +token,disputeJson,file)
             val result = data.body()
             if (data.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)

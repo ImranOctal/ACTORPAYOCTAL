@@ -29,14 +29,6 @@ class MyOrdersListFragment : BaseFragment(), OnFilterClick {
     private val orderViewModel: OrderViewModel by inject()
     lateinit var adapter: OrderListAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-//         orderViewModel.getAllOrders(orderViewModel.orderListParams)
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -40,6 +40,7 @@ import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HomeBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.ProfileBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.WalletBottomFragment
 import com.octal.actorpayuser.ui.dashboard.models.DrawerItems
+import com.octal.actorpayuser.ui.dispute.DisputeFragment
 import com.octal.actorpayuser.ui.misc.MiscFragment
 import com.octal.actorpayuser.ui.mobileanddth.MobileAndDTHFragment
 import com.octal.actorpayuser.ui.myOrderList.MyOrdersListFragment
@@ -213,7 +214,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.view_available_money_in_wallet),
+                getString(R.string.disputes),
                 ContextCompat.getDrawable((this), R.drawable.wallet_statement)!!
             )
         )
@@ -344,8 +345,8 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                 }
             }
             4 -> {
-                if (fragment !is WalletBottomFragment) {
-                    navController.navigate(R.id.walletBottomFragment)
+                if (fragment !is DisputeFragment) {
+                    navController.navigate(R.id.disputeFragment)
                 }
             }
             5 -> {
@@ -695,6 +696,28 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     showNotificationIcon(false)
                     binding.layoutMainID.rvItemsID.visibility = View.GONE
                 }
+                R.id.disputeFragment -> {
+                    title = "Disputes"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(true)
+                    showNotificationIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
+                R.id.disputeDetailsFragment -> {
+                    title = "Dispute Details"
+                    isMenuOrBack=false
+                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    binding.menuBack.setImageResource(R.drawable.back_icon)
+                    showHideBottomNav(false)
+                    showHideCartIcon(false)
+                    showHideFilterIcon(false)
+                    showNotificationIcon(false)
+                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                }
             }
         }
     }
@@ -853,9 +876,9 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
             })
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Unlock Blytics app")
+            .setTitle("Unlock ActorPay app")
             .setSubtitle("Log in using biometric credential")
-            .setNegativeButtonText("Use pattern lock")
+            .setNegativeButtonText("Use Password")
             .setConfirmationRequired(false)
             .build()
 

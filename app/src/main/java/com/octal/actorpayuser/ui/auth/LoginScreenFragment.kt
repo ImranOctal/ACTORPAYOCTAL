@@ -78,6 +78,7 @@ class LoginScreenFragment : BaseFragment() {
                                     "Resend Activation Link",
                                     event.response
                                 )
+                                loginViewModel.responseLive.value=ResponseSealed.Empty
                             }
                             else -> {
                                 showCustomAlert(

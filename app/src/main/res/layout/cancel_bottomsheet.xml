@@ -29,6 +29,7 @@
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
+            android:maxLength="500"
             android:background="@drawable/orderstatus_bg"
             android:gravity="start"
             android:hint="Add description"

@@ -119,7 +119,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/actualPriceText"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:text='@{"Status: "+orderItem.orderItemStatus}'
+                    android:text='@{"Status: "+orderItem.orderItemStatus.replace("_"," ")}'
                     android:fontFamily="@font/poppins_medium"
                     tools:text="@string/dummy_actual_amount"
                     android:textColor="@color/blue_color"

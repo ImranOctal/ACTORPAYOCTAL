@@ -240,7 +240,6 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                                 addToCart(position)
                             }
                          }
-
                     } else {
                         isFromBuy=true
                         addToCart(position)

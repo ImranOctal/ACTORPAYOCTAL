@@ -13,11 +13,14 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.S
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_CANCEL_ORDER
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_DELIVERED
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_DISPATCHED
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_DISPUTE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_FAILED
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_PENDING
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_READY
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_RETURNED
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_RETURNING
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_RETURN_ACCEPT
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_RETURN_DECLINE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_RETURN_ORDER
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_SUCCESS
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderItemDtos
@@ -55,7 +58,9 @@ class PlaceOrderAdapter(
                 item.orderItemStatus == STATUS_RETURNED ||
                 item.orderItemStatus == STATUS_RETURNING ||
                 item.orderItemStatus == STATUS_PENDING ||
-                item.orderItemStatus == STATUS_FAILED || isFromPlaceOrder
+                item.orderItemStatus == STATUS_FAILED ||
+                item.orderItemStatus == STATUS_RETURN_ACCEPT ||
+                isFromPlaceOrder
             )
                 binding.menu.visibility= View.GONE
 
@@ -63,21 +68,6 @@ class PlaceOrderAdapter(
 
                 showPopUp(binding.menu,findStatus(item.orderItemStatus),adapterPosition)
 
-                /*  var popupMenu= PopupMenu(binding.root.context,binding.menu)
-
-                   popupMenu=findStatus(item.orderItemStatus)
-                  popupMenu.setOnMenuItemClickListener(object :PopupMenu.OnMenuItemClickListener{
-                      override fun onMenuItemClick(item: MenuItem): Boolean {
-                          val status=item.title.toString()
-                          if(status == STATUS_CANCEL_ORDER)
-                              onClick(adapterPosition,STATUS_CANCELLED)
-                          else if(status == STATUS_RETURN_ORDER)
-                              onClick(adapterPosition,STATUS_RETURNING)
-
-                          return true
-                      }
-                  })
-                  popupMenu.show()*/
            }
         }
     }
@@ -97,6 +87,8 @@ class PlaceOrderAdapter(
                     onClick(pos,STATUS_CANCELLED)
                 else if(orderStatus == STATUS_RETURN_ORDER)
                     onClick(pos,STATUS_RETURNING)
+                else if(orderStatus == STATUS_DISPUTE)
+                    onClick(pos,STATUS_DISPUTE)
             }
 
     }
@@ -107,6 +99,8 @@ class PlaceOrderAdapter(
             return  STATUS_CANCEL_ORDER
         else if(status == STATUS_DISPATCHED || status == STATUS_DELIVERED)
             return  STATUS_RETURN_ORDER
+        else if(status == STATUS_RETURN_DECLINE)
+            return  STATUS_DISPUTE
         return status
 
     }

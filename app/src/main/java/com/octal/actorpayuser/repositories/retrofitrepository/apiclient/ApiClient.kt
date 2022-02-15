@@ -11,6 +11,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.C
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.CHANGE_PASSWORD
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.FORGETPASSWORD
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_ALL_CART
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_ALL_DISPUTES
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_ALL_ORDERS
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_ALL_PRODUCTS
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_CONTENT
@@ -23,6 +24,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.O
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.ORDER_STATUS
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.PLACE_ORDER
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.PROMO_LIST
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.RAISE_DISPUTE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.RESEND_OTP
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SEND_OTP
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SIGNUP
@@ -47,6 +49,9 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.cart.CartUp
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.SubCategorieResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.content.ContentResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.RaiseDisputeResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.CountryResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
@@ -270,5 +275,23 @@ interface ApiClient {
     @GET(GET_COUNTRIES)
     suspend fun getAllCountries(
     ): Response<CountryResponse>
+
+
+    @POST(GET_ALL_DISPUTES)
+    suspend fun getAllDispute(
+        @Header("Authorization") token: String,
+        @Query("pageNo") pageNo: Int,
+        @Query("pageSize") pageSize: Int,
+        @Body disputeListParams: DisputeListParams,
+        @Query("asc") asc: Boolean=false
+    ): Response<DisputeListResponse>
+
+    @Multipart
+    @POST(RAISE_DISPUTE)
+    suspend fun raiseDipute(
+        @Header("Authorization") token: String,
+        @Part(AppConstance.DISPUTE) product: RequestBody,
+        @Part file: MultipartBody.Part?,
+    ): Response<RaiseDisputeResponse>
 
 }

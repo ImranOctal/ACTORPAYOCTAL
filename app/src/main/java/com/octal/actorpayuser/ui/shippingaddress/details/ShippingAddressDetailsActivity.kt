@@ -439,6 +439,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                         when (event.response) {
                             is SuccessResponse -> {
                                 onBackPressed()
+                                shippingAddressViewModel.responseLive.value=ResponseSealed.Empty
                             }
                         }
                     }

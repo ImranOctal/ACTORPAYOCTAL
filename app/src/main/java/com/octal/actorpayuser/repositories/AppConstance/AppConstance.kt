@@ -22,6 +22,7 @@ class AppConstance {
         const val ORDER:String="orders/"
         const val OFFER:String="offers/"
         const val CANCEL_ORDER:String="cancelOrder"
+        const val DISPUTE:String="dispute"
         const val LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"login"
         const val SIGNUP: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"signup"
         const val SOCIAL_LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"social/signup"
@@ -67,6 +68,9 @@ class AppConstance {
 
         const val GET_COUNTRIES: String = SUB_DOMAIN+ SUB_DOMAIN_GLOBAL+"v1/country/get/all"
 
+        const val GET_ALL_DISPUTES: String = SUB_DOMAIN+ SUB_DOMAIN2+"dispute/list/paged"
+        const val RAISE_DISPUTE: String = SUB_DOMAIN+ SUB_DOMAIN2+"dispute/raise"
+
         const val STATUS_SUCCESS:String="SUCCESS"
         const val STATUS_READY:String="READY"
         const val STATUS_CANCELLED:String="CANCELLED"
@@ -80,9 +84,12 @@ class AppConstance {
         const val STATUS_PENDING:String="PENDING"
         const val STATUS_FAILED:String="FAILED"
         const val STATUS_COMPLETE:String="COMPLETE"
+        const val STATUS_RETURN_ACCEPT:String="RETURNING_ACCEPTED"
+        const val STATUS_RETURN_DECLINE:String="RETURNING_DECLINED"
 
         const val STATUS_CANCEL_ORDER:String="Cancel Order"
         const val STATUS_RETURN_ORDER:String="Return Order"
+        const val STATUS_DISPUTE:String="Raise Dispute"
 
         val dateFormate1= SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
         val dateFormate2= SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)

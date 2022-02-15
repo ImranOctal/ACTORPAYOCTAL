@@ -42,7 +42,7 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
     }
 
 
-    fun socialLogin(firstName:String,lastName:String,email:String,socialId:String,imgUrl:String) {
+    fun socialLogin(firstName:String,lastName:String,login_type:String,email:String,socialId:String,imgUrl:String) {
 
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(true)
@@ -53,7 +53,7 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
                     deviceToken,
                     ""
                 )
-                val body=SocialParams(firstName,lastName,email,socialId,imgUrl,deviceInfo)
+                val body=SocialParams(firstName,lastName,login_type,email,socialId,imgUrl,deviceInfo)
 
                 when (val response = apiRepo.socialLogin(body)) {
                     is RetrofitResource.Error -> responseLive.value =

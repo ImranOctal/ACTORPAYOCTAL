@@ -93,5 +93,36 @@ class OrderDetailsViewModel(
         }
     }
 
+    fun raiseDipute(diputeJson:String,file: File?) {
+        var r1: RequestBody? = null
+        var f1: MultipartBody.Part? = null
+        if(file!=null) {
+            r1 = file.asRequestBody("/*".toMediaTypeOrNull())
+            f1 =
+                MultipartBody.Part.createFormData(
+                    "file",
+                    "${System.currentTimeMillis()}.jpg",
+                    r1
+                )
+        }
+        val dispute = diputeJson.toRequestBody("application/json".toMediaTypeOrNull())
+
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.raiseDipute(token, dispute,f1)) {
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> {
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                    }
+                }
+            }
+        }
+    }
+
+
 
 }

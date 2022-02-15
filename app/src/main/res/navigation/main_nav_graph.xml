@@ -132,5 +132,13 @@
         android:id="@+id/mobileAndDTHFragment"
         android:name="com.octal.actorpayuser.ui.mobileanddth.MobileAndDTHFragment"
         android:label="MobileAndDTHFragment" />
+    <fragment
+        android:id="@+id/disputeFragment"
+        android:name="com.octal.actorpayuser.ui.dispute.DisputeFragment"
+        android:label="DisputerFragment" />
+    <fragment
+        android:id="@+id/disputeDetailsFragment"
+        android:name="com.octal.actorpayuser.ui.dispute.disputedetails.DisputeDetailsFragment"
+        android:label="DisputeDetailsFragment" />
 
 </navigation>

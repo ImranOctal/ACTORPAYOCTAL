@@ -151,6 +151,12 @@
         <item>PENDING</item>
         <item>FAILURE</item>
     </string-array>
+    <string-array name="dispute_status_array">
+        <item>Select Status</item>
+        <item>OPEN</item>
+        <item>CLOSED</item>
+        <item>PENDING</item>
+    </string-array>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="price">Price</string>
     <string name="no_orders_found">No orders found</string>
@@ -162,7 +168,10 @@
     <string name="amount">Amount</string>
     <string name="add_note">Add Note</string>
     <string name="continues">Continue</string>
-    <string name="use_your_pincode_to_authenticate_with_actorpay">Use your pincode to authenticate with ActorPay.</string>
-    <string name="sign_in_with_your_pincode">Sign in with your Pincode?</string>
+    <string name="use_your_pincode_to_authenticate_with_actorpay">Use your password to authenticate with ActorPay.</string>
+    <string name="sign_in_with_your_pincode">Sign in with your password?</string>
+    <string name="disputes">Disputes</string>
+    <string name="raise_dipute">Raise Dipute</string>
+    <string name="dispute_raise_successfully">Dispute Raise Successfully</string>
 
 </resources>
