@@ -63,10 +63,7 @@ class SignUpScreenFragment : BaseFragment() {
 
     fun init() {
         binding.apply {
-            /*buttonSignUp.setOnClickListener {
-                //NavController().navigateWithId(R.id.homeFragment, findNavController())
-              validate()
-            }*/
+
             buttonSignUp.setOnClickListener(object : SingleClickListener() {
                 override fun performClick(v: View?) {
                     validate()
@@ -110,17 +107,7 @@ class SignUpScreenFragment : BaseFragment() {
                     val code=it.countryCode
                     codeList.add(code)
                 }
-            /*ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_list_item_1,
-                codeList
-            ).also {
-                    adapter ->
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                // Apply the adapter to the spinner
-                binding.codePickerSpinner.adapter = adapter
-            }*/
+
             if(GlobalData.allCountries.size>0){
                 binding.codePicker.text=GlobalData.allCountries[0].countryCode
             }
@@ -208,8 +195,6 @@ class SignUpScreenFragment : BaseFragment() {
             isValidate=false
             binding.errorOnDate.visibility = View.VISIBLE
             signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupDob, R.drawable.btn_search_outline)
-//            binding.dob.requestFocus()
-//            binding.scrollView.smoothScrollTo(0,binding.dob.top)
         }
         else{
             binding.errorOnDate.visibility = View.GONE
@@ -219,7 +204,6 @@ class SignUpScreenFragment : BaseFragment() {
             isValidate=false
             binding.errorOnGender.visibility = View.VISIBLE
             signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupGender2, R.drawable.btn_search_outline)
-//            binding.spinnerAutocomplete.requestFocus()
             binding.scrollView.smoothScrollTo(0,binding.spinnerAutocomplete.top)
         }
         else{
@@ -229,17 +213,12 @@ class SignUpScreenFragment : BaseFragment() {
         if (binding.password.text.toString().trim().length<8) {
             isValidate=false
             binding.password.error=getString(R.string.oops_your_password_is_not_valid)
-//            binding.errorOnPassword.visibility = View.VISIBLE
-//            binding.errorOnPassword.text = getString(R.string.oops_your_password_is_not_valid)
-//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPassword, R.drawable.btn_search_outline)
             binding.password.requestFocus()
         }
         else{
             if (binding.password.text.toString().trim().contains(" ") || !signupViewModel.methodRepo.isValidPassword(binding.password.text.toString().trim())) {
                 isValidate=false
                 binding.password.error = getString(R.string.oops_your_password_is_not_valid2)
-//                binding.errorOnPassword.visibility = View.VISIBLE
-//                signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPassword, R.drawable.btn_search_outline)
                 binding.password.requestFocus()
             }
             else{
@@ -251,8 +230,6 @@ class SignUpScreenFragment : BaseFragment() {
         if (binding.email.text.toString().length<3 || !signupViewModel.methodRepo.isValidEmail(binding.email.text.toString())) {
             isValidate=false
             binding.email.error=getString(R.string.oops_your_email_is_not_correct_or_empty)
-//            binding.errorOnEmail.visibility = View.VISIBLE
-//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupEmail, R.drawable.btn_search_outline)
             binding.email.requestFocus()
         }
         else{
@@ -263,8 +240,6 @@ class SignUpScreenFragment : BaseFragment() {
         if (binding.lastName.text.toString().trim().length<3) {
             isValidate=false
             binding.lastName.error=getString(R.string.error_l_name)
-//            binding.errorOnLastName.visibility = View.VISIBLE
-//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupLast, R.drawable.btn_search_outline)
             binding.lastName.requestFocus()
         }
         else{
@@ -275,8 +250,6 @@ class SignUpScreenFragment : BaseFragment() {
         if (binding.firstName.text.toString().trim().isEmpty()) {
             isValidate=false
             binding.firstName.error=getString(R.string.error_name)
-//            binding.errorOnName.visibility = View.VISIBLE
-//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupFirst, R.drawable.btn_search_outline)
             binding.firstName.requestFocus()
         }
         else{
@@ -286,18 +259,14 @@ class SignUpScreenFragment : BaseFragment() {
 
         if (binding.editTextMobile.text.toString().trim().length<7) {
             isValidate=false
-//            binding.errorOnPhone.visibility = View.VISIBLE
             binding.editTextMobile.error=getString(R.string.error_phone)
-//            signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPhone, R.drawable.btn_search_outline)
             binding.editTextMobile.requestFocus()
         }
         else{
             if(binding.editTextMobile.text.toString().trim()[0].toString() == "0")
             {
                 isValidate=false
-//                binding.errorOnPhone.visibility = View.VISIBLE
                 binding.editTextMobile.error=getString(R.string.mobile_not_start_with_0)
-//                signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupPhone, R.drawable.btn_search_outline)
                 binding.editTextMobile.requestFocus()
             }
             else{
@@ -366,6 +335,7 @@ class SignUpScreenFragment : BaseFragment() {
                                         }
                                     }
                                 )
+                                signupViewModel.responseLive.value=ResponseSealed.Empty
                             }
                         }
 

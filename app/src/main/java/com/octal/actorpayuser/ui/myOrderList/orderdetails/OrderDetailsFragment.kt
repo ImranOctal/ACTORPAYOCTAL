@@ -7,6 +7,10 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavActionBuilder
+import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.octal.actorpayuser.R
@@ -174,7 +178,11 @@ class OrderDetailsFragment : BaseFragment() {
     }
 
     fun showRaisedDiputeDialog(disputeData: DisputeData){
-            RaiseDisputeSuccessDialog().showDialog(requireActivity(),orderDetailsViewModel.methodRepo,disputeData)
+            RaiseDisputeSuccessDialog().showDialog(requireActivity(),orderDetailsViewModel.methodRepo,disputeData){
+
+//                val navOptions= NavOptions.Builder().setPopUpTo(R.id.homeBottomFragment,false).build()
+                Navigation.findNavController(requireView()).navigate(R.id.action_orderDetailsFragment_to_disputeFragment)
+            }
     }
 
 

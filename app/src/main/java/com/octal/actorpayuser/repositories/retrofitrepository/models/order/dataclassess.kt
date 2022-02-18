@@ -20,8 +20,14 @@ data class PlaceOrderParams(
     var city: String,
     var state: String,
     var country: String,
+    var extensionNumber: String,
     var primaryContactNumber: String,
-    var secondaryContactNumber: String
+    var secondaryContactNumber: String,
+    var latitude: String,
+    var longitude: String,
+    var name: String,
+    var area: String,
+    var title: String,
 )
 
 data class OrderListResponse(

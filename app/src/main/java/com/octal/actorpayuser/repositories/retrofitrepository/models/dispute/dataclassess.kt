@@ -6,6 +6,7 @@ data class DisputeListParams(
     var endDate: String,
     var orderNo: String,
     var status: String,
+    var disputeCode:String
 )
 
 data class DisputeListData(
@@ -58,3 +59,15 @@ data class DisputeMessage(
     var userType: String,
     var disputeId: String
     )
+
+data class DisputeSingleResponse(
+    var message: String,
+    var data: DisputeData,
+    var status: String,
+    var httpStatus: String
+)
+
+data class SendMessageParams(
+    val disputeId:String,
+    val message:String
+)

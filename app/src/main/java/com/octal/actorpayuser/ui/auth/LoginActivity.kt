@@ -144,7 +144,7 @@ class LoginActivity : BaseActivity() {
                                 CommonDialogsUtils.showCommonDialog(
                                     this@LoginActivity,
                                     loginViewModel.methodRepo,
-                                    "Forget Password",
+                                    "Forgot password",
                                     event.response
                                 )
                             }

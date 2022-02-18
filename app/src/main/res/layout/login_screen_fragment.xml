@@ -31,15 +31,7 @@
                 />
 
         </LinearLayout>
-        <TextView
-            android:id="@+id/errorOnName"
-            style="@style/errotextViewStyle"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:text="@string/oops_your_email_is_not_correct_or_empty"
-            android:visibility="gone" />
+
 
         <LinearLayout
             android:id="@+id/login_passlay"
@@ -86,13 +78,6 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </LinearLayout>
-        <TextView
-            android:id="@+id/errorOnPassword"
-            style="@style/errotextViewStyle"
-            android:visibility="gone"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonLogin"

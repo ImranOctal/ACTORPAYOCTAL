@@ -45,8 +45,6 @@ class OrderFilterDialog(
         )
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-
-
         ArrayAdapter.createFromResource(
             mContext,
             R.array.status_array,

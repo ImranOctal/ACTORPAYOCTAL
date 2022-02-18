@@ -142,15 +142,26 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_messages"
+    <com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout
+        android:id="@+id/message_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/dispute_data_layout"
         app:layout_constraintBottom_toTopOf="@+id/send_message_layout"
         android:layout_marginVertical="@dimen/_5sdp"
+        app:srl_direction="bottom"
+        >
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_messages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="@dimen/_5sdp"
         tools:listitem="@layout/row_dispute_message_layout"
         />
+
+    </com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout>
 
     <LinearLayout
         android:id="@+id/send_message_layout"
@@ -162,6 +173,7 @@
         android:background="@drawable/bg_outline_gray"
         >
         <EditText
+            android:id="@+id/send_message_edt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -171,14 +183,17 @@
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/text_color"
             android:fontFamily="@font/poppins_regular"
+            android:imeOptions="actionDone"
             />
 
         <ImageView
+            android:id="@+id/send_message_icon"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
+            android:padding="@dimen/_5sdp"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:src="@drawable/address_tick"
+            android:src="@drawable/ic_baseline_send_24"
             />
     </LinearLayout>
 

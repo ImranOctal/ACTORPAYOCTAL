@@ -3,7 +3,6 @@ package com.octal.actorpayuser
 import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,7 +12,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricManager.Authenticators.*
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -33,7 +32,6 @@ import com.octal.actorpayuser.ui.adapter.MenuAdapter
 import com.octal.actorpayuser.ui.addmoney.AddMoneyFragment
 import com.octal.actorpayuser.ui.auth.biometric.AuthBottomSheetDialog
 import com.octal.actorpayuser.ui.auth.viewmodel.LoginViewModel
-import com.octal.actorpayuser.ui.cart.CartActivity
 import com.octal.actorpayuser.ui.cart.CartViewModel
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HistoryBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HomeBottomFragment
@@ -73,11 +71,11 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     private lateinit var navController: NavController
     private lateinit var navHostFragment: Fragment
 
-    private var isMenuOrBack=false
+    private var isMenuOrBack = false
 
-    private var biometricPrompt: BiometricPrompt?=null
+    private var biometricPrompt: BiometricPrompt? = null
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
-    private var authSheet:AuthBottomSheetDialog?=null
+    private var authSheet: AuthBottomSheetDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,12 +109,14 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     "Online Payment",
                     "Product List"
                 )
-            adapter = FeaturesAdapter(arraylist){
-                position ->
-                onItemClickListener(position,arraylist)
+            adapter = FeaturesAdapter(arraylist) { position ->
+                onItemClickListener(position, arraylist)
             }
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
+        }
+        binding.layoutMainID.scan.setOnClickListener {
+            navController.navigate(R.id.transferMoneyFragment)
         }
 
     }
@@ -180,7 +180,8 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
 
     private fun initialization() {
-        apiResponse()
+//        apiResponse()
+        cartResponse()
         cartViewModel.getCartItems()
 
         mTitles = ArrayList()
@@ -262,7 +263,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         actionView()
 
         binding.menuBack.setOnClickListener {
-            if(isMenuOrBack)
+            if (isMenuOrBack)
                 mViewHolder?.mDuoDrawerLayout?.openDrawer()
             else
                 onBackPressed()
@@ -279,7 +280,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         mViewHolder?.mToolbar?.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
 
         binding.cart.setOnClickListener {
-            startActivity(Intent(this, CartActivity::class.java))
+            navController.navigate(R.id.cartFragment)
         }
         binding.filter.setOnClickListener {
             filterClick.onClick()
@@ -434,7 +435,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                         showLoadingDialog()
                     }
                     is ResponseSealed.Success -> {
-                      hideLoadingDialog()
+                        hideLoadingDialog()
                         if (it.response is SuccessResponse) {
                             CommonDialogsUtils.showCommonDialog(
                                 this@MainActivity,
@@ -464,272 +465,169 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         }
     }
 
+    private fun cartResponse() {
+        lifecycleScope.launchWhenCreated {
+
+            cartViewModel.responseLive.collect { event ->
+
+                when (event) {
+                    is ResponseSealed.loading -> {
+                        showLoadingDialog()
+                    }
+                    is ResponseSealed.Success -> {
+                        hideLoadingDialog()
+
+                    }
+                    is ResponseSealed.ErrorOnResponse -> {
+                        hideLoadingDialog()
+                        cartViewModel.responseLive.value = ResponseSealed.Empty
+
+                        if (event.message!!.code == 403) {
+                            forcelogout(viewModel.methodRepo)
+                        }
+                    }
+                    is ResponseSealed.Empty -> {
+                        hideLoadingDialog()
+
+                    }
+
+                }
+            }
+        }
+    }
+
     private fun setupNavigation() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.homeBottomFragment -> {
-                    title = "ActorPay"
-                    isMenuOrBack=true
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_UNLOCKED)
-                    binding.menuBack.setImageResource(R.drawable.menu)
-                    binding.layoutMainID.rvItemsID.visibility = View.VISIBLE
                     binding.layoutMainID.bottomNavigationView.menu.getItem(0).isChecked = true
-                    showHideBottomNav(true)
-                    showHideCartIcon(true)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(true)
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.drawable.layout_bg)
+                    updateUI("ActorPay",true,true,true,true,false,true,true)
                 }
                 R.id.historyBottomFragment -> {
-                    title = "My History"
-                    isMenuOrBack=true
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_UNLOCKED)
-                    binding.menuBack.setImageResource(R.drawable.menu)
                     binding.layoutMainID.bottomNavigationView.menu.getItem(1).isChecked = true
-                    showHideBottomNav(true)
-                    showHideCartIcon(true)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(true)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("My History",true,true,true,true,false,true,false)
                 }
                 R.id.walletBottomFragment -> {
-                    title = "My Wallet"
-                    isMenuOrBack=true
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_UNLOCKED)
-                    binding.menuBack.setImageResource(R.drawable.menu)
                     binding.layoutMainID.bottomNavigationView.menu.getItem(3).isChecked = true
-                    showHideBottomNav(true)
-                    showHideCartIcon(true)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(true)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("My Wallet",true,true,true,true,false,true,false)
                 }
                 R.id.profileBottomFragment -> {
-                    title = "My Profile"
-                    isMenuOrBack=true
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_UNLOCKED)
-                    binding.menuBack.setImageResource(R.drawable.menu)
                     binding.layoutMainID.bottomNavigationView.menu.getItem(4).isChecked = true
-                    showHideBottomNav(true)
-                    showHideCartIcon(true)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(true)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
-
+                    updateUI("My Profile",true,true,true,true,false,true,false)
                 }
                 R.id.referFragment -> {
-                    title = "My Refer"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("My Refer",false,false,false,false,false,false,false)
                 }
                 R.id.rewardsFragment -> {
-                    title = "My Rewards"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("My Rewards",false,false,false,false,false,false,false)
                 }
                 R.id.productListFragment -> {
-                    title = "Products"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
-                    showHideBottomNav(false)
-                    showHideCartIcon(true)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Products",false,false,false,true,false,false,false)
                 }
                 R.id.miscFragment -> {
-                    title = "More"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("More",false,false,false,false,false,false,false)
                 }
                 R.id.myOrderFragment -> {
-                    title = "My Orders"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(true)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("My Orders",false,false,false,false,true,false,false)
                 }
                 R.id.promoListFragment -> {
-                    title = "Promos"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Promos",false,false,false,false,false,false,false)
                 }
                 R.id.settingsFragment -> {
-                    title = "Settings"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Settings",false,false,false,false,false,false,false)
                 }
                 R.id.faqFragment -> {
-                    title = "FAQ"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("FAQ",false,false,false,false,false,false,false)
                 }
                 R.id.remittance -> {
-                    title = getString(R.string.change_payment_option)
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI(getString(R.string.change_payment_option),false,false,false,false,false,false,false)
                 }
                 R.id.shippingAddressFragment -> {
-                    title = "My Addresses"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("My Addresses",false,false,false,false,false,false,false)
                 }
                 R.id.orderDetailsFragment -> {
-                    title = "Order Summary"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Order Summary",false,false,false,false,false,false,false)
                 }
                 R.id.addMoneyFragment -> {
-                    title = "Add Money In Wallet"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Add Money In Wallet",false,false,false,false,false,false,false)
+
                 }
                 R.id.transferMoneyFragment -> {
-                    title = "Transfer Money"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Transfer Money",false,false,false,false,false,false,false)
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.color.white)
                 }
                 R.id.payFragment -> {
-                    title = "Transfer Money"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Transfer Money",false,false,false,false,false,false,false)
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.color.white)
                 }
                 R.id.mobileAndDTHFragment -> {
-                    title = "Mobile and DTH Recharge"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Mobile and DTH Recharge",false,false,false,false,false,false,false)
                 }
                 R.id.notificationFragment -> {
-                    title = "Notifications"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Notifications",false,false,false,false,false,false,false)
                 }
                 R.id.disputeFragment -> {
-                    title = "Disputes"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(true)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Disputes",false,false,false,false,false,false,false)
                 }
                 R.id.disputeDetailsFragment -> {
-                    title = "Dispute Details"
-                    isMenuOrBack=false
-                    mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.menuBack.setImageResource(R.drawable.back_icon)
-                    showHideBottomNav(false)
-                    showHideCartIcon(false)
-                    showHideFilterIcon(false)
-                    showNotificationIcon(false)
-                    binding.layoutMainID.rvItemsID.visibility = View.GONE
+                    updateUI("Dispute Details",false,false,false,false,false,false,false)
+                }
+                R.id.cartFragment -> {
+                    updateUI("My Cart",false,false,false,false,false,false,false)
+
+                }
+                R.id.productDetailsFragment -> {
+                    updateUI("Product Details",false,false,false,false,false,false,false)
+
+                }
+                R.id.placeOrderFragment -> {
+                    updateUI("Place Order",false,false,false,false,false,false,false)
                 }
             }
         }
+    }
+
+    fun updateUI(
+        title: String,
+        isMenu: Boolean,
+        isDrawerUnLock: Boolean,
+        showHideBottomNav: Boolean,
+        showHideCartIcon: Boolean,
+        showHideFilterIcon: Boolean,
+        showNotificationIcon: Boolean,
+        isRvItemsVisible: Boolean
+    ) {
+        this.title = title
+        this.isMenuOrBack = isMenu
+        if (isDrawerUnLock)
+            mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_UNLOCKED)
+        else
+            mViewHolder?.mDuoDrawerLayout?.setDrawerLockMode(DuoDrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+        if (isMenu)
+            binding.menuBack.setImageResource(R.drawable.menu)
+        else
+            binding.menuBack.setImageResource(R.drawable.back_icon)
+
+        showHideBottomNav(showHideBottomNav)
+        showHideCartIcon(showHideCartIcon)
+        showHideFilterIcon(showHideFilterIcon)
+        showNotificationIcon(showNotificationIcon)
+        if (isRvItemsVisible)
+            binding.layoutMainID.rvItemsID.visibility = View.VISIBLE
+        else
+            binding.layoutMainID.rvItemsID.visibility = View.GONE
     }
 
 
     private fun showHideBottomNav(showHide: Boolean) {
         if (showHide) {
             binding.layoutMainID.bottomNavigation.visibility = View.VISIBLE
-            binding.layoutMainID.floating.visibility = View.VISIBLE
+            binding.layoutMainID.scan.visibility = View.VISIBLE
         } else {
             binding.layoutMainID.bottomNavigation.visibility = View.GONE
-            binding.layoutMainID.floating.visibility = View.GONE
+            binding.layoutMainID.scan.visibility = View.GONE
         }
     }
 
@@ -748,6 +646,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
             binding.filter.visibility = View.GONE
         }
     }
+
     private fun showNotificationIcon(showHide: Boolean) {
         if (showHide) {
             binding.notification.visibility = View.VISIBLE
@@ -762,18 +661,27 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
     override fun onBackPressed() {
         val fragment = navHostFragment.childFragmentManager.fragments[0]
-        if(fragment is HomeBottomFragment){
-            CommonDialogsUtils.showCommonDialog(this,  viewModel.methodRepo,"Exit App","Are you sure?", autoCancelable = true, isCancelAvailable = true, callback = object :CommonDialogsUtils.DialogClick{
-                override fun onClick() {finishAffinity()}
-                override fun onCancel() {}
-            })
-        }
-        else
-        super.onBackPressed()
+        if (fragment is HomeBottomFragment) {
+            CommonDialogsUtils.showCommonDialog(
+                this,
+                viewModel.methodRepo,
+                "Exit App",
+                "Are you sure?",
+                autoCancelable = true,
+                isCancelAvailable = true,
+                callback = object : CommonDialogsUtils.DialogClick {
+                    override fun onClick() {
+                        finishAffinity()
+                    }
+
+                    override fun onCancel() {}
+                })
+        } else
+            super.onBackPressed()
 
     }
 
-    fun isBioMetricAvailable():Boolean{
+    fun isBioMetricAvailable(): Boolean {
         val biometricManager: BiometricManager = BiometricManager.from(this)
         when (biometricManager.canAuthenticate(BIOMETRIC_WEAK)) {
             BiometricManager.BIOMETRIC_SUCCESS -> {
@@ -797,27 +705,27 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
     override fun onResume() {
         super.onResume()
-        if (IS_APP_FROM_SPLASH ) {
-            IS_APP_FROM_SPLASH=false
+        if (IS_APP_FROM_SPLASH) {
+            IS_APP_FROM_SPLASH = false
 
-            if(!isBioMetricAvailable())
+            if (!isBioMetricAvailable())
                 return
 
 
             try {
-                    biometricAuth()
+                biometricAuth()
 
-                    if (authSheet == null) {
-                        authSheet = AuthBottomSheetDialog {
-                            biometricPrompt?.authenticate(promptInfo)
-                        }
-                        authSheet?.isCancelable = false
-                        authSheet?.show(supportFragmentManager, "auth sheet")
+                if (authSheet == null) {
+                    authSheet = AuthBottomSheetDialog {
                         biometricPrompt?.authenticate(promptInfo)
-                    } else {
-                        if (authSheet?.isVisible!!.not())
-                            authSheet?.show(supportFragmentManager, "auth sheet")
                     }
+                    authSheet?.isCancelable = false
+                    authSheet?.show(supportFragmentManager, "auth sheet")
+                    biometricPrompt?.authenticate(promptInfo)
+                } else {
+                    if (authSheet?.isVisible!!.not())
+                        authSheet?.show(supportFragmentManager, "auth sheet")
+                }
 
             } catch (ex: Exception) {
                 Log.e("MainActivity--ERROR--", "${ex.message}")
@@ -885,14 +793,15 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
     }
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            authSheet?.dismiss()
+    var resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                authSheet?.dismiss()
 
-        }
-        if (result.resultCode == Activity.RESULT_CANCELED) {
+            }
+            if (result.resultCode == Activity.RESULT_CANCELED) {
 
+            }
         }
-    }
 
 }

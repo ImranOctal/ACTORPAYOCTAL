@@ -53,8 +53,8 @@ class DisputeFragment : BaseFragment(), OnFilterClick {
     private fun setAdapter() {
      val adapter=  DisputeAdapter(disputeViewModel.disputeListData.items,disputeViewModel.methodRepo){
          position ->
-         DisputeDetailsViewModel.disputeData=disputeViewModel.disputeListData.items[position]
-         Navigation.findNavController(requireView()).navigate(R.id.disputeDetailsFragment)
+         val bundle = bundleOf("disputeId" to disputeViewModel.disputeListData.items[position].disputeId, "disputeCode" to disputeViewModel.disputeListData.items[position].disputeCode)
+         Navigation.findNavController(requireView()).navigate(R.id.disputeDetailsFragment,bundle)
      }
         val layoutManager = LinearLayoutManager(requireContext())
 
@@ -77,6 +77,7 @@ class DisputeFragment : BaseFragment(), OnFilterClick {
             disputeListData.pageNumber
         disputeViewModel.disputeListData.totalPages =
             disputeListData.totalPages
+        disputeViewModel.disputeListData.items.clear()
         disputeViewModel.disputeListData.items.addAll(disputeListData.items)
         binding.rvDispute.adapter?.notifyDataSetChanged()
 

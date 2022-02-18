@@ -17,7 +17,9 @@ class RaiseDisputeSuccessDialog {
 
     fun showDialog(activity: Activity,
                    methodsRepo: MethodsRepo,
-                   disputeData: DisputeData)
+                   disputeData: DisputeData,
+                   onClick:()->Unit
+    )
     {
         val alertDialog = Dialog(activity)
 
@@ -30,7 +32,9 @@ class RaiseDisputeSuccessDialog {
 
         binding.disputedata=disputeData
 
-        binding.tvOk.setOnClickListener { alertDialog.dismiss() }
+        binding.tvOk.setOnClickListener { alertDialog.dismiss()
+            onClick()
+        }
 
 
         alertDialog.apply {

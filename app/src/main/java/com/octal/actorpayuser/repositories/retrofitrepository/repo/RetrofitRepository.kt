@@ -14,9 +14,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.cart.CartUp
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.SubCategorieResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.content.ContentResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.RaiseDisputeResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.CountryResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
@@ -102,6 +100,10 @@ interface RetrofitRepository {
     suspend fun getAllCountries():RetrofitResource<CountryResponse>
 
     suspend fun getAllDisputes(token: String,pageNo:Int,pageSize:Int,disputeListParams: DisputeListParams):RetrofitResource<DisputeListResponse>
+
+    suspend fun getDispute(token: String,disputeId:String):RetrofitResource<DisputeSingleResponse>
+
+    suspend fun sendDisputeMessage(token: String,sendMessageParams: SendMessageParams):RetrofitResource<SuccessResponse>
 
     suspend fun raiseDipute(token: String,  disputeJson: RequestBody, file: MultipartBody.Part?):RetrofitResource<RaiseDisputeResponse>
 

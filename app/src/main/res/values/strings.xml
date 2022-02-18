@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">ActorPayApp</string>
     <string name="facebook_app_id">473779207383239</string>
-    <string name="google_map_key">AIzaSyCZGIE2o472ZoYOlLZk6rdPDWYtU3zoBOQ</string>
+    <!--    <string name="google_map_key">AIzaSyCZGIE2o472ZoYOlLZk6rdPDWYtU3zoBOQ</string>-->
     <!--    <string name="google_map_key">AIzaSyDF9E6078CB2YHeX3Qc6c4xOTkkQoT7KCY</string>-->
+
+    <string name="google_map_key">AIzaSyDhMau_8Eah9KaloP_NWaBhDjvryMlzcD0</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -22,7 +25,7 @@
     <string name="product_list">Product List</string>
     <string name="login">Login</string>
     <string name="my_order">My Order</string>
-    <string name="forgot_password">Forgot Password?</string>
+    <string name="forgot_password">Forgot password?</string>
     <string name="or">or</string>
     <string name="notification">Notification</string>
     <string name="about_us">About Us</string>
@@ -83,8 +86,6 @@
     <string name="error_phone">Oops! your phone is not correct or empty</string>
     <string name="error_name">Oops! your name\'s length is less than 3</string>
     <string name="error_l_name">Oops! your last name\'s length is less than 3</string>
-    <string name="forget_password">Forget Password?</string>
-    <string name="forget_password1">Forget Password</string>
     <string name="return_order">Return Order</string>
     <string name="cancel_order">Cancel Order</string>
     <string name="cancel">Cancel</string>
@@ -159,7 +160,7 @@
     </string-array>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="price">Price</string>
-    <string name="no_orders_found">No orders found</string>
+    <string name="no_orders_found">No order found</string>
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
     <string name="google">Google</string>

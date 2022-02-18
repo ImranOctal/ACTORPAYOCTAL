@@ -3,22 +3,25 @@ package com.octal.actorpayuser.ui.productList.productdetails
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.octal.actorpayuser.R
-import com.octal.actorpayuser.base.BaseActivity
+import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.ActivityProductDetailsBinding
+import com.octal.actorpayuser.databinding.FragmentProductDetailsBinding
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.SingleProductResponse
-import com.octal.actorpayuser.ui.cart.CartActivity
 import com.octal.actorpayuser.ui.cart.CartViewModel
 import com.octal.actorpayuser.ui.productList.ProductListAdapter
 import com.octal.actorpayuser.utils.CommonDialogsUtils
@@ -26,27 +29,38 @@ import com.octal.actorpayuser.utils.EndlessRecyclerViewScrollListener
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
-class ProductDetailsActivity : BaseActivity() {
-    private lateinit var binding: ActivityProductDetailsBinding
+
+class ProductDetailsFragment : BaseFragment() {
+
+
     private val productDetailsViewModel: ProductDetailsViewModel by inject()
+    private lateinit var binding: FragmentProductDetailsBinding
     private val cartViewModel: CartViewModel by inject()
     lateinit var adapter: ProductListAdapter
     private var isFromBuy=false
     private var futureAddCart=false
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        window.statusBarColor = ContextCompat.getColor(this,R.color.primary)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_product_details)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+         binding=DataBindingUtil.inflate(inflater,R.layout.fragment_product_details,container,false)
 
         setAdapter()
         cartResponse()
         apiResponse()
+
         var id=""
-        if(intent!=null){
-            if(intent.hasExtra("id"))
-                id=intent.getStringExtra("id")!!
+        if(arguments!=null){
+
+                id=requireArguments().getString("id")!!
         }
         productDetailsViewModel.getProductById(id)
 
@@ -54,10 +68,9 @@ class ProductDetailsActivity : BaseActivity() {
             paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         }
 
-        binding.back.setOnClickListener {
-            finish()
-        }
+        return binding.root
     }
+
 
     private fun updateUI(){
         productDetailsViewModel.product.let {
@@ -73,7 +86,7 @@ class ProductDetailsActivity : BaseActivity() {
 
     private fun initializeCartWork() {
         binding.addToCart.setOnClickListener {
-           addToCart()
+            addToCart()
         }
         if(productDetailsViewModel.product != null) {
             val cart =
@@ -105,9 +118,10 @@ class ProductDetailsActivity : BaseActivity() {
                 cartViewModel.addCart(productDetailsViewModel.product!!.productId,productDetailsViewModel.product!!.dealPrice)
         }
         else
-        cartViewModel.addCart(productDetailsViewModel.product!!.productId,productDetailsViewModel.product!!.dealPrice)
+            cartViewModel.addCart(productDetailsViewModel.product!!.productId,productDetailsViewModel.product!!.dealPrice)
 
     }
+
     private fun buyNow() {
         if (cartViewModel.cartItems.value.size > 0) {
             val cartItem=  cartViewModel.cartItems.value.find {
@@ -138,8 +152,10 @@ class ProductDetailsActivity : BaseActivity() {
 
     private fun goToCart() {
 
-        val intent = Intent(this, CartActivity::class.java)
-        resultLauncher.launch(intent)
+//        val intent = Intent(requireContext(), CartActivity::class.java)
+//        resultLauncher.launch(intent)
+
+        Navigation.findNavController(requireView()).navigate(R.id.cartFragment)
 
 
 
@@ -149,15 +165,13 @@ class ProductDetailsActivity : BaseActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             initializeCartWork()
         }
-
-
     private fun cartResponse() {
         lifecycleScope.launchWhenCreated {
 
             cartViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        showLoadingDialog()
+                        showLoading()
                     }
                     is ResponseSealed.Success -> {
                         if(futureAddCart){
@@ -171,7 +185,7 @@ class ProductDetailsActivity : BaseActivity() {
                         initializeCartWork()
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        hideLoadingDialog()
+                        hideLoading()
                         futureAddCart=false
                         if(isFromBuy)
                             isFromBuy=false
@@ -180,7 +194,7 @@ class ProductDetailsActivity : BaseActivity() {
                         }
                     }
                     is ResponseSealed.Empty -> {
-                        hideLoadingDialog()
+                        hideLoading()
 
                     }
 
@@ -194,10 +208,10 @@ class ProductDetailsActivity : BaseActivity() {
             productDetailsViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        showLoadingDialog()
+                        showLoading()
                     }
                     is ResponseSealed.Success -> {
-                        hideLoadingDialog()
+                        hideLoading()
                         when (event.response) {
                             is ProductListResponse -> {
                                 productDetailsViewModel.productData.pageNumber =
@@ -214,11 +228,11 @@ class ProductDetailsActivity : BaseActivity() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        hideLoadingDialog()
+                        hideLoading()
                         showCustomToast(event.message!!.message)
                     }
                     is ResponseSealed.Empty -> {
-                        hideLoadingDialog()
+                        hideLoading()
                     }
                 }
             }
@@ -229,21 +243,23 @@ class ProductDetailsActivity : BaseActivity() {
     fun setAdapter() {
 
         adapter = ProductListAdapter(
-            this,
+            requireContext(),
             productDetailsViewModel.productData.items,
             cartViewModel.cartItems
         ) { position, click ->
             when (click) {
                 Clicks.Root -> {
-                    val intent=Intent(this,ProductDetailsActivity::class.java)
-                    intent.putExtra("id",productDetailsViewModel.productData.items[position].productId)
-                    startActivity(intent)
+                    val bundle= bundleOf("id" to productDetailsViewModel.productData.items[position].productId)
+                    Navigation.findNavController(requireView()).navigate(R.id.productDetailsFragment,bundle)
+//                    val intent=Intent(requireContext(),ProductDetailsActivity::class.java)
+//                    intent.putExtra("id",productDetailsViewModel.productData.items[position].productId)
+//                    startActivity(intent)
                 }
                 else -> Unit
             }
         }
 
-        val layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerviewSimiliarProduct.layoutManager = layoutManager
         val endlessRecyclerViewScrollListener: EndlessRecyclerViewScrollListener =
             object : EndlessRecyclerViewScrollListener(layoutManager) {
@@ -261,7 +277,7 @@ class ProductDetailsActivity : BaseActivity() {
     }
 
     private fun wantsToBuyDialog(onClick: () -> Unit) {
-        CommonDialogsUtils.showCommonDialog(this,
+        CommonDialogsUtils.showCommonDialog(requireActivity(),
             cartViewModel.methodRepo,
             "Replace Cart Item",
             "Your Cart Contains Products from Different Merchant, Do you want to discard the selection and add this product?",
@@ -279,5 +295,7 @@ class ProductDetailsActivity : BaseActivity() {
                 }
             })
     }
+
+
 
 }

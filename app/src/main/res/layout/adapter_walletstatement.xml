@@ -1,109 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_2sdp"
-    android:padding="@dimen/_10sdp">
-
-    <RelativeLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/my_oder_bg"
-        android:padding="@dimen/_3sdp">
+        android:layout_margin="@dimen/_2sdp"
+        android:padding="@dimen/_10sdp">
 
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvLogin"
-            style="@style/BoldTextView"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:letterSpacing="0.01"
-            android:padding="@dimen/_2sdp"
-            android:text="Bridget Theriveaquai"
-            android:textColor="@color/black"
-            tools:ignore="RelativeOverlap,UnusedAttribute" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginEnd="@dimen/_3sdp"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvAmount"
-                style="@style/SemiBoldTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingTop="@dimen/_4sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_4sdp"
-                android:text="-$100"
-                android:textColor="#FF0000"
-                android:textSize="10sp"
-                tools:ignore="RelativeOverlap,UnusedAttribute" />
+            android:background="@drawable/my_oder_bg"
+            android:padding="@dimen/_3sdp">
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvStatus"
-                style="@style/RegularTextView"
+                android:id="@+id/tvLogin"
+                style="@style/BoldTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@id/tvAmount"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_toEndOf="@id/tvAmount"
-                android:background="@drawable/orderstatus_bg"
-                android:gravity="center"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingTop="@dimen/_4sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_4sdp"
-                android:text="Completed"
-                android:textColor="@color/primary"
-                android:textSize="10sp"
+                android:fontFamily="@font/poppins_bold"
+                android:letterSpacing="0.01"
+                android:padding="@dimen/_2sdp"
+                android:text="Bridget Theriveaquai"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_11ssp"
                 tools:ignore="RelativeOverlap,UnusedAttribute" />
-        </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDetails"
-            style="@style/LightTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvLogin"
-            android:layout_gravity="center"
-            android:letterSpacing="0.01"
-            android:padding="@dimen/_2sdp"
-            android:text="To: +915869784521"
-            android:textColor="@color/text_color"
-            android:textSize="10dp"
-            tools:ignore="RelativeOverlap,UnusedAttribute" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_3sdp"
+                android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDescription"
-            style="@style/LightTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvDetails"
-            android:layout_gravity="center"
-            android:letterSpacing="0.01"
-            android:padding="@dimen/_2sdp"
-            android:text="An Order ID is the unique number associated with every order placed through
-our secure checkout. This is the number you'll "
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            tools:ignore="RelativeOverlap,UnusedAttribute" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAmount"
+                    style="@style/SemiBoldTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_4sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_4sdp"
+                    android:text="-$100"
+                    android:textColor="@color/pink_color"
+                    android:textSize="@dimen/_9ssp"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:ignore="RelativeOverlap,UnusedAttribute" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStatus"
+                    style="@style/RegularTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:background="@drawable/orderstatus_bg"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_4sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_4sdp"
+                    android:text="Completed"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/_9ssp"
+                    android:fontFamily="@font/poppins_regular"
+                    tools:ignore="RelativeOverlap,UnusedAttribute" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDetails"
+                style="@style/LightTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvLogin"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_light"
+                android:letterSpacing="0.01"
+                android:padding="@dimen/_2sdp"
+                android:text="To: +915869784521"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_9ssp"
+                tools:ignore="RelativeOverlap,UnusedAttribute" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDescription"
+                style="@style/LightTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDetails"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_regular"
+                android:letterSpacing="0.01"
+                android:padding="@dimen/_2sdp"
+                android:text="An Order ID is the unique number associated with every order placed through
+our secure checkout. "
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_9ssp"
+                tools:ignore="RelativeOverlap,UnusedAttribute" />
+        </RelativeLayout>
+
+
     </RelativeLayout>
-
-
-</RelativeLayout>
 </layout>

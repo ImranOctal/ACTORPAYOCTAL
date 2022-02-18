@@ -33,10 +33,10 @@
             android:layout_height="?attr/actionBarSize" />
 
         <View
+            android:id="@+id/main_view_1"
             android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="?attr/actionBarSize"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_7sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:background="@color/primary" />
@@ -47,6 +47,7 @@
             android:layout_height="@dimen/_40sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/main_view_1"
             android:paddingHorizontal="@dimen/_10sdp"
             android:paddingVertical="@dimen/_10sdp"
             android:src="@drawable/drawable_menu"

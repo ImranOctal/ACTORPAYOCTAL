@@ -19,6 +19,7 @@ import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseActivity
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.ActivityShippingAddressDetailsBinding
+import com.octal.actorpayuser.di.models.CoroutineContextProvider
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpayuser.utils.GlobalData
@@ -26,6 +27,7 @@ import com.octal.actorpayuser.utils.LocationUtils
 import com.octal.actorpayuser.utils.WorkaroundMapFragment
 import com.octal.actorpayuser.utils.countrypicker.CountryPicker
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.util.*
 
@@ -409,20 +411,30 @@ class ShippingAddressDetailsActivity : BaseActivity() {
     private fun getAddress(lat: Double, lng: Double) {
 
 
-        val geocoder = Geocoder(this, Locale.getDefault())
+        lifecycleScope.launch(CoroutineContextProvider().IO) {
+            try {
+                val geocoder = Geocoder(this@ShippingAddressDetailsActivity, Locale.getDefault())
 
-        // TODO: 11/1/20 find address
-        val addresses = geocoder.getFromLocation(lat, lng, 1)
-        if (addresses.size > 0) {
-            val address = addresses[0].getAddressLine(0)
+                // TODO: 11/1/20 find address
+                val addresses = geocoder.getFromLocation(lat, lng, 1)
+                if (addresses.size > 0) {
+                    val address = addresses[0].getAddressLine(0)
 //            val country = addresses.get(0).countryName;
-            val postalCode = addresses[0].postalCode
+                    val postalCode = addresses[0].postalCode
 
-            binding.addressLine1.setText(address)
-            binding.addressZipcode.setText(postalCode)
+                    binding.addressLine1.setText(address)
+                    binding.addressZipcode.setText(postalCode)
 //            binding.addressCountry.setText(country)
-
+                }
+            }
+            catch (e : java.lang.Exception){
+                Log.e("Location_Thing", "getAddress: ${e.message}")
+            }
         }
+
+
+
+
     }
 
     fun apiResponse() {

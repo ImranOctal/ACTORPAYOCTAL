@@ -2,64 +2,75 @@ package com.octal.actorpayuser.ui.cart
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpayuser.R
+import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
-import com.octal.actorpayuser.databinding.ActivityCartBinding
+import com.octal.actorpayuser.databinding.FragmentCartBinding
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.cart.CartData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.cart.CartResponse
 import com.octal.actorpayuser.utils.CommonDialogsUtils
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
-import android.view.View
-import com.octal.actorpayuser.base.BaseActivity
-import com.octal.actorpayuser.ui.myOrderList.placeorder.PlaceOrderActivity
 
 
-class CartActivity : BaseActivity() {
+class CartFragment : BaseFragment() {
 
-    private lateinit var binding: ActivityCartBinding
+    private lateinit var binding: FragmentCartBinding
     private val cartViewModel: CartViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_cart)
+        cartViewModel.getCartItems()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_cart, container, false)
+
         setAdapter()
         apiResponse()
-        cartViewModel.getCartItems()
 
-
-        binding.back.setOnClickListener {
-            finish()
-        }
         binding.checkout.setOnClickListener {
             if(cartViewModel.cartData!=null && cartViewModel.cartData!!.totalPrice > 0.0){
-                PlaceOrderActivity.total=cartViewModel.cartData!!.totalPrice
-                PlaceOrderActivity.subTotal=cartViewModel.cartData!!.totalTaxableValue
-                PlaceOrderActivity.gst=cartViewModel.cartData!!.totalSgst+cartViewModel.cartData!!.totalCgst
-                startActivity(Intent(this, PlaceOrderActivity::class.java))
+
+                val bundle= bundleOf("total" to cartViewModel.cartData!!.totalPrice, "subtotal" to cartViewModel.cartData!!.totalTaxableValue, "gst" to cartViewModel.cartData!!.totalSgst+cartViewModel.cartData!!.totalCgst)
+                Navigation.findNavController(requireView()).navigate(R.id.placeOrderFragment,bundle)
+
             }
             else
             {
                 showCustomToast("Cart is Empty")
             }
         }
-    }
 
+
+        return binding.root
+    }
 
     fun apiResponse() {
         lifecycleScope.launchWhenCreated {
             cartViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
-                        showLoadingDialog()
+                        showLoading()
                     }
                     is ResponseSealed.Success -> {
-                        hideLoadingDialog()
+                        hideLoading()
+                        cartViewModel.responseLive.value=ResponseSealed.Empty
                         when (event.response) {
                             is CartResponse -> {
                                 event.response.data.let {
@@ -72,11 +83,11 @@ class CartActivity : BaseActivity() {
                         }
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        hideLoadingDialog()
+                        hideLoading()
                         showCustomToast(event.message!!.message)
                     }
                     is ResponseSealed.Empty -> {
-                        hideLoadingDialog()
+                        hideLoading()
                     }
                 }
             }
@@ -104,8 +115,8 @@ class CartActivity : BaseActivity() {
     }
 
     fun setAdapter() {
-       val adapter = CartAdapter(cartViewModel.cartItems){
-            position, clicks ->
+        val adapter = CartAdapter(cartViewModel.cartItems){
+                position, clicks ->
             val currentCart=cartViewModel.cartItems.value[position]
             when(clicks){
                 Clicks.Delete->{
@@ -114,10 +125,10 @@ class CartActivity : BaseActivity() {
                     }
                 }
                 Clicks.Minus->{
-                   if(currentCart.productQty == 1)
-                       deleteCartItemDialog {
-                           cartViewModel.deleteCart(currentCart.cartItemId)
-                       }
+                    if(currentCart.productQty == 1)
+                        deleteCartItemDialog {
+                            cartViewModel.deleteCart(currentCart.cartItemId)
+                        }
                     else
                         cartViewModel.updateCart(currentCart.cartItemId,currentCart.productQty-1)
                 }
@@ -127,12 +138,12 @@ class CartActivity : BaseActivity() {
                 else ->Unit
             }
         }
-        binding.cartRecyclerview.layoutManager = LinearLayoutManager(this)
+        binding.cartRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.cartRecyclerview.adapter = adapter
     }
 
     private fun deleteCartItemDialog(onClick: () -> Unit) {
-        CommonDialogsUtils.showCommonDialog(this,
+        CommonDialogsUtils.showCommonDialog(requireActivity(),
             cartViewModel.methodRepo,
             "Delete Item",
             "Are You Sure?",
@@ -151,10 +162,5 @@ class CartActivity : BaseActivity() {
             })
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        setResult(RESULT_OK)
-        finish()
-    }
 
 }

@@ -176,6 +176,7 @@ class ProfileBottomFragment : BaseFragment() {
     }
 
     private fun handleProfileResponse(profileResponse: ProfileResponseData){
+        binding.nameTextView.setText("${profileResponse.firstName} ${profileResponse.lastName}")
         binding.firstName.setText("${profileResponse.firstName} ${profileResponse.lastName}")
         binding.editEmail.setText(profileResponse.email)
         binding.mobNumber.setText(profileResponse.extensionNumber+" "+profileResponse.contactNumber)

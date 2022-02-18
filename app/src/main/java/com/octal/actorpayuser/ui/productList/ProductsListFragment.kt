@@ -17,15 +17,15 @@ import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentProductsListBinding
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductListResponse
-import com.octal.actorpayuser.ui.cart.CartActivity
 import com.octal.actorpayuser.ui.cart.CartViewModel
-import com.octal.actorpayuser.ui.productList.productdetails.ProductDetailsActivity
 import com.octal.actorpayuser.utils.CommonDialogsUtils
 import com.octal.actorpayuser.utils.EndlessRecyclerViewScrollListener
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.CategorieItem
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductData
@@ -50,12 +50,11 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
         productViewModel.name=""
         productViewModel.category=""
         productViewModel.getProducts()
-        productViewModel.categoryList.clear()
+        productViewModel.categoryList. clear()
         Handler(Looper.myLooper()!!).postDelayed({
             productViewModel.getCategories()
         },200)
     }
-
 
 
 
@@ -124,9 +123,9 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                         futureAddCart=-1
                         if(isFromBuy)
                             isFromBuy=false
-                        if (event.message!!.code == 403) {
-                            forcelogout(productViewModel.methodRepo)
-                        }
+//                        if (event.message!!.code == 403) {
+//                            forcelogout(productViewModel.methodRepo)
+//                        }
                     }
                     is ResponseSealed.Empty -> {
                         hideLoading()
@@ -149,6 +148,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                         }
                         is ResponseSealed.Success -> {
                             hideLoading()
+                            productViewModel.responseLive.value=ResponseSealed.Empty
                             when (event.response) {
                                 is ProductListResponse -> {
                                   updateUI(event.response.data)
@@ -202,9 +202,11 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
             val product=productViewModel.productData.items[position]
             when (click) {
                 Clicks.Root -> {
-                    val intent=Intent(requireActivity(),ProductDetailsActivity::class.java)
-                    intent.putExtra("id",product.productId)
-                    startActivity(intent)
+                    val bundle= bundleOf("id" to product.productId)
+                    Navigation.findNavController(requireView()).navigate(R.id.productDetailsFragment,bundle)
+//                    val intent=Intent(requireActivity(),ProductDetailsActivity::class.java)
+//                    intent.putExtra("id",product.productId)
+//                    startActivity(intent)
                 }
                 Clicks.AddCart -> {
                     if (cartViewModel.cartItems.value.size > 0) {
@@ -303,8 +305,10 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
 
     private fun goToCart() {
 
-        val intent = Intent(requireActivity(), CartActivity::class.java)
-        resultLauncher.launch(intent)
+//        val intent = Intent(requireActivity(), CartActivity::class.java)
+//        resultLauncher.launch(intent)
+
+        Navigation.findNavController(requireView()).navigate(R.id.cartFragment)
 
     }
 

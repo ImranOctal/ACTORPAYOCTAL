@@ -69,6 +69,8 @@ class AppConstance {
         const val GET_COUNTRIES: String = SUB_DOMAIN+ SUB_DOMAIN_GLOBAL+"v1/country/get/all"
 
         const val GET_ALL_DISPUTES: String = SUB_DOMAIN+ SUB_DOMAIN2+"dispute/list/paged"
+        const val GET_DISPUTE: String = SUB_DOMAIN+ SUB_DOMAIN2+"dispute/get/"
+        const val SEND_DISPUTE_MESSAGE: String = SUB_DOMAIN+ SUB_DOMAIN2+"dispute/send/message"
         const val RAISE_DISPUTE: String = SUB_DOMAIN+ SUB_DOMAIN2+"dispute/raise"
 
         const val STATUS_SUCCESS:String="SUCCESS"

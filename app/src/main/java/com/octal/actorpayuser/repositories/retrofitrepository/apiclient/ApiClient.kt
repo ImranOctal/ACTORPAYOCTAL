@@ -16,6 +16,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.G
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_ALL_PRODUCTS
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_CONTENT
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_COUNTRIES
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_DISPUTE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_FAQ
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_PROFILE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_SINGLE_PRODUCT
@@ -26,6 +27,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.P
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.PROMO_LIST
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.RAISE_DISPUTE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.RESEND_OTP
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SEND_DISPUTE_MESSAGE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SEND_OTP
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SIGNUP
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SOCIAL_LOGIN
@@ -49,9 +51,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.cart.CartUp
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.SubCategorieResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.content.ContentResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.RaiseDisputeResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.CountryResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
@@ -285,6 +285,18 @@ interface ApiClient {
         @Body disputeListParams: DisputeListParams,
         @Query("asc") asc: Boolean=false
     ): Response<DisputeListResponse>
+
+    @GET("$GET_DISPUTE{id}")
+    suspend fun getDispute(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+    ): Response<DisputeSingleResponse>
+
+    @POST(SEND_DISPUTE_MESSAGE)
+    suspend fun sendDisputeMessage(
+        @Header("Authorization") token: String,
+        @Body sendMessageParams: SendMessageParams,
+    ): Response<SuccessResponse>
 
     @Multipart
     @POST(RAISE_DISPUTE)

@@ -40,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/_20sdp"
-        android:text="No Promo Codes available for you"
+        android:text="No promo available for you"
         android:textSize="@dimen/_12sdp"
         android:textColor="@color/black"
         android:fontFamily="@font/poppins_regular"

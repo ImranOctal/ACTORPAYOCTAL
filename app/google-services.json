@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:450644605577:android:ae58ce886fddd2539f2458",
+        "mobilesdk_app_id": "1:450644605577:android:8eaeed1b809730199f2458",
         "android_client_info": {
           "package_name": "com.actorpay.merchant"
         }
@@ -21,42 +21,6 @@
             "certificate_hash": "d40de5fe1af1dec300a5e6547daba33d87c6a799"
           }
         },
-        {
-          "client_id": "450644605577-e512lkq39pt66aes45d822n5ull0c6n9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDS45Kr0r9VCtcCD2SvmikI7MzFQ7ARJh4"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "450644605577-e512lkq39pt66aes45d822n5ull0c6n9.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "450644605577-1ejahodv9ehqr33aombp1qncrnp0ni8i.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.Actorpay"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:450644605577:android:8d43093eb023ae309f2458",
-        "android_client_info": {
-          "package_name": "com.octal.actorpay"
-        }
-      },
-      "oauth_client": [
         {
           "client_id": "450644605577-e512lkq39pt66aes45d822n5ull0c6n9.apps.googleusercontent.com",
           "client_type": 3

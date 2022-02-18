@@ -7,22 +7,21 @@
         android:id="@+id/pull_to_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_20sdp"
         >
 
 
 
-    <ScrollView
+
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
-        android:background="@color/white">
+        android:background="@color/white"
+
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/order_summary_layout"
@@ -373,9 +372,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-    </RelativeLayout>
+
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

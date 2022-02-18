@@ -37,7 +37,7 @@
                 app:riv_mutate_background="false" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/name_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -56,7 +56,7 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                app:layout_constraintTop_toBottomOf="@+id/name_textView">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -69,6 +69,7 @@
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
+                    android:visibility="gone"
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="@dimen/_10sdp">
 

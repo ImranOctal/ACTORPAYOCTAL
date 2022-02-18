@@ -54,9 +54,14 @@ class PlaceOrderDialog(
         ) {
             binding.deliveryAddressAddress2.visibility = View.GONE
         }
-        binding.done.setOnClickListener {
+        binding.order.setOnClickListener {
             dismiss()
-            onDone("done")
+            onDone("order")
+        }
+
+        binding.shopping.setOnClickListener {
+            dismiss()
+            onDone("shopping")
         }
 
 

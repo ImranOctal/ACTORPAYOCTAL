@@ -1,13 +1,20 @@
 package com.octal.actorpayuser.ui.auth
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import com.actorpay.merchant.utils.SingleClickListener
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.octal.actorpayuser.MainActivity
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
@@ -19,6 +26,7 @@ import com.octal.actorpayuser.utils.CommonDialogsUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
+import java.util.*
 
 
 class LoginScreenFragment : BaseFragment() {
@@ -139,6 +147,16 @@ class LoginScreenFragment : BaseFragment() {
                 }
             })
 
+//            binding.name.setOnClickListener {
+//                if (!Places.isInitialized()) {
+//                    Places.initialize(requireContext(), getString(R.string.google_map_key), Locale.US);
+//                }
+//                val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG)
+//                val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+//                    .build(requireContext())
+//                startForAddressResult.launch(intent)
+//            }
+
             loginForget.setOnClickListener {
                 forgetPassword()
             }
@@ -159,54 +177,54 @@ class LoginScreenFragment : BaseFragment() {
         }
     }
 
-    private fun validateLogin() {
-        if (binding.name.text.toString().trim().isEmpty()) {
-            binding.name.error = getString(R.string.email_empty)
-            binding.errorOnPassword.visibility = View.GONE
-            binding.name.requestFocus()
-        } else if (!loginViewModel.methodRepo.isValidEmail(
-                binding.name.text.toString().trim()
-            )
-        ) {
-            binding.name.error = getString(R.string.invalid_email)
-            binding.errorOnPassword.visibility = View.GONE
-            binding.name.requestFocus()
-        } else if (binding.password.text.toString().trim().isEmpty()) {
-            binding.password.error = getString(R.string.oops_your_password_is_empty)
-            binding.errorOnName.visibility = View.GONE
-            binding.password.requestFocus()
+    private val startForAddressResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data
+            val place = Autocomplete.getPlaceFromIntent(intent!!)
+            val latLng = place.latLng
+            latLng?.let {
+                var latitude = it.latitude
+                var longitude = it.longitude
+//                getAddress(latitude, longitude)
+            }
         }
-        else if(!loginViewModel.methodRepo.isValidPassword(binding.password.text.toString().trim())){
+    }
+
+    private fun validateLogin() {
+
+        var isValid=true
+
+        if (binding.password.text.toString().trim().isEmpty() || !loginViewModel.methodRepo.isValidPassword(binding.password.text.toString().trim())) {
             binding.password.error = getString(R.string.oops_your_password_is_not_valid2)
             binding.password.requestFocus()
+            isValid=false
         }
-        else if (!binding.cbRememberMe.isChecked) {
-            binding.errorOnName.visibility = View.GONE
-            binding.errorOnPassword.visibility = View.GONE
-            loginViewModel.methodRepo.setBackGround(
-                requireContext(),
-                binding.loginEmaillay,
-                R.drawable.btn_outline_gray
-            )
-            loginViewModel.methodRepo.setBackGround(
-                requireContext(),
-                binding.loginPasslay,
-                R.drawable.btn_outline_gray
-            )
-            login()
-        } else {
-            binding.errorOnName.visibility = View.GONE
-            binding.errorOnPassword.visibility = View.GONE
-            loginViewModel.methodRepo.setBackGround(
-                requireContext(),
-                binding.loginEmaillay,
-                R.drawable.btn_outline_gray
-            )
-            loginViewModel.methodRepo.setBackGround(
-                requireContext(),
-                binding.loginPasslay,
-                R.drawable.btn_outline_gray
-            )
+
+        if (binding.name.text.toString().trim().isEmpty() || !loginViewModel.methodRepo.isValidEmail(binding.name.text.toString().trim())) {
+            binding.name.error = getString(R.string.invalid_email)
+            binding.name.requestFocus()
+            isValid=false
+        }
+
+
+//         if (!binding.cbRememberMe.isChecked) {
+//            binding.errorOnName.visibility = View.GONE
+//            binding.errorOnPassword.visibility = View.GONE
+//            loginViewModel.methodRepo.setBackGround(
+//                requireContext(),
+//                binding.loginEmaillay,
+//                R.drawable.btn_outline_gray
+//            )
+//            loginViewModel.methodRepo.setBackGround(
+//                requireContext(),
+//                binding.loginPasslay,
+//                R.drawable.btn_outline_gray
+//            )
+//            login()
+//        }
+        loginViewModel.methodRepo.hideSoftKeypad(requireActivity())
+         if(isValid) {
+
             login()
         }
     }

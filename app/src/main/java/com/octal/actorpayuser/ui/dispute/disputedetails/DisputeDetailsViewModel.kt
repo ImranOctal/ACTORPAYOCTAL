@@ -9,6 +9,7 @@ import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.SendMessageParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderListData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
@@ -23,9 +24,45 @@ class DisputeDetailsViewModel (val dispatcherProvider: CoroutineContextProvider,
 
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
 
-    var disputeListData = DisputeListData(0, 0, mutableListOf(), 0, 20)
-    var disputeListParams= DisputeListParams("","","","")
 
+    var disputeListData = DisputeListData(0, 0, mutableListOf(), 0, 20)
+    var disputeListParams= DisputeListParams("","","","","")
+
+
+
+    fun getDispute(disputeId:String) {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.getDispute(token,disputeId)) {
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> {
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                    }
+                }
+            }
+        }
+    }
+
+    fun sendDisputeMessage(sendMessageParams: SendMessageParams){
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.sendDisputeMessage(token,sendMessageParams)) {
+                    is RetrofitResource.Error -> responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Success -> {
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                    }
+                }
+            }
+        }
+    }
 
     fun getAllDisputes() {
         viewModelScope.launch(dispatcherProvider.IO) {
@@ -44,11 +81,6 @@ class DisputeDetailsViewModel (val dispatcherProvider: CoroutineContextProvider,
                 }
             }
         }
-    }
-
-    companion object{
-        var disputeData:DisputeData?=null
-
     }
 
 }

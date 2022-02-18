@@ -7,8 +7,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/notificationImageLayout"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         android:background="@drawable/notification_item_grey_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/itemImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
             android:layout_centerVertical="true"
             android:src="@drawable/tick_blue"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -31,7 +31,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:paddingStart="10dp"
+        android:paddingStart="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/notificationImageLayout"
@@ -42,12 +42,12 @@
             android:id="@+id/itemTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_semibold"
-            android:paddingEnd="10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:paddingEnd="@dimen/_10sdp"
             android:singleLine="true"
             android:text="Amount Received By Bank"
-            android:textColor="#383838"
-            android:textSize="16sp"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_12ssp"
             tools:ignore="RtlSymmetry" />
 
         <TextView
@@ -58,7 +58,7 @@
             android:fontFamily="@font/poppins_regular"
             android:maxLines="2"
             android:text="Date- 05/10/2019"
-            android:textSize="12sp" />
+            android:textSize="@dimen/_10ssp" />
 
 
         <TextView
@@ -69,7 +69,7 @@
             android:fontFamily="@font/poppins_regular"
             android:maxLines="2"
             android:text="Account No. ******5987"
-            android:textSize="12sp" />
+            android:textSize="@dimen/_10ssp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
             android:layout_centerVertical="true"
             android:gravity="end"
             android:orientation="vertical"
-            android:paddingEnd="10dp">
+            android:paddingEnd="@dimen/_10ssp">
 
             <TextView
                 android:id="@+id/priceText"
@@ -87,7 +87,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/dummy_actual_amount"
                 android:textColor="@color/blue_color"
-                android:textSize="15sp" />
+                android:textSize="@dimen/_12ssp" />
 
             <TextView
                 android:id="@+id/savingText"
@@ -96,15 +96,15 @@
                 android:fontFamily="@font/poppins_regular"
                 android:maxLines="2"
                 android:text="Saving"
-                android:textSize="12sp" />
+                android:textSize="@dimen/_10ssp" />
         </LinearLayout>
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:background="#f1f4fd"
+        android:layout_marginTop="@dimen/_10ssp"
+        android:background="@color/very_light_grey"
         app:layout_constraintTop_toBottomOf="@+id/notificationImageLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

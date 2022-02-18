@@ -35,6 +35,7 @@ class OrderNoteAdapter(val methodsRepo: MethodsRepo,val orderNotes:MutableList<O
 
 
             binding.orderNoteDate.text=methodsRepo.getFormattedOrderDate(orderNote.createdAt)
+
             if(orderNote.userType == "merchant") {
                 binding.orderNoteUser.text="Merchant :"
                 binding.orderNoteUser.visibility = View.VISIBLE

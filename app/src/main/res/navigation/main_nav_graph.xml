@@ -119,7 +119,14 @@
     <fragment
         android:id="@+id/orderDetailsFragment"
         android:name="com.octal.actorpayuser.ui.myOrderList.orderdetails.OrderDetailsFragment"
-        android:label="OrderDetailsFragment" />
+        android:label="OrderDetailsFragment" >
+        <action
+            android:id="@+id/action_orderDetailsFragment_to_disputeFragment"
+            app:destination="@id/disputeFragment"
+            app:popUpTo="@id/homeBottomFragment"
+            app:popUpToInclusive="false"
+            />
+    </fragment>
     <fragment
         android:id="@+id/addMoneyFragment"
         android:name="com.octal.actorpayuser.ui.addmoney.AddMoneyFragment"
@@ -140,5 +147,20 @@
         android:id="@+id/disputeDetailsFragment"
         android:name="com.octal.actorpayuser.ui.dispute.disputedetails.DisputeDetailsFragment"
         android:label="DisputeDetailsFragment" />
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.octal.actorpayuser.ui.cart.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="com.octal.actorpayuser.ui.productList.productdetails.ProductDetailsFragment"
+        android:label="fragment_product_details"
+        tools:layout="@layout/fragment_product_details" />
+    <fragment
+        android:id="@+id/placeOrderFragment"
+        android:name="com.octal.actorpayuser.ui.myOrderList.placeorder.PlaceOrderFragment"
+        android:label="fragment_place_order"
+        tools:layout="@layout/fragment_place_order" />
 
 </navigation>

@@ -317,19 +317,40 @@
                 app:layout_constraintStart_toStartOf="@+id/delivery_address_text"
                 app:layout_constraintTop_toBottomOf="@+id/delivery_address_address2" />
 
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/done"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/delivery_address_city"
+                android:layout_marginHorizontal="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:backgroundTint="@color/pink_color"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center"
-                android:text="@string/explore_more"
-                android:textSize="@dimen/_10ssp"
-                app:layout_constraintTop_toBottomOf="@+id/delivery_address_city" />
+                >
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/primary"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:text="Check orders"
+                    android:textSize="@dimen/_10ssp"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/shopping"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/pink_color"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:text="Continue shopping"
+                    android:textSize="@dimen/_10ssp"
+                    />
+
+            </LinearLayout>
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

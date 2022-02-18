@@ -8,7 +8,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.productList.ProductsListFragment"
-    android:layout_marginHorizontal="@dimen/_15sdp"
     android:layout_marginTop="@dimen/_20sdp"
     >
 
@@ -18,7 +17,7 @@
     android:layout_height="wrap_content"
     app:layout_constraintTop_toTopOf="parent"
     android:background="@drawable/item_bg"
-    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:layout_marginHorizontal="@dimen/_25sdp"
     android:padding="@dimen/_5sdp"
     android:drawableStart="@drawable/ic_baseline_search_24"
     android:drawablePadding="@dimen/_10sdp"
@@ -43,7 +42,7 @@
     tools:listitem="@layout/row_categories_item"
     android:layout_marginTop="@dimen/_10sdp"
     android:layout_marginBottom="@dimen/_10sdp"
-    android:paddingEnd="@dimen/_10sdp"
+    android:paddingHorizontal="@dimen/_15sdp"
     android:clipToPadding="false"
     />
 
@@ -56,6 +55,8 @@
     tools:itemCount="0"
     tools:listitem="@layout/product_list_item"
     android:layout_marginBottom="@dimen/_10sdp"
+    android:layout_marginHorizontal="@dimen/_15sdp"
+
     />
 
 
