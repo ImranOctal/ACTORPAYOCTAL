@@ -15,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseActivity
 import com.octal.actorpayuser.base.ResponseSealed
@@ -132,6 +133,8 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
         mLocationUtils = LocationUtils(this, false)
         {
+
+            mLocationUtils.stopLocation()
             if (isSave) {
                 userLat = it.latitude
                 userLong = it.longitude
@@ -158,6 +161,9 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                 .build() // Creates a CameraPosition from the builder
 
             mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            mMap!!.clear()
+            mMap!!.addMarker(MarkerOptions().position(LatLng(userLat,userLong)))
+
 
             getAddress(userLat, userLong)
         }
@@ -359,8 +365,25 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             it.uiSettings.isZoomControlsEnabled = true
 
 
-            mMap!!.setOnCameraIdleListener {
-                mMap!!.projection.visibleRegion.latLngBounds.center.let { latLng ->
+                mMap!!.setOnCameraIdleListener {
+
+                   val tempLatLng= mMap!!.cameraPosition.target
+
+                    if (!isComingFirst) {
+                        userLat = tempLatLng.latitude
+                        userLong = tempLatLng.longitude
+                        getAddress(userLat, userLong)
+                    } else if (isSave) {
+                        userLat = tempLatLng.latitude
+                        userLong = tempLatLng.longitude
+                        getAddress(userLat, userLong)
+                    } else {
+                        isComingFirst = false
+                    }
+                    mMap!!.clear()
+                    mMap!!.addMarker(MarkerOptions().position(LatLng(userLat,userLong)))
+
+               /* mMap!!.projection.visibleRegion.latLngBounds.center.let { latLng ->
                     if (!isComingFirst) {
                         userLat = latLng.latitude
                         userLong = latLng.longitude
@@ -372,9 +395,11 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                     } else {
                         isComingFirst = false
                     }
+                    mMap!!.clear()
+                    mMap!!.addMarker(MarkerOptions().position(LatLng(userLat,userLong)))
                     //AppLogger.w("Latitude is : $latitude Longitude is$longitude")
 
-                }
+                }*/
             }
 
         }
@@ -400,7 +425,6 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                 .bearing(30f)
                 .tilt(45f)
                 .build() // Creates a CameraPosition from the builder
-
             mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
         }
@@ -411,7 +435,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
     private fun getAddress(lat: Double, lng: Double) {
 
 
-        lifecycleScope.launch(CoroutineContextProvider().IO) {
+        lifecycleScope.launch(CoroutineContextProvider().Main) {
             try {
                 val geocoder = Geocoder(this@ShippingAddressDetailsActivity, Locale.getDefault())
 

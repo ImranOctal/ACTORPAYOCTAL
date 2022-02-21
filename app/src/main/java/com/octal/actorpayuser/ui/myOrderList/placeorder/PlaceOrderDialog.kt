@@ -42,18 +42,31 @@ class PlaceOrderDialog(
         binding.orderRecyclerView.adapter = PlaceOrderAdapter(mContext,orderData.orderItemDtos){
                 pos, action ->
         }
-        binding.orderData = orderData
-        binding.orderDateText.text="Order Date & Time: "+methodsRepo.getFormattedOrderDate(orderData.createdAt)
+
+        binding.orderNumber.text=orderData.orderNo
+        binding.orderAmount.text=getString(R.string.rs).plus(orderData.totalPrice)
+        binding.bussinessName.text="Business Name: "+orderData.merchantDTO.businessName
+        binding.licenceNo.text="Licence No: "+orderData.merchantDTO.licenceNumber
+        binding.email.text="Email: "+orderData.merchantDTO.email
+        binding.contactNo.text="Contact No: "+orderData.merchantDTO.extensionNumber+""+orderData.merchantDTO.contactNumber
+        binding.deliveryAddressAddress1.text=orderData.shippingAddressDTO!!.addressLine1
+        binding.deliveryAddressAddress2.text=orderData.shippingAddressDTO.addressLine2
+        binding.deliveryAddressCity.text=orderData.shippingAddressDTO.city+", "+orderData.shippingAddressDTO!!.state
+
+        binding.orderStatus.text=orderData.orderStatus.replace("_"," ")
+
+        binding.orderDateText.text =
+            "Order Date: " + methodsRepo.getFormattedOrderDate(orderData!!.createdAt)
+
         if (orderData.shippingAddressDTO == null) {
             binding.deliveryAddressAddress1.visibility = View.GONE
             binding.deliveryAddressAddress2.visibility = View.GONE
             binding.deliveryAddressCity.visibility = View.GONE
-        } else if (orderData.shippingAddressDTO.addressLine2 == null || orderData.shippingAddressDTO.addressLine2.equals(
-                ""
-            )
-        ) {
+        } else if (orderData.shippingAddressDTO.addressLine2 == null || orderData.shippingAddressDTO?.addressLine2.equals("")) {
             binding.deliveryAddressAddress2.visibility = View.GONE
         }
+
+
         binding.order.setOnClickListener {
             dismiss()
             onDone("order")

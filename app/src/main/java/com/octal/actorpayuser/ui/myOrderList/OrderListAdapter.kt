@@ -36,7 +36,7 @@ class OrderListAdapter(val methodsRepo: MethodsRepo, private val orderList:Mutab
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindView(orderList[position])
+        holder.bindView(orderList[position],position)
     }
 
     override fun getItemCount(): Int {
@@ -52,31 +52,33 @@ class OrderListAdapter(val methodsRepo: MethodsRepo, private val orderList:Mutab
     }
 
     inner class MyViewHolder(val binding: RowOrderListItemBinding):RecyclerView.ViewHolder(binding.root) {
-            fun bindView(item:OrderData){
+            fun bindView(item:OrderData,position: Int){
                 binding.orderItem=item
                 binding.methodRepo=methodsRepo
 
                 binding.orderStatus.text=item.orderStatus.replace("_"," ")
 
 
-                if(item.orderItemDtos.size>3){
-                    binding.productImage1.visibility=View.VISIBLE
-                    binding.productImage2.visibility=View.VISIBLE
-                    binding.productImage3.visibility=View.VISIBLE
-                    binding.productImage4.visibility=View.VISIBLE
+                when {
+                    item.orderItemDtos.size>3 -> {
+                        binding.productImage1.visibility=View.VISIBLE
+                        binding.productImage2.visibility=View.VISIBLE
+                        binding.productImage3.visibility=View.VISIBLE
+                        binding.productImage4.visibility=View.VISIBLE
 
-                }
-                else if(item.orderItemDtos.size>2){
-                    binding.productImage1.visibility=View.VISIBLE
-                    binding.productImage2.visibility=View.VISIBLE
-                    binding.productImage3.visibility=View.VISIBLE
-                }
-                else if(item.orderItemDtos.size>1){
-                    binding.productImage1.visibility=View.VISIBLE
-                    binding.productImage2.visibility=View.VISIBLE
-                }
-                else if(item.orderItemDtos.size>0){
-                    binding.productImage1.visibility=View.VISIBLE
+                    }
+                    item.orderItemDtos.size>2 -> {
+                        binding.productImage1.visibility=View.VISIBLE
+                        binding.productImage2.visibility=View.VISIBLE
+                        binding.productImage3.visibility=View.VISIBLE
+                    }
+                    item.orderItemDtos.size>1 -> {
+                        binding.productImage1.visibility=View.VISIBLE
+                        binding.productImage2.visibility=View.VISIBLE
+                    }
+                    item.orderItemDtos.size>0 -> {
+                        binding.productImage1.visibility=View.VISIBLE
+                    }
                 }
                 try {
                     Glide.with(binding.root)
@@ -99,14 +101,10 @@ class OrderListAdapter(val methodsRepo: MethodsRepo, private val orderList:Mutab
                 catch (e:Exception){
 
                 }
-                Glide.with(binding.root)
-                    .load(item.orderItemDtos[0].image)
-                    .error(R.drawable.logo)
-                    .into(binding.productImage1)
 
 
                 binding.root.setOnClickListener {
-                    onClick(adapterPosition,Clicks.Details)
+                    onClick(position,Clicks.Details)
                 }
 
                 if(item.orderStatus == STATUS_SUCCESS || item.orderStatus == STATUS_READY || item.orderStatus == STATUS_COMPLETE || item.orderStatus == STATUS_DISPATCHED || item.orderStatus == STATUS_DELIVERED)

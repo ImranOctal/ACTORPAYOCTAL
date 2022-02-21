@@ -2,12 +2,8 @@ package com.octal.actorpayuser.notification
 
 import android.app.*
 import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
-import android.media.AudioManager
 import android.media.MediaPlayer
-import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -60,8 +56,7 @@ class NotificationManager : FirebaseMessagingService() {
             sharedPre= SharedPre.getInstance(this)!!
         }*/
         scope.launch {
-                    dateStore.isLoggedIn().collect {
-                        isLogin->
+                    dateStore.isLoggedIn().collect { _ ->
 
                         super.onMessageReceived(remoteMessage)
                         try {
@@ -134,13 +129,13 @@ class NotificationManager : FirebaseMessagingService() {
                 dateStore.getNotificationSound().collect {
                     notificationSound->
                     if (isNotificationMuted)
-                        playSound(this@NotificationManager,notificationSound)
+                        playSound()
                 }
             }
         }
     }
 
-    fun playSound(context: Context,notificationSound:String) {
+    fun playSound() {
 
 
         val mediaPlayer = MediaPlayer()

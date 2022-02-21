@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
-import com.octal.actorpayuser.databinding.ActivityProductDetailsBinding
 import com.octal.actorpayuser.databinding.FragmentProductDetailsBinding
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductListResponse

@@ -32,20 +32,6 @@
             android:value="@string/google_map_key" />
 
         <activity
-            android:name="com.octal.actorpayuser.ui.myOrderList.placeorder.PlaceOrderActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            />
-
-        <activity
-            android:name="com.octal.actorpayuser.ui.cart.CartActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            />
-        <activity
-            android:name="com.octal.actorpayuser.ui.productList.productdetails.ProductDetailsActivity"
-            android:exported="false" />
-        <activity
             android:name="com.octal.actorpayuser.ui.content.ContentActivity"
             android:exported="false"
             android:screenOrientation="portrait"

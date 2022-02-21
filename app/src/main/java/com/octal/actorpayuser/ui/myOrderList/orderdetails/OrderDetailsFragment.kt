@@ -122,10 +122,7 @@ class OrderDetailsFragment : BaseFragment() {
             binding.deliveryAddressAddress1.visibility = View.GONE
             binding.deliveryAddressAddress2.visibility = View.GONE
             binding.deliveryAddressCity.visibility = View.GONE
-        } else if (orderDetailsViewModel.orderData?.shippingAddressDTO?.addressLine2 == null || orderDetailsViewModel.orderData?.shippingAddressDTO?.addressLine2.equals(
-                ""
-            )
-        ) {
+        } else if (orderDetailsViewModel.orderData?.shippingAddressDTO?.addressLine2 == null || orderDetailsViewModel.orderData?.shippingAddressDTO?.addressLine2.equals("")) {
             binding.deliveryAddressAddress2.visibility = View.GONE
         }
         binding.orderNotesRecyclerView.layoutManager = LinearLayoutManager(context)
