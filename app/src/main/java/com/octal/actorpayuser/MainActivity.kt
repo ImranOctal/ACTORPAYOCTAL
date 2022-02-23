@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +27,6 @@ import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.ActivityMainBinding
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.IS_APP_FROM_SPLASH
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.IS_APP_IN_BACKGROUD
-import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.ui.adapter.FeaturesAdapter
 import com.octal.actorpayuser.ui.adapter.MenuAdapter
 import com.octal.actorpayuser.ui.addmoney.AddMoneyFragment
@@ -36,7 +36,7 @@ import com.octal.actorpayuser.ui.cart.CartViewModel
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HistoryBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HomeBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.ProfileBottomFragment
-import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.WalletBottomFragment
+import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.wallet.WalletBottomFragment
 import com.octal.actorpayuser.ui.dashboard.models.DrawerItems
 import com.octal.actorpayuser.ui.dispute.DisputeFragment
 import com.octal.actorpayuser.ui.misc.MiscFragment
@@ -50,8 +50,8 @@ import com.octal.actorpayuser.ui.settings.SettingsFragment
 import com.octal.actorpayuser.utils.CommonDialogsUtils
 import com.octal.actorpayuser.utils.OnFilterClick
 import com.octal.actorpayuser.viewmodel.ActorPayViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout
 import nl.psdcompany.duonavigationdrawer.views.DuoMenuView
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
@@ -426,45 +426,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         }
     }
 
-
-    private fun apiResponse() {
-        lifecycleScope.launch {
-            viewModel.actorResponseLive.collect {
-                when (it) {
-                    is ResponseSealed.loading -> {
-                        showLoadingDialog()
-                    }
-                    is ResponseSealed.Success -> {
-                        hideLoadingDialog()
-                        if (it.response is SuccessResponse) {
-                            CommonDialogsUtils.showCommonDialog(
-                                this@MainActivity,
-                                viewModel.methodRepo,
-                                "Success",
-                                it.response.message
-                            )
-                        } else {
-                            showCustomAlert(
-                                getString(R.string.please_try_after_sometime),
-                                binding.root
-                            )
-                        }
-                    }
-                    is ResponseSealed.ErrorOnResponse -> {
-                        hideLoadingDialog()
-                        showCustomAlert(
-                            it.message!!.message,
-                            binding.root
-                        )
-                    }
-                    is ResponseSealed.Empty -> {
-                        hideLoadingDialog()
-                    }
-                }
-            }
-        }
-    }
-
     private fun cartResponse() {
         lifecycleScope.launchWhenCreated {
 
@@ -476,19 +437,18 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     }
                     is ResponseSealed.Success -> {
                         hideLoadingDialog()
-
                     }
                     is ResponseSealed.ErrorOnResponse -> {
                         hideLoadingDialog()
                         cartViewModel.responseLive.value = ResponseSealed.Empty
 
                         if (event.message!!.code == 403) {
+                            cartViewModel.viewModelScope.cancel()
                             forcelogout(viewModel.methodRepo)
                         }
                     }
                     is ResponseSealed.Empty -> {
                         hideLoadingDialog()
-
                     }
 
                 }
@@ -568,7 +528,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     updateUI("Notifications",false,false,false,false,false,false,false)
                 }
                 R.id.disputeFragment -> {
-                    updateUI("Disputes",false,false,false,false,false,false,false)
+                    updateUI("Disputes",false,false,false,false,true,false,false)
                 }
                 R.id.disputeDetailsFragment -> {
                     updateUI("Dispute Details",false,false,false,false,false,false,false)
@@ -583,6 +543,9 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                 }
                 R.id.placeOrderFragment -> {
                     updateUI("Place Order",false,false,false,false,false,false,false)
+                }
+                R.id.walletDetailsFragment -> {
+                    updateUI("Wallet Details",false,false,false,false,false,false,false)
                 }
             }
         }
@@ -698,6 +661,15 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
                 return false
             }
+            BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED -> {
+                return false
+            }
+            BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED -> {
+                return false
+            }
+            BiometricManager.BIOMETRIC_STATUS_UNKNOWN -> {
+                return false
+            }
         }
         return false
 
@@ -797,9 +769,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 authSheet?.dismiss()
-
-            }
-            if (result.resultCode == Activity.RESULT_CANCELED) {
 
             }
         }

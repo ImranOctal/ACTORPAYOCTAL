@@ -10,6 +10,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.Sh
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -31,10 +32,16 @@ class ShippingAddressViewModel(val dispatcherProvider: CoroutineContextProvider,
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
                     apiRepo.getAddresses(token)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
-                    is RetrofitResource.Success -> responseLive.value =
-                        ResponseSealed.Success(response.data!!)
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
+                    is RetrofitResource.Success ->{
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                        this.cancel()
+                    }
                 }
             }
         }

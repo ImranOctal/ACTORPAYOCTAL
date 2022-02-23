@@ -9,6 +9,7 @@ import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.FAQResponseData
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -29,13 +30,17 @@ class MiscViewModel(
         viewModelScope.launch(dispatcherProvider.IO) {
             miscResponseLive.value = ResponseSealed.loading(true)
             when (val response = apiRepo.getFAQ()) {
-                is RetrofitResource.Error -> miscResponseLive.value =
-                    ResponseSealed.ErrorOnResponse(response.message)
+                is RetrofitResource.Error ->{
+                    miscResponseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    this.cancel()
+                }
                 is RetrofitResource.Success -> {
                     faqList.clear()
                     faqList.addAll(response.data!!.data)
                     miscResponseLive.value =
                         ResponseSealed.Success(response.data)
+                    this.cancel()
                 }
             }
         }

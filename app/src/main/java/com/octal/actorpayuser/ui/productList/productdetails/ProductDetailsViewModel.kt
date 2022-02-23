@@ -11,6 +11,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.products.Pr
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductParams
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -32,10 +33,16 @@ class ProductDetailsViewModel(val dispatcherProvider: CoroutineContextProvider, 
                     apiRepo.getProducts(token,productData.pageNumber, productData.pageSize,
                         ProductParams()
                     )) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
-                    is RetrofitResource.Success -> responseLive.value =
-                        ResponseSealed.Success(response.data!!)
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
+                    is RetrofitResource.Success ->{
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                        this.cancel()
+                    }
                 }
             }
         }
@@ -48,10 +55,16 @@ class ProductDetailsViewModel(val dispatcherProvider: CoroutineContextProvider, 
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
                     apiRepo.getProductById(token,productId)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
-                    is RetrofitResource.Success -> responseLive.value =
-                        ResponseSealed.Success(response.data!!)
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
+                    is RetrofitResource.Success ->{
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                        this.cancel()
+                    }
                 }
             }
         }

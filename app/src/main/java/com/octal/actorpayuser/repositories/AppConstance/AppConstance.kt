@@ -73,6 +73,9 @@ class AppConstance {
         const val SEND_DISPUTE_MESSAGE: String = SUB_DOMAIN+ SUB_DOMAIN2+"dispute/send/message"
         const val RAISE_DISPUTE: String = SUB_DOMAIN+ SUB_DOMAIN2+"dispute/raise"
 
+        const val ADD_MONEY:String=SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/addMoney"
+        const val WALLET_HISTORY:String=SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/list/paged"
+
         const val STATUS_SUCCESS:String="SUCCESS"
         const val STATUS_READY:String="READY"
         const val STATUS_CANCELLED:String="CANCELLED"
@@ -92,6 +95,7 @@ class AppConstance {
         const val STATUS_CANCEL_ORDER:String="Cancel Order"
         const val STATUS_RETURN_ORDER:String="Return Order"
         const val STATUS_DISPUTE:String="Raise Dispute"
+
 
         val dateFormate1= SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
         val dateFormate2= SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)

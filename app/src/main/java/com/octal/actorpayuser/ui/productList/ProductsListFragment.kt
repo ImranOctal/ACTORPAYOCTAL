@@ -148,7 +148,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                         }
                         is ResponseSealed.Success -> {
                             hideLoading()
-                            productViewModel.responseLive.value=ResponseSealed.Empty
+                             productViewModel.responseLive.value=ResponseSealed.Empty
                             when (event.response) {
                                 is ProductListResponse -> {
                                   updateUI(event.response.data)

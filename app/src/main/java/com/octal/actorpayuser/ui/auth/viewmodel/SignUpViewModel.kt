@@ -11,6 +11,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -56,10 +57,16 @@ class SignupViewModel(val dispatcherProvider: CoroutineContextProvider, val meth
                 )
 
                 when (val response = apiRepo.signUpNow(body)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
-                    is RetrofitResource.Success -> responseLive.value =
-                        ResponseSealed.Success(response.data!!)
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
+                    is RetrofitResource.Success ->{
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                        this.cancel()
+                    }
                 }
             }
         }

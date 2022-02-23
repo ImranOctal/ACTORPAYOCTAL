@@ -105,6 +105,7 @@ class CartFragment : BaseFragment() {
             binding.imageEmpty.visibility=View.VISIBLE
             binding.textEmpty.visibility=View.VISIBLE
             binding.totalLayout.visibility=View.GONE
+            binding.imageEmpty.playAnimation()
 
         }
         else{

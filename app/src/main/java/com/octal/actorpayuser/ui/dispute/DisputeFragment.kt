@@ -82,8 +82,10 @@ class DisputeFragment : BaseFragment(), OnFilterClick {
         binding.rvDispute.adapter?.notifyDataSetChanged()
 
         if (disputeViewModel.disputeListData.items.size > 0) {
+            binding.imageEmpty.visibility = View.GONE
             binding.textEmpty.visibility = View.GONE
         } else {
+            binding.imageEmpty.visibility = View.VISIBLE
             binding.textEmpty.visibility = View.VISIBLE
         }
     }

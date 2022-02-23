@@ -12,6 +12,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.cart.CartPa
 import com.octal.actorpayuser.repositories.retrofitrepository.models.cart.CartUpdateParams
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -30,16 +31,22 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(true)
             methodRepo.dataStore.getAccessToken().collect { token ->
+
                 when (val response =
                     apiRepo.getCarts(token)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Error -> {
+
+                        responseLive.value = ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
                     is RetrofitResource.Success -> {
-                        //cartItems.postValue(clear())!!.
+
+
                         cartData=response.data!!.data
                         cartItems.emit(response.data.data.cartItemDTOList)
                         responseLive.value =
                             ResponseSealed.Success(response.data)
+                        this.cancel()
                     }
                 }
             }
@@ -54,12 +61,16 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                 val cartParams=CartParams(prodId,price)
                 when (val response =
                     apiRepo.addCart(token,cartParams)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Error ->
+                    {
+                        responseLive.value = ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
                     is RetrofitResource.Success -> {
                         cartItems.emit(response.data!!.data.cartItemDTOList)
                         responseLive.value =
                             ResponseSealed.Success(response.data)
+                        this.cancel()
                     }
                 }
             }
@@ -72,12 +83,16 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
                     apiRepo.deleteCart(token,cartId)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
                     is RetrofitResource.Success -> {
                         cartItems.emit(response.data!!.data.cartItemDTOList)
                         responseLive.value =
                             ResponseSealed.Success(response.data)
+                        this.cancel()
                     }
                 }
             }
@@ -92,12 +107,16 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                 val cartParams=CartUpdateParams(cartId,quantity)
                 when (val response =
                     apiRepo.updateCart(token,cartParams)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Error -> {
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
                     is RetrofitResource.Success -> {
                         cartItems.emit(response.data!!.data.cartItemDTOList)
                         responseLive.value =
                             ResponseSealed.Success(response.data)
+                        this.cancel()
                     }
                 }
             }
@@ -112,18 +131,24 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
                     apiRepo.deleteAllCart(token)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Error -> {
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
                     is RetrofitResource.Success -> {
                         cartItems.emit(response.data!!.data.cartItemDTOList)
                         responseLive.value =
                             ResponseSealed.Success(response.data)
+                        this.cancel()
                     }
                 }
             }
         }
     }
 
-
-
+    override fun onCleared() {
+        viewModelScope.cancel()
+        super.onCleared()
+    }
 }

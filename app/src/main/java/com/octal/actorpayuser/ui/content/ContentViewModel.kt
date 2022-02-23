@@ -8,6 +8,7 @@ import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.repositories.retrofitrepository.models.FailResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -34,10 +35,17 @@ class ContentViewModel(val dispatcherProvider: CoroutineContextProvider, val met
         viewModelScope.launch(dispatcherProvider.IO) {
             contentResponseLive.value = ResponseContentSealed.loading()
             when (val response = apiRepo.getContent(type)) {
-                is RetrofitResource.Error -> contentResponseLive.value =
-                    ResponseContentSealed.ErrorOnResponse(response.message)
-                is RetrofitResource.Success -> contentResponseLive.value =
-                    ResponseContentSealed.Success(response.data!!)
+                is RetrofitResource.Error ->{
+                    contentResponseLive.value =
+                        ResponseContentSealed.ErrorOnResponse(response.message)
+                    this.cancel()
+                }
+                is RetrofitResource.Success -> {
+
+                    contentResponseLive.value =
+                        ResponseContentSealed.Success(response.data!!)
+                    this.cancel()
+                }
             }
         }
     }

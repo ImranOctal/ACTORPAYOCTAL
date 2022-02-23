@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.dashboard.bottomnavfragments.WalletBottomFragment"
+    tools:context=".ui.dashboard.bottomnavfragments.wallet.WalletBottomFragment"
     android:layout_marginHorizontal="@dimen/_15sdp"
     android:layout_marginTop="@dimen/_20sdp"
     >
@@ -13,11 +13,49 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvItemsWalletID"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/_50sdp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        android:gravity="center"
+
+        >
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/image_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_180sdp"
+            app:lottie_fileName="not_found_lottie.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:visibility="gone"
+            />
+
+
+        <TextView
+            android:id="@+id/text_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/image_empty"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/you_have_not_done_any_transactions_yet"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/text_color"
+            android:fontFamily="@font/poppins_regular"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

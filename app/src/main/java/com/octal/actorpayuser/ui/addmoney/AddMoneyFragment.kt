@@ -4,18 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
 import com.actorpay.merchant.utils.SingleClickListener
+import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
+import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentAddMoneyBinding
-import com.octal.actorpayuser.repositories.AppConstance.Clicks
-import com.octal.actorpayuser.ui.dummytransactionprocess.DummyTransactionProcessDialog
-import com.octal.actorpayuser.ui.dummytransactionprocess.DummyTransactionStatusDialog
+import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 
 class AddMoneyFragment : BaseFragment() {
 
-    lateinit var binding:FragmentAddMoneyBinding
+    lateinit var binding: FragmentAddMoneyBinding
     private val addMoneyViewModel: AddMoneyViewModel by inject()
 
     override fun onCreateView(
@@ -24,6 +29,8 @@ class AddMoneyFragment : BaseFragment() {
     ): View {
         binding = FragmentAddMoneyBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        apiResponse()
 
 
         binding.buttonAddMoney.setOnClickListener(object : SingleClickListener() {
@@ -53,37 +60,67 @@ class AddMoneyFragment : BaseFragment() {
         return root
     }
 
-    fun addAmount(amount:String){
-        binding.enterAmountEdt.error=null
+    fun addAmount(amount: String) {
+        binding.enterAmountEdt.error = null
         binding.enterAmountEdt.setText(amount)
         binding.enterAmountEdt.setSelection(binding.enterAmountEdt.text.toString().length)
     }
 
-    fun validate(){
-        val amount=binding.enterAmountEdt.text.toString().trim()
-        if(amount.equals("")){
-            binding.enterAmountEdt.error="Please Enter Amount"
+    fun validate() {
+        val amount = binding.enterAmountEdt.text.toString().trim()
+        if (amount.equals("")) {
+            binding.enterAmountEdt.error = "Please Enter Amount"
             binding.enterAmountEdt.requestFocus()
-        }
-        else if(amount.toDouble()<1)
-        {
-            binding.enterAmountEdt.error="Amount should not less 1"
+        } else if (amount.toDouble() < 1) {
+            binding.enterAmountEdt.error = "Amount should not less 1"
             binding.enterAmountEdt.requestFocus()
+        } else {
+            addMoneyViewModel.addMoney(AddMoneyParams(amount))
         }
-        else{
-            DummyTransactionProcessDialog(requireActivity(),addMoneyViewModel.methodRepo){
-                action ->
-                when(action){
-                    Clicks.Success->{
-                        binding.enterAmountEdt.setText("")
-                        DummyTransactionStatusDialog(requireActivity(),addMoneyViewModel.methodRepo,true).show(childFragmentManager,"status")
+    }
+
+    fun apiResponse() {
+
+        lifecycleScope.launchWhenStarted {
+            addMoneyViewModel.responseLive.collect { event ->
+                when (event) {
+                    is ResponseSealed.loading -> {
+                        showLoading()
                     }
-                    Clicks.Cancel->{
-                        DummyTransactionStatusDialog(requireActivity(),addMoneyViewModel.methodRepo,false).show(childFragmentManager,"status")
+                    is ResponseSealed.Success -> {
+                        hideLoading()
+                        when (event.response) {
+                            is SuccessResponse -> {
+                                AddTransactionStatusDialog(
+                                    requireActivity(),
+                                    addMoneyViewModel.methodRepo,
+                                    binding.enterAmountEdt.text.toString().toDouble()
+                                ) {
+                                    val navOptions = NavOptions.Builder()
+                                        .setPopUpTo(R.id.homeBottomFragment, false).build()
+                                    Navigation.findNavController(requireView())
+                                        .navigate(R.id.walletBottomFragment, null, navOptions)
+                                }.show(childFragmentManager, "status")
+
+                                binding.enterAmountEdt.setText("")
+                            }
+                        }
+                        addMoneyViewModel.responseLive.value = ResponseSealed.Empty
                     }
-                    else ->Unit
+                    is ResponseSealed.ErrorOnResponse -> {
+                        addMoneyViewModel.responseLive.value = ResponseSealed.Empty
+                        hideLoading()
+                        if (event.message!!.code == 403) {
+                            forcelogout(addMoneyViewModel.methodRepo)
+                        }
+
+                    }
+                    is ResponseSealed.Empty -> {
+                        hideLoading()
+
+                    }
                 }
-            }.show(childFragmentManager,"process")
+            }
         }
     }
 }

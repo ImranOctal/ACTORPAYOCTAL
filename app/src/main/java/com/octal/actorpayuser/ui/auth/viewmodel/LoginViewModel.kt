@@ -12,6 +12,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitR
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.*
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
 
 
@@ -32,10 +33,16 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
                 val body = LoginParams(email, password, deviceInfo)
                 responseLive.value = ResponseSealed.loading(true)
                 when (val response = apiRepo.loginNow(body)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
-                    is RetrofitResource.Success -> responseLive.value =
-                        ResponseSealed.Success(response.data!!)
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
+                    is RetrofitResource.Success ->{
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                        this.cancel()
+                    }
                 }
             }
         }

@@ -8,6 +8,7 @@ import com.octal.actorpayuser.di.models.CoroutineContextProvider
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -22,10 +23,16 @@ class ActorPayViewModel(val dispatcherProvider: CoroutineContextProvider, val me
         viewModelScope.launch(dispatcherProvider.IO){
             actorResponseLive.value= ResponseSealed.loading(true)
             when(val response=apiRepo.getAllCountries()){
-                is RetrofitResource.Error -> actorResponseLive.value =
-                    ResponseSealed.ErrorOnResponse(response.message)
-                is RetrofitResource.Success -> actorResponseLive.value =
-                    ResponseSealed.Success(response.data!!)
+                is RetrofitResource.Error ->{
+                    actorResponseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    this.cancel()
+                }
+                is RetrofitResource.Success ->{
+                    actorResponseLive.value =
+                        ResponseSealed.Success(response.data!!)
+                    this.cancel()
+                }
             }
         }
     }

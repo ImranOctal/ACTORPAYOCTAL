@@ -39,9 +39,14 @@ import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitR
 import com.octal.actorpayuser.repositories.retrofitrepository.apiclient.ApiClient
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.*
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RetrofitMainRepository constructor(var context: Context, private var apiClient: ApiClient) :
     RetrofitRepository {
@@ -1071,6 +1076,67 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
     ): RetrofitResource<RaiseDisputeResponse> {
         try {
             val data = apiClient.raiseDipute(B_Token +token,disputeJson,file)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
+    override suspend fun addMoney(
+        token: String,
+        addMoneyParams: AddMoneyParams
+    ): RetrofitResource<SuccessResponse> {
+        try {
+            val data = apiClient.addMoney(B_Token +token,addMoneyParams)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
+    override suspend fun getWalletHistory(
+        token: String,
+        pageNo: Int,
+        pageSize: Int,
+        addMoneyParams: AddMoneyParams
+    ): RetrofitResource<WalletHistoryResponse> {
+        try {
+            val data = apiClient.getWalletHistory(B_Token +token,pageNo, pageSize, addMoneyParams)
+
             val result = data.body()
             if (data.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)

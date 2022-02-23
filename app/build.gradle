@@ -144,7 +144,9 @@ dependencies {
 
     implementation 'com.github.omadahealth:swipy:1.2.3@aar'
 
-    implementation 'com.google.android.libraries.places:places:2.4.0'
+
+    implementation "com.airbnb.android:lottie:3.4.0"
+
 
 
 }

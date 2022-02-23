@@ -12,6 +12,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.order.Order
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -33,11 +34,15 @@ class DisputeViewModel (val dispatcherProvider: CoroutineContextProvider, val me
                     apiRepo.getAllDisputes(token,disputeListData.pageNumber,disputeListData.pageSize,
                         disputeListParams
                     )) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
                     is RetrofitResource.Success -> {
                         responseLive.value =
                             ResponseSealed.Success(response.data!!)
+                        this.cancel()
                     }
                 }
             }

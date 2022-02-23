@@ -10,6 +10,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.order.AddNo
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderData
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -51,11 +52,15 @@ class OrderDetailsViewModel(
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
                     apiRepo.changeOrderItemsStatus(token, orderNo,prod,f1)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
                     is RetrofitResource.Success -> {
                         responseLive.value =
                             ResponseSealed.Success(response.data!!)
+                        this.cancel()
                     }
                 }
             }
@@ -68,11 +73,15 @@ class OrderDetailsViewModel(
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
                     apiRepo.getOrder(token,orderNo)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
                     is RetrofitResource.Success -> {
                         responseLive.value =
                             ResponseSealed.Success(response.data!!)
+                        this.cancel()
                     }
                 }
             }

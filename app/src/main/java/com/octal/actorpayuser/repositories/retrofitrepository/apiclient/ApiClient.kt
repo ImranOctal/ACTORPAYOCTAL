@@ -6,6 +6,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.A
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.ADDRESS_LIST
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.ADDRESS_UPDATE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.ADD_CART
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.ADD_MONEY
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.Add_Note
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.CATEGORIE_LIST
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.CHANGE_PASSWORD
@@ -36,6 +37,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.U
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.UPDATE_PROFILE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.VAR_ID
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.VERIFY_OTP
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.WALLET_HISTORY
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginParams
@@ -63,6 +65,8 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.promocodes.
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -305,5 +309,19 @@ interface ApiClient {
         @Part(AppConstance.DISPUTE) product: RequestBody,
         @Part file: MultipartBody.Part?,
     ): Response<RaiseDisputeResponse>
+
+    @POST(ADD_MONEY)
+    suspend fun addMoney(
+        @Header("Authorization") token: String,
+        @Body addMoneyParams: AddMoneyParams,
+    ): Response<SuccessResponse>
+
+    @POST(WALLET_HISTORY)
+    suspend fun getWalletHistory(
+        @Header("Authorization") token: String,
+        @Query("pageNo") pageNo: Int,
+        @Query("pageSize") pageSize: Int,
+        @Body addMoneyParams: AddMoneyParams
+    ): Response<WalletHistoryResponse>
 
 }

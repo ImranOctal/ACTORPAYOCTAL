@@ -16,9 +16,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.octal.actorpayuser.R
+import com.octal.actorpayuser.databinding.ProgressDialogBinding
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.ui.auth.LoginActivity
 import com.octal.actorpayuser.utils.CommonDialogsUtils
@@ -116,7 +119,10 @@ abstract class BaseActivity : AppCompatActivity() {
                 window.setGravity(Gravity.CENTER)
                 progressDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             }
-            progressDialog!!.setContentView(R.layout.progress_dialog)
+            val binding=DataBindingUtil.inflate<ProgressDialogBinding>(layoutInflater,R.layout.progress_dialog,null,false)
+            progressDialog!!.setContentView(binding.root)
+//            Glide.with(this).load(R.drawable.bar_loader).error(R.drawable.logo)
+//                .into(binding.imgLoading)
             progressDialog!!.setCancelable(false)
             progressDialog!!.setCanceledOnTouchOutside(false)
             progressDialog!!.show()

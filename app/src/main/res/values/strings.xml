@@ -174,5 +174,9 @@
     <string name="disputes">Disputes</string>
     <string name="raise_dipute">Raise Dipute</string>
     <string name="dispute_raise_successfully">Dispute Raise Successfully</string>
+    <string name="no_product_available">No product available</string>
+    <string name="cart_is_empty">Cart is Empty</string>
+    <string name="no_promo_available_for_you">No promo available for you</string>
+    <string name="you_have_not_done_any_transactions_yet">You have not done any transaction yet</string>
 
 </resources>

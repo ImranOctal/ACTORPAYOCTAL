@@ -8,6 +8,7 @@ import com.octal.actorpayuser.di.models.CoroutineContextProvider
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -31,10 +32,16 @@ class ProfileViewModel(
             methodRepo.dataStore.getUserId().collect { id ->
                 methodRepo.dataStore.getAccessToken().collect { token ->
                     when (val response = apiRepo.getProfile(id, token)) {
-                        is RetrofitResource.Error -> profileResponseLive.value =
-                            ResponseSealed.ErrorOnResponse(response.message)
-                        is RetrofitResource.Success -> profileResponseLive.value =
-                            ResponseSealed.Success(response.data!!)
+                        is RetrofitResource.Error ->{
+                            profileResponseLive.value =
+                                ResponseSealed.ErrorOnResponse(response.message)
+                            this.cancel()
+                        }
+                        is RetrofitResource.Success ->{
+                            profileResponseLive.value =
+                                ResponseSealed.Success(response.data!!)
+                            this.cancel()
+                        }
                     }
                 }
             }
@@ -54,10 +61,16 @@ class ProfileViewModel(
                         contactNumber,
                         id, token
                     )) {
-                        is RetrofitResource.Error -> profileResponseLive.value =
-                            ResponseSealed.ErrorOnResponse(response.message)
-                        is RetrofitResource.Success -> profileResponseLive.value =
-                            ResponseSealed.Success(response.data!!)
+                        is RetrofitResource.Error -> {
+                            profileResponseLive.value =
+                                ResponseSealed.ErrorOnResponse(response.message)
+                            this.cancel()
+                        }
+                        is RetrofitResource.Success ->{
+                            profileResponseLive.value =
+                                ResponseSealed.Success(response.data!!)
+                            this.cancel()
+                        }
                     }
                 }
             }
@@ -69,10 +82,16 @@ class ProfileViewModel(
             profileResponseLive.value = ResponseSealed.loading(true)
                 methodRepo.dataStore.getAccessToken().collect { token ->
                     when (val response = apiRepo.sendOtp(token)) {
-                        is RetrofitResource.Error -> profileResponseLive.value =
-                            ResponseSealed.ErrorOnResponse(response.message)
-                        is RetrofitResource.Success -> profileResponseLive.value =
-                            ResponseSealed.Success(response.data!!)
+                        is RetrofitResource.Error -> {
+                            profileResponseLive.value =
+                                ResponseSealed.ErrorOnResponse(response.message)
+                            this.cancel()
+                        }
+                        is RetrofitResource.Success ->{
+                            profileResponseLive.value =
+                                ResponseSealed.Success(response.data!!)
+                            this.cancel()
+                        }
                     }
                 }
         }
@@ -82,10 +101,16 @@ class ProfileViewModel(
             profileResponseLive.value = ResponseSealed.loading(true)
                 methodRepo.dataStore.getAccessToken().collect { token ->
                     when (val response = apiRepo.verifyOtp(otp,token)) {
-                        is RetrofitResource.Error -> profileResponseLive.value =
-                            ResponseSealed.ErrorOnResponse(response.message)
-                        is RetrofitResource.Success -> profileResponseLive.value =
-                            ResponseSealed.Success(response.data!!)
+                        is RetrofitResource.Error -> {
+                            profileResponseLive.value =
+                                ResponseSealed.ErrorOnResponse(response.message)
+                            this.cancel()
+                        }
+                        is RetrofitResource.Success ->{
+                            profileResponseLive.value =
+                                ResponseSealed.Success(response.data!!)
+                            this.cancel()
+                        }
                     }
                 }
         }

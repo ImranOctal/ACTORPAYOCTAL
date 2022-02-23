@@ -1,4 +1,4 @@
-package com.octal.actorpayuser.ui.dummytransactionprocess
+package com.octal.actorpayuser.ui.addmoney
 
 import android.app.Activity
 import android.app.Dialog
@@ -7,23 +7,24 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.octal.actorpayuser.R
-import com.octal.actorpayuser.databinding.TransactionStatusDialogBinding
+import com.octal.actorpayuser.databinding.AddTransactionStatusDialogBinding
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 
-class DummyTransactionStatusDialog(
+class AddTransactionStatusDialog(
     private val mContext: Activity,
     val methodsRepo: MethodsRepo,
-    val isSuccess:Boolean,
+    val amount:Double,
+    val onClick:()->Unit
 ): DialogFragment() {
 
-    lateinit var binding: TransactionStatusDialogBinding
+    lateinit var binding: AddTransactionStatusDialogBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val dialog = Dialog(mContext, R.style.MainDialog)
         binding = DataBindingUtil.inflate(
             layoutInflater,
-            R.layout.transaction_status_dialog,
+            R.layout.add_transaction_status_dialog,
             null,
             false
         )
@@ -33,19 +34,14 @@ class DummyTransactionStatusDialog(
         binding.back.setOnClickListener {
             dismiss()
         }
+        binding.history.setOnClickListener {
+            onClick()
+        }
 
-        if(isSuccess){
             binding.paymentIcon.setAnimation("success_tick_lottie.json")
             binding.paymentIcon.playAnimation()
-            binding.paymentStatus.text="Payment Succeed!"
-            binding.paymentStatusText.visibility= View.VISIBLE
-        }
-        else{
-            binding.paymentIcon.setAnimation("fail_tick_lottie.json")
-            binding.paymentIcon.playAnimation()
-            binding.paymentStatus.text="Payment Failed!"
-            binding.paymentStatusText.visibility= View.GONE
-        }
+            binding.paymentStatusText.setText("Amount ₹$amount\nhas been added successfully")
+
 
         return dialog
 

@@ -102,7 +102,7 @@
         tools:layout="@layout/fragment_f_a_q" />
     <fragment
         android:id="@+id/walletBottomFragment"
-        android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.WalletBottomFragment"
+        android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.wallet.WalletBottomFragment"
         android:label="WalletBottomFragment" />
     <fragment
         android:id="@+id/promoListFragment"
@@ -162,5 +162,9 @@
         android:name="com.octal.actorpayuser.ui.myOrderList.placeorder.PlaceOrderFragment"
         android:label="fragment_place_order"
         tools:layout="@layout/fragment_place_order" />
+    <fragment
+        android:id="@+id/walletDetailsFragment"
+        android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.wallet.WalletDetailsFragment"
+        android:label="WalletDetailsFragment" />
 
 </navigation>
