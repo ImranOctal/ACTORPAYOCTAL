@@ -175,12 +175,12 @@ class TransferMoneyFragment : BaseFragment() {
         val contact = binding.emailNumberField.text.toString().trim()
         if (transferMoneyViewModel.methodRepo.isValidEmail(contact)) {
             val bundle =
-                bundleOf(KEY_KEY to KEY_EMAIL, KEY_NAME to "")
+                bundleOf(KEY_KEY to KEY_EMAIL, KEY_NAME to contact)
             Navigation.findNavController(requireView())
                 .navigate(R.id.payFragment, bundle)
         } else if (transferMoneyViewModel.methodRepo.isValidPhoneNumber(contact)) {
             val bundle =
-                bundleOf(KEY_KEY to KEY_MOBILE, KEY_NAME to "")
+                bundleOf(KEY_KEY to KEY_MOBILE, KEY_NAME to contact)
             Navigation.findNavController(requireView())
                 .navigate(R.id.payFragment, bundle)
         } else {

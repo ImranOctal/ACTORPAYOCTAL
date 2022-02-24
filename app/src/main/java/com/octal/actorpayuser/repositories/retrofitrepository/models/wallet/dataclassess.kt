@@ -7,6 +7,21 @@ data class AddMoneyParams(
     var transferAmount:String?
 )
 
+data class TransferMoneyParams(
+    var beneficiaryEmailId:String,
+    var transferAmount:String,
+    var transactionRemark:String
+)
+
+data class WallletMoneyParams(
+    var walletTransactionId:String,
+    var transactionAmountTo:String,
+    var transactionAmountFrom:String,
+    var transactionRemark:String,
+    var transactionType:String,
+)
+
+
 data class WalletHistoryResponse(
 
     var message: String,

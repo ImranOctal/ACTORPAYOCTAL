@@ -14,6 +14,7 @@ import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentAddMoneyBinding
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
+import com.octal.actorpayuser.utils.TransactionStatusSuccessDialog
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
@@ -91,10 +92,12 @@ class AddMoneyFragment : BaseFragment() {
                         hideLoading()
                         when (event.response) {
                             is SuccessResponse -> {
-                                AddTransactionStatusDialog(
+                                TransactionStatusSuccessDialog(
                                     requireActivity(),
                                     addMoneyViewModel.methodRepo,
-                                    binding.enterAmountEdt.text.toString().toDouble()
+                                    binding.enterAmountEdt.text.toString().toDouble(),
+                                    "Amount ₹${binding.enterAmountEdt.text}\n"+
+                                            "has been added successfully"
                                 ) {
                                     val navOptions = NavOptions.Builder()
                                         .setPopUpTo(R.id.homeBottomFragment, false).build()

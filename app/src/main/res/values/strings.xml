@@ -158,6 +158,14 @@
         <item>CLOSED</item>
         <item>PENDING</item>
     </string-array>
+
+    <string-array name="wallet_txn_type_status_array">
+        <item>Select Status</item>
+        <item>CREDIT</item>
+        <item>DEBIT</item>
+    </string-array>
+
+
     <string name="title_activity_maps">MapsActivity</string>
     <string name="price">Price</string>
     <string name="no_orders_found">No order found</string>
@@ -178,5 +186,6 @@
     <string name="cart_is_empty">Cart is Empty</string>
     <string name="no_promo_available_for_you">No promo available for you</string>
     <string name="you_have_not_done_any_transactions_yet">You have not done any transaction yet</string>
+    <string name="network_error">Network error</string>
 
 </resources>

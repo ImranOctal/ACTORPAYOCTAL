@@ -74,6 +74,7 @@ class AppConstance {
         const val RAISE_DISPUTE: String = SUB_DOMAIN+ SUB_DOMAIN2+"dispute/raise"
 
         const val ADD_MONEY:String=SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/addMoney"
+        const val TRANSFER_MONEY:String=SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/transfer"
         const val WALLET_HISTORY:String=SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/list/paged"
 
         const val STATUS_SUCCESS:String="SUCCESS"

@@ -112,7 +112,7 @@ class SignUpScreenFragment : BaseFragment() {
                 binding.codePicker.text=GlobalData.allCountries[0].countryCode
             }
             binding.countryLayout.setOnClickListener {
-                CountryPicker(requireContext(),viewModel.methodRepo,GlobalData.allCountries){
+                CountryPicker(requireContext(),requireActivity(),viewModel.methodRepo,GlobalData.allCountries){
                     binding.codePicker.text=GlobalData.allCountries[it].countryCode
                 }.show()
             }
@@ -128,7 +128,9 @@ class SignUpScreenFragment : BaseFragment() {
                 // Apply the adapter to the spinner
                 binding.spinnerAutocomplete.setAdapter(adapter)
             }
-
+            binding.spinnerAutocomplete.setOnClickListener {
+                signupViewModel.methodRepo.hideSoftKeypad(requireActivity())
+            }
             binding.spinnerAutocomplete.setOnItemClickListener { _, _, _, _ ->
                 binding.errorOnGender.visibility = View.GONE
                 signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupGender2, R.drawable.btn_outline_gray)
@@ -140,6 +142,7 @@ class SignUpScreenFragment : BaseFragment() {
                 val year = c.get(Calendar.YEAR)
                 val month = c.get(Calendar.MONTH)
                 val day = c.get(Calendar.DAY_OF_MONTH)
+                signupViewModel.methodRepo.hideSoftKeypad(requireActivity())
 
 
                 val dpd = DatePickerDialog(requireActivity(),  { _, yearR, monthOfYear, dayOfMonth ->

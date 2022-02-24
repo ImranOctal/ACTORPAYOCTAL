@@ -21,6 +21,7 @@ import com.octal.actorpayuser.utils.CommonDialogsUtils
 import com.octal.actorpayuser.utils.GlobalData
 import com.octal.actorpayuser.viewmodel.ActorPayViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -52,19 +53,14 @@ class SplashActivity : BaseActivity() {
                 viewModel.getAllCountries()
             }
             else{
-                showCustomToast("No Internet Available")
-                finishAffinity()
+                CommonDialogsUtils.networkDialog(this@SplashActivity,viewModel.methodRepo){
+                    viewModel.getAllCountries()
+                }
             }
-
         }
     }
 
-
-
-
-
     private fun gotoNextActivity(){
-
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.methodRepo.dataStore.isIntro().collect { isIntro ->
                 viewModel.methodRepo.dataStore.isLoggedIn().collect { isLoggedIn ->

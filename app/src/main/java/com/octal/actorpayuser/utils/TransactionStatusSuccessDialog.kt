@@ -1,4 +1,4 @@
-package com.octal.actorpayuser.ui.addmoney
+package com.octal.actorpayuser.utils
 
 import android.app.Activity
 import android.app.Dialog
@@ -10,10 +10,11 @@ import com.octal.actorpayuser.R
 import com.octal.actorpayuser.databinding.AddTransactionStatusDialogBinding
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 
-class AddTransactionStatusDialog(
+class TransactionStatusSuccessDialog(
     private val mContext: Activity,
     val methodsRepo: MethodsRepo,
     val amount:Double,
+    val message:String,
     val onClick:()->Unit
 ): DialogFragment() {
 
@@ -40,7 +41,7 @@ class AddTransactionStatusDialog(
 
             binding.paymentIcon.setAnimation("success_tick_lottie.json")
             binding.paymentIcon.playAnimation()
-            binding.paymentStatusText.setText("Amount ₹$amount\nhas been added successfully")
+            binding.paymentStatusText.setText(message)
 
 
         return dialog

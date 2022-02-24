@@ -33,6 +33,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.S
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SIGNUP
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SOCIAL_LOGIN
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SUB_CATEGORIE_LIST
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.TRANSFER_MONEY
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.UPDATE_CART
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.UPDATE_PROFILE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.VAR_ID
@@ -66,7 +67,9 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.Sh
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.TransferMoneyParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WallletMoneyParams
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -321,7 +324,13 @@ interface ApiClient {
         @Header("Authorization") token: String,
         @Query("pageNo") pageNo: Int,
         @Query("pageSize") pageSize: Int,
-        @Body addMoneyParams: AddMoneyParams
+        @Body addMoneyParams: WallletMoneyParams
     ): Response<WalletHistoryResponse>
+
+    @POST(TRANSFER_MONEY)
+    suspend fun transferMoney(
+        @Header("Authorization") token: String,
+        @Body transferMoneyParams: TransferMoneyParams,
+    ): Response<SuccessResponse>
 
 }

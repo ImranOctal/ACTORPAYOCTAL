@@ -10,6 +10,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.order.Order
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletListData
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WallletMoneyParams
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
 import kotlinx.coroutines.cancel
@@ -25,6 +26,7 @@ class WalletBottomViewModel(val dispatcherProvider: CoroutineContextProvider, va
 
     var walletListData = WalletListData(0, 0, mutableListOf(), 0, 10)
 
+    var walletParams=WallletMoneyParams("","","","","")
 
     fun getWalletHistory() {
         viewModelScope.launch(dispatcherProvider.IO) {
@@ -32,7 +34,7 @@ class WalletBottomViewModel(val dispatcherProvider: CoroutineContextProvider, va
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
                     apiRepo.getWalletHistory(token,walletListData.pageNumber,walletListData.pageSize,
-                        AddMoneyParams(null)
+                        walletParams
                     )) {
                     is RetrofitResource.Error ->{
                         responseLive.value =

@@ -441,6 +441,7 @@
                     app:cardCornerRadius="@dimen/_10sdp">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/spinner_textinput"
                         style="@style/SpinnerStyle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -640,7 +641,7 @@
                     android:layout_marginStart="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
-                    android:backgroundTint="#ED335F"
+                    android:backgroundTint="@color/pink_color"
                     android:text="signup"
                     android:textAllCaps="true"
                     android:textSize="@dimen/_12sdp"

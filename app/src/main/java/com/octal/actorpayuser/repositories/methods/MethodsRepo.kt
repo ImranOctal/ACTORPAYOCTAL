@@ -9,8 +9,10 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Color
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Handler
 import android.os.Looper
 import android.text.SpannableString
@@ -93,9 +95,17 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
         textView.movementMethod = LinkMovementMethod.getInstance()
         textView.highlightColor = Color.TRANSPARENT
     }
-     fun isNetworkConnected(): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        return cm!!.activeNetworkInfo != null && cm.activeNetworkInfo!!.isConnected
+      fun isNetworkConnected(): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork
+            val capabilities = connectivityManager.getNetworkCapabilities(network)
+            return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(
+                NetworkCapabilities.TRANSPORT_CELLULAR
+            ))
+        }
+        return false
     }
 
     fun getFormattedOrderDate(orderDate: String): String? {
@@ -120,20 +130,20 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
             activity.currentFocus?.windowToken,
             InputMethodManager.HIDE_NOT_ALWAYS
         )
-    }
-    fun getDeviceWidth(context: Context): Int {
-        val displayMetrics = DisplayMetrics()
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
+    } fun getDeviceWidth(context: Activity): Int {
+//        val displayMetrics = DisplayMetrics()
+//        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+//        windowManager.defaultDisplay.getMetrics(displayMetrics)
+//        return displayMetrics.widthPixels
+
+        val displayMetrics=Resources.getSystem().displayMetrics
+
         return displayMetrics.widthPixels
     }
-    fun getDeviceHeight(context: Context): Int {
-        val displayMetrics = DisplayMetrics()
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
+    fun getDeviceHeight(context: Activity): Int {
+        val displayMetrics=Resources.getSystem().displayMetrics
         return displayMetrics.heightPixels
     }
-
     fun showPopUpWindow(root: View,text: String){
 
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

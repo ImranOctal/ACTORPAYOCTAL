@@ -40,7 +40,9 @@ import com.octal.actorpayuser.repositories.retrofitrepository.apiclient.ApiClien
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.TransferMoneyParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WallletMoneyParams
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -1132,11 +1134,41 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
         token: String,
         pageNo: Int,
         pageSize: Int,
-        addMoneyParams: AddMoneyParams
+        addMoneyParams: WallletMoneyParams
     ): RetrofitResource<WalletHistoryResponse> {
         try {
             val data = apiClient.getWalletHistory(B_Token +token,pageNo, pageSize, addMoneyParams)
 
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
+
+    override suspend fun transferMoney(
+        token: String,
+        transferMoneyParams: TransferMoneyParams
+    ): RetrofitResource<SuccessResponse> {
+        try {
+            val data = apiClient.transferMoney(B_Token +token,transferMoneyParams)
             val result = data.body()
             if (data.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)

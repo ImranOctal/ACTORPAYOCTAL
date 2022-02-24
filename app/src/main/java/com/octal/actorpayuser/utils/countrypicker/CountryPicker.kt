@@ -1,5 +1,6 @@
 package com.octal.actorpayuser.utils.countrypicker
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.text.Editable
@@ -14,7 +15,7 @@ import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.CountryItem
 import java.util.*
 
-class CountryPicker(val context: Context,val methodsRepo: MethodsRepo, val list:MutableList<CountryItem>, val onClick:(position:Int)->Unit) {
+class CountryPicker(val context: Context,val activity: Activity,val methodsRepo: MethodsRepo, val list:MutableList<CountryItem>, val onClick:(position:Int)->Unit) {
 
     fun show(){
 
@@ -27,7 +28,7 @@ class CountryPicker(val context: Context,val methodsRepo: MethodsRepo, val list:
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(R.layout.country_picker)
             window!!.setLayout(
-                (methodsRepo.getDeviceWidth(context) / 100) * 95,
+                (methodsRepo.getDeviceWidth(activity) / 100) * 95,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
 //            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

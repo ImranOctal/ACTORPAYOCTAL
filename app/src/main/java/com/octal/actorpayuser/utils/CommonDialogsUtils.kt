@@ -12,6 +12,7 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -21,6 +22,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.databinding.CommonDialogBinding
+import com.octal.actorpayuser.databinding.NetworkDialogBinding
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.repositories.retrofitrepository.models.FailResponse
 
@@ -135,7 +137,7 @@ class CommonDialogsUtils {
                 requestWindowFeature(Window.FEATURE_NO_TITLE)
                 setContentView(binding.root)
                 window!!.setLayout(
-                    (methodsRepo.getDeviceWidth(context) / 100) * 90,
+                    (methodsRepo.getDeviceWidth(activity) / 100) * 90,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -157,6 +159,27 @@ class CommonDialogsUtils {
                 showClickable = false
             )
         }
+
+        fun networkDialog(activity: Activity, methodsRepo: MethodsRepo, onDone:()->Unit) {
+            val binding: NetworkDialogBinding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.network_dialog, null, false)
+            val dialog = Dialog(activity, R.style.MainDialog)
+            binding.btnRetry.setOnClickListener {
+                if(methodsRepo.isNetworkConnected()){
+                    dialog.dismiss()
+//                    val intent=Intent(activity,HomeActivity::class.java)
+//                    activity.startActivity(intent)
+//                    activity.finish()
+                    onDone()
+                }else{
+                    Toast.makeText(activity,"No Internet Connection",Toast.LENGTH_LONG).show()
+                }
+            }
+            dialog.setContentView(binding.root)
+            dialog.setCancelable(false)
+            dialog.show()
+        }
+
+
 
     }
 

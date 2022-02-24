@@ -18,6 +18,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.Wall
 import com.octal.actorpayuser.ui.dashboard.adapters.AdapterWalletStatement
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.viewmodels.WalletBottomViewModel
 import com.octal.actorpayuser.utils.EndlessRecyclerViewScrollListener
+import com.octal.actorpayuser.utils.OnFilterClick
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.cancellable
@@ -25,7 +26,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.job
 import org.koin.android.ext.android.inject
 
-class WalletBottomFragment : BaseFragment() {
+class WalletBottomFragment : BaseFragment() , OnFilterClick {
     private lateinit var binding: FragmentWalletBottomBinding
     private val walletBottomViewModel: WalletBottomViewModel by inject()
 
@@ -45,6 +46,8 @@ class WalletBottomFragment : BaseFragment() {
         val root: View = binding.root
         apiResponse()
 
+        onFilterClick(this)
+
         val mLayoutManager = LinearLayoutManager(requireContext())
         val endlessRecyclerViewScrollListener: EndlessRecyclerViewScrollListener =
             object : EndlessRecyclerViewScrollListener(mLayoutManager) {
@@ -57,7 +60,7 @@ class WalletBottomFragment : BaseFragment() {
             }
 
         binding.rvItemsWalletID.apply {
-            adapter = AdapterWalletStatement(walletBottomViewModel.walletListData.items,walletBottomViewModel.methodRepo){
+            adapter = AdapterWalletStatement(requireContext(),walletBottomViewModel.walletListData.items,walletBottomViewModel.methodRepo){
 
                 val bundle= bundleOf("item" to walletBottomViewModel.walletListData.items[it])
                 Navigation.findNavController(requireView()).navigate(R.id.walletDetailsFragment,bundle)
@@ -120,5 +123,18 @@ class WalletBottomFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    override fun onClick() {
+
+        WalletFilterDialog(walletBottomViewModel.walletParams,requireActivity(),walletBottomViewModel.methodRepo){
+            walletBottomViewModel.walletParams=it
+            walletBottomViewModel.walletListData.pageNumber=0
+            walletBottomViewModel.walletListData.totalPages=0
+            walletBottomViewModel.walletListData.items.clear()
+            walletBottomViewModel.getWalletHistory()
+        }.show()
+
+
     }
 }

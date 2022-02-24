@@ -126,8 +126,7 @@ class NotificationManager : FirebaseMessagingService() {
         }
         scope.launch {
             dateStore.getNotificationMuted().collect { isNotificationMuted ->
-                dateStore.getNotificationSound().collect {
-                    notificationSound->
+                dateStore.getNotificationSound().collect { _ ->
                     if (isNotificationMuted)
                         playSound()
                 }

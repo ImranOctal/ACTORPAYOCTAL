@@ -470,7 +470,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                 }
                 R.id.walletBottomFragment -> {
                     binding.layoutMainID.bottomNavigationView.menu.getItem(3).isChecked = true
-                    updateUI("My Wallet",true,true,true,true,false,true,false)
+                    updateUI("My Wallet",true,true,true,false,true,false,false)
                 }
                 R.id.profileBottomFragment -> {
                     binding.layoutMainID.bottomNavigationView.menu.getItem(4).isChecked = true

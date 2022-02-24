@@ -115,7 +115,7 @@ class ChangePasswordDialog {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(binding.root)
             window!!.setLayout(
-                (methodsRepo.getDeviceWidth(context) / 100) * 90,
+                (methodsRepo.getDeviceWidth(activity) / 100) * 90,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

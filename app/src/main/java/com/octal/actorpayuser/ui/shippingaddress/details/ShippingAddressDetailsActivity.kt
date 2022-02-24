@@ -90,7 +90,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             }.show()
         }*/
         binding.countryLayout.setOnClickListener {
-            CountryPicker(this, shippingAddressViewModel.methodRepo, GlobalData.allCountries) {
+            CountryPicker(this,this, shippingAddressViewModel.methodRepo, GlobalData.allCountries) {
                 binding.countryPicker.text = GlobalData.allCountries[it].country
                 binding.codePicker.text = GlobalData.allCountries[it].countryCode
                 binding.codePicker2.text = GlobalData.allCountries[it].countryCode
