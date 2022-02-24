@@ -20,6 +20,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.cart.CartRe
 import com.octal.actorpayuser.utils.CommonDialogsUtils
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
+import java.text.DecimalFormat
 
 
 class CartFragment : BaseFragment() {
@@ -27,19 +28,15 @@ class CartFragment : BaseFragment() {
     private lateinit var binding: FragmentCartBinding
     private val cartViewModel: CartViewModel by inject()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        cartViewModel.getCartItems()
-    }
+    var decimalFormat: DecimalFormat = DecimalFormat("0.00")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_cart, container, false)
+        cartViewModel.getCartItems()
 
         setAdapter()
         apiResponse()
@@ -95,6 +92,9 @@ class CartFragment : BaseFragment() {
     }
 
     private fun updateUI(cartData: CartData){
+        cartData.totalCgst = decimalFormat.format(cartData.totalCgst).toDouble()
+        cartData.totalPrice = decimalFormat.format(cartData.totalPrice).toDouble()
+        cartData.totalSgst = decimalFormat.format(cartData.totalSgst).toDouble()
         cartViewModel.cartData = cartData
         binding.gst.text = getString(R.string.rs).plus(cartData.totalCgst+cartData.totalSgst)
         binding.subTotal.text = getString(R.string.rs).plus(cartData.totalTaxableValue)

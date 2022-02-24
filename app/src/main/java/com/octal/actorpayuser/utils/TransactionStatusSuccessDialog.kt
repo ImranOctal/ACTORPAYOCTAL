@@ -2,12 +2,14 @@ package com.octal.actorpayuser.utils
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.databinding.AddTransactionStatusDialogBinding
+import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 
 class TransactionStatusSuccessDialog(
@@ -15,7 +17,7 @@ class TransactionStatusSuccessDialog(
     val methodsRepo: MethodsRepo,
     val amount:Double,
     val message:String,
-    val onClick:()->Unit
+    val onClick:(Clicks)->Unit
 ): DialogFragment() {
 
     lateinit var binding: AddTransactionStatusDialogBinding
@@ -30,13 +32,16 @@ class TransactionStatusSuccessDialog(
             false
         )
         dialog.setContentView(binding.root)
+//        dialog.setCancelable(false)
         isCancelable = true
 
         binding.back.setOnClickListener {
+            onClick(Clicks.BACK)
             dismiss()
         }
         binding.history.setOnClickListener {
-            onClick()
+            onClick(Clicks.DONE)
+            dismiss()
         }
 
             binding.paymentIcon.setAnimation("success_tick_lottie.json")
@@ -45,6 +50,11 @@ class TransactionStatusSuccessDialog(
 
 
         return dialog
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        onClick(Clicks.BACK)
+        super.onDismiss(dialog)
 
     }
 }

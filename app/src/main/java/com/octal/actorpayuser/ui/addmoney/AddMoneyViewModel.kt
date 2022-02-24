@@ -42,4 +42,27 @@ class AddMoneyViewModel(val dispatcherProvider: CoroutineContextProvider, val me
             }
         }
     }
+
+    fun getWalletBalance() {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                methodRepo.dataStore.getUserId().collect { id ->
+                    when (val response = apiRepo.getWalletBalance(token, id)) {
+                        is RetrofitResource.Error -> {
+                            responseLive.value =
+                                ResponseSealed.ErrorOnResponse(response.message)
+                            this.cancel()
+                        }
+                        is RetrofitResource.Success -> {
+                            responseLive.value =
+                                ResponseSealed.Success(response.data!!)
+                            this.cancel()
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 }

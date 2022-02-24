@@ -212,6 +212,101 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/payment_gateway"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/shipping_layout"
+        android:layout_marginTop="@dimen/_10ssp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        >
+
+        <TextView
+            android:id="@+id/payment_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/poppins_semibold"
+            android:singleLine="true"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_14ssp"
+            tools:ignore="RtlSymmetry"
+            android:text="Select payment option" />
+
+        <LinearLayout
+            android:id="@+id/payment_wallet_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/payment_text"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+            <RadioButton
+                android:id="@+id/wallet_radio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:layout_constraintTop_toBottomOf="@+id/payment_text"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Wallet Balance"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_10ssp"
+                android:fontFamily="@font/poppins_regular"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                />
+
+            <TextView
+                android:id="@+id/tvAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/dummy_actual_amount"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/poppins_regular"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_money"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:backgroundTint="@color/pink_color"
+                android:fontFamily="@font/poppins_semibold"
+                android:gravity="center"
+                android:visibility="gone"
+                tools:text="Add $ 50"
+                android:textSize="@dimen/_9ssp"
+                />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/insufficient_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/payment_wallet_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/_20ssp"
+            android:text="(Insufficient balance)"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/poppins_light"
+            android:visibility="visible"
+            />
+
+
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/totalLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

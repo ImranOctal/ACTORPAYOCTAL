@@ -39,10 +39,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitR
 import com.octal.actorpayuser.repositories.retrofitrepository.apiclient.ApiClient
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.*
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.TransferMoneyParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WallletMoneyParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -1169,6 +1166,59 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
     ): RetrofitResource<SuccessResponse> {
         try {
             val data = apiClient.transferMoney(B_Token +token,transferMoneyParams)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
+    override suspend fun getWalletBalance(token: String, id: String): RetrofitResource<WalletBalance> {
+        try {
+            val data = apiClient.getWalletBalance(B_Token +token,id)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
+
+    override suspend fun userExists(token: String, user: String): RetrofitResource<LoginResponses> {
+        try {
+            val data = apiClient.userExists(B_Token +token,user)
             val result = data.body()
             if (data.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)

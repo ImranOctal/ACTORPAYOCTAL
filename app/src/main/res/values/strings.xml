@@ -160,7 +160,7 @@
     </string-array>
 
     <string-array name="wallet_txn_type_status_array">
-        <item>Select Status</item>
+        <item>All Types</item>
         <item>CREDIT</item>
         <item>DEBIT</item>
     </string-array>

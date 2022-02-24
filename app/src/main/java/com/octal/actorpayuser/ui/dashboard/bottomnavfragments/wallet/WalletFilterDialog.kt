@@ -1,6 +1,7 @@
 package com.octal.actorpayuser.ui.dashboard.bottomnavfragments.wallet
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -17,6 +18,8 @@ import com.octal.actorpayuser.R
 import com.octal.actorpayuser.databinding.WalletFilterDialogBinding
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WallletMoneyParams
+import java.text.DecimalFormat
+import java.util.*
 
 class WalletFilterDialog(
     private val params: WallletMoneyParams,
@@ -78,6 +81,9 @@ class WalletFilterDialog(
         binding.totalTo.setText(params.transactionAmountTo.toString())
         binding.remark.setText(params.transactionRemark.toString())
 
+        binding.startDate.setText(params.startDate)
+        binding.endDate.setText(params.endDate)
+
         val array = mContext.resources.getStringArray(R.array.wallet_txn_type_status_array).toMutableList()
 
         if (array.contains(params.transactionType)) {
@@ -85,7 +91,50 @@ class WalletFilterDialog(
             binding.spinnerStatus.setSelection(pos)
         }
 
+        binding.startDate.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
 
+
+            val dpd = DatePickerDialog(mContext,  { _, yearR, monthOfYear, dayOfMonth ->
+
+                val f =  DecimalFormat("00")
+                val dayMonth=f.format(dayOfMonth)
+                val monthYear=f.format(monthOfYear+1)
+
+                binding.startDate.setText("" + yearR + "-" + (monthYear) + "-" + dayMonth)
+
+            }, year, month, day)
+            dpd.show()
+            dpd.datePicker.maxDate = Date().time
+            dpd.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+            dpd.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+        }
+
+        binding.endDate.setOnClickListener {
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+
+            val dpd = DatePickerDialog(mContext,  { _, yearR, monthOfYear, dayOfMonth ->
+
+                val f =  DecimalFormat("00")
+                val dayMonth=f.format(dayOfMonth)
+                val monthYear=f.format(monthOfYear+1)
+
+                binding.endDate.setText("" + yearR + "-" + (monthYear) + "-" + dayMonth)
+
+            }, year, month, day)
+
+            dpd.show()
+            dpd.datePicker.maxDate = Date().time
+            dpd.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+            dpd.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+        }
 
         binding.apply.setOnClickListener {
             var wallet: String = ""
@@ -93,6 +142,8 @@ class WalletFilterDialog(
             var totalTo: String = ""
             var remark: String = ""
             var status: String = ""
+            var startDate: String=""
+            var endDate: String = ""
 
 
             wallet = binding.walletId.text.toString().trim()
@@ -103,6 +154,9 @@ class WalletFilterDialog(
 
             remark = binding.remark.text.toString().trim()
 
+            startDate = binding.startDate.text.toString().trim()
+            endDate = binding.endDate.text.toString().trim()
+
             val statusPosition = binding.spinnerStatus.selectedItemPosition
             if (statusPosition != 0) {
                 status = array[statusPosition]
@@ -110,7 +164,7 @@ class WalletFilterDialog(
 
             onClick(
                 WallletMoneyParams(
-                    wallet, totalTo, totalFrom, remark,status
+                    wallet, totalTo, totalFrom, remark,status,startDate, endDate
                 )
             )
             dismiss()
@@ -125,6 +179,8 @@ class WalletFilterDialog(
             binding.totalFrom.setText("")
             binding.totalTo.setText("")
             binding.remark.setText("")
+            binding.startDate.setText("")
+            binding.endDate.setText("")
             binding.spinnerStatus.setSelection(0)
         }
 

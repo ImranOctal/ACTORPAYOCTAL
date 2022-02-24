@@ -41,4 +41,26 @@ class TransferMoneyViewModel(val dispatcherProvider: CoroutineContextProvider, v
             }
         }
     }
+
+
+    fun userExists(user:String) {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.userExists(token,user)) {
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
+                    is RetrofitResource.Success -> {
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                        this.cancel()
+                    }
+                }
+            }
+        }
+    }
 }

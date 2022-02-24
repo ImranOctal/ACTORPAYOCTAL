@@ -21,6 +21,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.G
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_FAQ
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_PROFILE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_SINGLE_PRODUCT
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_WALLET_BALANCE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.LOGIN
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.ORDER_CANCEL
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.ORDER_STATUS
@@ -36,6 +37,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.S
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.TRANSFER_MONEY
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.UPDATE_CART
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.UPDATE_PROFILE
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.USER_EXISTS
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.VAR_ID
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.VERIFY_OTP
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.WALLET_HISTORY
@@ -66,10 +68,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.promocodes.
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.TransferMoneyParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WallletMoneyParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -332,5 +331,19 @@ interface ApiClient {
         @Header("Authorization") token: String,
         @Body transferMoneyParams: TransferMoneyParams,
     ): Response<SuccessResponse>
+
+
+    @GET(GET_WALLET_BALANCE+ VAR_ID+"/balance")
+    suspend fun getWalletBalance(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+    ): Response<WalletBalance>
+
+
+    @GET("$USER_EXISTS{user}/get")
+    suspend fun userExists(
+        @Header("Authorization") token: String,
+        @Path("user") user: String
+    ): Response<LoginResponses>
 
 }

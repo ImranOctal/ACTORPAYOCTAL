@@ -4,21 +4,23 @@ import java.io.Serializable
 
 
 data class AddMoneyParams(
-    var transferAmount:String?
+    var amount:String?
 )
 
 data class TransferMoneyParams(
-    var beneficiaryEmailId:String,
-    var transferAmount:String,
+    var userIdentity:String,
+    var amount:String,
     var transactionRemark:String
 )
 
 data class WallletMoneyParams(
-    var walletTransactionId:String,
-    var transactionAmountTo:String,
-    var transactionAmountFrom:String,
-    var transactionRemark:String,
-    var transactionType:String,
+    var walletTransactionId:String="",
+    var transactionAmountTo:String="",
+    var transactionAmountFrom:String="",
+    var transactionRemark:String="",
+    var transactionType:String="",
+    var startDate: String = "",
+    var endDate: String = "",
 )
 
 
@@ -56,3 +58,20 @@ data class WalletData(
     var transactionRemark: String,
     var percentage: Double
     ): Serializable
+
+
+data class WalletBalance(
+    val `data`: WalletBalanceData,
+    val httpStatus: String,
+    val message: String,
+    val status: String
+)
+
+data class WalletBalanceData(
+    val active: Boolean,
+    val amount: Double,
+    val createdAt: String,
+    val updatedAt: Any,
+    val userId: String,
+    val userType: String
+)

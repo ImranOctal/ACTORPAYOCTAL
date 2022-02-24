@@ -12,8 +12,11 @@ import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentAddMoneyBinding
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance
+import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletBalance
 import com.octal.actorpayuser.utils.TransactionStatusSuccessDialog
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
@@ -24,6 +27,15 @@ class AddMoneyFragment : BaseFragment() {
     lateinit var binding: FragmentAddMoneyBinding
     private val addMoneyViewModel: AddMoneyViewModel by inject()
 
+    var startAmount=""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            startAmount = it.getString(AppConstance.KEY_AMOUNT)!!
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,7 +43,11 @@ class AddMoneyFragment : BaseFragment() {
         binding = FragmentAddMoneyBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        addMoneyViewModel.getWalletBalance()
         apiResponse()
+
+
+        addAmount(startAmount)
 
 
         binding.buttonAddMoney.setOnClickListener(object : SingleClickListener() {
@@ -99,13 +115,25 @@ class AddMoneyFragment : BaseFragment() {
                                     "Amount ₹${binding.enterAmountEdt.text}\n"+
                                             "has been added successfully"
                                 ) {
-                                    val navOptions = NavOptions.Builder()
-                                        .setPopUpTo(R.id.homeBottomFragment, false).build()
-                                    Navigation.findNavController(requireView())
-                                        .navigate(R.id.walletBottomFragment, null, navOptions)
+                                    when(it){
+                                        Clicks.DONE ->{
+                                            val navOptions = NavOptions.Builder()
+                                                .setPopUpTo(R.id.homeBottomFragment, false).build()
+                                            Navigation.findNavController(requireView())
+                                                .navigate(R.id.walletBottomFragment, null, navOptions)
+                                        }
+                                        Clicks.BACK ->{
+                                            addMoneyViewModel.getWalletBalance()
+                                        }
+                                        else->Unit
+                                    }
+
                                 }.show(childFragmentManager, "status")
 
                                 binding.enterAmountEdt.setText("")
+                            }
+                            is WalletBalance ->{
+                                binding.tvAmount.text= "₹ "+event.response.data.amount.toString()
                             }
                         }
                         addMoneyViewModel.responseLive.value = ResponseSealed.Empty
@@ -116,6 +144,8 @@ class AddMoneyFragment : BaseFragment() {
                         if (event.message!!.code == 403) {
                             forcelogout(addMoneyViewModel.methodRepo)
                         }
+                        else
+                            showCustomToast(event.message.message)
 
                     }
                     is ResponseSealed.Empty -> {

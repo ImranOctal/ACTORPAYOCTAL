@@ -23,6 +23,7 @@ class AppConstance {
         const val OFFER:String="offers/"
         const val CANCEL_ORDER:String="cancelOrder"
         const val DISPUTE:String="dispute"
+        const val USER_EXISTS: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3
         const val LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"login"
         const val SIGNUP: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"signup"
         const val SOCIAL_LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"social/signup"
@@ -76,6 +77,7 @@ class AppConstance {
         const val ADD_MONEY:String=SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/addMoney"
         const val TRANSFER_MONEY:String=SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/transfer"
         const val WALLET_HISTORY:String=SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/list/paged"
+        const val GET_WALLET_BALANCE: String = SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/"
 
         const val STATUS_SUCCESS:String="SUCCESS"
         const val STATUS_READY:String="READY"
@@ -106,9 +108,11 @@ class AppConstance {
 
         const val KEY_KEY="key"
         const val KEY_NAME="name"
+        const val KEY_CONTACT="contact"
         const val KEY_QR="qr"
         const val KEY_MOBILE="mobile"
         const val KEY_EMAIL="email"
+        const val KEY_AMOUNT="amount"
 
 
         var IS_APP_IN_BACKGROUD=false
@@ -130,5 +134,7 @@ enum class Clicks{
     Skip,
     Next,
     Prev,
-    GetStart
+    GetStart,
+    BACK,
+    DONE
 }

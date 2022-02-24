@@ -13,30 +13,19 @@ import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentWalletBottomBinding
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletBalance
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletListData
 import com.octal.actorpayuser.ui.dashboard.adapters.AdapterWalletStatement
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.viewmodels.WalletBottomViewModel
 import com.octal.actorpayuser.utils.EndlessRecyclerViewScrollListener
 import com.octal.actorpayuser.utils.OnFilterClick
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.job
 import org.koin.android.ext.android.inject
 
 class WalletBottomFragment : BaseFragment() , OnFilterClick {
     private lateinit var binding: FragmentWalletBottomBinding
     private val walletBottomViewModel: WalletBottomViewModel by inject()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        walletBottomViewModel.walletListData.pageNumber=0
-        walletBottomViewModel.walletListData.items.clear()
-        walletBottomViewModel.getWalletHistory()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +33,7 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
     ): View {
         binding = FragmentWalletBottomBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        walletBottomViewModel.getWalletBalance()
         apiResponse()
 
         onFilterClick(this)
@@ -105,6 +95,13 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
                         when (event.response) {
                             is WalletHistoryResponse -> {
                                 updateUI(event.response.data)
+                            }
+                            is WalletBalance ->{
+                                binding.tvAmount.text= "₹ "+event.response.data.amount.toString()
+
+                                walletBottomViewModel.walletListData.pageNumber=0
+                                walletBottomViewModel.walletListData.items.clear()
+                                walletBottomViewModel.getWalletHistory()
                             }
                         }
                     }

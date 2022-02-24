@@ -26,10 +26,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.promocodes.
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.TransferMoneyParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WallletMoneyParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.*
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -116,6 +113,10 @@ interface RetrofitRepository {
     suspend fun getWalletHistory(token: String,pageNo:Int,pageSize:Int,addMoneyParams: WallletMoneyParams):RetrofitResource<WalletHistoryResponse>
 
     suspend fun transferMoney(token: String, transferMoneyParams: TransferMoneyParams ):RetrofitResource<SuccessResponse>
+
+    suspend fun getWalletBalance(token: String,id: String):RetrofitResource<WalletBalance>
+
+    suspend fun userExists(token: String, user:String ):RetrofitResource<LoginResponses>
 
 
 

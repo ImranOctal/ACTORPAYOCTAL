@@ -48,6 +48,31 @@
         android:layout_marginTop="@dimen/_5sdp"
         />
 
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_8sdp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="@dimen/_10sdp">
+
+        <Spinner
+            android:id="@+id/spinner_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_5sdp"
+            android:theme="@style/Spinner"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_45sdp"
@@ -68,7 +93,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start|center"
             android:background="@android:color/transparent"
-            android:hint="Search by Wallet Id."
+            android:hint="Search by transaction Id"
             android:textColorHint="@color/gray"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
@@ -144,6 +169,76 @@
     </androidx.cardview.widget.CardView>
 
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/start_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_8sdp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="@dimen/_10sdp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/start_date"
+            style="@style/RegularTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            android:maxLength="100"
+            android:hint="Search by start date"
+            android:textColorHint="@color/gray"
+            android:clickable="true"
+            android:focusable="false"
+            android:longClickable="false"
+            android:drawableEnd="@drawable/cal_icon"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_12sdp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/end_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_8sdp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="@dimen/_10sdp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/end_date"
+            style="@style/RegularTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            android:maxLength="100"
+            android:hint="Search by end date"
+            android:textColorHint="@color/gray"
+            android:clickable="true"
+            android:focusable="false"
+            android:longClickable="false"
+            android:drawableEnd="@drawable/cal_icon"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_12sdp" />
+
+    </androidx.cardview.widget.CardView>
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -165,7 +260,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start|center"
             android:background="@android:color/transparent"
-            android:hint="Search remark"
+            android:hint="Search by remark"
             android:textColorHint="@color/gray"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
@@ -173,29 +268,6 @@
             android:textColor="@color/text_color"
             android:maxLength="50"
             android:textSize="@dimen/_12sdp" />
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_45sdp"
-        android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/_2sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        android:orientation="horizontal"
-        android:paddingStart="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_8sdp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardCornerRadius="@dimen/_10sdp">
-
-        <Spinner
-            android:id="@+id/spinner_status"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/_5sdp"
-            android:theme="@style/Spinner"
-            />
 
     </androidx.cardview.widget.CardView>
 

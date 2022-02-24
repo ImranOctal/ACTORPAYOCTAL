@@ -26,7 +26,7 @@ class WalletBottomViewModel(val dispatcherProvider: CoroutineContextProvider, va
 
     var walletListData = WalletListData(0, 0, mutableListOf(), 0, 10)
 
-    var walletParams=WallletMoneyParams("","","","","")
+    var walletParams=WallletMoneyParams()
 
     fun getWalletHistory() {
         viewModelScope.launch(dispatcherProvider.IO) {
@@ -49,6 +49,29 @@ class WalletBottomViewModel(val dispatcherProvider: CoroutineContextProvider, va
                 }
             }
         }
+    }
+
+    fun getWalletBalance() {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                methodRepo.dataStore.getUserId().collect { id ->
+                    when (val response = apiRepo.getWalletBalance(token, id)) {
+                        is RetrofitResource.Error -> {
+                            responseLive.value =
+                                ResponseSealed.ErrorOnResponse(response.message)
+                            this.cancel()
+                        }
+                        is RetrofitResource.Success -> {
+                            responseLive.value =
+                                ResponseSealed.Success(response.data!!)
+                            this.cancel()
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
 

@@ -12,6 +12,8 @@ import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentPayBinding
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_CONTACT
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_EMAIL
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_KEY
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_MOBILE
@@ -30,11 +32,13 @@ class PayFragment : BaseFragment() {
     private val transferMoneyViewModel: TransferMoneyViewModel by inject()
     private var key = ""
     private var name = ""
+    private var contact = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             key = it.getString(KEY_KEY)!!
+            contact = it.getString(KEY_CONTACT)!!
             name = it.getString(KEY_NAME)!!
         }
     }
@@ -52,16 +56,12 @@ class PayFragment : BaseFragment() {
 
             if (key == KEY_QR) {
                 cardContact.visibility = View.GONE
+                beneficiaryName.text = "Pay $contact"
+            } else if (key == KEY_MOBILE || key == KEY_EMAIL) {
+                cardContact.visibility = View.VISIBLE
                 beneficiaryName.text = "Pay $name"
-            } else if (key == KEY_MOBILE) {
-                cardContact.visibility = View.VISIBLE
-                beneficiaryName.text = "Pay with Mobile Numnber"
-                beneficiaryContact.setText(getString(R.string.enter_mobile_number))
-            } else if (key == KEY_EMAIL) {
-                cardContact.visibility = View.VISIBLE
-                beneficiaryName.text = "Pay with Email"
-                beneficiaryContact.setText(name)
-            } else {
+                beneficiaryContact.setText(contact)
+            }else {
                 cardContact.visibility = View.VISIBLE
                 beneficiaryName.text = "Pay"
                 beneficiaryContact.setText(getString(R.string.enter_mobile_no_or_email))
@@ -104,7 +104,7 @@ class PayFragment : BaseFragment() {
                 }
                 if(isValidate)
                 {
-                    transferMoneyViewModel.transferMoney(TransferMoneyParams(name,amount,reason))
+                    transferMoneyViewModel.transferMoney(TransferMoneyParams(contact,amount,reason))
                 }
             }
         }

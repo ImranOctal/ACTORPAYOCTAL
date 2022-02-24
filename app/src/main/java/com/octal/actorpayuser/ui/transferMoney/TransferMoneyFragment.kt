@@ -11,21 +11,29 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
+import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentTransferMoneyBinding
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_CONTACT
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_EMAIL
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_KEY
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_MOBILE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_NAME
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_QR
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
+import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginResponses
 import com.octal.actorpayuser.ui.dummytransactionprocess.DummyTransactionProcessDialog
 import com.octal.actorpayuser.ui.dummytransactionprocess.DummyTransactionStatusDialog
+import com.octal.actorpayuser.utils.TransactionStatusSuccessDialog
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 class TransferMoneyFragment : BaseFragment() {
@@ -44,6 +52,7 @@ class TransferMoneyFragment : BaseFragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_transfer_money, container, false)
         init()
+        apiResponse()
 
         codeScanner = CodeScanner(requireContext(), binding.codeScannerView)
         codeScanner.decodeCallback = DecodeCallback {
@@ -61,7 +70,6 @@ class TransferMoneyFragment : BaseFragment() {
         codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
             requireActivity().runOnUiThread {
                 showCustomToast("Camera initialization error: ${it.message}")
-
             }
         }
 
@@ -73,22 +81,17 @@ class TransferMoneyFragment : BaseFragment() {
                     permissions
                 )
             ) {
-
                 permReqLauncher.launch(permissions)
             } else {
                 binding.scan.visibility = View.GONE
                 codeScanner.startPreview()
             }
-//            val bundle =
-//                bundleOf(KEY_KEY to KEY_QR, KEY_NAME to "John")
-//            Navigation.findNavController(requireView())
-//                .navigate(R.id.payFragment, bundle)
 
         }
         binding.emailNumberField.setOnEditorActionListener { _, actionId, _ ->
 
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                validate()
+                validate(true,"")
                 return@setOnEditorActionListener true;
             }
             return@setOnEditorActionListener false;
@@ -170,22 +173,67 @@ class TransferMoneyFragment : BaseFragment() {
         }
     }
 
-    fun validate() {
+    fun validate(checkAPI:Boolean,name:String) {
         transferMoneyViewModel.methodRepo.hideSoftKeypad(requireActivity())
         val contact = binding.emailNumberField.text.toString().trim()
         if (transferMoneyViewModel.methodRepo.isValidEmail(contact)) {
-            val bundle =
-                bundleOf(KEY_KEY to KEY_EMAIL, KEY_NAME to contact)
-            Navigation.findNavController(requireView())
-                .navigate(R.id.payFragment, bundle)
+            if(checkAPI)
+                transferMoneyViewModel.userExists(contact)
+            else {
+                val bundle =
+                    bundleOf(KEY_KEY to KEY_EMAIL, KEY_CONTACT to contact, KEY_NAME to name)
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.payFragment, bundle)
+            }
         } else if (transferMoneyViewModel.methodRepo.isValidPhoneNumber(contact)) {
-            val bundle =
-                bundleOf(KEY_KEY to KEY_MOBILE, KEY_NAME to contact)
-            Navigation.findNavController(requireView())
-                .navigate(R.id.payFragment, bundle)
+            if(checkAPI)
+                transferMoneyViewModel.userExists(contact)
+            else {
+                val bundle =
+                    bundleOf(KEY_KEY to KEY_MOBILE, KEY_CONTACT to contact, KEY_NAME to name)
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.payFragment, bundle)
+            }
         } else {
             binding.emailNumberField.error = "Please enter valid input"
         }
     }
+
+
+    fun apiResponse() {
+
+        lifecycleScope.launchWhenStarted {
+            transferMoneyViewModel.responseLive.collect { event ->
+                when (event) {
+                    is ResponseSealed.loading -> {
+                        showLoading()
+                    }
+                    is ResponseSealed.Success -> {
+                        hideLoading()
+                        when (event.response) {
+                            is LoginResponses -> {
+                              validate(false,event.response.data.firstName +" "+ event.response.data.lastName)
+                            }
+                        }
+                        transferMoneyViewModel.responseLive.value = ResponseSealed.Empty
+                    }
+                    is ResponseSealed.ErrorOnResponse -> {
+                        transferMoneyViewModel.responseLive.value = ResponseSealed.Empty
+                        hideLoading()
+                        if (event.message!!.code == 403) {
+                            forcelogout(transferMoneyViewModel.methodRepo)
+                        }
+                        else
+                            showCustomToast(event.message.message)
+                    }
+                    is ResponseSealed.Empty -> {
+                        hideLoading()
+
+                    }
+                }
+            }
+        }
+    }
+
 
 }
