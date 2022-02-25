@@ -39,16 +39,25 @@ class WalletDetailsFragment : BaseFragment() {
             binding.rowWalletTxn.text=walletItem.walletTransactionId
             binding.rowWalletDate.text=walletBottomViewModel.methodRepo.getFormattedOrderDate(walletItem.createdAt)
             binding.rowWalletAmountDebit.text="₹ "+walletItem.transactionAmount.toString()
+            binding.rowWalletName.text=walletItem.toUserName.replace(" ,","")
+            if(walletItem.purchaseType == "TRANSFER"){
+                binding.rowWalletName.visibility=View.VISIBLE
+                binding.rowWalletNameText.visibility=View.VISIBLE
+                binding.rowWalletText.text="Money Transferred Successfully"
+            }
+            else if(walletItem.purchaseType == "SHOPPING"){
+                binding.rowWalletText.text="Online Shopping"
+            }
 
             if(walletItem.transactionTypes == "DEBIT"){
                 binding.rowWalletAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.pink_color))
                 binding.rowWalletAmountDebit.setTextColor(ContextCompat.getColor(requireContext(), R.color.pink_color))
-                binding.rowWalletAmountDebit.text="- ₹ "+walletItem.transactionAmount.toString()
+                binding.rowWalletAmountDebit.text="₹ "+walletItem.transactionAmount.toString()
             }
             if(walletItem.transactionTypes == "CREDIT"){
                 binding.rowWalletAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.green_color))
                 binding.rowWalletAmountDebit.setTextColor(ContextCompat.getColor(requireContext(), R.color.green_color))
-                binding.rowWalletAmountDebit.text="+ ₹ "+walletItem.transactionAmount.toString()
+                binding.rowWalletAmountDebit.text="₹ "+walletItem.transactionAmount.toString()
             }
 
             if(walletItem.percentage > 0.0) {

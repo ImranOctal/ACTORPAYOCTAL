@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/coordinate"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary">
@@ -71,7 +72,8 @@
         app:contentInsetStart="0dp"
         app:fabCradleMargin="@dimen/_7sdp"
         app:fabCradleRoundedCornerRadius="@dimen/_40sdp"
-        app:fabCradleVerticalOffset="@dimen/_4sdp">
+        app:fabCradleVerticalOffset="@dimen/_4sdp"
+        >
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"

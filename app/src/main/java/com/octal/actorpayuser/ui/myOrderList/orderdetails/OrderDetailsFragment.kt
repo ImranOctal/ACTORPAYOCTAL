@@ -80,6 +80,12 @@ class OrderDetailsFragment : BaseFragment() {
         binding.orderStatus.visibility=View.VISIBLE
         binding.orderNumber.text=orderDetailsViewModel.orderData!!.orderNo
         binding.orderAmount.text=getString(R.string.rs).plus(orderDetailsViewModel.orderData!!.totalPrice)
+        if(orderDetailsViewModel.orderData!!.paymentMethod !=null)
+        binding.orderPayment.text=orderDetailsViewModel.orderData!!.paymentMethod
+        else{
+            binding.orderPayment.visibility=View.GONE
+            binding.orderPaymentText.visibility=View.GONE
+        }
         binding.bussinessName.text="Business Name: "+orderDetailsViewModel.orderData!!.merchantDTO.businessName
         binding.licenceNo.text="Licence No: "+orderDetailsViewModel.orderData!!.merchantDTO.licenceNumber
         binding.email.text="Email: "+orderDetailsViewModel.orderData!!.merchantDTO.email

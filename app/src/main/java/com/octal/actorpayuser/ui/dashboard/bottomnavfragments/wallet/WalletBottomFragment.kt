@@ -14,6 +14,7 @@ import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentWalletBottomBinding
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletBalance
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletListData
 import com.octal.actorpayuser.ui.dashboard.adapters.AdapterWalletStatement
@@ -26,6 +27,7 @@ import org.koin.android.ext.android.inject
 class WalletBottomFragment : BaseFragment() , OnFilterClick {
     private lateinit var binding: FragmentWalletBottomBinding
     private val walletBottomViewModel: WalletBottomViewModel by inject()
+    val tempList= mutableListOf<WalletData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,9 +52,11 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
             }
 
         binding.rvItemsWalletID.apply {
-            adapter = AdapterWalletStatement(requireContext(),walletBottomViewModel.walletListData.items,walletBottomViewModel.methodRepo){
 
-                val bundle= bundleOf("item" to walletBottomViewModel.walletListData.items[it])
+
+            adapter = AdapterWalletStatement(requireContext(),tempList,walletBottomViewModel.methodRepo){
+
+                val bundle= bundleOf("item" to tempList[it])
                 Navigation.findNavController(requireView()).navigate(R.id.walletDetailsFragment,bundle)
 
             }
@@ -70,6 +74,12 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
         walletBottomViewModel.walletListData.totalPages =
             walletListData.totalPages
         walletBottomViewModel.walletListData.items.addAll(walletListData.items)
+
+        tempList.clear()
+       tempList.addAll(walletBottomViewModel.walletListData.items.filter {
+            it.purchaseType != "ADMIN_WALLET_COMMISSION"
+
+        }.toMutableList())
 
         binding.rvItemsWalletID.adapter?.notifyDataSetChanged()
 

@@ -135,7 +135,7 @@
         android:layout_marginHorizontal="@dimen/_20sdp"
         android:layout_marginVertical="@dimen/_10sdp"
         android:backgroundTint="#ED335F"
-        android:text="Pay Now"
+        android:text="Send Money"
         android:fontFamily="@font/poppins_regular"
         android:textAllCaps="true"
         android:textSize="@dimen/_12sdp"

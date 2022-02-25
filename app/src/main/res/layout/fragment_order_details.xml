@@ -71,9 +71,6 @@
 
 
 
-
-
-
             <TextView
                 android:id="@+id/order_date_text"
                 android:layout_width="match_parent"
@@ -118,13 +115,43 @@
                 tools:text="Order Price" />
 
 
+            <TextView
+                android:id="@+id/order_payment_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:text="Payment Method:"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_amount_text"
+                 />
+
+            <TextView
+                android:id="@+id/order_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:text=''
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_11ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/order_payment_text"
+                app:layout_constraintStart_toEndOf="@+id/order_payment_text"
+                app:layout_constraintTop_toTopOf="@+id/order_payment_text"
+                tools:text="Order Price" />
+
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/order_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@+id/order_amount_text"
+                app:layout_constraintTop_toBottomOf="@+id/order_payment_text"
                 tools:itemCount="2"
                 tools:listitem="@layout/row_order_item" />
 

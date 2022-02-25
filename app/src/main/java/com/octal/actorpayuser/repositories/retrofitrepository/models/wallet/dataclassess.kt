@@ -3,6 +3,23 @@ package com.octal.actorpayuser.repositories.retrofitrepository.models.wallet
 import java.io.Serializable
 
 
+data class AddMoneyResponse(
+    var message: String,
+    var data: AddMoneyData,
+    var status: String,
+    var httpStatus: String
+)
+
+data class AddMoneyData(
+    var walletBalance:Double,
+    var transferredAmount:Double,
+    var customerName:String,
+    var transactionType:String,
+    var transactionId:String
+)
+
+
+
 data class AddMoneyParams(
     var amount:String?
 )
@@ -56,7 +73,8 @@ data class WalletData(
     var transferAmount: Double,
     var purchaseType: String,
     var transactionRemark: String,
-    var percentage: Double
+    var toUserName: String,
+    var percentage: Double,
     ): Serializable
 
 

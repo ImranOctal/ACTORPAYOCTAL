@@ -316,7 +316,7 @@ interface ApiClient {
     suspend fun addMoney(
         @Header("Authorization") token: String,
         @Body addMoneyParams: AddMoneyParams,
-    ): Response<SuccessResponse>
+    ): Response<AddMoneyResponse>
 
     @POST(WALLET_HISTORY)
     suspend fun getWalletHistory(
@@ -330,7 +330,7 @@ interface ApiClient {
     suspend fun transferMoney(
         @Header("Authorization") token: String,
         @Body transferMoneyParams: TransferMoneyParams,
-    ): Response<SuccessResponse>
+    ): Response<AddMoneyResponse>
 
 
     @GET(GET_WALLET_BALANCE+ VAR_ID+"/balance")

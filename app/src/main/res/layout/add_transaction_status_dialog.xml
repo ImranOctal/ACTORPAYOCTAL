@@ -53,7 +53,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintVertical_bias="0.4"
+            app:layout_constraintVertical_bias="0.3"
             />
 
         <TextView
@@ -73,37 +73,78 @@
             />
 
 
-
-        <TextView
-            android:id="@+id/payment_status_text"
+        <LinearLayout
+            android:id="@+id/payment_details_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/poppins_medium"
-            android:gravity="center"
-            android:text="Transaction \nhas been done successfully"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_14ssp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/history"
             app:layout_constraintTop_toBottomOf="@+id/payment_status"
+            >
 
-            />
+            <TextView
+                android:id="@+id/payment_status_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_11sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="Transaction \nhas been done successfully"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14ssp"
+                />
+
+            <TextView
+                android:id="@+id/payment_txn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                tools:text="Transaction Id: jkshfkjsdf"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14ssp"
+                />
+
+        </LinearLayout>
+
+
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/history"
-            android:layout_width="match_parent"
+            android:id="@+id/done"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:backgroundTint="@color/pink_color"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:paddingVertical="@dimen/_10sdp"
+            android:text="Done"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/history"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/payment_details_layout"
+            tools:layout_editor_absoluteX="13dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/history"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:backgroundTint="@color/primary"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
             android:paddingVertical="@dimen/_10sdp"
             android:text="Wallet History"
             android:textSize="@dimen/_10ssp"
+            app:layout_constraintStart_toEndOf="@+id/done"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/payment_status_text"
-            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@+id/payment_details_layout"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteX="13dp" />
 
 

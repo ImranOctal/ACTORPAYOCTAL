@@ -108,11 +108,11 @@ interface RetrofitRepository {
 
     suspend fun raiseDipute(token: String,  disputeJson: RequestBody, file: MultipartBody.Part?):RetrofitResource<RaiseDisputeResponse>
 
-    suspend fun addMoney(token: String, addMoneyParams: AddMoneyParams ):RetrofitResource<SuccessResponse>
+    suspend fun addMoney(token: String, addMoneyParams: AddMoneyParams ):RetrofitResource<AddMoneyResponse>
 
     suspend fun getWalletHistory(token: String,pageNo:Int,pageSize:Int,addMoneyParams: WallletMoneyParams):RetrofitResource<WalletHistoryResponse>
 
-    suspend fun transferMoney(token: String, transferMoneyParams: TransferMoneyParams ):RetrofitResource<SuccessResponse>
+    suspend fun transferMoney(token: String, transferMoneyParams: TransferMoneyParams ):RetrofitResource<AddMoneyResponse>
 
     suspend fun getWalletBalance(token: String,id: String):RetrofitResource<WalletBalance>
 

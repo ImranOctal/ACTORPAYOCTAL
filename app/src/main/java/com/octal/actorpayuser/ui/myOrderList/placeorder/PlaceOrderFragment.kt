@@ -67,6 +67,17 @@ class PlaceOrderFragment : BaseFragment() {
         binding.subTotal.text = "₹${subTotal}"
         binding.gst.text = "₹${gst}"
 
+        binding.walletRadio.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked)
+                binding.codRadio.isChecked=false
+
+        }
+        binding.codRadio.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked)
+                binding.walletRadio.isChecked=false
+
+        }
+
         binding.checkout.setOnClickListener {
             validate()
         }
@@ -146,7 +157,14 @@ class PlaceOrderFragment : BaseFragment() {
             val pContact = shippingAddressItem.primaryContactNumber
             val sContact = shippingAddressItem.secondaryContactNumber
 
-            if (binding.walletRadio.isChecked) {
+            var paymentMethod=""
+
+            if(binding.walletRadio.isChecked)
+                paymentMethod="WALLET"
+            else if(binding.codRadio.isChecked)
+                paymentMethod="COD"
+
+            if (paymentMethod != "") {
                 placeOrderViewModel.placeOrder(
                     PlaceOrderParams(
                         addLine1,
@@ -163,6 +181,7 @@ class PlaceOrderFragment : BaseFragment() {
                         shippingAddressItem.name,
                         shippingAddressItem.area,
                         shippingAddressItem.title,
+                        paymentMethod
                     )
                 )
             } else {
@@ -171,7 +190,6 @@ class PlaceOrderFragment : BaseFragment() {
         } else {
             showCustomToast("Please select valid address")
         }
-
     }
 
 

@@ -283,6 +283,8 @@
 
         </LinearLayout>
 
+
+
         <TextView
             android:id="@+id/insufficient_balance"
             android:layout_width="wrap_content"
@@ -298,9 +300,20 @@
             />
 
 
-
-
-
+        <RadioButton
+            android:id="@+id/cod_radio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:layout_constraintTop_toBottomOf="@+id/insufficient_balance"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="COD (Testing purpose only)"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/poppins_regular"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            />
 
 
 

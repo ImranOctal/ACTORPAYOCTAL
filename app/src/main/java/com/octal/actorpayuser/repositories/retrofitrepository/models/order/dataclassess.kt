@@ -28,6 +28,7 @@ data class PlaceOrderParams(
     var name: String,
     var area: String,
     var title: String,
+    var paymentMethod: String,
 )
 
 data class OrderListResponse(
@@ -77,6 +78,7 @@ data class OrderData(
     var orderStatus: String,
     var orderItemDtos: ArrayList<OrderItemDtos>,
     var createdAt: String,
+    var paymentMethod: String,
     var totalTaxableValue: Double,
     val shippingAddressDTO: ShippingAddressItem?,
     var orderNotesDtos: ArrayList<OrderNote>,

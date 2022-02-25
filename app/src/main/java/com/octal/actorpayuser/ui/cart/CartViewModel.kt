@@ -102,7 +102,7 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
     fun updateCart(cartId:String,quantity:Int) {
 
         viewModelScope.launch(dispatcherProvider.IO) {
-            responseLive.value = ResponseSealed.loading(true)
+            responseLive.value = ResponseSealed.loading(false)
             methodRepo.dataStore.getAccessToken().collect { token ->
                 val cartParams=CartUpdateParams(cartId,quantity)
                 when (val response =

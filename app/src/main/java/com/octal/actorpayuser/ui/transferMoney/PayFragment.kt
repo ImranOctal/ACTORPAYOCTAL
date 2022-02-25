@@ -19,7 +19,9 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.K
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_MOBILE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_NAME
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_QR
+import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.TransferMoneyParams
 import com.octal.actorpayuser.utils.TransactionStatusSuccessDialog
 import kotlinx.coroutines.flow.collect
@@ -56,10 +58,10 @@ class PayFragment : BaseFragment() {
 
             if (key == KEY_QR) {
                 cardContact.visibility = View.GONE
-                beneficiaryName.text = "Pay $contact"
+                beneficiaryName.text = "Pay to $contact"
             } else if (key == KEY_MOBILE || key == KEY_EMAIL) {
                 cardContact.visibility = View.VISIBLE
-                beneficiaryName.text = "Pay $name"
+                beneficiaryName.text = "Pay to $name"
                 beneficiaryContact.setText(contact)
             }else {
                 cardContact.visibility = View.VISIBLE
@@ -109,9 +111,6 @@ class PayFragment : BaseFragment() {
             }
         }
 
-
-
-
         return binding.root
     }
 
@@ -126,18 +125,29 @@ class PayFragment : BaseFragment() {
                     is ResponseSealed.Success -> {
                         hideLoading()
                         when (event.response) {
-                            is SuccessResponse -> {
+                            is AddMoneyResponse -> {
                                 TransactionStatusSuccessDialog(
                                     requireActivity(),
                                     transferMoneyViewModel.methodRepo,
-                                    binding.beneficiaryAmount.text.toString().toDouble(),
-                                    "Amount ₹${binding.beneficiaryAmount.text} has been added to\n" +
-                                            "${name} wallet successfully"
+                                    "Amount ₹${binding.beneficiaryAmount.text} transferred  into\n" +
+                                            "${name}'s wallet successfully",
+                                    event.response.data
                                 ) {
-                                    val navOptions = NavOptions.Builder()
-                                        .setPopUpTo(R.id.homeBottomFragment, false).build()
-                                    Navigation.findNavController(requireView())
-                                        .navigate(R.id.walletBottomFragment, null, navOptions)
+                                    when(it){
+                                        Clicks.Root->{
+                                            val navOptions = NavOptions.Builder()
+                                                .setPopUpTo(R.id.homeBottomFragment, true).build()
+                                            Navigation.findNavController(requireView())
+                                                .navigate(R.id.homeBottomFragment, null, navOptions)
+                                        }
+                                        Clicks.DONE ->{
+                                            val navOptions = NavOptions.Builder()
+                                                .setPopUpTo(R.id.homeBottomFragment, false).build()
+                                            Navigation.findNavController(requireView())
+                                                .navigate(R.id.walletBottomFragment, null, navOptions)
+                                        }
+                                    }
+
                                 }.show(childFragmentManager, "status")
 
                                 binding.beneficiaryAmount.setText("")

@@ -2,6 +2,7 @@ package com.octal.actorpayuser.ui.dashboard.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -46,6 +47,13 @@ class AdapterWalletStatement(val context :Context,val items: MutableList<WalletD
                 if(item.transactionTypes == "CREDIT"){
                     binding.rowWalletAmount.setTextColor(ContextCompat.getColor(context, R.color.green_color))
                     binding.rowWalletAmount.text="+ ₹ "+item.transactionAmount.toString()
+                }
+
+                if(item.purchaseType == "TRANSFER"){
+                    binding.rowWalletText.text="Money Transferred Successfully"
+                }
+                else if(item.purchaseType == "SHOPPING"){
+                    binding.rowWalletText.text="Online Shopping"
                 }
             }
         }

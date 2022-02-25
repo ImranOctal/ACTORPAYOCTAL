@@ -16,6 +16,7 @@ import com.octal.actorpayuser.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpayuser.ui.auth.viewmodel.SignupViewModel
 import com.octal.actorpayuser.ui.cart.CartViewModel
 import com.octal.actorpayuser.ui.content.ContentViewModel
+import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.home.HomeViewModel
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.viewmodels.ProfileViewModel
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.viewmodels.WalletBottomViewModel
 import com.octal.actorpayuser.ui.dispute.DisputeViewModel
@@ -154,6 +155,9 @@ private val appKoinModule = module {
     }
     viewModel {
         WalletBottomViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        HomeViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
 
 

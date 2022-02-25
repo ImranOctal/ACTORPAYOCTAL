@@ -34,7 +34,7 @@ import com.octal.actorpayuser.ui.auth.biometric.AuthBottomSheetDialog
 import com.octal.actorpayuser.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpayuser.ui.cart.CartViewModel
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HistoryBottomFragment
-import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HomeBottomFragment
+import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.home.HomeBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.ProfileBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.wallet.WalletBottomFragment
 import com.octal.actorpayuser.ui.dashboard.models.DrawerItems
@@ -56,6 +56,7 @@ import nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout
 import nl.psdcompany.duonavigationdrawer.views.DuoMenuView
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import org.koin.android.ext.android.inject
+
 
 class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     AdapterView.OnItemSelectedListener {
@@ -117,8 +118,9 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         }
         binding.layoutMainID.scan.setOnClickListener {
             navController.navigate(R.id.transferMoneyFragment)
-        }
 
+//            binding.layoutMainID.constraintLayout.invalidate()
+        }
     }
 
     private fun setBottomNavigationView() {
@@ -433,6 +435,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
                 when (event) {
                     is ResponseSealed.loading -> {
+                        if(event.isLoading)
                         showLoadingDialog()
                     }
                     is ResponseSealed.Success -> {
@@ -462,19 +465,20 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                 R.id.homeBottomFragment -> {
                     binding.layoutMainID.bottomNavigationView.menu.getItem(0).isChecked = true
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.drawable.layout_bg)
+                    binding.layoutMainID.scan.isPressed=true
                     updateUI("ActorPay",true,true,true,true,false,true,true)
                 }
                 R.id.historyBottomFragment -> {
                     binding.layoutMainID.bottomNavigationView.menu.getItem(1).isChecked = true
-                    updateUI("My History",true,true,true,true,false,true,false)
+                    updateUI("My History",false,true,true,true,false,true,false)
                 }
                 R.id.walletBottomFragment -> {
                     binding.layoutMainID.bottomNavigationView.menu.getItem(3).isChecked = true
-                    updateUI("My Wallet",true,true,true,false,true,false,false)
+                    updateUI("My Wallet",false,true,true,false,true,false,false)
                 }
                 R.id.profileBottomFragment -> {
                     binding.layoutMainID.bottomNavigationView.menu.getItem(4).isChecked = true
-                    updateUI("My Profile",true,true,true,true,false,true,false)
+                    updateUI("My Profile",false,true,true,true,false,true,false)
                 }
                 R.id.referFragment -> {
                     updateUI("My Refer",false,false,false,false,false,false,false)
@@ -545,7 +549,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     updateUI("Place Order",false,false,false,false,false,false,false)
                 }
                 R.id.walletDetailsFragment -> {
-                    updateUI("Wallet Details",false,false,false,false,false,false,false)
+                    updateUI("Transaction Details",false,false,false,false,false,false,false)
                 }
             }
         }
@@ -641,6 +645,16 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                 })
         } else
             super.onBackPressed()
+
+    }
+
+    fun updateBalnce(balance:Double){
+        val mDuoDrawerLayout: DuoDrawerLayout = binding.drawer
+        val mDuoMenuView: DuoMenuView = mDuoDrawerLayout.menuView as DuoMenuView
+        val mHeaderLayout: RelativeLayout = mDuoMenuView.headerView as RelativeLayout
+
+        val balancetext = mHeaderLayout.findViewById<TextView>(R.id.txtAccountBal)
+        balancetext.text="₹ $balance"
 
     }
 

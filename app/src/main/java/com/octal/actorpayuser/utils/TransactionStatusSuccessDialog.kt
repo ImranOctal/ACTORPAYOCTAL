@@ -11,12 +11,13 @@ import com.octal.actorpayuser.R
 import com.octal.actorpayuser.databinding.AddTransactionStatusDialogBinding
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyData
 
 class TransactionStatusSuccessDialog(
     private val mContext: Activity,
     val methodsRepo: MethodsRepo,
-    val amount:Double,
     val message:String,
+    val addMoneyData: AddMoneyData,
     val onClick:(Clicks)->Unit
 ): DialogFragment() {
 
@@ -43,10 +44,15 @@ class TransactionStatusSuccessDialog(
             onClick(Clicks.DONE)
             dismiss()
         }
+        binding.done.setOnClickListener {
+            onClick(Clicks.Root)
+            dismiss()
+        }
 
             binding.paymentIcon.setAnimation("success_tick_lottie.json")
             binding.paymentIcon.playAnimation()
             binding.paymentStatusText.setText(message)
+            binding.paymentTxn.text="Transaction Id: ${addMoneyData.transactionId}"
 
 
         return dialog

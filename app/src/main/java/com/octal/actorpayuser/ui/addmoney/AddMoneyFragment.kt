@@ -16,6 +16,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletBalance
 import com.octal.actorpayuser.utils.TransactionStatusSuccessDialog
 import kotlinx.coroutines.flow.collect
@@ -107,13 +108,13 @@ class AddMoneyFragment : BaseFragment() {
                     is ResponseSealed.Success -> {
                         hideLoading()
                         when (event.response) {
-                            is SuccessResponse -> {
+                            is AddMoneyResponse -> {
                                 TransactionStatusSuccessDialog(
                                     requireActivity(),
                                     addMoneyViewModel.methodRepo,
-                                    binding.enterAmountEdt.text.toString().toDouble(),
                                     "Amount ₹${binding.enterAmountEdt.text}\n"+
-                                            "has been added successfully"
+                                            "added into wallet successfully",
+                                    event.response.data
                                 ) {
                                     when(it){
                                         Clicks.DONE ->{
@@ -124,6 +125,12 @@ class AddMoneyFragment : BaseFragment() {
                                         }
                                         Clicks.BACK ->{
                                             addMoneyViewModel.getWalletBalance()
+                                        }
+                                        Clicks.Root->{
+                                            val navOptions = NavOptions.Builder()
+                                                .setPopUpTo(R.id.homeBottomFragment, true).build()
+                                            Navigation.findNavController(requireView())
+                                                .navigate(R.id.homeBottomFragment, null, navOptions)
                                         }
                                         else->Unit
                                     }

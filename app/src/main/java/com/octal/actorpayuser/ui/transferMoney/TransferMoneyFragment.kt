@@ -28,11 +28,9 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.K
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_NAME
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_QR
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
-import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginResponses
 import com.octal.actorpayuser.ui.dummytransactionprocess.DummyTransactionProcessDialog
 import com.octal.actorpayuser.ui.dummytransactionprocess.DummyTransactionStatusDialog
-import com.octal.actorpayuser.utils.TransactionStatusSuccessDialog
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 

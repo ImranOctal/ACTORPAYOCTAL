@@ -1101,7 +1101,7 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
     override suspend fun addMoney(
         token: String,
         addMoneyParams: AddMoneyParams
-    ): RetrofitResource<SuccessResponse> {
+    ): RetrofitResource<AddMoneyResponse> {
         try {
             val data = apiClient.addMoney(B_Token +token,addMoneyParams)
             val result = data.body()
@@ -1163,7 +1163,7 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
     override suspend fun transferMoney(
         token: String,
         transferMoneyParams: TransferMoneyParams
-    ): RetrofitResource<SuccessResponse> {
+    ): RetrofitResource<AddMoneyResponse> {
         try {
             val data = apiClient.transferMoney(B_Token +token,transferMoneyParams)
             val result = data.body()

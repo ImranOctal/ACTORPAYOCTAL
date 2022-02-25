@@ -104,6 +104,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
             cartViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
+                        if(event.isLoading)
                         showLoading()
                     }
                     is ResponseSealed.Success -> {

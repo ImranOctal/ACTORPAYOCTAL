@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/homeBottomFragment"
-        android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HomeBottomFragment"
+        android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.home.HomeBottomFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home_bottom">
 
