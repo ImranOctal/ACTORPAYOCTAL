@@ -2,6 +2,7 @@ package com.octal.actorpayuser.ui.cart
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.di.models.CoroutineContextProvider
@@ -25,6 +26,7 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
     var cartData:CartData? =null
 
 
+
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
 
     fun getCartItems() {
@@ -43,7 +45,9 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
 
 
                         cartData=response.data!!.data
+//                        cartCount.value=response.data.data.totalQuantity
                         cartItems.emit(response.data.data.cartItemDTOList)
+//                        cartCount.emit(response.data.data.totalQuantity)
                         responseLive.value =
                             ResponseSealed.Success(response.data)
                         this.cancel()
@@ -52,6 +56,7 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
             }
         }
     }
+
 
     fun addCart(prodId:String,price:Double) {
 
@@ -67,7 +72,8 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                         this.cancel()
                     }
                     is RetrofitResource.Success -> {
-                        cartItems.emit(response.data!!.data.cartItemDTOList)
+                        cartData=response.data!!.data
+                        cartItems.emit(response.data.data.cartItemDTOList)
                         responseLive.value =
                             ResponseSealed.Success(response.data)
                         this.cancel()
@@ -89,7 +95,8 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                         this.cancel()
                     }
                     is RetrofitResource.Success -> {
-                        cartItems.emit(response.data!!.data.cartItemDTOList)
+                        cartData=response.data!!.data
+                        cartItems.emit(response.data.data.cartItemDTOList)
                         responseLive.value =
                             ResponseSealed.Success(response.data)
                         this.cancel()
@@ -113,7 +120,8 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                         this.cancel()
                     }
                     is RetrofitResource.Success -> {
-                        cartItems.emit(response.data!!.data.cartItemDTOList)
+                        cartData=response.data!!.data
+                        cartItems.emit(response.data.data.cartItemDTOList)
                         responseLive.value =
                             ResponseSealed.Success(response.data)
                         this.cancel()
@@ -137,7 +145,8 @@ class CartViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                         this.cancel()
                     }
                     is RetrofitResource.Success -> {
-                        cartItems.emit(response.data!!.data.cartItemDTOList)
+                        cartData=response.data!!.data
+                        cartItems.emit(response.data.data.cartItemDTOList)
                         responseLive.value =
                             ResponseSealed.Success(response.data)
                         this.cancel()

@@ -6,6 +6,11 @@ package com.octal.actorpayuser.repositories.retrofitrepository.repo
 * */
 
 import android.content.Context
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.B_Token
@@ -39,7 +44,11 @@ import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitR
 import com.octal.actorpayuser.repositories.retrofitrepository.apiclient.ApiClient
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.*
+import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductItem
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.*
+import com.octal.actorpayuser.repositories.retrofitrepository.paging.ProductDataSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -353,6 +362,18 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
         }
     }
 
+    override suspend fun getProductsWithPaging(
+        viewmodelscope: CoroutineScope,
+        token: String,
+        productParams: ProductParams
+    ): Flow<PagingData<ProductItem>> {
+        val products: Flow<PagingData<ProductItem>> =
+            Pager(config = PagingConfig(pageSize = 10, prefetchDistance = 2),
+                pagingSourceFactory = { ProductDataSource(apiClient,token,  productParams) }
+            ).flow.cachedIn(viewmodelscope)
+
+        return products
+    }
 
     override suspend fun getProducts(
         token: String,
@@ -927,7 +948,7 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
             )
         }
     }
-    override suspend fun deleteAddress(token:String,shippingDeleteParams: ShippingDeleteParams): RetrofitResource<SuccessResponse> {
+    override suspend fun deleteAddress(token:String,shippingDeleteParams: String): RetrofitResource<SuccessResponse> {
         try {
             val data = apiClient.deleteAddress(B_Token +token,shippingDeleteParams)
             val result = data.body()

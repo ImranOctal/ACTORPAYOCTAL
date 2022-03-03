@@ -73,6 +73,7 @@ class CartFragment : BaseFragment() {
                             is CartResponse -> {
                                 event.response.data.let {
                                     updateUI(it)
+                                    updateCartCount(cartViewModel.cartData!!.totalQuantity)
                                 }
                             }
                             is ResponseSealed.Success -> {

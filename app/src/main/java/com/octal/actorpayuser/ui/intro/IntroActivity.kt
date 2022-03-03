@@ -32,11 +32,11 @@ class IntroActivity : BaseActivity() {
     }
 
     private fun feedList(){
-        introList.add(IntroModel("Add Account to Manage",getString(R.string.dummy_text),R.drawable.intro_1))
-        introList.add(IntroModel("Track your Activity",getString(R.string.dummy_text),R.drawable.intro_2))
-        introList.add(IntroModel("Make online Payment",getString(R.string.dummy_text),R.drawable.intro_3))
-        introList.add(IntroModel("Safely Withdraw",getString(R.string.dummy_text),R.drawable.intro_4))
-        introList.add(IntroModel("Quick Transfer",getString(R.string.dummy_text),R.drawable.intro_5))
+        introList.add(IntroModel("Add account to manage",getString(R.string.dummy_text_lorum),R.drawable.intro_1))
+        introList.add(IntroModel("Track your activity",getString(R.string.dummy_text_lorum),R.drawable.intro_2))
+        introList.add(IntroModel("Make online payment",getString(R.string.dummy_text_lorum),R.drawable.intro_3))
+        introList.add(IntroModel("Safely withdraw",getString(R.string.dummy_text_lorum),R.drawable.intro_4))
+        introList.add(IntroModel("Quick transfer",getString(R.string.dummy_text_lorum),R.drawable.intro_5))
     }
 
     fun setAdapter(){

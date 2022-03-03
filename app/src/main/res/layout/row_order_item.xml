@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/actualQuantityText"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:text='@{"Price: ₹"+orderItem.totalPrice}'
+                    android:text=''
                     android:fontFamily="@font/poppins_medium"
                     tools:text="@string/dummy_actual_amount"
                     android:textColor="@color/blue_color"

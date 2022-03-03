@@ -63,10 +63,16 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
                 val body=SocialParams(firstName,lastName,login_type,email,socialId,imgUrl,deviceInfo)
 
                 when (val response = apiRepo.socialLogin(body)) {
-                    is RetrofitResource.Error -> responseLive.value =
-                        ResponseSealed.ErrorOnResponse(response.message)
-                    is RetrofitResource.Success -> responseLive.value =
-                        ResponseSealed.Success(response.data!!)
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
+                    is RetrofitResource.Success ->{
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                        this.cancel()
+                    }
                 }
             }
         }
@@ -78,10 +84,16 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
         viewModelScope.launch(dispatcherProvider.IO){
             responseLive.value=ResponseSealed.loading(true)
             when(val response=apiRepo.forgetPassword(body)){
-                is RetrofitResource.Error -> responseLive.value =
-                    ResponseSealed.ErrorOnResponse(response.message)
-                is RetrofitResource.Success -> responseLive.value =
-                    ResponseSealed.Success(response.data!!.message)
+                is RetrofitResource.Error ->{
+                    responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    this.cancel()
+                }
+                is RetrofitResource.Success ->{
+                    responseLive.value =
+                        ResponseSealed.Success(response.data!!.message)
+                    this.cancel()
+                }
             }
         }
     }
@@ -91,10 +103,16 @@ class LoginViewModel(val dispatcherProvider: CoroutineContextProvider, val metho
         viewModelScope.launch(dispatcherProvider.IO){
             responseLive.value=ResponseSealed.loading(true)
             when(val response=apiRepo.resendOtp(body)){
-                is RetrofitResource.Error -> responseLive.value =
-                    ResponseSealed.ErrorOnResponse(response.message)
-                is RetrofitResource.Success -> responseLive.value =
-                    ResponseSealed.Success(response.data!!.message)
+                is RetrofitResource.Error ->{
+                    responseLive.value =
+                        ResponseSealed.ErrorOnResponse(response.message)
+                    this.cancel()
+                }
+                is RetrofitResource.Success ->{
+                    responseLive.value =
+                        ResponseSealed.Success(response.data!!.message)
+                    this.cancel()
+                }
             }
         }
     }

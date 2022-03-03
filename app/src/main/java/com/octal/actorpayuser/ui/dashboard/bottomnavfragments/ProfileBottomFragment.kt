@@ -179,7 +179,8 @@ class ProfileBottomFragment : BaseFragment() {
         binding.nameTextView.setText("${profileResponse.firstName} ${profileResponse.lastName}")
         binding.firstName.setText("${profileResponse.firstName} ${profileResponse.lastName}")
         binding.editEmail.setText(profileResponse.email)
-        binding.mobNumber.setText(profileResponse.extensionNumber+" "+profileResponse.contactNumber)
+        if (profileResponse.extensionNumber!=null)
+        binding.mobNumber.setText(profileResponse.extensionNumber.plus(" ").plus(profileResponse.contactNumber))
         binding.gender.setText(profileResponse.gender)
         binding.editAdhar.setText(profileResponse.aadharNumber)
         binding.editPAN.setText(profileResponse.panNumber)
@@ -205,7 +206,7 @@ class ProfileBottomFragment : BaseFragment() {
             binding.verifyMobile.visibility=View.VISIBLE
         }
         if(profileResponse.contactNumber == null || profileResponse.contactNumber == ""){
-            binding.mobileUpdate.text=getString(R.string.add_mobile_number)
+            binding.mobileUpdate.text=getString(R.string.enter_mobile_number)
             binding.verifyMobile.visibility=View.GONE
         }
         else{

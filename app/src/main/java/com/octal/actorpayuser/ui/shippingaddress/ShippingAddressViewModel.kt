@@ -49,7 +49,7 @@ class ShippingAddressViewModel(val dispatcherProvider: CoroutineContextProvider,
 
 
 
-    fun deleteAddress(shippingDeleteParams: ShippingDeleteParams) {
+    fun deleteAddress(shippingDeleteParams: String) {
 
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(true)

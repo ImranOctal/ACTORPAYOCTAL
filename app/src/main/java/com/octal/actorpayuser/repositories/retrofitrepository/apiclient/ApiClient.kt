@@ -271,10 +271,10 @@ interface ApiClient {
         @Body shippingAddressItem: ShippingAddressItem
     ): Response<SuccessResponse>
 
-    @HTTP(method = "DELETE", path = ADDRESS_DELETE, hasBody = true)
+    @HTTP(method = "DELETE", path = ADDRESS_DELETE+VAR_ID, hasBody = true)
     suspend fun deleteAddress(
         @Header("Authorization") token: String,
-        @Body shippingDeleteParams: ShippingDeleteParams
+        @Path("id") id: String,
     ): Response<SuccessResponse>
 
 

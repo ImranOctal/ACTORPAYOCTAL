@@ -19,12 +19,6 @@ import org.koin.android.ext.android.inject
 abstract class BaseFragment : Fragment(){
 
     private lateinit var snackBar: Snackbar
-    private var manager: FragmentManager? = null
-    val viewModel: ActorPayViewModel by  inject()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        manager = requireActivity().supportFragmentManager
-    }
 
     open fun showCustomAlert(msg: String?, v: View?) {
         snackBar = Snackbar.make(v!!, msg!!, Snackbar.LENGTH_LONG)
@@ -61,6 +55,9 @@ abstract class BaseFragment : Fragment(){
     }
     fun hideLoading(){
         (requireActivity() as BaseActivity).hideLoadingDialog()
+    }
+    fun updateCartCount(count:Int){
+        (requireActivity() as MainActivity).updateCartCount(count)
     }
 
 

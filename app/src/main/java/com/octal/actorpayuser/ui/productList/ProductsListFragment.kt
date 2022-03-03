@@ -1,6 +1,5 @@
 package com.octal.actorpayuser.ui.productList
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,17 +18,18 @@ import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpayuser.ui.cart.CartViewModel
 import com.octal.actorpayuser.utils.CommonDialogsUtils
-import com.octal.actorpayuser.utils.EndlessRecyclerViewScrollListener
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
+import androidx.paging.LoadState
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.CategorieItem
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductData
+import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductItem
 import com.octal.actorpayuser.utils.OnFilterClick
+import kotlinx.coroutines.flow.collectLatest
 
 
 class ProductsListFragment : BaseFragment(),OnFilterClick {
@@ -37,23 +37,19 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
     private val productViewModel: ProductViewModel by inject()
     private val cartViewModel: CartViewModel by inject()
     private var isFromBuy=false
-    private var futureAddCart=-1
+    private var futureAddCart:ProductItem?=null
 
     lateinit var adapter: ProductListAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        productViewModel.productData.pageNumber = 0
-        productViewModel.productData.totalPages = 0
-        productViewModel.productData.items.clear()
+        productViewModel.pageNumber=0
         productViewModel.name=""
         productViewModel.category=""
-        productViewModel.getProducts()
         productViewModel.categoryList. clear()
-        Handler(Looper.myLooper()!!).postDelayed({
-            productViewModel.getCategories()
-        },200)
+        productViewModel.getCategories()
+
     }
 
 
@@ -76,10 +72,9 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val name = binding.productSearch.text.toString().trim()
                 productViewModel.name = name
-                productViewModel.productData.pageNumber = 0
-                productViewModel.productData.totalPages = 0
-                productViewModel.productData.items.clear()
-                productViewModel.getProducts()
+                productViewModel.pageNumber=0
+
+                setAdapter()
                 productViewModel.methodRepo.hideSoftKeypad(requireActivity())
 
             }
@@ -91,12 +86,6 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
 
     }
 
-
-    private var resultLauncher = registerForActivityResult(StartActivityForResult()) {
-
-        binding.recyclerviewProduct.adapter?.notifyDataSetChanged()
-
-    }
 
     private fun cartResponse() {
         lifecycleScope.launchWhenCreated {
@@ -110,9 +99,10 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                     is ResponseSealed.Success -> {
                         hideLoading()
                         binding.recyclerviewProduct.adapter?.notifyDataSetChanged()
-                        if(futureAddCart >= 0){
-                            addToCart(futureAddCart)
-                            futureAddCart=-1
+                        updateCartCount(cartViewModel.cartData!!.totalQuantity)
+                        if(futureAddCart !=null){
+                            addToCart(futureAddCart!!)
+                            futureAddCart=null
                         }
                         if(isFromBuy) {
                             isFromBuy=false
@@ -121,12 +111,9 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                     }
                     is ResponseSealed.ErrorOnResponse -> {
                         hideLoading()
-                        futureAddCart=-1
+                        futureAddCart=null
                         if(isFromBuy)
                             isFromBuy=false
-//                        if (event.message!!.code == 403) {
-//                            forcelogout(productViewModel.methodRepo)
-//                        }
                     }
                     is ResponseSealed.Empty -> {
                         hideLoading()
@@ -152,7 +139,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                              productViewModel.responseLive.value=ResponseSealed.Empty
                             when (event.response) {
                                 is ProductListResponse -> {
-                                  updateUI(event.response.data)
+
                                 }
                                 is CategorieResponse->{
                                     productViewModel.categoryList.add(CategorieItem("","All","","",true))
@@ -176,99 +163,103 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
             }
     }
 
-    private fun updateUI(productData: ProductData){
-        productViewModel.productData.pageNumber =
-            productData.pageNumber
-        productViewModel.productData.totalPages =
-            productData.totalPages
-        productViewModel.productData.items.addAll(productData.items)
-        binding.recyclerviewProduct.adapter?.notifyDataSetChanged()
 
-        if(productViewModel.productData.items.size>0){
-            binding.imageEmpty.visibility=View.GONE
-            binding.textEmpty.visibility=View.GONE
-        }
-        else {
-            binding.imageEmpty.visibility=View.VISIBLE
-            binding.textEmpty.visibility=View.VISIBLE
-        }
-    }
 
     private fun setAdapter() {
-        adapter = ProductListAdapter(
+
+        val productPagingAdapter = ProductPagingAdapter(
             requireContext(),
-            productViewModel.productData.items,
-            cartViewModel.cartItems
-        ) { position, click ->
-            val product=productViewModel.productData.items[position]
+            cartViewModel.cartItems){
+             click,product ->
+
             when (click) {
                 Clicks.Root -> {
                     val bundle= bundleOf("id" to product.productId)
                     Navigation.findNavController(requireView()).navigate(R.id.productDetailsFragment,bundle)
-//                    val intent=Intent(requireActivity(),ProductDetailsActivity::class.java)
-//                    intent.putExtra("id",product.productId)
-//                    startActivity(intent)
                 }
                 Clicks.AddCart -> {
                     if (cartViewModel.cartItems.value.size > 0) {
                         val merchantId = cartViewModel.cartItems.value[0].merchantId
                         if (product.merchantId != merchantId) {
                             wantsToBuyDialog {
-                                futureAddCart=position
+                                futureAddCart=product
                                 cartViewModel.deleteAllCart()
                             }
                         } else
-                            addToCart(position)
+                            addToCart(product)
                     } else {
-                        addToCart(position)
+                        addToCart(product)
                     }
                 }
                 Clicks.BuyNow -> {
                     if (cartViewModel.cartItems.value.size > 0) {
-                      val cartItem=  cartViewModel.cartItems.value.find {
+                        val cartItem=  cartViewModel.cartItems.value.find {
                             it.productId==product.productId
                         }
                         if(cartItem!=null)
                             goToCart()
-                         else{
+                        else{
                             val merchantId = cartViewModel.cartItems.value[0].merchantId
                             if (product.merchantId != merchantId) {
                                 wantsToBuyDialog{
-                                        isFromBuy=true
-                                    futureAddCart=position
+                                    isFromBuy=true
+                                    futureAddCart=product
                                     cartViewModel.deleteAllCart()
                                 }
                             } else {
                                 isFromBuy=true
-                                addToCart(position)
+                                addToCart(product)
                             }
-                         }
+                        }
                     } else {
                         isFromBuy=true
-                        addToCart(position)
+                        addToCart(product)
                     }
                 }
                 else -> Unit
 
             }
-
         }
-        val layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerviewProduct.layoutManager = layoutManager
-        val endlessRecyclerViewScrollListener: EndlessRecyclerViewScrollListener =
-            object : EndlessRecyclerViewScrollListener(layoutManager) {
-                override fun onLoadMore(page: Int, totalItemsCount: Int) {
-                    if (productViewModel.productData.pageNumber < productViewModel.productData.totalPages - 1) {
-                        productViewModel.productData.pageNumber += 1
-                        productViewModel.getProducts()
+
+       binding.recyclerviewProduct.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = productPagingAdapter
+        }
+        productPagingAdapter.addLoadStateListener {
+            state->
+            when(state.refresh)
+            {
+                 is LoadState.Loading->{
+                    showLoading()
+                }
+                is LoadState.NotLoading->
+                {
+                    hideLoading()
+                    if(productPagingAdapter.itemCount>0){
+                        binding.imageEmpty.visibility=View.GONE
+                        binding.textEmpty.visibility=View.GONE
+                    }
+                    else {
+                        binding.imageEmpty.visibility=View.VISIBLE
+                        binding.textEmpty.visibility=View.VISIBLE
                     }
                 }
+                is LoadState.Error->{
+                    hideLoading()
+                }
             }
-        binding.recyclerviewProduct.addOnScrollListener(endlessRecyclerViewScrollListener)
-        binding.recyclerviewProduct.adapter = adapter
-
+        }
+//        productPagingAdapter.refresh()
+       lifecycleScope.launchWhenCreated {
+           productViewModel.methodRepo.dataStore.getAccessToken().collect { token ->
+               productViewModel.getProductsWithPaging(token+"1").collectLatest {
+                   productPagingAdapter.submitData(it)
+               }
+           }
+       }
 
     }
+
 
     private fun setCategoriesAdapter(){
 
@@ -283,12 +274,10 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                     cat=""
                 productViewModel.category=cat
                 productViewModel.categoryList[position].isSelected=true
-                productViewModel.productData.pageNumber = 0
-                productViewModel.productData.totalPages = 0
-                productViewModel.productData.items.clear()
+                productViewModel.pageNumber=0
                 binding.recyclerviewCategories.adapter?.notifyDataSetChanged()
 
-                productViewModel.getProducts()
+                setAdapter()
             }
             }
 
@@ -298,19 +287,12 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
 
     }
 
-    private fun addToCart(position: Int) {
-        val product = productViewModel.productData.items[position]
+    private fun addToCart(product: ProductItem) {
         cartViewModel.addCart(product.productId,product.dealPrice)
-
     }
 
     private fun goToCart() {
-
-//        val intent = Intent(requireActivity(), CartActivity::class.java)
-//        resultLauncher.launch(intent)
-
         Navigation.findNavController(requireView()).navigate(R.id.cartFragment)
-
     }
 
     private fun wantsToBuyDialog(onClick: () -> Unit) {

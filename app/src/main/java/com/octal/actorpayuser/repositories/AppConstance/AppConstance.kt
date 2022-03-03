@@ -65,7 +65,7 @@ class AppConstance {
         const val ADDRESS_LIST: String = SUB_DOMAIN+ SUB_DOMAIN2+"get/all/user/shipping/address"
         const val ADDRESS_ADD: String = SUB_DOMAIN+ SUB_DOMAIN2+"add/new/shipping/address"
         const val ADDRESS_UPDATE: String = SUB_DOMAIN+ SUB_DOMAIN2+"update/shipping/address"
-        const val ADDRESS_DELETE: String = SUB_DOMAIN+ SUB_DOMAIN2+"delete/saved/shipping/address/ids"
+        const val ADDRESS_DELETE: String = SUB_DOMAIN+ SUB_DOMAIN2+"delete/saved/shipping/address/"
 
         const val GET_COUNTRIES: String = SUB_DOMAIN+ SUB_DOMAIN_GLOBAL+"v1/country/get/all"
 

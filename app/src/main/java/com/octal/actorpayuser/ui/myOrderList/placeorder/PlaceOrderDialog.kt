@@ -43,6 +43,13 @@ class PlaceOrderDialog(
                 pos, action ->
         }
 
+        if(orderData.paymentMethod !=null)
+            binding.orderPayment.text=orderData.paymentMethod
+        else{
+            binding.orderPayment.visibility=View.GONE
+            binding.orderPaymentText.visibility=View.GONE
+        }
+
         binding.orderNumber.text=orderData.orderNo
         binding.orderAmount.text=getString(R.string.rs).plus(orderData.totalPrice)
         binding.bussinessName.text="Business Name: "+orderData.merchantDTO.businessName

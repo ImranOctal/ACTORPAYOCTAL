@@ -1,5 +1,6 @@
 package com.octal.actorpayuser.repositories.retrofitrepository.repo
 
+import androidx.paging.PagingData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginParams
@@ -19,6 +20,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.Countr
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.FAQResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.misc.MiscChangePasswordParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.*
+import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductItem
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductListResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.SingleProductResponse
@@ -28,6 +30,8 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.Sh
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.*
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -57,6 +61,8 @@ interface RetrofitRepository {
     suspend fun getFAQ():RetrofitResource<FAQResponse>
 
     suspend fun getProducts(token: String,pageNo:Int,pageSize:Int,productParams: ProductParams):RetrofitResource<ProductListResponse>
+
+    suspend fun getProductsWithPaging(viewmodelscope:CoroutineScope,token: String,productParams: ProductParams): Flow<PagingData<ProductItem>>
 
     suspend fun getProductById(token: String,id: String):RetrofitResource<SingleProductResponse>
 
@@ -96,7 +102,7 @@ interface RetrofitRepository {
 
     suspend fun updateAddress(token:String,shippingAddressItem: ShippingAddressItem):RetrofitResource<SuccessResponse>
 
-    suspend fun deleteAddress(token:String,shippingDeleteParams: ShippingDeleteParams):RetrofitResource<SuccessResponse>
+    suspend fun deleteAddress(token:String,shippingDeleteParams: String):RetrofitResource<SuccessResponse>
 
     suspend fun getAllCountries():RetrofitResource<CountryResponse>
 

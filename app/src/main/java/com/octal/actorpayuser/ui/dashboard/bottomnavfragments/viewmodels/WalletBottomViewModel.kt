@@ -53,7 +53,7 @@ class WalletBottomViewModel(val dispatcherProvider: CoroutineContextProvider, va
 
     fun getWalletBalance() {
         viewModelScope.launch(dispatcherProvider.IO) {
-            responseLive.value = ResponseSealed.loading(true)
+            responseLive.value = ResponseSealed.loading(false)
             methodRepo.dataStore.getAccessToken().collect { token ->
                 methodRepo.dataStore.getUserId().collect { id ->
                     when (val response = apiRepo.getWalletBalance(token, id)) {

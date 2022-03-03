@@ -24,10 +24,12 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.S
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_RETURN_ORDER
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.STATUS_SUCCESS
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderItemDtos
+import java.text.DecimalFormat
 
 class PlaceOrderAdapter(
     private val mContext:Context,
     private var orderList: ArrayList<OrderItemDtos>,val isFromPlaceOrder:Boolean=true,val onClick:(pos:Int,action:String)->Unit):RecyclerView.Adapter<PlaceOrderAdapter.MyViewHolder>() {
+    var decimalFormat: DecimalFormat = DecimalFormat("0.00")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater= LayoutInflater.from(parent.context)
@@ -48,6 +50,7 @@ class PlaceOrderAdapter(
         fun bindView(item:OrderItemDtos)
         {
             binding.orderItem=item
+            binding.actualPriceText.text=mContext.getString(R.string.price_).plus(mContext.getString(R.string.rs)).plus(decimalFormat.format(item.totalPrice))
             Glide.with(binding.root)
                 .load(item.image)
                 .error(R.drawable.logo)

@@ -19,34 +19,10 @@ import kotlinx.coroutines.launch
 class ProductDetailsViewModel(val dispatcherProvider: CoroutineContextProvider, val methodRepo: MethodsRepo, val apiRepo: RetrofitRepository)  : AndroidViewModel(
     Application()
 ) {
-    var productData= ProductData(0,0, mutableListOf(),1,10)
     var product:ProductItem?=null
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
 
 
-    fun getProducts() {
-
-        viewModelScope.launch(dispatcherProvider.IO) {
-            responseLive.value = ResponseSealed.loading(true)
-            methodRepo.dataStore.getAccessToken().collect { token ->
-                when (val response =
-                    apiRepo.getProducts(token,productData.pageNumber, productData.pageSize,
-                        ProductParams()
-                    )) {
-                    is RetrofitResource.Error ->{
-                        responseLive.value =
-                            ResponseSealed.ErrorOnResponse(response.message)
-                        this.cancel()
-                    }
-                    is RetrofitResource.Success ->{
-                        responseLive.value =
-                            ResponseSealed.Success(response.data!!)
-                        this.cancel()
-                    }
-                }
-            }
-        }
-    }
 
     fun getProductById(productId:String) {
 

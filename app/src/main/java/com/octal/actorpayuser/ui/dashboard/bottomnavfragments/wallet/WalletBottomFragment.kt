@@ -29,12 +29,19 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
     private val walletBottomViewModel: WalletBottomViewModel by inject()
     val tempList= mutableListOf<WalletData>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentWalletBottomBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        walletBottomViewModel.walletListData.pageNumber=0
+        walletBottomViewModel.walletListData.items.clear()
+        binding.rvItemsWalletID.adapter?.notifyDataSetChanged()
         walletBottomViewModel.getWalletBalance()
         apiResponse()
 
@@ -54,9 +61,9 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
         binding.rvItemsWalletID.apply {
 
 
-            adapter = AdapterWalletStatement(requireContext(),tempList,walletBottomViewModel.methodRepo){
+            adapter = AdapterWalletStatement(requireContext(),walletBottomViewModel.walletListData.items,walletBottomViewModel.methodRepo){
 
-                val bundle= bundleOf("item" to tempList[it])
+                val bundle= bundleOf("item" to walletBottomViewModel.walletListData.items[it])
                 Navigation.findNavController(requireView()).navigate(R.id.walletDetailsFragment,bundle)
 
             }
@@ -74,12 +81,10 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
         walletBottomViewModel.walletListData.totalPages =
             walletListData.totalPages
         walletBottomViewModel.walletListData.items.addAll(walletListData.items)
-
-        tempList.clear()
-       tempList.addAll(walletBottomViewModel.walletListData.items.filter {
-            it.purchaseType != "ADMIN_WALLET_COMMISSION"
-
-        }.toMutableList())
+//        walletBottomViewModel.walletListData.items.addAll(walletListData.items.filter {
+//            it.purchaseType != "ADMIN_WALLET_COMMISSION"
+//
+//        }.toMutableList())
 
         binding.rvItemsWalletID.adapter?.notifyDataSetChanged()
 
@@ -98,6 +103,7 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
             walletBottomViewModel.responseLive.collect { event ->
                 when (event) {
                     is ResponseSealed.loading -> {
+                        if(event.isLoading)
                         showLoading()
                     }
                     is ResponseSealed.Success -> {
@@ -114,6 +120,7 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
                                 walletBottomViewModel.getWalletHistory()
                             }
                         }
+                        walletBottomViewModel.responseLive.value = ResponseSealed.Empty
                     }
                     is ResponseSealed.ErrorOnResponse -> {
                         hideLoading()

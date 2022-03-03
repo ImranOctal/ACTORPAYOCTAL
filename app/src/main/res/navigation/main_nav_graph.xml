@@ -13,6 +13,10 @@
         android:label="@string/home"
         tools:layout="@layout/fragment_home_bottom">
 
+
+        <action
+            android:id="@+id/action_homeBottomFragment_to_walletBottomFragment2"
+            app:destination="@id/walletBottomFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileBottomFragment"

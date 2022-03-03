@@ -33,7 +33,7 @@ class AdapterWalletStatement(val context :Context,val items: MutableList<WalletD
     inner class ViewHolder(val binding: AdapterWalletstatementBinding) :
         RecyclerView.ViewHolder(binding.root){
             fun bindView(item:WalletData,position: Int){
-                binding.rowWalletText.text=item.transactionRemark
+                binding.rowWalletText.text=item.transactionRemark.replace(","," ")
                 binding.rowWalletTxn.text=item.walletTransactionId
                 binding.rowWalletDate.text=methodsRepo.getFormattedOrderDate(item.createdAt)
 
@@ -50,10 +50,10 @@ class AdapterWalletStatement(val context :Context,val items: MutableList<WalletD
                 }
 
                 if(item.purchaseType == "TRANSFER"){
-                    binding.rowWalletText.text="Money Transferred Successfully"
+//                    binding.rowWalletText.text="Money Transferred Successfully"
                 }
                 else if(item.purchaseType == "SHOPPING"){
-                    binding.rowWalletText.text="Online Shopping"
+//                    binding.rowWalletText.text="Online Shopping"
                 }
             }
         }

@@ -289,7 +289,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                                 pContact,
                                 binding.codePicker.text.toString().trim(),
                                 sContact,
-                                shippingAddressItem!!.primary,
+                                false,
                                 null,
                                 userID,
                                 shippingAddressItem!!.id

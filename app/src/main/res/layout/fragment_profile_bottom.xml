@@ -254,7 +254,7 @@
                             style="@style/RegularTextView"
                             android:layout_gravity="start|center"
                             android:background="@android:color/transparent"
-                            android:hint="@string/add_mobile_number"
+                            android:hint="@string/enter_mobile_number"
                             android:paddingStart="@dimen/_10sdp"
                             android:paddingEnd="@dimen/_10sdp"
                             android:inputType="number"

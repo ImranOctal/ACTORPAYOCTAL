@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.octal.actorpayuser.R
@@ -14,39 +16,29 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.products.Pr
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.text.DecimalFormat
 
-class ProductListAdapter(
-    val context:Context,
-    val list: MutableList<ProductItem>,
+class ProductPagingAdapter(
+    val context: Context,
     val cartList: MutableStateFlow<MutableList<CartItemDTO>> = MutableStateFlow(mutableListOf()),
-    val onClick: (position: Int, click: Clicks) -> Unit
-) : RecyclerView.Adapter<ProductListAdapter.MyViewHolder>() {
+    val onClick: ( click: Clicks,productItem:ProductItem) -> Unit
+) : PagingDataAdapter<ProductItem, ProductPagingAdapter.ProductPageViewHolder>(CharacterComparator) {
+
     var decimalFormat: DecimalFormat = DecimalFormat("0.00")
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = ProductListItemBinding.inflate(inflater, parent, false)
-        return MyViewHolder(binding)
+    override fun onBindViewHolder(holder: ProductPageViewHolder, position: Int) {
+        getItem(position)?.let { holder.bind(it,position) }
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindView(list[position])
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductPageViewHolder =
+        ProductPageViewHolder(
+            ProductListItemBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
 
-    }
-
-    override fun getItemCount(): Int = list.size
-
-    override fun getItemId(position: Int): Long {
-        return  position.toLong()
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return  position
-    }
-
-    inner class MyViewHolder(val binding: ProductListItemBinding) :
+  inner class ProductPageViewHolder(val binding: ProductListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindView(item: ProductItem) {
+        fun bind(item: ProductItem,position: Int) = with(binding) {
             binding.productItem = item
             binding.cancelPriceText.apply {
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
@@ -58,25 +50,35 @@ class ProductListAdapter(
                 .error(R.drawable.logo)
                 .into(binding.productImage)
             binding.addToCart.setOnClickListener {
-                onClick(adapterPosition,Clicks.AddCart)
+                onClick(Clicks.AddCart,item)
             }
             val cart = cartList.value.find { it.productId == item.productId }
             if (cart != null) {
                 binding.addToCart.text=context.getString(R.string.go_to_cart)
                 binding.addToCart.setOnClickListener {
-                    onClick(adapterPosition,Clicks.BuyNow)
+                    onClick(Clicks.BuyNow,item)
                 }
             }
             else{
                 binding.addToCart.text=context.getString(R.string.add_to_cart)
             }
             binding.root.setOnClickListener {
-                onClick(adapterPosition, Clicks.Root)
+                onClick( Clicks.Root,item)
             }
             binding.buyNow.setOnClickListener {
-                onClick(adapterPosition, Clicks.BuyNow)
+                onClick( Clicks.BuyNow,item)
             }
         }
     }
+
+
+    object CharacterComparator : DiffUtil.ItemCallback<ProductItem>() {
+        override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem) =
+            oldItem.productId == newItem.productId
+
+        override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem) =
+            oldItem == newItem
+    }
+
 
 }

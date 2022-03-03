@@ -52,7 +52,6 @@ class ProductDetailsFragment : BaseFragment() {
 
          binding=DataBindingUtil.inflate(inflater,R.layout.fragment_product_details,container,false)
 
-        setAdapter()
         cartResponse()
         apiResponse()
 
@@ -212,14 +211,7 @@ class ProductDetailsFragment : BaseFragment() {
                     is ResponseSealed.Success -> {
                         hideLoading()
                         when (event.response) {
-                            is ProductListResponse -> {
-                                productDetailsViewModel.productData.pageNumber =
-                                    event.response.data.pageNumber
-                                productDetailsViewModel.productData.totalPages =
-                                    event.response.data.totalPages
-                                productDetailsViewModel.productData.items.addAll(event.response.data.items)
-                                adapter.notifyItemChanged(productDetailsViewModel.productData.items.size - 1)
-                            }
+
                             is SingleProductResponse -> {
                                 productDetailsViewModel.product=event.response.data
                                 updateUI()
@@ -239,41 +231,7 @@ class ProductDetailsFragment : BaseFragment() {
     }
 
 
-    fun setAdapter() {
 
-        adapter = ProductListAdapter(
-            requireContext(),
-            productDetailsViewModel.productData.items,
-            cartViewModel.cartItems
-        ) { position, click ->
-            when (click) {
-                Clicks.Root -> {
-                    val bundle= bundleOf("id" to productDetailsViewModel.productData.items[position].productId)
-                    Navigation.findNavController(requireView()).navigate(R.id.productDetailsFragment,bundle)
-//                    val intent=Intent(requireContext(),ProductDetailsActivity::class.java)
-//                    intent.putExtra("id",productDetailsViewModel.productData.items[position].productId)
-//                    startActivity(intent)
-                }
-                else -> Unit
-            }
-        }
-
-        val layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerviewSimiliarProduct.layoutManager = layoutManager
-        val endlessRecyclerViewScrollListener: EndlessRecyclerViewScrollListener =
-            object : EndlessRecyclerViewScrollListener(layoutManager) {
-                override fun onLoadMore(page: Int, totalItemsCount: Int) {
-                    if (productDetailsViewModel.productData.pageNumber < productDetailsViewModel.productData.totalPages - 1) {
-                        productDetailsViewModel.productData.pageNumber += 1
-                        productDetailsViewModel.getProducts()
-                    }
-                }
-            }
-        binding.recyclerviewSimiliarProduct.addOnScrollListener(endlessRecyclerViewScrollListener)
-        binding.recyclerviewSimiliarProduct.adapter = adapter
-
-
-    }
 
     private fun wantsToBuyDialog(onClick: () -> Unit) {
         CommonDialogsUtils.showCommonDialog(requireActivity(),

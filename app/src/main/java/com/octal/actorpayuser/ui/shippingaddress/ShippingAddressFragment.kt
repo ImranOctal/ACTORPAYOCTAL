@@ -87,8 +87,7 @@ class ShippingAddressFragment : BaseFragment() {
                 )
                 resultLauncher.launch(intent)
             } else if (action == "Delete") {
-                val shippingDeleteParams =
-                    ShippingDeleteParams(mutableListOf(shippingAddressViewModel.shippingAddressList[position].id!!))
+
                 CommonDialogsUtils.showCommonDialog(requireActivity(),shippingAddressViewModel.methodRepo,
                 "Delete Address","Are you sure?",
                     autoCancelable = true,
@@ -97,7 +96,7 @@ class ShippingAddressFragment : BaseFragment() {
                     showClickable = false,
                     callback = object :CommonDialogsUtils.DialogClick{
                         override fun onClick() {
-                            shippingAddressViewModel.deleteAddress(shippingDeleteParams)
+                            shippingAddressViewModel.deleteAddress(shippingAddressViewModel.shippingAddressList[position].id!!)
                         }
 
                         override fun onCancel() {

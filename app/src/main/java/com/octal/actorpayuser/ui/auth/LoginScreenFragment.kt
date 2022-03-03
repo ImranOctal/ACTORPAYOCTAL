@@ -55,13 +55,13 @@ class LoginScreenFragment : BaseFragment() {
                         when (event.response) {
                             is LoginResponses -> {
 
-                                viewModel.methodRepo.dataStore.setUserId(event.response.data.id)
-                                viewModel.methodRepo.dataStore.setIsLoggedIn(true)
-                                viewModel.methodRepo.dataStore.setEmail(event.response.data.email)
-                                viewModel.methodRepo.dataStore.setFirstName(event.response.data.firstName)
-                                viewModel.methodRepo.dataStore.setLastName(event.response.data.lastName)
-                                viewModel.methodRepo.dataStore.setAccessToken(event.response.data.access_token)
-                                viewModel.methodRepo.dataStore.setRefreshToken(event.response.data.refresh_token)
+                                loginViewModel.methodRepo.dataStore.setUserId(event.response.data.id)
+                                loginViewModel.methodRepo.dataStore.setIsLoggedIn(true)
+                                loginViewModel.methodRepo.dataStore.setEmail(event.response.data.email)
+                                loginViewModel.methodRepo.dataStore.setFirstName(event.response.data.firstName)
+                                loginViewModel.methodRepo.dataStore.setLastName(event.response.data.lastName)
+                                loginViewModel.methodRepo.dataStore.setAccessToken(event.response.data.access_token)
+                                loginViewModel.methodRepo.dataStore.setRefreshToken(event.response.data.refresh_token)
 
                                 showCustomAlert(
                                     "Logged in Successfully",

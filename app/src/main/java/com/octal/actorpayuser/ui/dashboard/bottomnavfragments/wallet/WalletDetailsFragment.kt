@@ -35,7 +35,7 @@ class WalletDetailsFragment : BaseFragment() {
 
         if(walletItem!=null){
 
-            binding.rowWalletText.text=walletItem.transactionRemark
+            binding.rowWalletText.text=walletItem.transactionRemark.replace(","," ")
             binding.rowWalletTxn.text=walletItem.walletTransactionId
             binding.rowWalletDate.text=walletBottomViewModel.methodRepo.getFormattedOrderDate(walletItem.createdAt)
             binding.rowWalletAmountDebit.text="₹ "+walletItem.transactionAmount.toString()
@@ -43,10 +43,10 @@ class WalletDetailsFragment : BaseFragment() {
             if(walletItem.purchaseType == "TRANSFER"){
                 binding.rowWalletName.visibility=View.VISIBLE
                 binding.rowWalletNameText.visibility=View.VISIBLE
-                binding.rowWalletText.text="Money Transferred Successfully"
+//                binding.rowWalletText.text="Money Transferred Successfully"
             }
             else if(walletItem.purchaseType == "SHOPPING"){
-                binding.rowWalletText.text="Online Shopping"
+//                binding.rowWalletText.text="Online Shopping"
             }
 
             if(walletItem.transactionTypes == "DEBIT"){

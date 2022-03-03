@@ -36,6 +36,7 @@ import kotlinx.coroutines.flow.collect
 import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
+import java.text.DecimalFormat
 
 
 class OrderDetailsFragment : BaseFragment() {
@@ -43,6 +44,7 @@ class OrderDetailsFragment : BaseFragment() {
     private val orderDetailsViewModel: OrderDetailsViewModel by inject()
     private lateinit var binding: FragmentOrderDetailsBinding
 
+    var decimalFormat: DecimalFormat = DecimalFormat("0.00")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,20 +81,20 @@ class OrderDetailsFragment : BaseFragment() {
     fun updateUI(){
         binding.orderStatus.visibility=View.VISIBLE
         binding.orderNumber.text=orderDetailsViewModel.orderData!!.orderNo
-        binding.orderAmount.text=getString(R.string.rs).plus(orderDetailsViewModel.orderData!!.totalPrice)
+        binding.orderAmount.text=getString(R.string.rs).plus(decimalFormat.format(orderDetailsViewModel.orderData!!.totalPrice))
         if(orderDetailsViewModel.orderData!!.paymentMethod !=null)
         binding.orderPayment.text=orderDetailsViewModel.orderData!!.paymentMethod
         else{
             binding.orderPayment.visibility=View.GONE
             binding.orderPaymentText.visibility=View.GONE
         }
-        binding.bussinessName.text="Business Name: "+orderDetailsViewModel.orderData!!.merchantDTO.businessName
-        binding.licenceNo.text="Licence No: "+orderDetailsViewModel.orderData!!.merchantDTO.licenceNumber
-        binding.email.text="Email: "+orderDetailsViewModel.orderData!!.merchantDTO.email
-        binding.contactNo.text="Contact No: "+orderDetailsViewModel.orderData!!.merchantDTO.extensionNumber+""+orderDetailsViewModel.orderData!!.merchantDTO.contactNumber
+        binding.bussinessName.text=getString(R.string.business_name_).plus(orderDetailsViewModel.orderData!!.merchantDTO.businessName)
+        binding.licenceNo.text=getString(R.string.licence_no_).plus(orderDetailsViewModel.orderData!!.merchantDTO.licenceNumber)
+        binding.email.text=getString(R.string.email_).plus(orderDetailsViewModel.orderData!!.merchantDTO.email)
+        binding.contactNo.text=getString(R.string.contact_no_).plus(orderDetailsViewModel.orderData!!.merchantDTO.extensionNumber+""+orderDetailsViewModel.orderData!!.merchantDTO.contactNumber)
         binding.deliveryAddressAddress1.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine1
         binding.deliveryAddressAddress2.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine2
-        binding.deliveryAddressCity.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.city+", "+orderDetailsViewModel.orderData!!.shippingAddressDTO!!.state
+        binding.deliveryAddressCity.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.city.plus(", ").plus(orderDetailsViewModel.orderData!!.shippingAddressDTO!!.state)
 
         binding.orderStatus.text=orderDetailsViewModel.orderData!!.orderStatus.replace("_"," ")
 
@@ -121,7 +123,7 @@ class OrderDetailsFragment : BaseFragment() {
             }
 
         binding.orderDateText.text =
-            "Order Date: " + orderDetailsViewModel.methodRepo.getFormattedOrderDate(orderDetailsViewModel.orderData!!.createdAt)
+            getString(R.string.order_date_).plus(orderDetailsViewModel.methodRepo.getFormattedOrderDate(orderDetailsViewModel.orderData!!.createdAt))
 
 
         if (orderDetailsViewModel.orderData?.shippingAddressDTO == null) {

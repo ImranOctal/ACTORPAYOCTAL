@@ -112,7 +112,7 @@ class SignUpScreenFragment : BaseFragment() {
                 binding.codePicker.text=GlobalData.allCountries[0].countryCode
             }
             binding.countryLayout.setOnClickListener {
-                CountryPicker(requireContext(),requireActivity(),viewModel.methodRepo,GlobalData.allCountries){
+                CountryPicker(requireContext(),requireActivity(),signupViewModel.methodRepo,GlobalData.allCountries){
                     binding.codePicker.text=GlobalData.allCountries[it].countryCode
                 }.show()
             }

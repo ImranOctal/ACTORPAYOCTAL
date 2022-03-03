@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -32,10 +33,11 @@ import com.octal.actorpayuser.ui.adapter.MenuAdapter
 import com.octal.actorpayuser.ui.addmoney.AddMoneyFragment
 import com.octal.actorpayuser.ui.auth.biometric.AuthBottomSheetDialog
 import com.octal.actorpayuser.ui.auth.viewmodel.LoginViewModel
+import com.octal.actorpayuser.ui.cart.CartFragment
 import com.octal.actorpayuser.ui.cart.CartViewModel
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HistoryBottomFragment
-import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.home.HomeBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.ProfileBottomFragment
+import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.home.HomeBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.wallet.WalletBottomFragment
 import com.octal.actorpayuser.ui.dashboard.models.DrawerItems
 import com.octal.actorpayuser.ui.dispute.DisputeFragment
@@ -91,12 +93,13 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         val view = binding.root
         setContentView(view)
 
-
         initialization()
         setBottomNavigationView()
         features()
         title = "ActorPay"
     }
+
+
 
     private fun features() {
         LoginViewModel.isFromContentPage = false
@@ -282,6 +285,8 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         mViewHolder?.mToolbar?.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
 
         binding.cart.setOnClickListener {
+            val fragment = navHostFragment.childFragmentManager.fragments[0]
+            if(fragment  !is CartFragment)
             navController.navigate(R.id.cartFragment)
         }
         binding.filter.setOnClickListener {
@@ -428,6 +433,10 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         }
     }
 
+    fun updateCartCount(count:Int){
+        binding.cartCount.text=count.toString()
+    }
+
     private fun cartResponse() {
         lifecycleScope.launchWhenCreated {
 
@@ -440,10 +449,22 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     }
                     is ResponseSealed.Success -> {
                         hideLoadingDialog()
+                        when(event.response){
+//                            is CartResponse ->{
+//                                cartViewModel.cartData
+//                            }
+//                            is Int->{
+//                                binding.cartCount.text=event.response.toString()
+//                            }
+
+                        }
+                        updateCartCount(cartViewModel.cartData!!.totalQuantity)
+
                     }
                     is ResponseSealed.ErrorOnResponse -> {
                         hideLoadingDialog()
                         cartViewModel.responseLive.value = ResponseSealed.Empty
+
 
                         if (event.message!!.code == 403) {
                             cartViewModel.viewModelScope.cancel()
@@ -538,7 +559,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     updateUI("Dispute Details",false,false,false,false,false,false,false)
                 }
                 R.id.cartFragment -> {
-                    updateUI("My Cart",false,false,false,false,false,false,false)
+                    updateUI("My Cart",false,false,false,true,false,false,false)
 
                 }
                 R.id.productDetailsFragment -> {
@@ -601,8 +622,10 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     private fun showHideCartIcon(showHide: Boolean) {
         if (showHide) {
             binding.cart.visibility = View.VISIBLE
+            binding.cartCount.visibility = View.VISIBLE
         } else {
             binding.cart.visibility = View.GONE
+            binding.cartCount.visibility = View.GONE
         }
     }
 

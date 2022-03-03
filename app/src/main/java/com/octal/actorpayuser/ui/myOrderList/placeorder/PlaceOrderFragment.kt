@@ -116,8 +116,7 @@ class PlaceOrderFragment : BaseFragment() {
                 intent.putExtra("shippingItem", placeOrderViewModel.shippingAddressList[position])
                 resultLauncher.launch(intent)
             } else if (action == Clicks.Delete) {
-                val shippingDeleteParams =
-                    ShippingDeleteParams(mutableListOf(placeOrderViewModel.shippingAddressList[position].id!!))
+
                 CommonDialogsUtils.showCommonDialog(requireActivity(),
                     placeOrderViewModel.methodRepo,
                     "Delete Address",
@@ -128,7 +127,7 @@ class PlaceOrderFragment : BaseFragment() {
                     showClickable = false,
                     callback = object : CommonDialogsUtils.DialogClick {
                         override fun onClick() {
-                            placeOrderViewModel.deleteAddress(shippingDeleteParams)
+                            placeOrderViewModel.deleteAddress(placeOrderViewModel.shippingAddressList[position].id!!)
                         }
 
                         override fun onCancel() {

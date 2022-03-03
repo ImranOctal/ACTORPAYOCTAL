@@ -25,8 +25,11 @@ import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderData
 import java.lang.Exception
+import java.text.DecimalFormat
 
 class OrderListAdapter(val methodsRepo: MethodsRepo, private val orderList:MutableList<OrderData>, val onClick:(position: Int, action: Clicks)->Unit):RecyclerView.Adapter<OrderListAdapter.MyViewHolder>() {
+
+    var decimalFormat: DecimalFormat = DecimalFormat("0.00")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater= LayoutInflater.from(parent.context)
@@ -57,6 +60,7 @@ class OrderListAdapter(val methodsRepo: MethodsRepo, private val orderList:Mutab
                 binding.methodRepo=methodsRepo
 
                 binding.orderStatus.text=item.orderStatus.replace("_"," ")
+                binding.actualPriceText.text="Price: ₹"+decimalFormat.format(item.totalPrice)
 
 
                 when {
