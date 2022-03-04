@@ -1,4 +1,4 @@
-package com.octal.actorpayuser.ui.dashboard.bottomnavfragments.home
+package com.octal.actorpayuser.ui.dashboard.bottomnavfragments.wallet.walletuser
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.di.models.CoroutineContextProvider
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
+import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderListData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderListParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletListData
@@ -17,42 +18,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class HomeViewModel(val dispatcherProvider: CoroutineContextProvider, val methodRepo: MethodsRepo, val apiRepo: RetrofitRepository)  : AndroidViewModel(
+class WalletUserViewModel(val dispatcherProvider: CoroutineContextProvider, val methodRepo: MethodsRepo, val apiRepo: RetrofitRepository)  : AndroidViewModel(
     Application()
 ) {
 
-    var walletListData = WalletListData(0, 0, mutableListOf(), 0, 10)
-    var walletParams= WallletMoneyParams()
-
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
 
-    fun getWalletBalance() {
-        viewModelScope.launch(dispatcherProvider.IO) {
-            responseLive.value = ResponseSealed.loading(true)
-            methodRepo.dataStore.getAccessToken().collect { token ->
-                methodRepo.dataStore.getUserId().collect { id ->
-                    when (val response = apiRepo.getWalletBalance(token, id)) {
-                        is RetrofitResource.Error -> {
-                            responseLive.value =
-                                ResponseSealed.ErrorOnResponse(response.message)
-                            this.cancel()
-                        }
-                        is RetrofitResource.Success -> {
-                            responseLive.value =
-                                ResponseSealed.Success(response.data!!)
-                            this.cancel()
-                        }
-                    }
-                }
-            }
-        }
+    var walletListData = WalletListData(0, 0, mutableListOf(), 0, 10)
 
-    }
+    var walletParams=WallletMoneyParams()
 
     fun getWalletHistory() {
-//        walletParams.purchaseType="TRANSFER"
         viewModelScope.launch(dispatcherProvider.IO) {
-            responseLive.value = ResponseSealed.loading(false)
+            responseLive.value = ResponseSealed.loading(true)
             methodRepo.dataStore.getAccessToken().collect { token ->
                 when (val response =
                     apiRepo.getWalletHistory(token,walletListData.pageNumber,walletListData.pageSize,

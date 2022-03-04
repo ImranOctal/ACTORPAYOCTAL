@@ -487,90 +487,92 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     binding.layoutMainID.bottomNavigationView.menu.getItem(0).isChecked = true
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.drawable.layout_bg)
                     binding.layoutMainID.scan.isPressed=true
-                    updateUI("ActorPay",true,true,true,true,false,true,true)
+                    updateUI("ActorPay",true,true,true,false,true,true,true)
                 }
                 R.id.historyBottomFragment -> {
                     binding.layoutMainID.bottomNavigationView.menu.getItem(1).isChecked = true
-                    updateUI("My History",false,true,true,true,false,true,false)
+                    updateUI("My History",true,true,true,false,true)
                 }
                 R.id.walletBottomFragment -> {
                     binding.layoutMainID.bottomNavigationView.menu.getItem(3).isChecked = true
-                    updateUI("My Wallet",false,true,true,false,true,false,false)
+                    updateUI("My Wallet",true,true,false,true,false)
                 }
                 R.id.profileBottomFragment -> {
                     binding.layoutMainID.bottomNavigationView.menu.getItem(4).isChecked = true
-                    updateUI("My Profile",false,true,true,true,false,true,false)
+                    updateUI("My Profile",true,true,true,false,true)
                 }
                 R.id.referFragment -> {
-                    updateUI("My Refer",false,false,false,false,false,false,false)
+                    updateUI("My Refer",false,false,false,false,false)
                 }
                 R.id.rewardsFragment -> {
-                    updateUI("My Rewards",false,false,false,false,false,false,false)
+                    updateUI("My Rewards",false,false,false,false,false)
                 }
                 R.id.productListFragment -> {
-                    updateUI("Products",false,false,false,true,false,false,false)
+                    updateUI("Products",false,false,true,false,false)
                 }
                 R.id.miscFragment -> {
-                    updateUI("More",false,false,false,false,false,false,false)
+                    updateUI("More",false,false,false,false,false)
                 }
                 R.id.myOrderFragment -> {
-                    updateUI("My Orders",false,false,false,false,true,false,false)
+                    updateUI("My Orders",false,false,false,true,false)
                 }
                 R.id.promoListFragment -> {
-                    updateUI("Promos",false,false,false,false,false,false,false)
+                    updateUI("Promos",false,false,false,false,false)
                 }
                 R.id.settingsFragment -> {
-                    updateUI("Settings",false,false,false,false,false,false,false)
+                    updateUI("Settings",false,false,false,false,false)
                 }
                 R.id.faqFragment -> {
-                    updateUI("FAQ",false,false,false,false,false,false,false)
+                    updateUI("FAQ",false,false,false,false,false)
                 }
                 R.id.remittance -> {
-                    updateUI(getString(R.string.change_payment_option),false,false,false,false,false,false,false)
+                    updateUI(getString(R.string.change_payment_option),false,false,false,false,false)
                 }
                 R.id.shippingAddressFragment -> {
-                    updateUI("My Addresses",false,false,false,false,false,false,false)
+                    updateUI("My Addresses",false,false,false,false,false)
                 }
                 R.id.orderDetailsFragment -> {
-                    updateUI("Order Summary",false,false,false,false,false,false,false)
+                    updateUI("Order Summary",false,false,false,false,false)
                 }
                 R.id.addMoneyFragment -> {
-                    updateUI("Add Money In Wallet",false,false,false,false,false,false,false)
+                    updateUI("Add Money In Wallet",false,false,false,false,false)
 
                 }
                 R.id.transferMoneyFragment -> {
-                    updateUI("Transfer Money",false,false,false,false,false,false,false)
+                    updateUI("Transfer Money",false,false,false,false,false)
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.color.white)
                 }
                 R.id.payFragment -> {
-                    updateUI("Transfer Money",false,false,false,false,false,false,false)
+                    updateUI("Transfer Money",false,false,false,false,false)
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.color.white)
                 }
                 R.id.mobileAndDTHFragment -> {
-                    updateUI("Mobile and DTH Recharge",false,false,false,false,false,false,false)
+                    updateUI("Mobile and DTH Recharge",false,false,false,false,false)
                 }
                 R.id.notificationFragment -> {
-                    updateUI("Notifications",false,false,false,false,false,false,false)
+                    updateUI("Notifications",false,false,false,false,false)
                 }
                 R.id.disputeFragment -> {
-                    updateUI("Disputes",false,false,false,false,true,false,false)
+                    updateUI("Disputes",false,false,false,true,false)
                 }
                 R.id.disputeDetailsFragment -> {
-                    updateUI("Dispute Details",false,false,false,false,false,false,false)
+                    updateUI("Dispute Details",false,false,false,false,false)
                 }
                 R.id.cartFragment -> {
-                    updateUI("My Cart",false,false,false,true,false,false,false)
+                    updateUI("My Cart",false,false,true,false,false)
 
                 }
                 R.id.productDetailsFragment -> {
-                    updateUI("Product Details",false,false,false,false,false,false,false)
-
+                    updateUI("Product Details",false,false,false,false,false)
                 }
                 R.id.placeOrderFragment -> {
-                    updateUI("Place Order",false,false,false,false,false,false,false)
+                    updateUI("Place Order",false,false,false,false,false)
                 }
                 R.id.walletDetailsFragment -> {
-                    updateUI("Transaction Details",false,false,false,false,false,false,false)
+                    updateUI("Transaction Details",false,false,false,false,false)
+                }
+                R.id.walletUserFragment -> {
+                    updateUI("Transaction Details",false,false,false,false,false)
                 }
             }
         }
@@ -579,12 +581,12 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     fun updateUI(
         title: String,
         isMenu: Boolean,
-        isDrawerUnLock: Boolean,
         showHideBottomNav: Boolean,
         showHideCartIcon: Boolean,
         showHideFilterIcon: Boolean,
         showNotificationIcon: Boolean,
-        isRvItemsVisible: Boolean
+        isRvItemsVisible: Boolean=false,
+        isDrawerUnLock: Boolean=false,
     ) {
         this.title = title
         this.isMenuOrBack = isMenu

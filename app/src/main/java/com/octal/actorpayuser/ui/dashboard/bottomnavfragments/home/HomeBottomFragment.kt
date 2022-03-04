@@ -40,7 +40,7 @@ class HomeBottomFragment : BaseFragment() {
         binding.rvtransactionID.apply {
             adapter = AdapterWalletStatement(requireContext(),homeViewModel.walletListData.items,homeViewModel.methodRepo){
                 val bundle= bundleOf("item" to homeViewModel.walletListData.items[it])
-                Navigation.findNavController(requireView()).navigate(R.id.walletDetailsFragment,bundle)
+                Navigation.findNavController(requireView()).navigate(R.id.action_homeBottomFragment_to_walletUserFragment,bundle)
             }
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         }

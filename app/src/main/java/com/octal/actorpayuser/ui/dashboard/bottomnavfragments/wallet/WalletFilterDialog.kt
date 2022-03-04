@@ -55,7 +55,7 @@ class WalletFilterDialog(
             // Apply the adapter to the spinner
             binding.spinnerStatus.adapter = adapter
         }
-        binding.spinnerStatus.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+        binding.spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
@@ -65,29 +65,28 @@ class WalletFilterDialog(
                 position: Int,
                 id: Long
             ) {
-
-                if(position==0){
-                    (view as TextView).setTextColor(ContextCompat.getColor(mContext,R.color.gray))
+                if (position == 0) {
+                    (view as TextView).setTextColor(ContextCompat.getColor(mContext, R.color.gray))
                 }
             }
-
         }
 
 
 
 
         binding.walletId.setText(params.walletTransactionId)
-        binding.totalFrom.setText(params.transactionAmountFrom.toString())
-        binding.totalTo.setText(params.transactionAmountTo.toString())
-        binding.remark.setText(params.transactionRemark.toString())
+        binding.totalFrom.setText(params.transactionAmountFrom)
+        binding.totalTo.setText(params.transactionAmountTo)
+        binding.remark.setText(params.transactionRemark)
 
         binding.startDate.setText(params.startDate)
         binding.endDate.setText(params.endDate)
 
-        val array = mContext.resources.getStringArray(R.array.wallet_txn_type_status_array).toMutableList()
+        val array =
+            mContext.resources.getStringArray(R.array.wallet_txn_type_status_array).toMutableList()
 
-        if (array.contains(params.transactionType)) {
-            val pos = array.indexOfFirst { it.equals(params.transactionType) }
+        if (params.transactionTypes !=null && array.contains(params.transactionTypes)) {
+            val pos = array.indexOfFirst { it.equals(params.transactionTypes) }
             binding.spinnerStatus.setSelection(pos)
         }
 
@@ -98,11 +97,11 @@ class WalletFilterDialog(
             val day = c.get(Calendar.DAY_OF_MONTH)
 
 
-            val dpd = DatePickerDialog(mContext,  { _, yearR, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(mContext, { _, yearR, monthOfYear, dayOfMonth ->
 
-                val f =  DecimalFormat("00")
-                val dayMonth=f.format(dayOfMonth)
-                val monthYear=f.format(monthOfYear+1)
+                val f = DecimalFormat("00")
+                val dayMonth = f.format(dayOfMonth)
+                val monthYear = f.format(monthOfYear + 1)
 
                 binding.startDate.setText("" + yearR + "-" + (monthYear) + "-" + dayMonth)
 
@@ -120,11 +119,11 @@ class WalletFilterDialog(
             val day = c.get(Calendar.DAY_OF_MONTH)
 
 
-            val dpd = DatePickerDialog(mContext,  { _, yearR, monthOfYear, dayOfMonth ->
+            val dpd = DatePickerDialog(mContext, { _, yearR, monthOfYear, dayOfMonth ->
 
-                val f =  DecimalFormat("00")
-                val dayMonth=f.format(dayOfMonth)
-                val monthYear=f.format(monthOfYear+1)
+                val f = DecimalFormat("00")
+                val dayMonth = f.format(dayOfMonth)
+                val monthYear = f.format(monthOfYear + 1)
 
                 binding.endDate.setText("" + yearR + "-" + (monthYear) + "-" + dayMonth)
 
@@ -141,8 +140,8 @@ class WalletFilterDialog(
             var totalFrom: String = ""
             var totalTo: String = ""
             var remark: String = ""
-            var status: String = ""
-            var startDate: String=""
+            var transactionType: String? = null
+            var startDate: String = ""
             var endDate: String = ""
 
 
@@ -159,13 +158,11 @@ class WalletFilterDialog(
 
             val statusPosition = binding.spinnerStatus.selectedItemPosition
             if (statusPosition != 0) {
-                status = array[statusPosition]
+                transactionType = array[statusPosition]
             }
 
             onClick(
-                WallletMoneyParams(
-                    wallet, totalTo, totalFrom, remark,status,startDate, endDate
-                )
+                WallletMoneyParams(wallet, totalTo, totalFrom, remark,  startDate, endDate,transactionType)
             )
             dismiss()
         }

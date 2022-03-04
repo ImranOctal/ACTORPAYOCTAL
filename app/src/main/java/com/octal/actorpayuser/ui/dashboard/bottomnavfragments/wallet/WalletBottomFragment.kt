@@ -27,12 +27,7 @@ import org.koin.android.ext.android.inject
 class WalletBottomFragment : BaseFragment() , OnFilterClick {
     private lateinit var binding: FragmentWalletBottomBinding
     private val walletBottomViewModel: WalletBottomViewModel by inject()
-    val tempList= mutableListOf<WalletData>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -146,6 +141,7 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
             walletBottomViewModel.walletListData.pageNumber=0
             walletBottomViewModel.walletListData.totalPages=0
             walletBottomViewModel.walletListData.items.clear()
+            binding.rvItemsWalletID.adapter?.notifyDataSetChanged()
             walletBottomViewModel.getWalletHistory()
         }.show()
 

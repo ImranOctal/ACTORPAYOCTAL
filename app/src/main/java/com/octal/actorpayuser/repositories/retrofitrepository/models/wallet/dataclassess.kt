@@ -35,9 +35,10 @@ data class WallletMoneyParams(
     var transactionAmountTo:String="",
     var transactionAmountFrom:String="",
     var transactionRemark:String="",
-    var transactionType:String="",
     var startDate: String = "",
     var endDate: String = "",
+    var transactionTypes: String? = null,
+    var purchaseType: String? = null,
 )
 
 

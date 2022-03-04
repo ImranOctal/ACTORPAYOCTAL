@@ -383,7 +383,6 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
     ): RetrofitResource<ProductListResponse> {
 
         try {
-
             val data = apiClient.getProducts(B_Token + token, pageNo, pageSize, productParams)
             val result = data.body()
             if (data.isSuccessful && result != null) {
@@ -393,18 +392,12 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
                     return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
                 }
                 return RetrofitResource.Error(
-                    FailResponse(
-                        context.getString(R.string.please_try_after_sometime),
-                        ""
-                    )
-                )
+                    FailResponse(context.getString(R.string.please_try_after_sometime), ""))
             }
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             return RetrofitResource.Error(
-                FailResponse(
-                    e.message ?: context.getString(R.string.server_not_responding), "",
-                )
-            )
+                FailResponse(e.message ?: context.getString(R.string.server_not_responding), "",))
         }
     }
 

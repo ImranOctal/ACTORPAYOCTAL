@@ -29,7 +29,9 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductItem
 import com.octal.actorpayuser.utils.OnFilterClick
+import com.squareup.moshi.Json
 import kotlinx.coroutines.flow.collectLatest
+import org.json.JSONObject
 
 
 class ProductsListFragment : BaseFragment(),OnFilterClick {
@@ -39,7 +41,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
     private var isFromBuy=false
     private var futureAddCart:ProductItem?=null
 
-    lateinit var adapter: ProductListAdapter
+    lateinit var productPagingAdapter:ProductPagingAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +51,60 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
         productViewModel.category=""
         productViewModel.categoryList. clear()
         productViewModel.getCategories()
+        productPagingAdapter = ProductPagingAdapter(
+            requireContext(),
+            cartViewModel.cartItems){
+                click,product ->
 
+            when (click) {
+                Clicks.Root -> {
+                    val bundle= bundleOf("id" to product.productId)
+                    Navigation.findNavController(requireView()).navigate(R.id.productDetailsFragment,bundle)
+                }
+                Clicks.AddCart -> {
+                    if (cartViewModel.cartItems.value.size > 0) {
+                        val merchantId = cartViewModel.cartItems.value[0].merchantId
+                        if (product.merchantId != merchantId) {
+                            wantsToBuyDialog {
+                                futureAddCart=product
+                                cartViewModel.deleteAllCart()
+                            }
+                        } else
+                            addToCart(product)
+                    } else {
+                        addToCart(product)
+                    }
+                }
+                Clicks.BuyNow -> {
+                    if (cartViewModel.cartItems.value.size > 0) {
+                        val cartItem=  cartViewModel.cartItems.value.find {
+                            it.productId==product.productId
+                        }
+                        if(cartItem!=null)
+                            goToCart()
+                        else{
+                            val merchantId = cartViewModel.cartItems.value[0].merchantId
+                            if (product.merchantId != merchantId) {
+                                wantsToBuyDialog{
+                                    isFromBuy=true
+                                    futureAddCart=product
+                                    cartViewModel.deleteAllCart()
+                                }
+                            } else {
+                                isFromBuy=true
+                                addToCart(product)
+                            }
+                        }
+                    } else {
+                        isFromBuy=true
+                        addToCart(product)
+                    }
+                }
+                else -> Unit
+
+            }
+        }
+        getProducts()
     }
 
 
@@ -74,7 +129,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                 productViewModel.name = name
                 productViewModel.pageNumber=0
 
-                setAdapter()
+                getProducts()
                 productViewModel.methodRepo.hideSoftKeypad(requireActivity())
 
             }
@@ -163,63 +218,20 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
             }
     }
 
+    private fun getProducts(){
+        lifecycleScope.launchWhenCreated {
+            productViewModel.methodRepo.dataStore.getAccessToken().collect { token ->
+                productViewModel.getProductsWithPaging(token).collectLatest {
+                      productPagingAdapter.submitData(it)
+                }
+            }
+        }
+    }
 
 
     private fun setAdapter() {
 
-        val productPagingAdapter = ProductPagingAdapter(
-            requireContext(),
-            cartViewModel.cartItems){
-             click,product ->
 
-            when (click) {
-                Clicks.Root -> {
-                    val bundle= bundleOf("id" to product.productId)
-                    Navigation.findNavController(requireView()).navigate(R.id.productDetailsFragment,bundle)
-                }
-                Clicks.AddCart -> {
-                    if (cartViewModel.cartItems.value.size > 0) {
-                        val merchantId = cartViewModel.cartItems.value[0].merchantId
-                        if (product.merchantId != merchantId) {
-                            wantsToBuyDialog {
-                                futureAddCart=product
-                                cartViewModel.deleteAllCart()
-                            }
-                        } else
-                            addToCart(product)
-                    } else {
-                        addToCart(product)
-                    }
-                }
-                Clicks.BuyNow -> {
-                    if (cartViewModel.cartItems.value.size > 0) {
-                        val cartItem=  cartViewModel.cartItems.value.find {
-                            it.productId==product.productId
-                        }
-                        if(cartItem!=null)
-                            goToCart()
-                        else{
-                            val merchantId = cartViewModel.cartItems.value[0].merchantId
-                            if (product.merchantId != merchantId) {
-                                wantsToBuyDialog{
-                                    isFromBuy=true
-                                    futureAddCart=product
-                                    cartViewModel.deleteAllCart()
-                                }
-                            } else {
-                                isFromBuy=true
-                                addToCart(product)
-                            }
-                        }
-                    } else {
-                        isFromBuy=true
-                        addToCart(product)
-                    }
-                }
-                else -> Unit
-
-            }
-        }
 
        binding.recyclerviewProduct.apply {
             layoutManager = LinearLayoutManager(context)
@@ -246,17 +258,16 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                 }
                 is LoadState.Error->{
                     hideLoading()
+                    val errorResponse = (state.refresh as LoadState.Error).error.message!!
+                    val json=JSONObject(errorResponse)
+                    if (json.has("code") && json.getInt("code") == 403) {
+                        forcelogout(productViewModel.methodRepo)
+                    }
                 }
             }
         }
-//        productPagingAdapter.refresh()
-       lifecycleScope.launchWhenCreated {
-           productViewModel.methodRepo.dataStore.getAccessToken().collect { token ->
-               productViewModel.getProductsWithPaging(token+"1").collectLatest {
-                   productPagingAdapter.submitData(it)
-               }
-           }
-       }
+        productPagingAdapter.refresh()
+
 
     }
 
@@ -277,7 +288,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                 productViewModel.pageNumber=0
                 binding.recyclerviewCategories.adapter?.notifyDataSetChanged()
 
-                setAdapter()
+                getProducts()
             }
             }
 
