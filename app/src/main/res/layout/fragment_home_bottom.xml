@@ -25,8 +25,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Recent transactions"
-            android:textSize="@dimen/_12ssp"
+            android:text="Recent Transactions"
+            android:textSize="@dimen/_13ssp"
             android:fontFamily="@font/poppins_medium"
             android:textColor="@color/text_color"
             />
@@ -42,15 +42,13 @@
             android:textColor="@color/primary"
             />
 
-
-
-
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvtransactionID"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_40sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

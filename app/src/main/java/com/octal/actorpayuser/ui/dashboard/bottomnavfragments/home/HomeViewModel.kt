@@ -21,7 +21,7 @@ class HomeViewModel(val dispatcherProvider: CoroutineContextProvider, val method
     Application()
 ) {
 
-    var walletListData = WalletListData(0, 0, mutableListOf(), 0, 10)
+    var walletListData = WalletListData(0, 0, mutableListOf(), 0, 5)
     var walletParams= WallletMoneyParams()
 
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)

@@ -37,6 +37,7 @@ data class WallletMoneyParams(
     var transactionRemark:String="",
     var startDate: String = "",
     var endDate: String = "",
+    var toUser: String = "",
     var transactionTypes: String? = null,
     var purchaseType: String? = null,
 )
@@ -75,6 +76,9 @@ data class WalletData(
     var purchaseType: String,
     var transactionRemark: String,
     var toUserName: String,
+    var toUser: String,
+    var toEmail: String,
+    var toMobileNo: String,
     var percentage: Double,
     ): Serializable
 

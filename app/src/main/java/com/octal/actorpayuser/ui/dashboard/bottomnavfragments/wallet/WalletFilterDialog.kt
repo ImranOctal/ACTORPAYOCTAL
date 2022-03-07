@@ -162,7 +162,7 @@ class WalletFilterDialog(
             }
 
             onClick(
-                WallletMoneyParams(wallet, totalTo, totalFrom, remark,  startDate, endDate,transactionType)
+                WallletMoneyParams(wallet, totalTo, totalFrom, remark,  startDate, endDate,"",transactionType)
             )
             dismiss()
         }

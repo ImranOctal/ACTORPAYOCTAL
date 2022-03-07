@@ -6,9 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.di.models.CoroutineContextProvider
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
-import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderListData
-import com.octal.actorpayuser.repositories.retrofitrepository.models.order.OrderListParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletListData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WallletMoneyParams
 import com.octal.actorpayuser.repositories.retrofitrepository.repo.RetrofitRepository
@@ -23,12 +20,11 @@ class WalletUserViewModel(val dispatcherProvider: CoroutineContextProvider, val 
 ) {
 
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
-
     var walletListData = WalletListData(0, 0, mutableListOf(), 0, 10)
-
     var walletParams=WallletMoneyParams()
 
     fun getWalletHistory() {
+        walletParams.purchaseType="TRANSFER"
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(true)
             methodRepo.dataStore.getAccessToken().collect { token ->

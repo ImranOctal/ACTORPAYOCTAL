@@ -1,17 +1,23 @@
 package com.octal.actorpayuser.ui.dashboard.bottomnavfragments.wallet
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
-import com.octal.actorpayuser.databinding.AddTransactionStatusDialogBinding
 import com.octal.actorpayuser.databinding.FragmentWalletDetailsBinding
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletData
+import com.octal.actorpayuser.ui.auth.viewmodel.LoginViewModel
+import com.octal.actorpayuser.ui.content.ContentActivity
+import com.octal.actorpayuser.ui.content.ContentViewModel
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.viewmodels.WalletBottomViewModel
 import org.koin.android.ext.android.inject
 
@@ -40,6 +46,14 @@ class WalletDetailsFragment : BaseFragment() {
             binding.rowWalletDate.text=walletBottomViewModel.methodRepo.getFormattedOrderDate(walletItem.createdAt)
             binding.rowWalletAmountDebit.text="₹ "+walletItem.transactionAmount.toString()
             binding.rowWalletName.text=walletItem.toUserName.replace(" ,","")
+
+            walletBottomViewModel.methodRepo.makeTextLink(binding.rowWalletName,"${walletItem.toUserName.replace(", ","")}",true,ContextCompat.getColor(requireContext(),R.color.primary)){
+
+                val bundle= bundleOf("item" to walletItem)
+                Navigation.findNavController(requireView()).navigate(R.id.walletUserFragment,bundle)
+
+            }
+
             if(walletItem.purchaseType == "TRANSFER"){
                 binding.rowWalletName.visibility=View.VISIBLE
                 binding.rowWalletNameText.visibility=View.VISIBLE
@@ -47,6 +61,10 @@ class WalletDetailsFragment : BaseFragment() {
             }
             else if(walletItem.purchaseType == "SHOPPING"){
 //                binding.rowWalletText.text="Online Shopping"
+            }
+
+            binding.rowWalletName.setOnClickListener {
+
             }
 
             if(walletItem.transactionTypes == "DEBIT"){

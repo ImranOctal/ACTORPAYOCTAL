@@ -15,6 +15,7 @@ import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentHomeBottomBinding
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletBalance
+import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletListData
 import com.octal.actorpayuser.ui.dashboard.adapters.AdapterWalletStatement
@@ -25,6 +26,11 @@ import org.koin.android.ext.android.inject
 class HomeBottomFragment : BaseFragment() {
     private lateinit var binding: FragmentHomeBottomBinding
     private val homeViewModel: HomeViewModel by inject()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +46,7 @@ class HomeBottomFragment : BaseFragment() {
         binding.rvtransactionID.apply {
             adapter = AdapterWalletStatement(requireContext(),homeViewModel.walletListData.items,homeViewModel.methodRepo){
                 val bundle= bundleOf("item" to homeViewModel.walletListData.items[it])
-                Navigation.findNavController(requireView()).navigate(R.id.action_homeBottomFragment_to_walletUserFragment,bundle)
+                Navigation.findNavController(requireView()).navigate(R.id.walletDetailsFragment,bundle)
             }
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         }
@@ -96,7 +102,7 @@ class HomeBottomFragment : BaseFragment() {
                     is ResponseSealed.ErrorOnResponse -> {
                         homeViewModel.responseLive.value = ResponseSealed.Empty
                         hideLoading()
-                        showCustomToast(event.message!!.message)
+//                        showCustomToast(event.message!!.message)
 
                     }
                     is ResponseSealed.Empty -> {

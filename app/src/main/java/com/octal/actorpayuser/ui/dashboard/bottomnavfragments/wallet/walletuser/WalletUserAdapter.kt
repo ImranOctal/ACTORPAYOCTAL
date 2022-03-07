@@ -7,53 +7,131 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.databinding.RowWalletUserCreditBinding
+import com.octal.actorpayuser.databinding.RowWalletUserDebitBinding
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletData
 
-class WalletUserAdapter(val context :Context, val items: MutableList<WalletData>, val methodsRepo: MethodsRepo, val onClick:(position:Int)->Unit) : RecyclerView.Adapter<WalletUserAdapter.ViewHolder>() {
+class WalletUserAdapter(
+    val context: Context,
+    val items: MutableList<WalletData>,
+    val methodsRepo: MethodsRepo,
+    val onClick: (position: Int) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ViewHolder {
+    ): RecyclerView.ViewHolder {
 
         val inflater = LayoutInflater.from(parent.context)
-        val binding = RowWalletUserCreditBinding.inflate(inflater,parent,false)
-        return ViewHolder(binding)
+        val bindingCredit = RowWalletUserCreditBinding.inflate(inflater, parent, false)
+        val bindingDebit = RowWalletUserDebitBinding.inflate(inflater, parent, false)
+
+        if (viewType == 0)
+            return ViewHolderCredit(bindingCredit)
+        else
+            return ViewHolderDebit(bindingDebit)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindView(items[position],position)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val viewtype=holder.itemViewType
+        if (viewtype == 0) {
+            val viewHolderCredit=holder as ViewHolderCredit
+            viewHolderCredit.bindView(items[position], position)
+        }
+        else {
+            val viewHolderDebit=holder as ViewHolderDebit
+            viewHolderDebit.bindView(items[position], position)
+        }
+
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    inner class ViewHolder(val binding: RowWalletUserCreditBinding) :
-        RecyclerView.ViewHolder(binding.root){
-            fun bindView(item:WalletData,position: Int){
-                binding.rowWalletText.text=item.transactionRemark.replace(","," ")
-                binding.rowWalletTxn.text=item.walletTransactionId
-                binding.rowWalletDate.text=methodsRepo.getFormattedOrderDate(item.createdAt)
+    override fun getItemViewType(position: Int): Int {
+        // Just as an example, return 0 or 2 depending on position
+        // Note that unlike in ListView adapters, types don't have to be contiguous
+        val item=items[position]
+        if (item.transactionTypes == "CREDIT")
+            return 0
+        else
+            return 1
+    }
 
-                binding.root.setOnClickListener {
-                    onClick(position)
-                }
-                if(item.transactionTypes == "DEBIT"){
-                    binding.rowWalletAmount.setTextColor(ContextCompat.getColor(context, R.color.pink_color))
-                    binding.rowWalletAmount.text="- ₹ "+item.transactionAmount.toString()
-                }
-                if(item.transactionTypes == "CREDIT"){
-                    binding.rowWalletAmount.setTextColor(ContextCompat.getColor(context, R.color.green_color))
-                    binding.rowWalletAmount.text="+ ₹ "+item.transactionAmount.toString()
-                }
+    inner class ViewHolderDebit(val binding: RowWalletUserDebitBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bindView(item: WalletData, position: Int) {
+//            binding.rowWalletText.text = item.transactionRemark.replace(",", " ")
+            binding.rowWalletText.text = "Paid"
+            binding.rowWalletTxn.text = item.walletTransactionId
+            binding.rowWalletDate.text = methodsRepo.getFormattedOrderDate(item.createdAt)
 
-                if(item.purchaseType == "TRANSFER"){
+            binding.root.setOnClickListener {
+                onClick(position)
+            }
+            if (item.transactionTypes == "DEBIT") {
+                binding.rowWalletAmount.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.pink_color
+                    )
+                )
+                binding.rowWalletAmount.text = "₹ " + item.transactionAmount.toString()
+            }
+            if (item.transactionTypes == "CREDIT") {
+                binding.rowWalletAmount.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.green_color
+                    )
+                )
+                binding.rowWalletAmount.text = "₹ " + item.transactionAmount.toString()
+            }
+
+            if (item.purchaseType == "TRANSFER") {
 //                    binding.rowWalletText.text="Money Transferred Successfully"
-                }
-                else if(item.purchaseType == "SHOPPING"){
+            } else if (item.purchaseType == "SHOPPING") {
 //                    binding.rowWalletText.text="Online Shopping"
-                }
             }
         }
+    }
+
+    inner class ViewHolderCredit(val binding: RowWalletUserCreditBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bindView(item: WalletData, position: Int) {
+//            binding.rowWalletText.text = item.transactionRemark.replace(",", " ")
+            binding.rowWalletText.text = "Payment Received"
+            binding.rowWalletTxn.text = item.walletTransactionId
+            binding.rowWalletDate.text = methodsRepo.getFormattedOrderDate(item.createdAt)
+
+            binding.root.setOnClickListener {
+                onClick(position)
+            }
+            if (item.transactionTypes == "DEBIT") {
+                binding.rowWalletAmount.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.pink_color
+                    )
+                )
+                binding.rowWalletAmount.text = "₹ " + item.transactionAmount.toString()
+            }
+            if (item.transactionTypes == "CREDIT") {
+                binding.rowWalletAmount.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.green_color
+                    )
+                )
+                binding.rowWalletAmount.text = "₹ " + item.transactionAmount.toString()
+            }
+
+            if (item.purchaseType == "TRANSFER") {
+//                    binding.rowWalletText.text="Money Transferred Successfully"
+            } else if (item.purchaseType == "SHOPPING") {
+//                    binding.rowWalletText.text="Online Shopping"
+            }
+        }
+    }
 }
