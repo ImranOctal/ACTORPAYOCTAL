@@ -14,11 +14,14 @@ import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentHomeBottomBinding
+import com.octal.actorpayuser.repositories.retrofitrepository.models.GlobalResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.bottomfragments.ProfileResponseData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletBalance
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletListData
+import com.octal.actorpayuser.ui.cart.CartViewModel
 import com.octal.actorpayuser.ui.dashboard.adapters.AdapterWalletStatement
+import com.octal.actorpayuser.utils.GlobalData
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
@@ -26,6 +29,7 @@ import org.koin.android.ext.android.inject
 class HomeBottomFragment : BaseFragment() {
     private lateinit var binding: FragmentHomeBottomBinding
     private val homeViewModel: HomeViewModel by inject()
+    private val cartViewModel: CartViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +45,7 @@ class HomeBottomFragment : BaseFragment() {
         val root: View = binding.root
 
         apiResponse()
-        homeViewModel.getWalletBalance()
+        homeViewModel.getGlobalData()
 
         binding.rvtransactionID.apply {
             adapter = AdapterWalletStatement(requireContext(),homeViewModel.walletListData.items,homeViewModel.methodRepo){
@@ -96,6 +100,15 @@ class HomeBottomFragment : BaseFragment() {
                                 homeViewModel.walletListData.pageNumber=0
                                 homeViewModel.getWalletHistory()
                             }
+                            is GlobalResponse -> {
+                                val wallet=event.response.data.wallet_balance
+                                cartViewModel.cartData=event.response.data.cartDTO
+                                updateUserDto(event.response.data.userDTO)
+                                updateCartCount(cartViewModel.cartData!!.totalQuantity)
+                                (requireActivity() as MainActivity).updateBalnce(wallet)
+                                homeViewModel.walletListData.pageNumber=0
+                                homeViewModel.getWalletHistory()
+                            }
                         }
                         homeViewModel.responseLive.value = ResponseSealed.Empty
                     }
@@ -111,6 +124,12 @@ class HomeBottomFragment : BaseFragment() {
                     }
                 }
             }
+        }
+    }
+
+    fun updateUserDto(profileData:ProfileResponseData){
+        lifecycleScope.launchWhenCreated {
+            homeViewModel.methodRepo.dataStore.setPhoneNumber(profileData.contactNumber)
         }
     }
 

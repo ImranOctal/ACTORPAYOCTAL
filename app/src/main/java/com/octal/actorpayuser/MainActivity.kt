@@ -187,8 +187,8 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 
     private fun initialization() {
 //        apiResponse()
-        cartResponse()
-        cartViewModel.getCartItems()
+//        cartResponse()
+//        cartViewModel.getCartItems()
 
         mTitles = ArrayList()
         mTitles.add(

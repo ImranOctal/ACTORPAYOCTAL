@@ -20,6 +20,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.G
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_COUNTRIES
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_DISPUTE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_FAQ
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_GLOBAL_DATA
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_PROFILE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_SINGLE_PRODUCT
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_WALLET_BALANCE
@@ -44,6 +45,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.U
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.VAR_ID
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.VERIFY_OTP
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.WALLET_HISTORY
+import com.octal.actorpayuser.repositories.retrofitrepository.models.GlobalResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginParams
@@ -369,6 +371,12 @@ interface ApiClient {
         @Path("isAccept") isAccept: Boolean,
         @Path("requestId") requestId: String,
     ): Response<RequestProcessResponse>
+
+
+    @GET(GET_GLOBAL_DATA)
+    suspend fun getGlobalData(
+        @Header("Authorization") token: String,
+    ): Response<GlobalResponse>
 
 
 }

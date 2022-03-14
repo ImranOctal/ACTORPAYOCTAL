@@ -1,6 +1,7 @@
 package com.octal.actorpayuser.repositories.retrofitrepository.repo
 
 import androidx.paging.PagingData
+import com.octal.actorpayuser.repositories.retrofitrepository.models.GlobalResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginParams
@@ -128,6 +129,8 @@ interface RetrofitRepository {
     suspend fun requestMoney(token: String,requestMoneyParams: RequestMoneyParams ):RetrofitResource<RequestMoneyResponse>
 
     suspend fun processRequest(token: String,isAccept:Boolean,requestId:String ):RetrofitResource<RequestProcessResponse>
+
+    suspend fun getGlobalData(token: String):RetrofitResource<GlobalResponse>
 
 
 

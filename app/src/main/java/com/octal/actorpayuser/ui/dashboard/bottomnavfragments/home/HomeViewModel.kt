@@ -50,7 +50,6 @@ class HomeViewModel(val dispatcherProvider: CoroutineContextProvider, val method
     }
 
     fun getWalletHistory() {
-//        walletParams.purchaseType="TRANSFER"
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(false)
             methodRepo.dataStore.getAccessToken().collect { token ->
@@ -58,6 +57,27 @@ class HomeViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                     apiRepo.getWalletHistory(token,walletListData.pageNumber,walletListData.pageSize,
                         walletParams
                     )) {
+                    is RetrofitResource.Error ->{
+                        responseLive.value =
+                            ResponseSealed.ErrorOnResponse(response.message)
+                        this.cancel()
+                    }
+                    is RetrofitResource.Success -> {
+                        responseLive.value =
+                            ResponseSealed.Success(response.data!!)
+                        this.cancel()
+                    }
+                }
+            }
+        }
+    }
+
+    fun getGlobalData() {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(false)
+            methodRepo.dataStore.getAccessToken().collect { token ->
+                when (val response =
+                    apiRepo.getGlobalData(token)) {
                     is RetrofitResource.Error ->{
                         responseLive.value =
                             ResponseSealed.ErrorOnResponse(response.message)

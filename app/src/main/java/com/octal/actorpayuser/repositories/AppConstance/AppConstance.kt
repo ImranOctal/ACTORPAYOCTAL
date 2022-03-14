@@ -32,6 +32,9 @@ class AppConstance {
         const val GET_PROFILE: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ BY+ ID
         const val UPDATE_PROFILE: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ UPDATE
 
+        const val GET_GLOBAL_DATA: String = SUB_DOMAIN+ SUB_DOMAIN2+SUB_DOMAIN3+"get/global/response"
+
+
         const val SEND_OTP: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ "phone/otp/request"
         const val VERIFY_OTP: String = SUB_DOMAIN+SUB_DOMAIN2+ SUB_DOMAIN3+ "phone/verify"
 
@@ -81,6 +84,7 @@ class AppConstance {
         const val GET_ALL_REQUEST_MONEY: String = SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/requestMoney/get"
         const val REQUEST_MONEY: String = SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/requestMoney"
         const val REQUEST_PROCESS: String = SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/requestMoney"
+
 
         const val STATUS_SUCCESS:String="SUCCESS"
         const val STATUS_READY:String="READY"

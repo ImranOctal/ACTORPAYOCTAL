@@ -40,6 +40,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.Sh
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
 import com.octal.actorpayuser.repositories.retrofitrepository.apiclient.ApiClient
+import com.octal.actorpayuser.repositories.retrofitrepository.models.GlobalResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductItem
@@ -1318,6 +1319,32 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
     ): RetrofitResource<RequestProcessResponse> {
         try {
             val data = apiClient.processRequest(B_Token +token, isAccept,requestId)
+            val result = data.body()
+            if (data.isSuccessful && result != null) {
+                return RetrofitResource.Success(result)
+            } else {
+                if (data.errorBody() != null) {
+                    return RetrofitResource.Error(handleError(data.code(),data.errorBody()!!.string()))
+                }
+                return RetrofitResource.Error(
+                    FailResponse(
+                        context.getString(R.string.please_try_after_sometime),
+                        ""
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            return RetrofitResource.Error(
+                FailResponse(
+                    e.message ?: context.getString(R.string.server_not_responding), ""
+                )
+            )
+        }
+    }
+
+    override suspend fun getGlobalData(token: String): RetrofitResource<GlobalResponse> {
+        try {
+            val data = apiClient.getGlobalData(B_Token +token)
             val result = data.body()
             if (data.isSuccessful && result != null) {
                 return RetrofitResource.Success(result)

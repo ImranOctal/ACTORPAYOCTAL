@@ -1,6 +1,7 @@
 package com.octal.actorpayuser.ui.refer_and_earn
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -49,21 +50,29 @@ class ReferAndEarnFragment : BaseFragment() {
         }
         binding.btnInvite.setOnClickListener {
 
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/plain"
-//            if(key != ""){
-//                if(key == AppConstance.KEY_EMAIL)
-//            intent.putExtra(Intent.EXTRA_EMAIL, contact)
-//                else if(key == AppConstance.KEY_MOBILE){
-//                    val number = "12346556" // The number on which you want to send SMS
-//
-//                    startActivity(Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", number, null)))
-//                }
-//
-//            }
-            intent.putExtra(Intent.EXTRA_SUBJECT, "ActorPay")
-            intent.putExtra(Intent.EXTRA_TEXT, "Hey check out new app for transferring money, use my code MART10123 when signup and earn rewards")
-            startActivity(Intent.createChooser(intent, "choose one"))
+
+            if(key != ""){
+                if(key == AppConstance.KEY_EMAIL) {
+
+
+                    val mailto = "mailto:$contact"
+                    val emailIntent = Intent(Intent.ACTION_SENDTO)
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Hey check out new app for transferring money, use my code MART10123 when signup and earn rewards")
+                    emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    emailIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    emailIntent.data = Uri.parse(mailto)
+                    startActivity(emailIntent)
+                }
+                else if(key == AppConstance.KEY_MOBILE){
+
+                    val uri: Uri = Uri.parse("smsto:$contact")
+                    val intent = Intent(Intent.ACTION_SENDTO, uri)
+                    intent.putExtra("sms_body", "Hey check out new app for transferring money, use my code MART10123 when signup and earn rewards")
+                    startActivity(intent)
+                }
+
+            }
+
 
         }
 

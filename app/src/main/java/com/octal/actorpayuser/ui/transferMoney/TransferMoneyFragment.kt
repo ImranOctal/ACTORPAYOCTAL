@@ -170,7 +170,7 @@ class TransferMoneyFragment : BaseFragment() {
         }
     }
 
-    fun validate(checkAPI: Boolean, name: String) {
+    fun validate(checkAPI: Boolean, name: String,destination:Int=0) {
         transferMoneyViewModel.methodRepo.hideSoftKeypad(requireActivity())
         val contact = binding.emailNumberField.text.toString().trim()
         if (transferMoneyViewModel.methodRepo.isValidEmail(contact)) {
@@ -180,7 +180,7 @@ class TransferMoneyFragment : BaseFragment() {
                 val bundle =
                     bundleOf(KEY_KEY to KEY_EMAIL, KEY_CONTACT to contact, KEY_NAME to name)
                 Navigation.findNavController(requireView())
-                    .navigate(R.id.payFragment, bundle)
+                    .navigate(destination, bundle)
             }
         } else if (transferMoneyViewModel.methodRepo.isValidPhoneNumber(contact)) {
             if (checkAPI)
@@ -189,7 +189,7 @@ class TransferMoneyFragment : BaseFragment() {
                 val bundle =
                     bundleOf(KEY_KEY to KEY_MOBILE, KEY_CONTACT to contact, KEY_NAME to name)
                 Navigation.findNavController(requireView())
-                    .navigate(R.id.payFragment, bundle)
+                    .navigate(destination, bundle)
             }
         } else {
             binding.emailNumberField.error = "Please enter valid input"
@@ -211,7 +211,7 @@ class TransferMoneyFragment : BaseFragment() {
                             is LoginResponses -> {
                                 validate(
                                     false,
-                                    event.response.data.firstName + " " + event.response.data.lastName
+                                    event.response.data.firstName + " " + event.response.data.lastName,R.id.payFragment
                                 )
                             }
                         }
@@ -222,7 +222,11 @@ class TransferMoneyFragment : BaseFragment() {
                         hideLoading()
                         if (event.message!!.code == 403) {
                             forcelogout(transferMoneyViewModel.methodRepo)
-                        } else
+                        }
+                        else if(event.message.message.contains("User is not found")){
+                            validate(false, "",R.id.referFragment)
+                        }
+                        else
                             showCustomToast(event.message.message)
                     }
                     is ResponseSealed.Empty -> {
