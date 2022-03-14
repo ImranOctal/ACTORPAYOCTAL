@@ -2,6 +2,8 @@ package com.octal.actorpayuser.ui.myOrderList.placeorder
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -218,6 +220,7 @@ class PlaceOrderFragment : BaseFragment() {
                                 updatePaymentGateway()
                             }
                             is PlaceOrderResponse -> {
+                                updateCartCount(0)
                                 PlaceOrderDialog(
                                     requireActivity(),
                                     placeOrderViewModel.methodRepo,
@@ -282,10 +285,17 @@ class PlaceOrderFragment : BaseFragment() {
     private fun updateUI(addressListData: ShippingAddressListData) {
         placeOrderViewModel.shippingAddressList.clear()
         placeOrderViewModel.shippingAddressList.addAll(addressListData.items)
+        var scrollPosition=0
         placeOrderViewModel.shippingAddressList.onEachIndexed { index, shippingAddressItem ->
-            shippingAddressItem.isSelect = index == 0
+            if(shippingAddressItem.primary)
+                scrollPosition=index
+            shippingAddressItem.isSelect = shippingAddressItem.primary
         }
         binding.addressRecyclerview.adapter?.notifyDataSetChanged()
+        Handler(Looper.myLooper()!!).postDelayed({
+        binding.addressRecyclerview.scrollToPosition(scrollPosition)
+
+        },100)
     }
 
 }

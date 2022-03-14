@@ -54,6 +54,11 @@ class CartFragment : BaseFragment() {
             }
         }
 
+        binding.shop.setOnClickListener {
+
+            Navigation.findNavController(requireView()).navigate(R.id.action_cartFragment_to_productListFragment)
+        }
+
 
         return binding.root
     }
@@ -98,14 +103,15 @@ class CartFragment : BaseFragment() {
         cartData.totalPrice = decimalFormat.format(cartData.totalPrice).toDouble()
         cartData.totalSgst = decimalFormat.format(cartData.totalSgst).toDouble()
         cartViewModel.cartData = cartData
-        binding.gst.text = getString(R.string.rs).plus(cartData.totalCgst+cartData.totalSgst)
-        binding.subTotal.text = getString(R.string.rs).plus(cartData.totalTaxableValue)
-        binding.total.text = getString(R.string.rs).plus(cartData.totalPrice)
+        binding.gst.text = getString(R.string.rs).plus(decimalFormat.format(cartData.totalCgst+cartData.totalSgst))
+        binding.subTotal.text = getString(R.string.rs).plus(decimalFormat.format(cartData.totalTaxableValue))
+        binding.total.text = getString(R.string.rs).plus(decimalFormat.format(cartData.totalPrice))
         binding.cartRecyclerview.adapter?.notifyDataSetChanged()
 
         if(cartViewModel.cartData!!.cartItemDTOList.size==0){
             binding.imageEmpty.visibility=View.VISIBLE
             binding.textEmpty.visibility=View.VISIBLE
+            binding.shop.visibility=View.VISIBLE
             binding.totalLayout.visibility=View.GONE
             binding.imageEmpty.playAnimation()
 
@@ -113,6 +119,7 @@ class CartFragment : BaseFragment() {
         else{
             binding.imageEmpty.visibility=View.GONE
             binding.textEmpty.visibility=View.GONE
+            binding.shop.visibility=View.GONE
             binding.totalLayout.visibility=View.VISIBLE
         }
     }

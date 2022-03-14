@@ -165,6 +165,23 @@
                     android:gravity="center_vertical"
                     >
 
+                    <CheckBox
+                        android:id="@+id/primary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:text="Primary"
+                        android:textColor="@color/text_color"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textSize="@dimen/_11ssp"
+                        android:checked="true"
+                        android:visibility="gone"
+                        android:minHeight="0dp"
+                        android:minWidth="0dp"
+                        android:clickable="false"
+
+                        />
+
                     <ImageView
                         android:id="@+id/delete_icon"
                         android:layout_width="@dimen/_12sdp"

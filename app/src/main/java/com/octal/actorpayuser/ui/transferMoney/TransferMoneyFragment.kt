@@ -12,7 +12,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
@@ -89,7 +88,7 @@ class TransferMoneyFragment : BaseFragment() {
         binding.emailNumberField.setOnEditorActionListener { _, actionId, _ ->
 
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                validate(true,"")
+                validate(true, "")
                 return@setOnEditorActionListener true;
             }
             return@setOnEditorActionListener false;
@@ -171,11 +170,11 @@ class TransferMoneyFragment : BaseFragment() {
         }
     }
 
-    fun validate(checkAPI:Boolean,name:String) {
+    fun validate(checkAPI: Boolean, name: String) {
         transferMoneyViewModel.methodRepo.hideSoftKeypad(requireActivity())
         val contact = binding.emailNumberField.text.toString().trim()
         if (transferMoneyViewModel.methodRepo.isValidEmail(contact)) {
-            if(checkAPI)
+            if (checkAPI)
                 transferMoneyViewModel.userExists(contact)
             else {
                 val bundle =
@@ -184,7 +183,7 @@ class TransferMoneyFragment : BaseFragment() {
                     .navigate(R.id.payFragment, bundle)
             }
         } else if (transferMoneyViewModel.methodRepo.isValidPhoneNumber(contact)) {
-            if(checkAPI)
+            if (checkAPI)
                 transferMoneyViewModel.userExists(contact)
             else {
                 val bundle =
@@ -210,7 +209,10 @@ class TransferMoneyFragment : BaseFragment() {
                         hideLoading()
                         when (event.response) {
                             is LoginResponses -> {
-                              validate(false,event.response.data.firstName +" "+ event.response.data.lastName)
+                                validate(
+                                    false,
+                                    event.response.data.firstName + " " + event.response.data.lastName
+                                )
                             }
                         }
                         transferMoneyViewModel.responseLive.value = ResponseSealed.Empty
@@ -220,8 +222,7 @@ class TransferMoneyFragment : BaseFragment() {
                         hideLoading()
                         if (event.message!!.code == 403) {
                             forcelogout(transferMoneyViewModel.methodRepo)
-                        }
-                        else
+                        } else
                             showCustomToast(event.message.message)
                     }
                     is ResponseSealed.Empty -> {

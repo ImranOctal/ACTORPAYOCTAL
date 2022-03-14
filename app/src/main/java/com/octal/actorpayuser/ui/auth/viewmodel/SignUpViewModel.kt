@@ -15,6 +15,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignupViewModel(val dispatcherProvider: CoroutineContextProvider, val methodRepo: MethodsRepo, val apiRepo: RetrofitRepository):
     AndroidViewModel(Application()) {
@@ -66,6 +67,60 @@ class SignupViewModel(val dispatcherProvider: CoroutineContextProvider, val meth
                         responseLive.value =
                             ResponseSealed.Success(response.data!!)
                         this.cancel()
+                    }
+                }
+            }
+        }
+    }
+    fun signUpNow1(
+        firstName: String,
+        lastName: String,
+        email: String,
+        extensionNumber: String,
+        contactNumber: String,
+        password: String,
+        gender: String,
+        dob: String,
+        adhar: String,
+        pan: String
+    ) {
+        viewModelScope.launch(dispatcherProvider.IO) {
+            responseLive.value = ResponseSealed.loading(true)
+            methodRepo.dataStore.getSuspendDeviceToken {
+                deviceToken ->
+                val deviceInfo = DeviceInfoParams(
+                    "Android",
+                    BuildConfig.VERSION_CODE.toString(),
+                    deviceToken,
+                    ""
+                )
+                val body = SignUpParams(
+                    firstName,
+                    lastName,
+                    email,
+                    extensionNumber,
+                    contactNumber,
+                    password,
+                    gender,
+                    dob,
+                    pan,
+                    adhar,
+                    deviceInfo
+                )
+
+                viewModelScope.launch(dispatcherProvider.IO)
+                {
+                    when (val response = apiRepo.signUpNow(body)) {
+                        is RetrofitResource.Error ->{
+                            responseLive.value =
+                                ResponseSealed.ErrorOnResponse(response.message)
+
+                        }
+                        is RetrofitResource.Success ->{
+                            responseLive.value =
+                                ResponseSealed.Success(response.data!!)
+
+                        }
                     }
                 }
             }

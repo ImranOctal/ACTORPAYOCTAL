@@ -32,6 +32,7 @@ import com.octal.actorpayuser.ui.productList.ProductViewModel
 import com.octal.actorpayuser.ui.productList.productdetails.ProductDetailsViewModel
 import com.octal.actorpayuser.ui.productList.productsfilter.ProductFilterViewModel
 import com.octal.actorpayuser.ui.promocodes.PromoListViewModel
+import com.octal.actorpayuser.ui.request_money.RequestMoneyViewModel
 import com.octal.actorpayuser.ui.settings.SettingViewModel
 import com.octal.actorpayuser.ui.shippingaddress.ShippingAddressViewModel
 import com.octal.actorpayuser.ui.shippingaddress.details.ShippingAddressDetailsViewModel
@@ -144,6 +145,9 @@ private val appKoinModule = module {
     }
     viewModel {
         TransferMoneyViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
+    }
+    viewModel {
+        RequestMoneyViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())
     }
     viewModel {
         MobileAndDthViewModel(dispatcherProvider = get(), methodRepo = get(), apiRepo = get())

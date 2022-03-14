@@ -28,25 +28,30 @@
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/userplus_xxx" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/poppins_bold"
                 android:padding="@dimen/_2sdp"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Refer and Earn"
-                android:textColor="@color/black" />
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_12ssp"
 
-            <androidx.appcompat.widget.AppCompatTextView
+                />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
                 android:padding="@dimen/_2sdp"
-                android:text="Earn $10 account balance when \nsharing app."
-                android:textColor="@color/text_color" />
+                android:fontFamily="@font/poppins_regular"
+                android:text="Earn ₹100 account balance when \nsharing app."
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_10ssp"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -54,35 +59,67 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:background="@drawable/dash_border">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/poppins_regular"
                     android:gravity="center"
                     android:padding="@dimen/_2sdp"
                     android:text="MARTIN MROC 0085"
                     android:textColor="@color/blue_color"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/poppins_bold"
+                    android:textSize="@dimen/_12ssp"
+                     />
 
 
             </RelativeLayout>
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSaveID"
+                android:id="@+id/btnShare"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
-                android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:backgroundTint="#ED335F"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Share Now"
                 android:textAllCaps="false"
-                android:textSize="@dimen/_12sdp"
-                app:cornerRadius="@dimen/_5sdp" />
+                android:textSize="@dimen/_12ssp"
+                android:text="Share Now"
+                app:cornerRadius="@dimen/_5sdp"
+                android:visibility="visible"
 
+                />
+
+            <TextView
+                android:id="@+id/contact_invite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="@dimen/_2sdp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Contact 89836455 in not on Actor pay app, Invite him and earn rewards"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_10ssp"
+                android:visibility="gone"
+                />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnInvite"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:backgroundTint="#ED335F"
+                android:fontFamily="@font/poppins_bold"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_12ssp"
+                android:text="Invite"
+                app:cornerRadius="@dimen/_5sdp"
+                android:visibility="gone"
+                />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

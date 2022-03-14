@@ -77,20 +77,14 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             binding.codePicker2.text = GlobalData.allCountries[0].countryCode
             binding.countryPicker.text = GlobalData.allCountries[0].country
         }
-        /*binding.codeLayout1.setOnClickListener {
-            CountryPicker(this,shippingAddressViewModel.methodRepo,GlobalData.allCountries){
-                binding.codePicker.text=GlobalData.allCountries[it].countryCode
-                binding.codePicker2.text=GlobalData.allCountries[it].countryCode
-            }.show()
-        }
-        binding.codeLayout2.setOnClickListener {
-            CountryPicker(this,shippingAddressViewModel.methodRepo,GlobalData.allCountries){
-                binding.codePicker.text=GlobalData.allCountries[it].countryCode
-                binding.codePicker2.text=GlobalData.allCountries[it].countryCode
-            }.show()
-        }*/
+
         binding.countryLayout.setOnClickListener {
-            CountryPicker(this,this, shippingAddressViewModel.methodRepo, GlobalData.allCountries) {
+            CountryPicker(
+                this,
+                this,
+                shippingAddressViewModel.methodRepo,
+                GlobalData.allCountries
+            ) {
                 binding.countryPicker.text = GlobalData.allCountries[it].country
                 binding.codePicker.text = GlobalData.allCountries[it].countryCode
                 binding.codePicker2.text = GlobalData.allCountries[it].countryCode
@@ -108,6 +102,11 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             binding.addressZipcode.setText(shippingAddressItem!!.zipCode)
             binding.addressCity.setText(shippingAddressItem!!.city)
             binding.addressState.setText(shippingAddressItem!!.state)
+            binding.primary.isChecked = shippingAddressItem!!.primary
+
+            if (shippingAddressItem!!.primary)
+                binding.primary.isClickable = false
+
             if (countryList.contains(shippingAddressItem!!.country)) {
                 binding.countryPicker.text = shippingAddressItem!!.country
             }
@@ -125,6 +124,14 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
             binding.addressPrimaryContact.setText(shippingAddressItem!!.primaryContactNumber)
             binding.addressSecondaryContact.setText(shippingAddressItem!!.secondaryContactNumber)
+        }
+        else{
+            lifecycleScope.launchWhenCreated {
+                shippingAddressViewModel.methodRepo.dataStore.getMobileNumber().collect {
+                    if(it != "")
+                        binding.addressPrimaryContact.setText(it)
+                }
+            }
         }
 
         val mapFragment =
@@ -162,7 +169,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
             mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
             mMap!!.clear()
-            mMap!!.addMarker(MarkerOptions().position(LatLng(userLat,userLong)))
+            mMap!!.addMarker(MarkerOptions().position(LatLng(userLat, userLong)))
 
 
             getAddress(userLat, userLong)
@@ -266,7 +273,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                                 pContact,
                                 binding.codePicker.text.toString().trim(),
                                 sContact,
-                                false,
+                                binding.primary.isChecked,
                                 null,
                                 userID,
                                 null
@@ -289,7 +296,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                                 pContact,
                                 binding.codePicker.text.toString().trim(),
                                 sContact,
-                                false,
+                                binding.primary.isChecked,
                                 null,
                                 userID,
                                 shippingAddressItem!!.id
@@ -365,41 +372,41 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             it.uiSettings.isZoomControlsEnabled = true
 
 
-                mMap!!.setOnCameraIdleListener {
+            mMap!!.setOnCameraIdleListener {
 
-                   val tempLatLng= mMap!!.cameraPosition.target
+                val tempLatLng = mMap!!.cameraPosition.target
 
-                    if (!isComingFirst) {
-                        userLat = tempLatLng.latitude
-                        userLong = tempLatLng.longitude
-                        getAddress(userLat, userLong)
-                    } else if (isSave) {
-                        userLat = tempLatLng.latitude
-                        userLong = tempLatLng.longitude
-                        getAddress(userLat, userLong)
-                    } else {
-                        isComingFirst = false
-                    }
-                    mMap!!.clear()
-                    mMap!!.addMarker(MarkerOptions().position(LatLng(userLat,userLong)))
+                if (!isComingFirst) {
+                    userLat = tempLatLng.latitude
+                    userLong = tempLatLng.longitude
+                    getAddress(userLat, userLong)
+                } else if (isSave) {
+                    userLat = tempLatLng.latitude
+                    userLong = tempLatLng.longitude
+                    getAddress(userLat, userLong)
+                } else {
+                    isComingFirst = false
+                }
+                mMap!!.clear()
+                mMap!!.addMarker(MarkerOptions().position(LatLng(userLat, userLong)))
 
-               /* mMap!!.projection.visibleRegion.latLngBounds.center.let { latLng ->
-                    if (!isComingFirst) {
-                        userLat = latLng.latitude
-                        userLong = latLng.longitude
-                        getAddress(userLat, userLong)
-                    } else if (isSave) {
-                        userLat = latLng.latitude
-                        userLong = latLng.longitude
-                        getAddress(userLat, userLong)
-                    } else {
-                        isComingFirst = false
-                    }
-                    mMap!!.clear()
-                    mMap!!.addMarker(MarkerOptions().position(LatLng(userLat,userLong)))
-                    //AppLogger.w("Latitude is : $latitude Longitude is$longitude")
+                /* mMap!!.projection.visibleRegion.latLngBounds.center.let { latLng ->
+                     if (!isComingFirst) {
+                         userLat = latLng.latitude
+                         userLong = latLng.longitude
+                         getAddress(userLat, userLong)
+                     } else if (isSave) {
+                         userLat = latLng.latitude
+                         userLong = latLng.longitude
+                         getAddress(userLat, userLong)
+                     } else {
+                         isComingFirst = false
+                     }
+                     mMap!!.clear()
+                     mMap!!.addMarker(MarkerOptions().position(LatLng(userLat,userLong)))
+                     //AppLogger.w("Latitude is : $latitude Longitude is$longitude")
 
-                }*/
+                 }*/
             }
 
         }
@@ -443,20 +450,24 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                 val addresses = geocoder.getFromLocation(lat, lng, 1)
                 if (addresses.size > 0) {
                     val address = addresses[0].getAddressLine(0)
-//            val country = addresses.get(0).countryName;
+                    val city = addresses[0].locality
+//                    val line1 = address.substring(0, address.indexOf(city))
+                    val state = addresses[0].adminArea
                     val postalCode = addresses[0].postalCode
 
-                    binding.addressLine1.setText(address)
+//                    if (city != null && city != "")
+//                        binding.addressLine1.setText(line1)
+//                    else
+                        binding.addressLine1.setText(address)
                     binding.addressZipcode.setText(postalCode)
-//            binding.addressCountry.setText(country)
+                    binding.addressCity.setText(city)
+                    binding.addressState.setText(state)
+
                 }
-            }
-            catch (e : java.lang.Exception){
+            } catch (e: java.lang.Exception) {
                 Log.e("Location_Thing", "getAddress: ${e.message}")
             }
         }
-
-
 
 
     }
@@ -475,7 +486,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                         when (event.response) {
                             is SuccessResponse -> {
                                 onBackPressed()
-                                shippingAddressViewModel.responseLive.value=ResponseSealed.Empty
+                                shippingAddressViewModel.responseLive.value = ResponseSealed.Empty
                             }
                         }
                     }

@@ -67,7 +67,7 @@ class WalletUserAdapter(
             binding.rowWalletTxn.text = item.walletTransactionId
             binding.rowWalletDate.text = methodsRepo.getFormattedOrderDate(item.createdAt)
 
-            binding.root.setOnClickListener {
+            binding.rowWalletClick.setOnClickListener {
                 onClick(position)
             }
             if (item.transactionTypes == "DEBIT") {
@@ -105,7 +105,7 @@ class WalletUserAdapter(
             binding.rowWalletTxn.text = item.walletTransactionId
             binding.rowWalletDate.text = methodsRepo.getFormattedOrderDate(item.createdAt)
 
-            binding.root.setOnClickListener {
+            binding.rowWalletClick.setOnClickListener {
                 onClick(position)
             }
             if (item.transactionTypes == "DEBIT") {

@@ -7,14 +7,11 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.octal.actorpayuser.MainActivity
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.repositories.methods.MethodsRepo
 import com.octal.actorpayuser.utils.OnFilterClick
-import com.octal.actorpayuser.viewmodel.ActorPayViewModel
-import org.koin.android.ext.android.inject
 
 abstract class BaseFragment : Fragment(){
 

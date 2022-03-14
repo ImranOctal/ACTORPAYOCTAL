@@ -90,7 +90,7 @@ class LoginScreenFragment : BaseFragment() {
                     }
                     is ResponseSealed.ErrorOnResponse -> {
                         hideLoading()
-                        if (event.message!!.message == "Use account is not verified") {
+                        if (event.message!!.message == "User account is not verified") {
                             resendOtpUI()
                         } else
                             showCustomAlert(

@@ -15,6 +15,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.G
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_ALL_DISPUTES
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_ALL_ORDERS
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_ALL_PRODUCTS
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_ALL_REQUEST_MONEY
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_CONTENT
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_COUNTRIES
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.GET_DISPUTE
@@ -28,6 +29,8 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.O
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.PLACE_ORDER
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.PROMO_LIST
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.RAISE_DISPUTE
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.REQUEST_MONEY
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.REQUEST_PROCESS
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.RESEND_OTP
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SEND_DISPUTE_MESSAGE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.SEND_OTP
@@ -67,7 +70,6 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.products.Si
 import com.octal.actorpayuser.repositories.retrofitrepository.models.promocodes.PromoResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -332,6 +334,14 @@ interface ApiClient {
         @Body transferMoneyParams: TransferMoneyParams,
     ): Response<AddMoneyResponse>
 
+    @POST(GET_ALL_REQUEST_MONEY)
+    suspend fun getAllRequestMoney(
+        @Header("Authorization") token: String,
+        @Query("pageNo") pageNo: Int,
+        @Query("pageSize") pageSize: Int,
+        @Body requestMoneyParams: GetAllRequestMoneyParams,
+    ): Response<GetAllRequestMoneyResponse>
+
 
     @GET(GET_WALLET_BALANCE+ VAR_ID+"/balance")
     suspend fun getWalletBalance(
@@ -345,5 +355,20 @@ interface ApiClient {
         @Header("Authorization") token: String,
         @Path("user") user: String
     ): Response<LoginResponses>
+
+
+    @POST(REQUEST_MONEY)
+    suspend fun requestMoney(
+        @Header("Authorization") token: String,
+        @Body requestMoneyParams: RequestMoneyParams,
+    ): Response<RequestMoneyResponse>
+
+    @PUT("$REQUEST_PROCESS/{isAccept}/{requestId}/accept")
+    suspend fun processRequest(
+        @Header("Authorization") token: String,
+        @Path("isAccept") isAccept: Boolean,
+        @Path("requestId") requestId: String,
+    ): Response<RequestProcessResponse>
+
 
 }

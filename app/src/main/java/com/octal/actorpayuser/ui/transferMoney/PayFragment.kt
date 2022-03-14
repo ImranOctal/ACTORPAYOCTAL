@@ -96,7 +96,7 @@ class PayFragment : BaseFragment() {
                     binding.beneficiaryAmount.requestFocus()
                     isValidate=false
                 } else if (amount.toDouble() < 1) {
-                    binding.beneficiaryAmount.error = "Amount should not less 1"
+                    binding.beneficiaryAmount.error = "Amount should not less than 1"
                     binding.beneficiaryAmount.requestFocus()
                     isValidate=false
                 }
@@ -163,7 +163,8 @@ class PayFragment : BaseFragment() {
                             forcelogout(transferMoneyViewModel.methodRepo)
                         }
                         else{
-                            showCustomToast("Something went wrong, Please check beneficiary contact")
+//                            showCustomToast("Something went wrong, Please check beneficiary contact")
+                            showCustomToast("Don't have sufficient Balance to Transfer")
                         }
                     }
                     is ResponseSealed.Empty -> {

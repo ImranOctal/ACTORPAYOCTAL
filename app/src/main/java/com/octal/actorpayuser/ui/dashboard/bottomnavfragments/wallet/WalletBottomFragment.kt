@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpayuser.R
@@ -14,7 +13,6 @@ import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentWalletBottomBinding
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletBalance
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletHistoryResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletListData
 import com.octal.actorpayuser.ui.dashboard.adapters.AdapterWalletStatement

@@ -24,7 +24,7 @@ class CheckoutShippingListAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindView(list[position])
+        holder.bindView(list[position],position)
 
     }
 
@@ -41,7 +41,7 @@ class CheckoutShippingListAdapter(
     inner class MyViewHolder(val binding: RowCheckoutAddressBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindView(item: ShippingAddressItem) {
+        fun bindView(item: ShippingAddressItem,position: Int) {
             binding.shippingItem = item
 
             if(item.isSelect!=null && item.isSelect!!){
@@ -56,14 +56,18 @@ class CheckoutShippingListAdapter(
                 binding.addressDelete.visibility= View.GONE
                 binding.addressLayout.setBackgroundResource(R.drawable.btn_outline_gray)
             }
+
+            if(item.primary)
+                binding.addressDelete.visibility= View.GONE
+
             binding.root.setOnClickListener {
-                onClick(adapterPosition,Clicks.Root)
+                onClick(position,Clicks.Root)
             }
             binding.addressDelete.setOnClickListener {
-                onClick(adapterPosition,Clicks.Delete)
+                onClick(position,Clicks.Delete)
             }
             binding.addressEdit.setOnClickListener {
-                onClick(adapterPosition,Clicks.Edit)
+                onClick(position,Clicks.Edit)
             }
 
 

@@ -62,13 +62,13 @@
         app:cardCornerRadius="@dimen/_10sdp">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/order_number"
+            android:id="@+id/request_name"
             style="@style/RegularTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start|center"
             android:background="@android:color/transparent"
-            android:hint="Search by order no."
+            android:hint="Search by Name"
             android:textColorHint="@color/gray"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
@@ -79,6 +79,9 @@
 
     </androidx.cardview.widget.CardView>
 
+
+
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_45sdp"
@@ -93,24 +96,23 @@
         app:cardCornerRadius="@dimen/_10sdp">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/merchant"
+            android:id="@+id/from_amount"
             style="@style/RegularTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start|center"
             android:background="@android:color/transparent"
-            android:hint="Search by Merchant Name"
+            android:hint="Search by from amount"
             android:textColorHint="@color/gray"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
-            android:inputType="text"
-            android:maxLength="100"
+            android:inputType="numberDecimal"
             android:textColor="@color/text_color"
+            android:maxLength="50"
             android:textSize="@dimen/_12sdp" />
 
     </androidx.cardview.widget.CardView>
 
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/_45sdp"
@@ -125,13 +127,13 @@
         app:cardCornerRadius="@dimen/_10sdp">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/total"
+            android:id="@+id/to_amount"
             style="@style/RegularTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start|center"
             android:background="@android:color/transparent"
-            android:hint="Search by total amount"
+            android:hint="Search by to amount"
             android:textColorHint="@color/gray"
             android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"

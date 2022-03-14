@@ -22,7 +22,7 @@ class ShippingListAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bindView(list[position])
+        holder.bindView(list[position],position)
 
     }
 
@@ -39,43 +39,37 @@ class ShippingListAdapter(
     inner class MyViewHolder(val binding: ShippingListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindView(item: ShippingAddressItem) {
+        fun bindView(item: ShippingAddressItem,position: Int) {
             binding.shippingItem = item
 
-            if(item.addressLine2==null || item.addressLine2.equals("").not())
+            if(item.addressLine2==null || item.addressLine2.equals(""))
             {
                 binding.addressLine2.visibility= View.GONE
             }
 
-//            binding.selectRadio.isChecked=item.isSelect
-            /*binding.options.setOnClickListener {
-                val popupMenu=PopupMenu(binding.root.context,binding.options)
-                popupMenu.menu.add("Edit")
-                popupMenu.menu.add("Delete")
-                popupMenu.setOnMenuItemClickListener(object :PopupMenu.OnMenuItemClickListener{
-                    override fun onMenuItemClick(item: MenuItem): Boolean {
-                        if(item.title.equals("Edit")){
-                            onClick(adapterPosition,"Edit")
-                        }
-                        else if(item.title.equals("Delete")){
-                            onClick(adapterPosition,"Delete")
-                        }
-                        return true
-                    }
-                })
-                popupMenu.show()
-            }*/
+            if(item.primary) {
+                binding.delete.visibility = View.GONE
+                binding.deleteIcon.visibility = View.GONE
+                binding.primary.visibility = View.VISIBLE
+            }
+            else {
+                binding.delete.visibility = View.VISIBLE
+                binding.deleteIcon.visibility = View.VISIBLE
+                binding.primary.visibility = View.GONE
+            }
+
+
             binding.delete.setOnClickListener {
-                onClick(adapterPosition,"Delete")
+                onClick(position,"Delete")
             }
             binding.deleteIcon.setOnClickListener {
-                onClick(adapterPosition,"Delete")
+                onClick(position,"Delete")
             }
             binding.edit.setOnClickListener {
-                onClick(adapterPosition,"Edit")
+                onClick(position,"Edit")
             }
             binding.editIcon.setOnClickListener {
-                onClick(adapterPosition,"Edit")
+                onClick(position,"Edit")
             }
 
          /*   Glide.with(binding.root)

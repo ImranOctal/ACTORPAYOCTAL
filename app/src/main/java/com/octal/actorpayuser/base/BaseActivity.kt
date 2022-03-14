@@ -37,11 +37,11 @@ abstract class BaseActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         window.statusBarColor = ContextCompat.getColor(this,R.color.primary)
     }
-    fun showCustomToast(msg: String) {
+    fun showCustomToast(msg: String,length:Int=Toast.LENGTH_LONG) {
         val myToast = Toast.makeText(
             applicationContext,
             msg,
-            Toast.LENGTH_SHORT
+            length
         )
         myToast.setGravity(Gravity.CENTER, 0, 0)
         myToast.show()
@@ -55,10 +55,12 @@ abstract class BaseActivity : AppCompatActivity() {
                 override fun onClick() {
 //                    viewModel.shared.Logout()
                     lifecycleScope.launchWhenCreated {
+
+                        startActivity(Intent(this@BaseActivity, LoginActivity::class.java))
                         methodRepo.dataStore.logOut()
                         methodRepo.dataStore.setIsIntro(true)
-                        startActivity(Intent(this@BaseActivity, LoginActivity::class.java))
                         finishAffinity()
+
                     }
                 }
                 override fun onCancel() {

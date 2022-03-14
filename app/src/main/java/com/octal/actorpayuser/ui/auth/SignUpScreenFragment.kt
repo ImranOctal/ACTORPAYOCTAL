@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.InputFilter
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.actorpay.merchant.utils.SingleClickListener
 import com.octal.actorpayuser.R
-import com.octal.actorpayuser.utils.CommonDialogsUtils
 import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.SignUpScreenFragmentBinding
@@ -22,6 +22,7 @@ import com.octal.actorpayuser.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpayuser.ui.auth.viewmodel.SignupViewModel
 import com.octal.actorpayuser.ui.content.ContentActivity
 import com.octal.actorpayuser.ui.content.ContentViewModel
+import com.octal.actorpayuser.utils.CommonDialogsUtils
 import com.octal.actorpayuser.utils.GlobalData
 import com.octal.actorpayuser.utils.countrypicker.CountryPicker
 import kotlinx.coroutines.flow.collect
@@ -31,7 +32,6 @@ import java.text.DecimalFormat
 import java.util.*
 
 
-
 class SignUpScreenFragment : BaseFragment() {
 
     lateinit var binding: SignUpScreenFragmentBinding
@@ -39,6 +39,7 @@ class SignUpScreenFragment : BaseFragment() {
 
 
     private var showPassword=false
+    private var showConfirmPassword=false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +65,31 @@ class SignUpScreenFragment : BaseFragment() {
     fun init() {
         binding.apply {
 
+//            binding.pan.setFilters(arrayOf<InputFilter>(AllCaps()))
+
+            // TODO: All Caps Filter
+            val editFilters = binding.pan.getFilters();
+            val newFilters = arrayOfNulls<InputFilter>(editFilters.size + 1)
+            System.arraycopy(editFilters, 0, newFilters, 0, editFilters.size);
+            newFilters[editFilters.size] = InputFilter.AllCaps()
+
+            // TODO: Characters ony filters
+            val letterFilter =
+                InputFilter { source, start, end, dest, dstart, dend ->
+                    var filtered = ""
+                    for (i in start until end) {
+                        val character = source[i]
+                        if (!Character.isWhitespace(character) && Character.isLetter(character)) {
+                            filtered += character
+                        }
+                    }
+                    filtered
+                }
+
+
+
+            binding.firstName.setFilters(arrayOf(letterFilter))
+            binding.pan.setFilters(newFilters);
             buttonSignUp.setOnClickListener(object : SingleClickListener() {
                 override fun performClick(v: View?) {
                     validate()
@@ -88,6 +114,21 @@ class SignUpScreenFragment : BaseFragment() {
                     showPassword=true
                     signupPasswordShowHide.setImageResource(R.drawable.hide)
                     password.setSelection(password.text.toString().length)
+                }
+            }
+            signupConfirmPasswordShowHide.setOnClickListener {
+                if(showPassword)
+                {
+                    confirmPassword.transformationMethod = PasswordTransformationMethod()
+                    showPassword=false
+                    signupConfirmPasswordShowHide.setImageResource(R.drawable.show)
+                    confirmPassword.setSelection(confirmPassword.text.toString().length)
+                }
+                else{
+                    confirmPassword.transformationMethod = null
+                    showPassword=true
+                    signupConfirmPasswordShowHide.setImageResource(R.drawable.hide)
+                    confirmPassword.setSelection(confirmPassword.text.toString().length)
                 }
             }
 
@@ -128,9 +169,11 @@ class SignUpScreenFragment : BaseFragment() {
                 // Apply the adapter to the spinner
                 binding.spinnerAutocomplete.setAdapter(adapter)
             }
+
             binding.spinnerAutocomplete.setOnClickListener {
                 signupViewModel.methodRepo.hideSoftKeypad(requireActivity())
             }
+
             binding.spinnerAutocomplete.setOnItemClickListener { _, _, _, _ ->
                 binding.errorOnGender.visibility = View.GONE
                 signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupGender2, R.drawable.btn_outline_gray)
@@ -213,6 +256,11 @@ class SignUpScreenFragment : BaseFragment() {
             binding.errorOnGender.visibility = View.GONE
             signupViewModel.methodRepo.setBackGround(requireContext(), binding.signupGender2, R.drawable.btn_outline_gray)
         }
+        if (binding.confirmPassword.text.toString().trim() != binding.password.text.toString().trim()) {
+            isValidate=false
+            binding.confirmPassword.error=getString(R.string.password_match)
+            binding.confirmPassword.requestFocus()
+        }
         if (binding.password.text.toString().trim().length<8) {
             isValidate=false
             binding.password.error=getString(R.string.oops_your_password_is_not_valid)
@@ -283,7 +331,7 @@ class SignUpScreenFragment : BaseFragment() {
         }
         if(isValidate){
 
-//            val countryCode=binding.ccp.selectedCountryCodeWithPlus
+//       val countryCode=binding.ccp.selectedCountryCodeWithPlus
 
             signupViewModel.methodRepo.hideSoftKeypad(requireActivity())
             signupViewModel.signUpNow(

@@ -155,7 +155,14 @@
         android:id="@+id/cartFragment"
         android:name="com.octal.actorpayuser.ui.cart.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_productListFragment"
+            app:destination="@id/productListFragment"
+            app:popUpTo="@id/homeBottomFragment"
+            app:popUpToInclusive="false"
+            />
+    </fragment>
     <fragment
         android:id="@+id/productDetailsFragment"
         android:name="com.octal.actorpayuser.ui.productList.productdetails.ProductDetailsFragment"
@@ -173,6 +180,26 @@
     <fragment
         android:id="@+id/walletUserFragment"
         android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.wallet.walletuser.WalletUserFragment"
-        android:label="WalletUserFragment" />
+        android:label="WalletUserFragment" >
+        <action
+            android:id="@+id/action_walletUserFragment_to_walletDetailsFragment"
+            app:destination="@id/walletDetailsFragment"
+            app:popUpTo="@id/walletDetailsFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/requestMoneyFragment"
+        android:name="com.octal.actorpayuser.ui.request_money.RequestMoneyFragment"
+        android:label="RequestMoneyFragment" />
+    <fragment
+        android:id="@+id/receiveFragment"
+        android:name="com.octal.actorpayuser.ui.request_money.ReceiveFragment"
+        android:label="fragment_receive"
+        tools:layout="@layout/fragment_receive" />
+    <fragment
+        android:id="@+id/requestMoneyDetailsFragment"
+        android:name="com.octal.actorpayuser.ui.request_money.RequestMoneyDetailsFragment"
+        android:label="RequestMoneyDetailsFragment" />
 
 </navigation>

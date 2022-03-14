@@ -94,7 +94,21 @@
             android:fontFamily="@font/poppins_regular"
             android:maxLines="2"
             android:ellipsize="end"
-            android:text='@{shippingItem.addressLine1+", "+shippingItem.addressLine2}'
+            android:text='@{shippingItem.addressLine1}'
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/_10ssp"
+            tools:ignore="RtlSymmetry"
+            tools:text="@string/dummy_text" />
+
+        <TextView
+            android:id="@+id/address_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/address_text"
+            android:fontFamily="@font/poppins_regular"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text=''
             android:textColor="@color/text_color"
             android:textSize="@dimen/_10ssp"
             tools:ignore="RtlSymmetry"

@@ -64,6 +64,21 @@
             android:visibility="gone"
             />
 
+            <Button
+                android:id="@+id/shop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:backgroundTint="@color/primary"
+                android:text="Shop Now"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_regular"
+                android:visibility="gone"
+                />
+
+
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

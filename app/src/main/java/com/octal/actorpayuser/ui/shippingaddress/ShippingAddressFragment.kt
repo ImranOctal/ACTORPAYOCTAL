@@ -40,11 +40,7 @@ class ShippingAddressFragment : BaseFragment() {
         apiResponse()
 
         binding.addAddress.setOnClickListener {
-            /*startActivity(
-                Intent(
-                    requireContext(), ShippingAddressDetailsActivity::class.java
-                )
-            )  */
+
             val intent = Intent(requireContext(), ShippingAddressDetailsActivity::class.java)
             resultLauncher.launch(intent)
 

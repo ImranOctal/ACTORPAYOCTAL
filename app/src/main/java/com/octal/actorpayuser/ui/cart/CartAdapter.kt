@@ -43,7 +43,7 @@ class CartAdapter(private val cartList: MutableStateFlow<MutableList<CartItemDTO
                  .error(R.drawable.logo)
                  .into(binding.productImage)
 
-             binding.actualPriceText.text=" ₹".plus(item.productPrice)
+             binding.actualPriceText.text=" ₹".plus(decimalFormat.format(item.productPrice))
              binding.actualPricetax.text="(including ".plus(decimalFormat.format(item.taxPercentage)).plus("% gst)")
 
                 binding.productQuantityDelete.setOnClickListener {

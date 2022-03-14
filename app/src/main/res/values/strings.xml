@@ -137,6 +137,7 @@
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>
+        <item>Other</item>
     </string-array>
     <string-array name="status_array">
         <item>Select Status</item>
@@ -194,5 +195,7 @@
     <string name="contact_no_">Contact No: </string>
     <string name="order_date_">Order Date: </string>
     <string name="price_">Price: </string>
+    <string name="password_match">Confirm password should match password</string>
+    <string name="no_request_found">No request found</string>
 
 </resources>

@@ -60,14 +60,15 @@ class WalletUserFragment : BaseFragment() {
                 Navigation.findNavController(requireView())
                     .navigate(R.id.payFragment, bundle)
             }
+            binding.request.setOnClickListener {
+                val bundle =
+                    bundleOf(AppConstance.KEY_KEY to AppConstance.KEY_EMAIL, AppConstance.KEY_CONTACT to walletData!!.toEmail, AppConstance.KEY_NAME to walletData!!.toUserName.replace(", ",""))
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.receiveFragment, bundle)
+            }
         }
 
-        binding.request.setOnClickListener {
-            RequestMoneyDialog(requireActivity(),walletUserViewModel.methodRepo){
-                amount, reason ->
 
-            }.show()
-        }
 
         val mLayoutManager = LinearLayoutManager(requireContext())
         mLayoutManager.reverseLayout=true
@@ -85,7 +86,7 @@ class WalletUserFragment : BaseFragment() {
             adapter = WalletUserAdapter(requireContext(),walletUserViewModel.walletListData.items,walletUserViewModel.methodRepo){
 
                 val bundle= bundleOf("item" to walletUserViewModel.walletListData.items[it])
-                Navigation.findNavController(requireView()).navigate(R.id.walletDetailsFragment,bundle)
+                Navigation.findNavController(requireView()).navigate(R.id.action_walletUserFragment_to_walletDetailsFragment,bundle)
 
             }
             layoutManager = mLayoutManager

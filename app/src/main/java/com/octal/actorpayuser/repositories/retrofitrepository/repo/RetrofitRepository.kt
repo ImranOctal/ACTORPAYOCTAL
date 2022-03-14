@@ -27,7 +27,6 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.products.Si
 import com.octal.actorpayuser.repositories.retrofitrepository.models.promocodes.PromoResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressItem
 import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingAddressListResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.ShippingDeleteParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.*
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
 import kotlinx.coroutines.CoroutineScope
@@ -123,6 +122,12 @@ interface RetrofitRepository {
     suspend fun getWalletBalance(token: String,id: String):RetrofitResource<WalletBalance>
 
     suspend fun userExists(token: String, user:String ):RetrofitResource<LoginResponses>
+
+    suspend fun getAllRequestMoney(token: String,pageNo:Int,pageSize:Int, requestMoneyParams: GetAllRequestMoneyParams ):RetrofitResource<GetAllRequestMoneyResponse>
+
+    suspend fun requestMoney(token: String,requestMoneyParams: RequestMoneyParams ):RetrofitResource<RequestMoneyResponse>
+
+    suspend fun processRequest(token: String,isAccept:Boolean,requestId:String ):RetrofitResource<RequestProcessResponse>
 
 
 

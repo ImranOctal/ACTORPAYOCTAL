@@ -4,9 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.myOrderList.placeorder.PlaceOrderFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,14 +42,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/add_new_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/shipping_address_text"
+            app:layout_constraintBottom_toBottomOf="@+id/shipping_address_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/orderstatus_bg"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_5sdp"
+            android:paddingHorizontal="@dimen/_5sdp"
+            android:text="ADD NEW ADDRESS"
+            android:textColor="@color/primary"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="@dimen/_10ssp"
+            />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/address_recyclerview_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintHeight_default="wrap"
-            app:layout_constraintHeight_max="@dimen/_200sdp"
+            app:layout_constraintHeight_max="@dimen/_180sdp"
             app:layout_constraintTop_toBottomOf="@+id/shipping_address_text"
             android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10ssp"
             >
 
             <androidx.recyclerview.widget.RecyclerView
@@ -52,204 +84,107 @@
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/add_new_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/address_recyclerview_layout"
-            android:background="@drawable/orderstatus_bg"
-            android:gravity="center"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:paddingVertical="@dimen/_8sdp"
-            android:text="ADD NEW ADDRESS"
-            android:textColor="@color/primary"
-            android:fontFamily="@font/poppins_medium"
-
-
-            />
-
-
-        <!--  <androidx.appcompat.widget.AppCompatEditText
-              android:id="@+id/address_line_1"
-              style="@style/RegularTextView"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/_30sdp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginHorizontal="@dimen/_20sdp"
-              android:layout_marginTop="@dimen/_5sdp"
-              android:background="@drawable/btn_outline_gray"
-              android:hint="Enter Address Line 1"
-              android:maxLength="100"
-              android:inputType="text"
-              android:paddingHorizontal="@dimen/_10sdp"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/_12sdp"
-              app:layout_constraintTop_toBottomOf="@+id/shipping_address_text" />
-
-
-          <androidx.appcompat.widget.AppCompatEditText
-              android:id="@+id/address_line_2"
-              style="@style/RegularTextView"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/_30sdp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginHorizontal="@dimen/_20sdp"
-              android:layout_marginTop="@dimen/_5sdp"
-              android:background="@drawable/btn_outline_gray"
-              android:hint="Enter Address Lne 2"
-              android:maxLength="100"
-              android:inputType="text"
-              android:paddingHorizontal="@dimen/_10sdp"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/_12sdp"
-              app:layout_constraintTop_toBottomOf="@+id/address_line_1" />
-
-          <androidx.appcompat.widget.AppCompatEditText
-              android:id="@+id/address_zipcode"
-              style="@style/RegularTextView"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/_30sdp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginHorizontal="@dimen/_20sdp"
-              android:layout_marginTop="@dimen/_5sdp"
-              android:background="@drawable/btn_outline_gray"
-              android:hint="Enter Zipcode"
-              android:inputType="number"
-              android:maxLength="8"
-              android:paddingHorizontal="@dimen/_10sdp"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/_12sdp"
-              app:layout_constraintTop_toBottomOf="@+id/address_line_2" />
-
-          <androidx.appcompat.widget.AppCompatEditText
-              android:id="@+id/address_city"
-              style="@style/RegularTextView"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/_30sdp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginHorizontal="@dimen/_20sdp"
-              android:layout_marginTop="@dimen/_5sdp"
-              android:background="@drawable/btn_outline_gray"
-              android:hint="Enter City"
-              android:maxLength="25"
-              android:inputType="text"
-              android:paddingHorizontal="@dimen/_10sdp"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/_12sdp"
-              app:layout_constraintTop_toBottomOf="@+id/address_zipcode" />
-
-          <androidx.appcompat.widget.AppCompatEditText
-              android:id="@+id/address_state"
-              style="@style/RegularTextView"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/_30sdp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginHorizontal="@dimen/_20sdp"
-              android:layout_marginTop="@dimen/_5sdp"
-              android:background="@drawable/btn_outline_gray"
-              android:hint="Enter State"
-              android:inputType="text"
-              android:maxLength="25"
-              android:paddingHorizontal="@dimen/_10sdp"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/_12sdp"
-              app:layout_constraintTop_toBottomOf="@+id/address_city" />
-
-          <androidx.appcompat.widget.AppCompatEditText
-              android:id="@+id/address_country"
-              style="@style/RegularTextView"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/_30sdp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginHorizontal="@dimen/_20sdp"
-              android:layout_marginTop="@dimen/_5sdp"
-              android:background="@drawable/btn_outline_gray"
-              android:hint="Enter Country"
-              android:maxLength="25"
-              android:inputType="text"
-              android:paddingHorizontal="@dimen/_10sdp"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/_12sdp"
-              app:layout_constraintTop_toBottomOf="@+id/address_state" />
-
-
-          <androidx.appcompat.widget.AppCompatEditText
-              android:id="@+id/address_primary_contact"
-              style="@style/RegularTextView"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/_30sdp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginHorizontal="@dimen/_20sdp"
-              android:layout_marginTop="@dimen/_5sdp"
-              android:background="@drawable/btn_outline_gray"
-              android:hint="Enter Primary Contact"
-              android:maxLength="15"
-              android:inputType="number"
-              android:paddingHorizontal="@dimen/_10sdp"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/_12sdp"
-              app:layout_constraintTop_toBottomOf="@+id/address_country" />
-
-          <androidx.appcompat.widget.AppCompatEditText
-              android:id="@+id/address_secondary_contact"
-              style="@style/RegularTextView"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/_30sdp"
-              android:layout_gravity="center_vertical"
-              android:layout_marginHorizontal="@dimen/_20sdp"
-              android:layout_marginTop="@dimen/_5sdp"
-              android:background="@drawable/btn_outline_gray"
-              android:hint="Enter Secondary contact"
-              android:inputType="number"
-              android:maxLength="15"
-              android:paddingHorizontal="@dimen/_10sdp"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/_12sdp"
-              app:layout_constraintTop_toBottomOf="@+id/address_primary_contact" />-->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/payment_gateway"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/shipping_layout"
-        android:layout_marginTop="@dimen/_10ssp"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        >
-
-        <TextView
-            android:id="@+id/payment_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:fontFamily="@font/poppins_semibold"
-            android:singleLine="true"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_14ssp"
-            tools:ignore="RtlSymmetry"
-            android:text="Select payment option" />
-
-        <LinearLayout
-            android:id="@+id/payment_wallet_layout"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/payment_gateway"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/payment_text"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:orientation="horizontal"
-            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/shipping_layout"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             >
+
+            <TextView
+                android:id="@+id/payment_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14ssp"
+                tools:ignore="RtlSymmetry"
+                android:text="Select payment option" />
+
+            <LinearLayout
+                android:id="@+id/payment_wallet_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/payment_text"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <RadioButton
+                    android:id="@+id/wallet_radio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toBottomOf="@+id/payment_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="Wallet Balance"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_10ssp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tvAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/dummy_actual_amount"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/_12ssp"
+                    android:fontFamily="@font/poppins_regular"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:backgroundTint="@color/pink_color"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    tools:text="Add $ 50"
+                    android:textSize="@dimen/_9ssp"
+                    />
+
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:id="@+id/insufficient_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/payment_wallet_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/_20ssp"
+                android:text="(Insufficient balance)"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_10ssp"
+                android:fontFamily="@font/poppins_light"
+                android:visibility="visible"
+                />
+
+
             <RadioButton
-                android:id="@+id/wallet_radio"
+                android:id="@+id/cod_radio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:layout_constraintTop_toBottomOf="@+id/payment_text"
+                app:layout_constraintTop_toBottomOf="@+id/insufficient_balance"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="Wallet Balance"
+                android:text="COD (Testing purpose only)"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/_10ssp"
                 android:fontFamily="@font/poppins_regular"
@@ -257,263 +192,204 @@
                 android:minHeight="0dp"
                 />
 
-            <TextView
-                android:id="@+id/tvAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="@string/dummy_actual_amount"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/_12ssp"
-                android:fontFamily="@font/poppins_regular"
-                />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/add_money"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:backgroundTint="@color/pink_color"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center"
-                android:visibility="gone"
-                tools:text="Add $ 50"
-                android:textSize="@dimen/_9ssp"
-                />
 
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-        <TextView
-            android:id="@+id/insufficient_balance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/payment_wallet_layout"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="@dimen/_20ssp"
-            android:text="(Insufficient balance)"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_10ssp"
-            android:fontFamily="@font/poppins_light"
-            android:visibility="visible"
-            />
-
-
-        <RadioButton
-            android:id="@+id/cod_radio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:layout_constraintTop_toBottomOf="@+id/insufficient_balance"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="COD (Testing purpose only)"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_10ssp"
-            android:fontFamily="@font/poppins_regular"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            />
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/totalLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/checkout"
-        android:background="@color/white"
-        android:padding="@dimen/_10sdp"
-        >
-
-        <TextView
-            android:id="@+id/sub_total_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:fontFamily="@font/poppins_semibold"
-            android:singleLine="true"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_14ssp"
-            tools:ignore="RtlSymmetry"
-            android:text="@string/sub_total" />
-
-
-        <TextView
-            android:id="@+id/sub_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/sub_total_text"
-            app:layout_constraintBottom_toBottomOf="@+id/sub_total_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:fontFamily="@font/poppins_medium"
-            tools:text="@string/dummy_actual_amount"
-            android:textColor="@color/blue_color"
-            android:textSize="@dimen/_12ssp" />
-
-        <TextView
-            android:id="@+id/shipping_charge_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sub_total_text"
-            android:fontFamily="@font/poppins_semibold"
-            android:singleLine="true"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_14ssp"
-            tools:ignore="RtlSymmetry"
-            android:visibility="gone"
-            android:text="@string/shipping_charge" />
-
-
-        <TextView
-            android:id="@+id/shipping_charge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/shipping_charge_text"
-            app:layout_constraintBottom_toBottomOf="@+id/shipping_charge_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:fontFamily="@font/poppins_medium"
-            tools:text="@string/dummy_actual_amount"
-            android:textColor="@color/blue_color"
-            android:textSize="@dimen/_12ssp"
-            android:visibility="gone"
-            />
-
-        <TextView
-            android:id="@+id/gst_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/shipping_charge_text"
-            android:fontFamily="@font/poppins_semibold"
-            android:singleLine="true"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_14ssp"
-            tools:ignore="RtlSymmetry"
-            android:text="@string/gst" />
-
-
-        <TextView
-            android:id="@+id/gst"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/gst_text"
-            app:layout_constraintBottom_toBottomOf="@+id/gst_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:fontFamily="@font/poppins_medium"
-            tools:text="@string/dummy_actual_amount"
-            android:textColor="@color/blue_color"
-            android:textSize="@dimen/_12ssp" />
-
-        <View
-            android:id="@+id/total_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/totalLayout"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/very_light_grey"
-            app:layout_constraintTop_toBottomOf="@id/gst_text"
-            android:layout_marginTop="@dimen/_5sdp"
-            />
-
-        <TextView
-            android:id="@+id/total_text"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/total_view"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:fontFamily="@font/poppins_semibold"
-            android:singleLine="true"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_14ssp"
-            tools:ignore="RtlSymmetry"
-            android:text="@string/total" />
-
-        <TextView
-            android:id="@+id/total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/total_text"
-            app:layout_constraintBottom_toBottomOf="@+id/total_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:fontFamily="@font/poppins_medium"
-            tools:text="@string/dummy_actual_amount"
-            android:textColor="@color/blue_color"
-            android:textSize="@dimen/_12ssp" />
-
-
-        <View
-            android:id="@+id/total_view2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/very_light_grey"
-            app:layout_constraintTop_toBottomOf="@id/total"
-            android:layout_marginTop="@dimen/_5sdp"
-            />
-
-        <RelativeLayout
-            android:id="@+id/promo_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/total_view2"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/btn_outline_gray"
-            android:gravity="center"
-            android:padding="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@+id/checkout"
+            android:background="@color/white"
+            android:padding="@dimen/_10sdp"
             >
 
-            <EditText
-                android:id="@+id/promo_edt"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/apply"
-                android:gravity="center_vertical"
-                android:background="@android:color/transparent"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:hint="@string/enter_promo_code"
+            <TextView
+                android:id="@+id/sub_total_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
                 android:textColor="@color/text_color"
-                android:inputType="textEmailAddress"
-                android:textSize="@dimen/_12ssp"
-                android:autofillHints="emailAddress" />
+                android:textSize="@dimen/_14ssp"
+                tools:ignore="RtlSymmetry"
+                android:text="@string/sub_total" />
 
 
             <TextView
-                android:id="@+id/apply"
+                android:id="@+id/sub_total"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_alignParentEnd="true"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/sub_total_text"
+                app:layout_constraintBottom_toBottomOf="@+id/sub_total_text"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:fontFamily="@font/poppins_medium"
-                tools:text="Apply"
-                android:textColor="@color/primary"
+                tools:text="@string/dummy_actual_amount"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:id="@+id/shipping_charge_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sub_total_text"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14ssp"
+                tools:ignore="RtlSymmetry"
+                android:visibility="gone"
+                android:text="@string/shipping_charge" />
+
+
+            <TextView
+                android:id="@+id/shipping_charge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/shipping_charge_text"
+                app:layout_constraintBottom_toBottomOf="@+id/shipping_charge_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/poppins_medium"
+                tools:text="@string/dummy_actual_amount"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/_12ssp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/gst_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/shipping_charge_text"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14ssp"
+                tools:ignore="RtlSymmetry"
+                android:text="@string/gst" />
+
+
+            <TextView
+                android:id="@+id/gst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/gst_text"
+                app:layout_constraintBottom_toBottomOf="@+id/gst_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/poppins_medium"
+                tools:text="@string/dummy_actual_amount"
+                android:textColor="@color/blue_color"
+                android:textSize="@dimen/_12ssp" />
+
+            <View
+                android:id="@+id/total_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/very_light_grey"
+                app:layout_constraintTop_toBottomOf="@id/gst_text"
+                android:layout_marginTop="@dimen/_5sdp"
+                />
+
+            <TextView
+                android:id="@+id/total_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/total_view"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_14ssp"
+                tools:ignore="RtlSymmetry"
+                android:text="@string/total" />
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/total_text"
+                app:layout_constraintBottom_toBottomOf="@+id/total_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/poppins_medium"
+                tools:text="@string/dummy_actual_amount"
+                android:textColor="@color/blue_color"
                 android:textSize="@dimen/_12ssp" />
 
 
-        </RelativeLayout>
+            <View
+                android:id="@+id/total_view2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/very_light_grey"
+                app:layout_constraintTop_toBottomOf="@id/total"
+                android:layout_marginTop="@dimen/_5sdp"
+                />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <RelativeLayout
+                android:id="@+id/promo_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/total_view2"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/btn_outline_gray"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                >
+
+                <EditText
+                    android:id="@+id/promo_edt"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/apply"
+                    android:gravity="center_vertical"
+                    android:background="@android:color/transparent"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:hint="@string/enter_promo_code"
+                    android:textColor="@color/text_color"
+                    android:inputType="textEmailAddress"
+                    android:textSize="@dimen/_12ssp"
+                    android:autofillHints="emailAddress" />
 
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/checkout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:backgroundTint="@color/pink_color"
-        android:fontFamily="@font/poppins_semibold"
-        android:gravity="center"
-        android:text="@string/place_order"
-        android:textSize="@dimen/_10ssp"
-        />
+                <TextView
+                    android:id="@+id/apply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/poppins_medium"
+                    tools:text="Apply"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/_12ssp" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/checkout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:backgroundTint="@color/pink_color"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:text="@string/place_order"
+            android:textSize="@dimen/_10ssp"
+            />
+    </LinearLayout>
+
 
 </layout>

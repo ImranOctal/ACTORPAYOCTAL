@@ -61,6 +61,8 @@ interface DataStoreBase {
 
     fun getDeviceToken(): Flow<String>
 
+    suspend  fun getSuspendDeviceToken(lamda:(String)->Unit)
+
     fun getNotificationMuted(): Flow<Boolean>
 
     fun getNotificationSound(): Flow<String>

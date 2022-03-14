@@ -150,6 +150,12 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
         return getString(PreferenceKeys.DEVICE_TOKEN)
     }
 
+    override suspend fun getSuspendDeviceToken(lamda:(String)->Unit) {
+         getSuspendString(PreferenceKeys.DEVICE_TOKEN){
+             lamda.invoke(it)
+         }
+    }
+
     override fun getNotificationMuted(): Flow<Boolean> {
         return getBooleanData(NOTIFICATION_MUTED)
     }
@@ -167,8 +173,19 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
                 throw exception
             }
         }.map { preference ->
-            preference.get(key) ?: "Null"
+            preference.get(key) ?: ""
         }
+    }
+   suspend fun getSuspendString(key:Preferences.Key<String>,lamda:(String)->Unit){
+       context.dataStore.data.catch { exception ->
+           if (exception is IOException) {
+               emit(emptyPreferences())
+           } else {
+               throw exception
+           }
+       }.map { preference ->
+           lamda.invoke(preference.get(key) ?: "Null")
+       }
     }
      fun getLong(key:Preferences.Key<Long>) : Flow<Long> {
         return context.dataStore.data.catch { exception ->
