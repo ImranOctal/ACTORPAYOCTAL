@@ -49,7 +49,7 @@ class RequestFilterDialog(
 
         ArrayAdapter.createFromResource(
             mContext,
-            R.array.status_array,
+            R.array.request_status_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             // Specify the layout to use when the list of choices appears
@@ -76,17 +76,15 @@ class RequestFilterDialog(
 
         }
 
-        if (params.toUserName != null)
-            binding.requestName.setText(params.toUserName)
-        if (params.fromAmount != null)
+//        if (params.toUserName != null)
+//            binding.requestName.setText(params.toUserName)
+
             binding.fromAmount.setText(params.fromAmount.toString())
-        if (params.toAmount != null)
             binding.toAmount.setText(params.toAmount.toString())
-        if (params.startDate != null)
             binding.startDate.setText(params.startDate)
-        if (params.endDate != null)
             binding.endDate.setText(params.endDate)
-        val array = mContext.resources.getStringArray(R.array.status_array).toMutableList()
+
+        val array = mContext.resources.getStringArray(R.array.request_status_array).toMutableList()
         if (params.requestMoneyStatus != null) {
             if (array.contains(params.requestMoneyStatus!!.replace("_"," "))) {
                 val pos = array.indexOfFirst { it.equals(params.requestMoneyStatus!!.replace("_"," ")) }
@@ -141,17 +139,17 @@ class RequestFilterDialog(
 
         binding.apply.setOnClickListener {
             var requestName: String? = null
-            var fromAmount: Double? = null
-            var toAmount: Double? = null
-            var startDate: String? = null
-            var endDate: String? = null
+            var fromAmount: String = ""
+            var toAmount: String = ""
+            var startDate: String = ""
+            var endDate: String = ""
             var status: String? = null
             if ((binding.requestName.text.toString().trim() == "").not())
                 requestName = binding.requestName.text.toString().trim()
             if ((binding.fromAmount.text.toString().trim() == "").not())
-                fromAmount = binding.fromAmount.text.toString().trim().toDouble()
+                fromAmount = binding.fromAmount.text.toString().trim()
             if ((binding.toAmount.text.toString().trim() == "").not())
-                toAmount = binding.toAmount.text.toString().trim().toDouble()
+                toAmount = binding.toAmount.text.toString().trim()
             if ((binding.startDate.text.toString().trim() == "").not())
                 startDate = binding.startDate.text.toString().trim()
             if ((binding.endDate.text.toString().trim() == "").not())
@@ -165,7 +163,7 @@ class RequestFilterDialog(
             }
             onClick(
                 GetAllRequestMoneyParams(
-                   requestName,fromAmount,toAmount, startDate, endDate,status
+                   fromAmount,toAmount, startDate, endDate,status
                 )
             )
             dismiss()

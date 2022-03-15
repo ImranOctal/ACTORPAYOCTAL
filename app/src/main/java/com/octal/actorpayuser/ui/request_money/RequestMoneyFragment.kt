@@ -22,6 +22,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.Requ
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.RequestProcessResponse
 import com.octal.actorpayuser.ui.myOrderList.OrderFilterDialog
 import com.octal.actorpayuser.utils.CommonDialogsUtils
+import com.octal.actorpayuser.utils.EndlessRecyclerViewScrollListener
 import com.octal.actorpayuser.utils.OnFilterClick
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
@@ -99,7 +100,18 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
                 binding.rvRequestMoney.adapter = adapter
                 val linearLayoutManager = LinearLayoutManager(requireContext())
                 linearLayoutManager.reverseLayout = true
+                val endlessRecyclerViewScrollListener: EndlessRecyclerViewScrollListener =
+                    object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+                        override fun onLoadMore(page: Int, totalItemsCount: Int) {
+                            if (requestMoneyViewModel.requestMoneyListData.pageNumber < requestMoneyViewModel.requestMoneyListData.totalPages - 1) {
+                                requestMoneyViewModel.requestMoneyListData.pageNumber += 1
+                                requestMoneyViewModel.getAllRequest()
+
+                            }
+                        }
+                    }
                 binding.rvRequestMoney.layoutManager = linearLayoutManager
+                binding.rvRequestMoney.addOnScrollListener(endlessRecyclerViewScrollListener)
 
             }
 
@@ -236,7 +248,7 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
             requestMoneyViewModel.requestMoneyListData.pageNumber = 0
             requestMoneyViewModel.requestMoneyListData.totalPages = 0
             requestMoneyViewModel.requestMoneyListData.items.clear()
-//            requestMoneyViewModel.getAllRequest()
+            requestMoneyViewModel.getAllRequest()
 
         }.show()
     }

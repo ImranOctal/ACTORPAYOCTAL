@@ -3,6 +3,7 @@ package com.octal.actorpayuser.ui.productList
 import android.content.Context
 import android.graphics.Paint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -49,6 +50,18 @@ class ProductPagingAdapter(
                 .load(item.image)
                 .error(R.drawable.logo)
                 .into(binding.productImage)
+
+            if(item.stockCount>0)
+            {
+                binding.addToCart.visibility= View.VISIBLE
+                binding.buyNow.visibility= View.VISIBLE
+                binding.outOfStock.visibility= View.GONE
+            }
+            else{
+                binding.addToCart.visibility= View.GONE
+                binding.buyNow.visibility= View.GONE
+                binding.outOfStock.visibility= View.VISIBLE
+            }
             binding.addToCart.setOnClickListener {
                 onClick(Clicks.AddCart,item)
             }

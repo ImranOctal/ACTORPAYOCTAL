@@ -23,6 +23,8 @@ interface DataStoreBase {
 
     suspend fun setIsLoggedIn(value:Boolean)
 
+    suspend fun setIsSocialLoggedIn(value:Boolean)
+
     suspend fun setIsIntro(value:Boolean)
 
     suspend fun setAccessToken(value:String)
@@ -38,6 +40,8 @@ interface DataStoreBase {
     fun getBoolean(): Flow<Boolean>
 
     fun isLoggedIn(): Flow<Boolean>
+
+    fun isSocialLoggedIn(): Flow<Boolean>
 
     fun isIntro(): Flow<Boolean>
 

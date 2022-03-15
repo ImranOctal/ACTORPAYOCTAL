@@ -25,6 +25,8 @@ import com.octal.actorpayuser.databinding.FragmentLoginBinding
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginResponses
 import com.octal.actorpayuser.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpayuser.utils.CommonDialogsUtils
+import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -38,6 +40,7 @@ class LoginActivity : BaseActivity() {
     private val loginViewModel: LoginViewModel by inject()
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
+    internal var mTwitterAuthClient: TwitterAuthClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +50,7 @@ class LoginActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        initiateTwitter()
         init()
         apiResponse()
         configSocialLogin()
@@ -60,6 +64,22 @@ class LoginActivity : BaseActivity() {
 
         callbackManager = CallbackManager.Factory.create()
         registerFbCallback()
+    }
+
+    fun initiateTwitter(){
+        val config = TwitterConfig.Builder(this)
+            .logger(DefaultLogger(Log.DEBUG))//enable logging when app is in debug mode
+            .twitterAuthConfig(
+                TwitterAuthConfig(
+                    getString(R.string.twitter_api_key),
+                    getString(R.string.twitter_api_secret)
+                )
+            )
+            .debug(true)//enable debug mode
+            .build()
+
+        Twitter.initialize(config)
+        mTwitterAuthClient = TwitterAuthClient()
     }
 
 
@@ -108,9 +128,42 @@ class LoginActivity : BaseActivity() {
                     listOf("public_profile", "email")
                 )
             }
+            imTwitter.setOnClickListener {
+                mTwitterAuthClient!!.authorize(this@LoginActivity, object : Callback<TwitterSession>() {
+                    override fun success(twitterSessionResult: Result<TwitterSession>?) {
+                   showCustomToast("success")
+                        val twitterSession = twitterSessionResult!!.data
+                        fetchTwitterEmail(twitterSession)
+                    }
+
+                    override fun failure(e: TwitterException) {
+                        showCustomToast(e.message!!)
+                    }
+
+
+
+                })
+            }
         }
 
 
+    }
+
+    fun fetchTwitterEmail(twitterSession: TwitterSession?) {
+        mTwitterAuthClient?.requestEmail(twitterSession, object : Callback<String>() {
+            override fun success(result: Result<String>) {
+
+                var email = result.data
+                var token = twitterSession!!.userId.toString()
+
+                showCustomToast(email)
+
+            }
+
+            override fun failure(exception: TwitterException?) {
+                showCustomToast(exception!!.message!!)
+            }
+        })
     }
 
     private fun apiResponse() {
@@ -127,6 +180,7 @@ class LoginActivity : BaseActivity() {
                             is LoginResponses -> {
                                 loginViewModel.methodRepo.dataStore.setUserId(event.response.data.id)
                                 loginViewModel.methodRepo.dataStore.setIsLoggedIn(true)
+                                loginViewModel.methodRepo.dataStore.setIsSocialLoggedIn(true)
                                 loginViewModel.methodRepo.dataStore.setEmail(event.response.data.email)
                                 loginViewModel.methodRepo.dataStore.setFirstName(event.response.data.firstName)
                                 loginViewModel.methodRepo.dataStore.setLastName(event.response.data.lastName)

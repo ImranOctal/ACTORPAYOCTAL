@@ -62,15 +62,16 @@ class RequestMoneyAdapter(val myUserId:String,val methodsRepo: MethodsRepo, val 
             if(item.createdAt!=null)
             binding.rowRequestDate.text=methodsRepo.getFormattedOrderDate(item.createdAt!!)
 
-            if(item.requestMoneyStatus == "MONEY_REQUESTED"){
+            if(item.expired) {
+                binding.rowRequestStatus.text = "Request Expired"
+            }
+            else if(item.requestMoneyStatus == "MONEY_REQUESTED"){
                 binding.rowRequestStatus.text="Requested"
             }
             else if(item.requestMoneyStatus == "REQUEST_DECLINED"){
-
                 binding.rowRequestStatus.text="Request declined"
             }
             else if(item.requestMoneyStatus == "REQUEST_ACCEPTED"){
-
                 binding.rowRequestStatus.text="Paid"
             }
 
@@ -90,7 +91,13 @@ class RequestMoneyAdapter(val myUserId:String,val methodsRepo: MethodsRepo, val 
             if(item.createdAt!=null)
             binding.rowRequestDate.text=methodsRepo.getFormattedOrderDate(item.createdAt!!)
 
-            if(item.requestMoneyStatus == "MONEY_REQUESTED"){
+            if(item.expired) {
+                binding.pay.visibility= View.GONE
+                binding.decline.visibility= View.GONE
+                binding.rowRequestStatus.visibility= View.VISIBLE
+                binding.rowRequestStatus.text = "Request Expired"
+            }
+           else if(item.requestMoneyStatus == "MONEY_REQUESTED"){
                 binding.pay.visibility= View.VISIBLE
                 binding.decline.visibility= View.VISIBLE
                 binding.rowRequestStatus.visibility= View.GONE

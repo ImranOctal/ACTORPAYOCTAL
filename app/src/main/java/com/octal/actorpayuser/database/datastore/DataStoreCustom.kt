@@ -13,6 +13,7 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.octal.actorpayuser.database.datastore.PreferenceKeys.IS_APP_INTRO
 import com.octal.actorpayuser.database.datastore.PreferenceKeys.IS_APP_LOGGED_IN
+import com.octal.actorpayuser.database.datastore.PreferenceKeys.IS_APP_SOCIAL_LOGGED_IN
 import com.octal.actorpayuser.database.datastore.PreferenceKeys.NOTIFICATION_MUTED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -70,6 +71,10 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
         context.dataStore.edit { mutablePreferences: MutablePreferences -> mutablePreferences.set(IS_APP_LOGGED_IN,value) }
     }
 
+    override suspend fun setIsSocialLoggedIn(value: Boolean) {
+        context.dataStore.edit { mutablePreferences: MutablePreferences -> mutablePreferences.set(IS_APP_SOCIAL_LOGGED_IN,value) }
+    }
+
     override suspend fun setIsIntro(value: Boolean) {
         context.dataStore.edit { mutablePreferences: MutablePreferences -> mutablePreferences.set(
             IS_APP_INTRO,value) }
@@ -104,6 +109,10 @@ class DataStoreCustom(val context:Context/*private val dataStore: DataStore<Pref
 
     override fun isLoggedIn(): Flow<Boolean> {
         return getBooleanData(IS_APP_LOGGED_IN)
+    }
+
+    override fun isSocialLoggedIn(): Flow<Boolean> {
+        return getBooleanData(IS_APP_SOCIAL_LOGGED_IN)
     }
 
     override fun isIntro(): Flow<Boolean> {

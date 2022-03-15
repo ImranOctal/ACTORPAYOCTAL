@@ -28,16 +28,16 @@ data class RequestMoneyData(
     var amount:String,
     var requestMoneyStatus:String,
     var myRequest:Boolean,
-    var accepted:Boolean
+    var accepted:Boolean,
+    var expired:Boolean
 ):Serializable
 
 
 data class GetAllRequestMoneyParams(
-    var toUserName:String?=null,
-    var fromAmount: Double?=null,
-    var toAmount: Double?=null,
-    var startDate: String?=null,
-    var endDate: String?=null,
+    var fromAmount: String="",
+    var toAmount: String="",
+    var startDate: String="",
+    var endDate: String="",
     var requestMoneyStatus:String?=null,
 )
 

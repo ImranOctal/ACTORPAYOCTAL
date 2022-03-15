@@ -58,6 +58,7 @@
         android:orientation="horizontal"
         android:paddingStart="@dimen/_8sdp"
         android:paddingEnd="@dimen/_8sdp"
+        android:visibility="gone"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="@dimen/_10sdp">
 

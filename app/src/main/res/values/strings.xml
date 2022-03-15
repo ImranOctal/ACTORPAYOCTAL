@@ -7,6 +7,12 @@
     <string name="google_map_key">AIzaSyDhMau_8Eah9KaloP_NWaBhDjvryMlzcD0</string>
 
 
+    <string name="twitter_api_key">9VwiojNnrf01JBsmiCYgbry0s</string>
+    <string name="twitter_api_secret">dBpf3oAdwbkEVR0ufsEJUIYOBZ1oFdpQ1zkn29UbpggOKROf4e</string>
+
+<!--    <string name="twitter_api_key">OGdnTC1rODJXRGVrYXhqWHBfa3k6MTpjaQ</string>-->
+<!--    <string name="twitter_api_secret">QHC5wuY1OqIDdV9owF5z8chkvL5SxNyQONQ_Ggn4K2aG_d1IVY</string>-->
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="transfer_money">Transfer Money</string>
@@ -165,6 +171,13 @@
         <item>All Types</item>
         <item>CREDIT</item>
         <item>DEBIT</item>
+    </string-array>
+
+    <string-array name="request_status_array">
+        <item>All</item>
+        <item>MONEY REQUESTED</item>
+        <item>REQUEST ACCEPTED</item>
+        <item>REQUEST DECLINED</item>
     </string-array>
 
 

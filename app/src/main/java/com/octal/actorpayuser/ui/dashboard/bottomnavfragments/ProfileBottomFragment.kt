@@ -222,6 +222,4 @@ class ProfileBottomFragment : BaseFragment() {
             Log.d("Profile Fragment", "apiResponse: ${e.message}")
         }
     }
-
-
 }

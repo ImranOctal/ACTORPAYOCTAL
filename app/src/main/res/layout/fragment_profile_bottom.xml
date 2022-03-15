@@ -116,6 +116,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:enabled="false"
+                        android:longClickable="false"
                         android:paddingStart="@dimen/_10sdp"
                         android:paddingEnd="@dimen/_10sdp"
                         android:textColor="@color/text_color"
@@ -148,6 +149,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:enabled="false"
+                        android:longClickable="false"
                         android:paddingStart="@dimen/_10sdp"
                         android:paddingEnd="@dimen/_10sdp"
                         android:textColor="@color/text_color"
@@ -185,6 +187,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:enabled="false"
+                        android:longClickable="false"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_12sdp" />
@@ -264,6 +267,7 @@
                             android:clickable="false"
                             android:focusable="false"
                             android:enabled="false"
+                            android:longClickable="false"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/verify_mobile"
                             app:layout_constraintStart_toEndOf="@+id/divider"
@@ -331,6 +335,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:enabled="false"
+                        android:longClickable="false"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_12sdp" />
@@ -364,6 +369,7 @@
                         android:clickable="false"
                         android:focusable="false"
                         android:enabled="false"
+                        android:longClickable="false"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_12sdp" />

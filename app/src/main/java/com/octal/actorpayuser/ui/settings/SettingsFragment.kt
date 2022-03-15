@@ -48,6 +48,13 @@ class SettingsFragment : BaseFragment() {
             Navigation.findNavController(requireView()).navigate(R.id.shippingAddressFragment)
         }
 
+        lifecycleScope.launchWhenCreated {
+            settingViewModel.methodRepo.dataStore.isSocialLoggedIn().collect {
+                if(it)
+                    binding.changePassword.visibility=View.GONE
+            }
+        }
+
         return binding.root
     }
 

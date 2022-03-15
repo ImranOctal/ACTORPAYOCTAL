@@ -93,6 +93,17 @@
                     android:text="@{productItem.description}"
                     android:textSize="@dimen/_10ssp" />
 
+                <TextView
+                    android:id="@+id/out_of_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/productDisc"
+                    android:fontFamily="@font/poppins_regular"
+                    android:maxLines="2"
+                    android:text="Out of Stock"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_10ssp" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buyNow"
                     android:layout_width="wrap_content"
@@ -103,7 +114,9 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:gravity="center"
                     android:text="@string/buy_now"
-                    android:textSize="@dimen/_9ssp" />
+                    android:textSize="@dimen/_9ssp"
+                    android:visibility="gone"
+                    />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addToCart"
@@ -115,9 +128,9 @@
                     android:backgroundTint="@color/primary"
                     android:fontFamily="@font/poppins_semibold"
                     android:gravity="center"
-                    android:visibility="visible"
                     android:text="@string/add_to_cart"
                     android:textSize="@dimen/_9ssp"
+                    android:visibility="gone"
 
                     />
 

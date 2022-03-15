@@ -79,6 +79,17 @@ class ProductDetailsFragment : BaseFragment() {
                 .into(binding.productImage)
 
         }
+        if(productDetailsViewModel.product!!.stockCount>0)
+        {
+            binding.addToCart.visibility= View.VISIBLE
+            binding.buyNow.visibility= View.VISIBLE
+            binding.outOfStock.visibility= View.GONE
+        }
+        else{
+            binding.addToCart.visibility= View.GONE
+            binding.buyNow.visibility= View.GONE
+            binding.outOfStock.visibility= View.VISIBLE
+        }
         initializeCartWork()
     }
 
@@ -150,19 +161,10 @@ class ProductDetailsFragment : BaseFragment() {
 
     private fun goToCart() {
 
-//        val intent = Intent(requireContext(), CartActivity::class.java)
-//        resultLauncher.launch(intent)
-
         Navigation.findNavController(requireView()).navigate(R.id.cartFragment)
-
-
 
     }
 
-    private var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            initializeCartWork()
-        }
     private fun cartResponse() {
         lifecycleScope.launchWhenCreated {
 

@@ -57,6 +57,7 @@ class LoginScreenFragment : BaseFragment() {
 
                                 loginViewModel.methodRepo.dataStore.setUserId(event.response.data.id)
                                 loginViewModel.methodRepo.dataStore.setIsLoggedIn(true)
+                                loginViewModel.methodRepo.dataStore.setIsSocialLoggedIn(false)
                                 loginViewModel.methodRepo.dataStore.setEmail(event.response.data.email)
                                 loginViewModel.methodRepo.dataStore.setFirstName(event.response.data.firstName)
                                 loginViewModel.methodRepo.dataStore.setLastName(event.response.data.lastName)
