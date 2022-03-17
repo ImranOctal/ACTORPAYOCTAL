@@ -21,14 +21,16 @@ data class AddMoneyData(
 
 
 data class AddMoneyParams(
-    var amount:String?
+    var amount:String,
+    var beneficiaryUserType:String
+
 )
 
 data class TransferMoneyParams(
     var userIdentity:String,
     var amount:String,
     var transactionRemark:String,
-    var beneficiaryUserType:String="customer"
+    var beneficiaryUserType:String
 )
 
 data class WallletMoneyParams(

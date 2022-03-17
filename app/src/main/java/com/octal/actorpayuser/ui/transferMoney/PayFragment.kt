@@ -19,6 +19,7 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.K
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_MOBILE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_NAME
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_QR
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_TYPE
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyResponse
@@ -35,6 +36,7 @@ class PayFragment : BaseFragment() {
     private var key = ""
     private var name = ""
     private var contact = ""
+    private var type = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +44,7 @@ class PayFragment : BaseFragment() {
             key = it.getString(KEY_KEY)!!
             contact = it.getString(KEY_CONTACT)!!
             name = it.getString(KEY_NAME)!!
+            type = it.getString(KEY_TYPE)!!
         }
     }
 
@@ -70,22 +73,7 @@ class PayFragment : BaseFragment() {
                 payNow.visibility=View.GONE
             }
 
-//            payNow.setOnClickListener {
-//                DummyTransactionProcessDialog(requireActivity(),transferMoneyViewModel.methodRepo){
-//                        action ->
-//                    when(action){
-//                        Clicks.Success->{
-//                            binding.beneficiaryAmount.setText("")
-//                            binding.beneficiaryReason.setText("")
-//                            DummyTransactionStatusDialog(requireActivity(),transferMoneyViewModel.methodRepo,true).show(childFragmentManager,"status")
-//                        }
-//                        Clicks.Cancel->{
-//                            DummyTransactionStatusDialog(requireActivity(),transferMoneyViewModel.methodRepo,false).show(childFragmentManager,"status")
-//                        }
-//                        else ->Unit
-//                    }
-//                }.show(childFragmentManager,"process")
-//            }
+
 
             payNow.setOnClickListener {
                 var isValidate=true
@@ -106,7 +94,7 @@ class PayFragment : BaseFragment() {
                 }
                 if(isValidate)
                 {
-                    transferMoneyViewModel.transferMoney(TransferMoneyParams(contact,amount,reason))
+                    transferMoneyViewModel.transferMoney(TransferMoneyParams(contact,amount,reason,type))
                 }
             }
         }

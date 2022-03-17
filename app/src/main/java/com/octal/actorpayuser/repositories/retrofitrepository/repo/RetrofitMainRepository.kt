@@ -15,10 +15,6 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.B_Token
 import com.octal.actorpayuser.repositories.retrofitrepository.models.FailResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginResponses
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.SocialParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.bottomfragments.ProfileParams
@@ -41,6 +37,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.shipping.Sh
 import com.octal.actorpayuser.repositories.retrofitrepository.resource.RetrofitResource
 import com.octal.actorpayuser.repositories.retrofitrepository.apiclient.ApiClient
 import com.octal.actorpayuser.repositories.retrofitrepository.models.GlobalResponse
+import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.order.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductItem
@@ -1226,7 +1223,7 @@ class RetrofitMainRepository constructor(var context: Context, private var apiCl
     }
 
 
-    override suspend fun userExists(token: String, user: String): RetrofitResource<LoginResponses> {
+    override suspend fun userExists(token: String, user: String): RetrofitResource<UserDetailsResponse> {
         try {
             val data = apiClient.userExists(B_Token +token,user)
             val result = data.body()

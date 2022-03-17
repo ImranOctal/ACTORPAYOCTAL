@@ -3,10 +3,7 @@ package com.octal.actorpayuser.repositories.retrofitrepository.repo
 import androidx.paging.PagingData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.GlobalResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginResponses
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.SocialParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.bottomfragments.ProfileResponse
@@ -122,7 +119,7 @@ interface RetrofitRepository {
 
     suspend fun getWalletBalance(token: String,id: String):RetrofitResource<WalletBalance>
 
-    suspend fun userExists(token: String, user:String ):RetrofitResource<LoginResponses>
+    suspend fun userExists(token: String, user:String ):RetrofitResource<UserDetailsResponse>
 
     suspend fun getAllRequestMoney(token: String,pageNo:Int,pageSize:Int, requestMoneyParams: GetAllRequestMoneyParams ):RetrofitResource<GetAllRequestMoneyResponse>
 

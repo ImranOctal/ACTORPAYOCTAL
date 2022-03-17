@@ -26,8 +26,10 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.K
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_MOBILE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_NAME
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_QR
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.KEY_TYPE
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginResponses
+import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.UserDetailsResponse
 import com.octal.actorpayuser.ui.dummytransactionprocess.DummyTransactionProcessDialog
 import com.octal.actorpayuser.ui.dummytransactionprocess.DummyTransactionStatusDialog
 import kotlinx.coroutines.flow.collect
@@ -88,10 +90,10 @@ class TransferMoneyFragment : BaseFragment() {
         binding.emailNumberField.setOnEditorActionListener { _, actionId, _ ->
 
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                validate(true, "")
-                return@setOnEditorActionListener true;
+                validate(true, "","")
+                return@setOnEditorActionListener true
             }
-            return@setOnEditorActionListener false;
+            return@setOnEditorActionListener false
 
         }
         binding.payNow.setOnClickListener {
@@ -170,7 +172,7 @@ class TransferMoneyFragment : BaseFragment() {
         }
     }
 
-    fun validate(checkAPI: Boolean, name: String,destination:Int=0) {
+    fun validate(checkAPI: Boolean, name: String,type:String,destination:Int=0) {
         transferMoneyViewModel.methodRepo.hideSoftKeypad(requireActivity())
         val contact = binding.emailNumberField.text.toString().trim()
         if (transferMoneyViewModel.methodRepo.isValidEmail(contact)) {
@@ -178,7 +180,7 @@ class TransferMoneyFragment : BaseFragment() {
                 transferMoneyViewModel.userExists(contact)
             else {
                 val bundle =
-                    bundleOf(KEY_KEY to KEY_EMAIL, KEY_CONTACT to contact, KEY_NAME to name)
+                    bundleOf(KEY_KEY to KEY_EMAIL, KEY_CONTACT to contact, KEY_NAME to name,KEY_TYPE to type)
                 Navigation.findNavController(requireView())
                     .navigate(destination, bundle)
             }
@@ -187,7 +189,7 @@ class TransferMoneyFragment : BaseFragment() {
                 transferMoneyViewModel.userExists(contact)
             else {
                 val bundle =
-                    bundleOf(KEY_KEY to KEY_MOBILE, KEY_CONTACT to contact, KEY_NAME to name)
+                    bundleOf(KEY_KEY to KEY_MOBILE, KEY_CONTACT to contact, KEY_NAME to name,KEY_TYPE to type)
                 Navigation.findNavController(requireView())
                     .navigate(destination, bundle)
             }
@@ -208,11 +210,18 @@ class TransferMoneyFragment : BaseFragment() {
                     is ResponseSealed.Success -> {
                         hideLoading()
                         when (event.response) {
-                            is LoginResponses -> {
+                            is UserDetailsResponse -> {
+                                if(event.response.data.customerDetails!=null)
                                 validate(
                                     false,
-                                    event.response.data.firstName + " " + event.response.data.lastName,R.id.payFragment
+                                    event.response.data.customerDetails.firstName + " " + event.response.data.customerDetails.lastName,"customer",R.id.payFragment
                                 )
+                                else{
+                                    validate(
+                                        false,
+                                        event.response.data.merchantDetails!!.businessName,"merchant",R.id.payFragment
+                                    )
+                                }
                             }
                         }
                         transferMoneyViewModel.responseLive.value = ResponseSealed.Empty
@@ -224,7 +233,7 @@ class TransferMoneyFragment : BaseFragment() {
                             forcelogout(transferMoneyViewModel.methodRepo)
                         }
                         else if(event.message.message.contains("User is not found")){
-                            validate(false, "",R.id.referFragment)
+                            validate(false, "","",R.id.referFragment)
                         }
                         else
                             showCustomToast(event.message.message)

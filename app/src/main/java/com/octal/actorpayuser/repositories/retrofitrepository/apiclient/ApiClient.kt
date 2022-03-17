@@ -42,15 +42,13 @@ import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.T
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.UPDATE_CART
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.UPDATE_PROFILE
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.USER_EXISTS
+import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.USER_MERCHANT_EXISTS
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.VAR_ID
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.VERIFY_OTP
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance.Companion.WALLET_HISTORY
 import com.octal.actorpayuser.repositories.retrofitrepository.models.GlobalResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.ForgetPasswordParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginParams
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginResponses
-import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.SocialParams
+import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.*
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.signup.SignUpParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.signup.SignupResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.bottomfragments.ProfileParams
@@ -352,11 +350,11 @@ interface ApiClient {
     ): Response<WalletBalance>
 
 
-    @GET("$USER_EXISTS{user}/get")
+    @GET("$USER_MERCHANT_EXISTS{user}")
     suspend fun userExists(
         @Header("Authorization") token: String,
         @Path("user") user: String
-    ): Response<LoginResponses>
+    ): Response<UserDetailsResponse>
 
 
     @POST(REQUEST_MONEY)

@@ -12,11 +12,14 @@
         android:name="com.octal.actorpayuser.ui.dashboard.bottomnavfragments.home.HomeBottomFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home_bottom">
-
-
         <action
             android:id="@+id/action_homeBottomFragment_to_walletBottomFragment2"
             app:destination="@id/walletBottomFragment" />
+        <action
+            android:id="@+id/action_homeBottomFragment_to_walletDetailsFragment"
+            app:destination="@id/walletDetailsFragment" />
+
+
     </fragment>
     <fragment
         android:id="@+id/profileBottomFragment"

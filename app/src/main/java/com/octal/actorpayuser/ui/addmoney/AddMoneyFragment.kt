@@ -93,7 +93,12 @@ class AddMoneyFragment : BaseFragment() {
             binding.enterAmountEdt.error = "Amount should not less 1"
             binding.enterAmountEdt.requestFocus()
         } else {
-            addMoneyViewModel.addMoney(AddMoneyParams(amount))
+            lifecycleScope.launchWhenCreated {
+                addMoneyViewModel.methodRepo.dataStore.getEmail().collect {
+                    email->
+            addMoneyViewModel.addMoney(AddMoneyParams(amount,email))
+                }
+            }
         }
     }
 

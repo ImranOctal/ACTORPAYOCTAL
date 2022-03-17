@@ -24,6 +24,7 @@ class AppConstance {
         const val CANCEL_ORDER:String="cancelOrder"
         const val DISPUTE:String="dispute"
         const val USER_EXISTS: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3
+        const val USER_MERCHANT_EXISTS: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"get/"
         const val LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"login"
         const val SIGNUP: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"signup"
         const val SOCIAL_LOGIN: String = SUB_DOMAIN+SUB_DOMAIN2+SUB_DOMAIN3+"social/signup"
@@ -120,6 +121,7 @@ class AppConstance {
         const val KEY_MOBILE="mobile"
         const val KEY_EMAIL="email"
         const val KEY_AMOUNT="amount"
+        const val KEY_TYPE="type"
 
 
         var IS_APP_IN_BACKGROUD=false

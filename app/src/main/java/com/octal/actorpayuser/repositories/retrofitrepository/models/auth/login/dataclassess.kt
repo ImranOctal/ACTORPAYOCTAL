@@ -14,4 +14,34 @@ data class DeviceInfoParams(
 )
 
 
+data class UserDetailsResponse(
+    val `data`: UserDetailsData,
+    val httpStatus: String,
+    val message: String,
+    val status: String
+)
 
+data class UserDetailsData(
+    val customerDetails: CustomerDetailsData?,
+    val merchantDetails: MerchantDetailsData?
+)
+
+data class CustomerDetailsData(
+    val userId:String,
+    val firstName:String,
+    val lastName:String,
+    val email:String,
+    val contactNumber:String,
+    val extension:String,
+    val userType:String,
+)
+
+data class MerchantDetailsData(
+    val userId:String,
+    val merchantId:String,
+    val businessName:String,
+    val email:String,
+    val contactNumber:String,
+    val extension:String,
+    val userType:String,
+)
