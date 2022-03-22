@@ -70,6 +70,7 @@ class TransferMoneyFragment : BaseFragment() {
             requireActivity().runOnUiThread {
                 showCustomToast("Camera initialization error: ${it.message}")
             }
+
         }
 
 

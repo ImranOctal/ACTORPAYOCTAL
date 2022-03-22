@@ -93,6 +93,31 @@
                     app:layout_constraintStart_toEndOf="@+id/row_request_txn_text"
                     app:layout_constraintTop_toBottomOf="@+id/row_request_name_text" />
 
+
+                <TextView
+                    android:id="@+id/row_request_to_user_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Requese To: "
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/row_request_txn_text" />
+
+                <TextView
+                    android:id="@+id/row_request_to_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    tools:text="user"
+                    android:textColor="@color/primary"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toEndOf="@+id/row_request_to_user_text"
+                    app:layout_constraintTop_toBottomOf="@+id/row_request_txn_text" />
+
                 <TextView
                     android:id="@+id/row_request_date_text"
                     android:layout_width="wrap_content"
@@ -103,7 +128,7 @@
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/row_request_txn" />
+                    app:layout_constraintTop_toBottomOf="@+id/row_request_to_user_text" />
 
                 <TextView
                     android:id="@+id/row_request_date"
@@ -114,7 +139,7 @@
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toEndOf="@+id/row_request_date_text"
-                    app:layout_constraintTop_toBottomOf="@+id/row_request_txn"
+                    app:layout_constraintTop_toBottomOf="@+id/row_request_to_user_text"
                     tools:text="2000 12 01" />
 
                 <TextView

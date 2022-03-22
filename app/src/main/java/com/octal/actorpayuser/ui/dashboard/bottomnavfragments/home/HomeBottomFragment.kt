@@ -113,9 +113,11 @@ class HomeBottomFragment : BaseFragment() {
                         homeViewModel.responseLive.value = ResponseSealed.Empty
                     }
                     is ResponseSealed.ErrorOnResponse -> {
-                        homeViewModel.responseLive.value = ResponseSealed.Empty
                         hideLoading()
-//                        showCustomToast(event.message!!.message)
+                        if (event.message!!.code == 403) {
+                            forcelogout(homeViewModel.methodRepo)
+                        }
+                        homeViewModel.responseLive.value = ResponseSealed.Empty
 
                     }
                     is ResponseSealed.Empty -> {

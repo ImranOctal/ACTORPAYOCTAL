@@ -39,7 +39,14 @@
         <activity
             android:name="com.octal.actorpayuser.ui.auth.LoginActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="twitterapp" android:host="connect" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.octal.actorpayuser.MainActivity"
             android:exported="false"
@@ -58,6 +65,9 @@
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait" />
+
+
+
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

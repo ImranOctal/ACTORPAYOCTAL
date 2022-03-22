@@ -86,9 +86,14 @@ class RequestMoneyDetailsFragment : BaseFragment() {
                     binding.pay.visibility= View.GONE
                     binding.decline.visibility= View.GONE
                     binding.btnDone.visibility= View.VISIBLE
+                    binding.rowRequestToUser.visibility=View.VISIBLE
+                    binding.rowRequestToUserText.visibility=View.VISIBLE
+                    binding.rowRequestToUser.text=requestMoneyData.toUserName.replace(" ,","")
                 }
                 else{
-                    binding.rowRequestText.text="Request from user"
+                    binding.rowRequestText.text="Request from ${requestMoneyData.userName.replace(" ,","")}"
+                    binding.rowRequestToUser.visibility=View.GONE
+                    binding.rowRequestToUserText.visibility=View.GONE
                 }
             }
         }

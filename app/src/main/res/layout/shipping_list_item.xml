@@ -57,6 +57,7 @@
                     android:textSize="@dimen/_12ssp"
                     tools:ignore="RtlSymmetry"
                     tools:text="@string/there_are_many_variations" />
+
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="0dp"
@@ -176,6 +177,7 @@
                         android:textSize="@dimen/_11ssp"
                         android:checked="true"
                         android:visibility="gone"
+                        android:layout_marginStart="@dimen/_minus5sdp"
                         android:minHeight="0dp"
                         android:minWidth="0dp"
                         android:clickable="false"

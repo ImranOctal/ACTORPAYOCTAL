@@ -1,27 +1,20 @@
 package com.octal.actorpayuser.ui.request_money
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
-import com.octal.actorpayuser.databinding.FragmentPayBinding
 import com.octal.actorpayuser.databinding.FragmentReceiveBinding
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance
-import com.octal.actorpayuser.repositories.AppConstance.Clicks
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.AddMoneyResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.RequestMoneyParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.RequestMoneyResponse
-import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.TransferMoneyParams
 import com.octal.actorpayuser.utils.CommonDialogsUtils
-import com.octal.actorpayuser.utils.TransactionStatusSuccessDialog
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
@@ -33,6 +26,8 @@ class ReceiveFragment : BaseFragment() {
     private var key = ""
     private var name = ""
     private var contact = ""
+    private var type = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +35,8 @@ class ReceiveFragment : BaseFragment() {
             key = it.getString(AppConstance.KEY_KEY)!!
             contact = it.getString(AppConstance.KEY_CONTACT)!!
             name = it.getString(AppConstance.KEY_NAME)!!
+            type = it.getString(AppConstance.KEY_TYPE)!!
+
         }
     }
 
@@ -88,7 +85,7 @@ class ReceiveFragment : BaseFragment() {
                 }
                 if(isValidate)
                 {
-                    requestMoneyViewModel.requestMoney(RequestMoneyParams(contact,amount,reason))
+                    requestMoneyViewModel.requestMoney(RequestMoneyParams(contact,amount,reason,type))
                 }
             }
         }

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.octal.actorpayuser.databinding.RowOperatorLayoutBinding
 
-class OperatorAdapter(val list:MutableList<String>):RecyclerView.Adapter<OperatorAdapter.MyViewHolder>() {
+class OperatorAdapter(val list:MutableList<OperatorModel>):RecyclerView.Adapter<OperatorAdapter.MyViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -24,8 +24,9 @@ class OperatorAdapter(val list:MutableList<String>):RecyclerView.Adapter<Operato
 
 
     inner class MyViewHolder(val binding:RowOperatorLayoutBinding):RecyclerView.ViewHolder(binding.root) {
-        fun bindView(item:String){
-            binding.operatorTitle.text=item
+        fun bindView(item:OperatorModel){
+            binding.operatorTitle.text=item.name
+            binding.operatorImage.setImageResource(item.image)
         }
     }
 }

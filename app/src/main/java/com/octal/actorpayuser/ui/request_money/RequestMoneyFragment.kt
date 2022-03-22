@@ -16,6 +16,7 @@ import com.octal.actorpayuser.databinding.FragmentRequestMoneyBinding
 import com.octal.actorpayuser.repositories.AppConstance.AppConstance
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.LoginResponses
+import com.octal.actorpayuser.repositories.retrofitrepository.models.auth.login.UserDetailsResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.GetAllRequestMoneyParams
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.GetAllRequestMoneyResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.RequestMoneyListData
@@ -53,7 +54,7 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
         binding.emailNumberField.setOnEditorActionListener { _, actionId, _ ->
 
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                validate(true, "")
+                validate(true, "","")
                 return@setOnEditorActionListener true;
             }
             return@setOnEditorActionListener false;
@@ -117,6 +118,7 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
 
         }
     }
+
     fun processRequest(isAccept:Boolean,requestId:String){
         var title=""
         if(isAccept)
@@ -134,7 +136,7 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
             })
     }
 
-    fun validate(checkAPI: Boolean, name: String,destintation:Int=0) {
+    fun validate(checkAPI: Boolean, name: String,type:String,destintation:Int=0) {
         requestMoneyViewModel.methodRepo.hideSoftKeypad(requireActivity())
         val contact = binding.emailNumberField.text.toString().trim()
         if (requestMoneyViewModel.methodRepo.isValidEmail(contact)) {
@@ -145,7 +147,8 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
                     bundleOf(
                         AppConstance.KEY_KEY to AppConstance.KEY_EMAIL,
                         AppConstance.KEY_CONTACT to contact,
-                        AppConstance.KEY_NAME to name
+                        AppConstance.KEY_NAME to name,
+                        AppConstance.KEY_TYPE to type
                     )
                 Navigation.findNavController(requireView())
                     .navigate(destintation, bundle)
@@ -158,7 +161,8 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
                     bundleOf(
                         AppConstance.KEY_KEY to AppConstance.KEY_MOBILE,
                         AppConstance.KEY_CONTACT to contact,
-                        AppConstance.KEY_NAME to name
+                        AppConstance.KEY_NAME to name,
+                        AppConstance.KEY_TYPE to type
                     )
                 Navigation.findNavController(requireView())
                     .navigate(destintation, bundle)
@@ -200,11 +204,18 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
                     is ResponseSealed.Success -> {
                         hideLoading()
                         when (event.response) {
-                            is LoginResponses -> {
-                                validate(
-                                    false,
-                                    event.response.data.firstName + " " + event.response.data.lastName,R.id.receiveFragment
-                                )
+                            is UserDetailsResponse -> {
+                                if(event.response.data.customerDetails!=null)
+                                    validate(
+                                        false,
+                                        event.response.data.customerDetails.firstName + " " + event.response.data.customerDetails.lastName,"customer",R.id.receiveFragment
+                                    )
+                                else{
+                                    validate(
+                                        false,
+                                        event.response.data.merchantDetails!!.businessName,"merchant",R.id.receiveFragment
+                                    )
+                                }
                             }
                             is GetAllRequestMoneyResponse -> {
                                 updateUI(event.response.data)
@@ -224,7 +235,7 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
                             forcelogout(requestMoneyViewModel.methodRepo)
                         }
                         else if(event.message.message.contains("User is not found")){
-                            validate(false, "",R.id.referFragment)
+                            validate(false, "","",R.id.referFragment)
                         }
                         else
                             showCustomToast(event.message.message)

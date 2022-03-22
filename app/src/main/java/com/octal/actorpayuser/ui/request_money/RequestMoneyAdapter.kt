@@ -86,7 +86,7 @@ class RequestMoneyAdapter(val myUserId:String,val methodsRepo: MethodsRepo, val 
         fun bindView( position: Int) {
             val item=items[position]
 //            binding.rowWalletText.text = item.transactionRemark.replace(",", " ")
-            binding.rowRequestText.text = "Request from user"
+            binding.rowRequestText.text = "Request from ${item.userName.replace(" ,","")}"
             binding.rowRequestAmount.text = "₹ ".plus(item.amount)
             if(item.createdAt!=null)
             binding.rowRequestDate.text=methodsRepo.getFormattedOrderDate(item.createdAt!!)

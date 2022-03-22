@@ -451,13 +451,13 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                 if (addresses.size > 0) {
                     val address = addresses[0].getAddressLine(0)
                     val city = addresses[0].locality
-//                    val line1 = address.substring(0, address.indexOf(city))
+                    val line1 = address.substring(0, address.indexOf(city))
                     val state = addresses[0].adminArea
                     val postalCode = addresses[0].postalCode
 
-//                    if (city != null && city != "")
-//                        binding.addressLine1.setText(line1)
-//                    else
+                    if (city != null && city != "")
+                        binding.addressLine1.setText(line1)
+                    else
                         binding.addressLine1.setText(address)
                     binding.addressZipcode.setText(postalCode)
                     binding.addressCity.setText(city)

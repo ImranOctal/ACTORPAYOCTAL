@@ -142,6 +142,7 @@ class CommonDialogsUtils {
                 )
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 setCanceledOnTouchOutside(autoCancelable)
+                setCancelable(autoCancelable)
 
             }.also { it.show() }
         }

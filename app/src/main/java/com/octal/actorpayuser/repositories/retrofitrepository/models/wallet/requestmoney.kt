@@ -23,6 +23,7 @@ data class RequestMoneyData(
     var userId:String,
     var userEmail:String,
     var toUserId:String,
+    var userName:String,
     var toUserEmail:String,
     var toUserName:String,
     var amount:String,
@@ -44,9 +45,10 @@ data class GetAllRequestMoneyParams(
 
 
 data class RequestMoneyParams(
-    var userIdentity:String="",
-    var amount:String="",
-    var reason:String=""
+    var userIdentity:String,
+    var amount:String,
+    var reason:String,
+    var requestUserTypeTo:String
 )
 
 

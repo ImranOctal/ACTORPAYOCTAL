@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.databinding.FragmentMobileAndDTHBinding
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
@@ -18,7 +19,7 @@ class MobileAndDTHFragment : BaseFragment() {
 
     lateinit var binding: FragmentMobileAndDTHBinding
     private val mobileAndDTHFragment: MobileAndDthViewModel by inject()
-    val operatorList= mutableListOf<String>()
+    val operatorList= mutableListOf<OperatorModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -108,22 +109,27 @@ class MobileAndDTHFragment : BaseFragment() {
         operatorList.clear()
         if(isMobile)
         {
-            operatorList.add("Airtel")
-            operatorList.add("JIO")
-            operatorList.add("VI")
-            operatorList.add("BSNL")
-            operatorList.add("MTNL")
+            operatorList.add(OperatorModel("Airtel", R.drawable.dummy_airtel))
+            operatorList.add(OperatorModel("JIO",R.drawable.dummy_jio))
+            operatorList.add(OperatorModel("VI",R.drawable.dummy_vi))
+            operatorList.add(OperatorModel("BSNL",R.drawable.dummy_bsnl))
+            operatorList.add(OperatorModel("MTNL",R.drawable.dummy_mtnl))
         }
         else
         {
-            operatorList.add("Airtel")
-            operatorList.add("JIO")
-            operatorList.add("Vodaphone")
-            operatorList.add("D2H")
-            operatorList.add("MTNL")
+            operatorList.add(OperatorModel("Airtel",R.drawable.dummy_airtel))
+            operatorList.add(OperatorModel("JIO",R.drawable.dummy_jio))
+            operatorList.add(OperatorModel("Vodaphone",R.drawable.dummy_vi))
+            operatorList.add(OperatorModel("D2H",R.drawable.dummy_bsnl))
+            operatorList.add(OperatorModel("MTNL",R.drawable.dummy_mtnl))
         }
 
     }
 
 
 }
+
+data class OperatorModel(
+    val name:String,
+    val image:Int
+)

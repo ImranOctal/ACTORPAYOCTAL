@@ -82,7 +82,7 @@ class AppConstance {
         const val TRANSFER_MONEY:String=SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/transfer"
         const val WALLET_HISTORY:String=SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/list/paged"
         const val GET_WALLET_BALANCE: String = SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/"
-        const val GET_ALL_REQUEST_MONEY: String = SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/requestMoney/get"
+        const val GET_ALL_REQUEST_MONEY: String = SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/requestMoney/list/paged"
         const val REQUEST_MONEY: String = SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/requestMoney"
         const val REQUEST_PROCESS: String = SUB_DOMAIN+ SUB_DOMAIN2+"v1/wallet/requestMoney"
 

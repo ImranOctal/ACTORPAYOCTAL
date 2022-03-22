@@ -129,24 +129,42 @@ class LoginActivity : BaseActivity() {
                 )
             }
             imTwitter.setOnClickListener {
-                mTwitterAuthClient!!.authorize(this@LoginActivity, object : Callback<TwitterSession>() {
-                    override fun success(twitterSessionResult: Result<TwitterSession>?) {
-                   showCustomToast("success")
-                        val twitterSession = twitterSessionResult!!.data
-                        fetchTwitterEmail(twitterSession)
-                    }
+                if (getTwitterSession() == null) {
+                    mTwitterAuthClient!!.authorize(
+                        this@LoginActivity,
+                        object : Callback<TwitterSession>() {
+                            override fun success(twitterSessionResult: Result<TwitterSession>?) {
+                                showCustomToast("success")
+                                val twitterSession = twitterSessionResult!!.data
+                                fetchTwitterEmail(twitterSession)
+                            }
 
-                    override fun failure(e: TwitterException) {
-                        showCustomToast(e.message!!)
-                    }
+                            override fun failure(e: TwitterException) {
+                                showCustomToast(e.message!!)
+                            }
 
 
-
-                })
+                        })
+                } else
+                    fetchTwitterEmail(getTwitterSession())
             }
+
+
         }
+    }
 
+    private fun getTwitterSession(): TwitterSession? {
 
+        //NOTE : if you want to get token and secret too use uncomment the below code
+        /*TwitterAuthToken authToken = session.getAuthToken();
+        String token = authToken.token;
+        String secret = authToken.secret;*/
+
+        return TwitterCore.getInstance().sessionManager.activeSession
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     fun fetchTwitterEmail(twitterSession: TwitterSession?) {

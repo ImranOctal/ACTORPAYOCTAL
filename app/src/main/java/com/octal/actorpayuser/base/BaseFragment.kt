@@ -30,11 +30,11 @@ abstract class BaseFragment : Fragment(){
         (requireActivity() as MainActivity).onFilterClick(filterClick)
     }
 
-    fun showCustomToast(msg: String) {
+    fun showCustomToast(msg: String,length:Int=Toast.LENGTH_LONG) {
         val myToast = Toast.makeText(
             activity,
             msg,
-            Toast.LENGTH_SHORT
+            length
         )
         myToast.setGravity(Gravity.CENTER, 0, 0)
         myToast.show()

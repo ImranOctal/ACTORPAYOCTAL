@@ -35,12 +35,12 @@ class HomeViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                         is RetrofitResource.Error -> {
                             responseLive.value =
                                 ResponseSealed.ErrorOnResponse(response.message)
-                            this.cancel()
+//                            this.cancel()
                         }
                         is RetrofitResource.Success -> {
                             responseLive.value =
                                 ResponseSealed.Success(response.data!!)
-                            this.cancel()
+//                            this.cancel()
                         }
                     }
                 }
@@ -60,12 +60,12 @@ class HomeViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                     is RetrofitResource.Error ->{
                         responseLive.value =
                             ResponseSealed.ErrorOnResponse(response.message)
-                        this.cancel()
+//                        this.cancel()
                     }
                     is RetrofitResource.Success -> {
                         responseLive.value =
                             ResponseSealed.Success(response.data!!)
-                        this.cancel()
+//                        this.cancel()
                     }
                 }
             }
@@ -81,12 +81,12 @@ class HomeViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                     is RetrofitResource.Error ->{
                         responseLive.value =
                             ResponseSealed.ErrorOnResponse(response.message)
-                        this.cancel()
+//                        this.cancel()
                     }
                     is RetrofitResource.Success -> {
                         responseLive.value =
                             ResponseSealed.Success(response.data!!)
-                        this.cancel()
+//                        this.cancel()
                     }
                 }
             }
