@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.OAuthProvider
 import com.octal.actorpayuser.MainActivity
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseActivity
@@ -80,6 +81,9 @@ class LoginActivity : BaseActivity() {
 
         Twitter.initialize(config)
         mTwitterAuthClient = TwitterAuthClient()
+
+//        val provider: OAuthProvider.Builder = OAuthProvider.newBuilder("twitter.com")
+
     }
 
 
@@ -152,6 +156,10 @@ class LoginActivity : BaseActivity() {
 
         }
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        mTwitterAuthClient!!.onActivityResult(requestCode, resultCode, data)
+    }
 
     private fun getTwitterSession(): TwitterSession? {
 
@@ -163,9 +171,6 @@ class LoginActivity : BaseActivity() {
         return TwitterCore.getInstance().sessionManager.activeSession
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 
     fun fetchTwitterEmail(twitterSession: TwitterSession?) {
         mTwitterAuthClient?.requestEmail(twitterSession, object : Callback<String>() {

@@ -93,8 +93,18 @@ class OrderDetailsFragment : BaseFragment() {
         binding.email.text=getString(R.string.email_).plus(orderDetailsViewModel.orderData!!.merchantDTO.email)
         binding.contactNo.text=getString(R.string.contact_no_).plus(orderDetailsViewModel.orderData!!.merchantDTO.extensionNumber+""+orderDetailsViewModel.orderData!!.merchantDTO.contactNumber)
         binding.deliveryAddressAddress1.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine1
-        binding.deliveryAddressAddress2.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine2
-        binding.deliveryAddressCity.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.city.plus(", ").plus(orderDetailsViewModel.orderData!!.shippingAddressDTO!!.state)
+//        binding.deliveryAddressAddress2.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine2
+//        binding.deliveryAddressCity.text=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.city.plus(", ").plus(orderDetailsViewModel.orderData!!.shippingAddressDTO!!.state)
+
+        var addressLine2=""
+        if(orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine2==null || orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine2.equals(""))
+        {
+            addressLine2=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.city+", "+orderDetailsViewModel.orderData!!.shippingAddressDTO!!.state+", "+orderDetailsViewModel.orderData!!.shippingAddressDTO!!.country
+        }
+        else{
+            addressLine2=orderDetailsViewModel.orderData!!.shippingAddressDTO!!.addressLine2!!+", "+orderDetailsViewModel.orderData!!.shippingAddressDTO!!.city+", "+orderDetailsViewModel.orderData!!.shippingAddressDTO!!.state+", "+orderDetailsViewModel.orderData!!.shippingAddressDTO!!.country
+        }
+        binding.deliveryAddressAddress2.text=addressLine2
 
         binding.orderStatus.text=orderDetailsViewModel.orderData!!.orderStatus.replace("_"," ")
 
@@ -130,8 +140,6 @@ class OrderDetailsFragment : BaseFragment() {
             binding.deliveryAddressAddress1.visibility = View.GONE
             binding.deliveryAddressAddress2.visibility = View.GONE
             binding.deliveryAddressCity.visibility = View.GONE
-        } else if (orderDetailsViewModel.orderData?.shippingAddressDTO?.addressLine2 == null || orderDetailsViewModel.orderData?.shippingAddressDTO?.addressLine2.equals("")) {
-            binding.deliveryAddressAddress2.visibility = View.GONE
         }
         binding.orderNotesRecyclerView.layoutManager = LinearLayoutManager(context)
         val notesList=orderDetailsViewModel.orderData!!.orderNotesDtos.filter {

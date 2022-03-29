@@ -47,7 +47,7 @@
             android:singleLine="true"
             android:text="Amount Received By Bank"
             android:textColor="@color/text_color"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_10ssp"
             tools:ignore="RtlSymmetry" />
 
         <TextView
@@ -58,6 +58,7 @@
             android:fontFamily="@font/poppins_regular"
             android:maxLines="2"
             android:text="Date- 05/10/2019"
+            android:textColor="@color/text_color"
             android:textSize="@dimen/_10ssp" />
 
 
@@ -69,6 +70,7 @@
             android:fontFamily="@font/poppins_regular"
             android:maxLines="2"
             android:text="Account No. ******5987"
+            android:textColor="@color/text_color"
             android:textSize="@dimen/_10ssp" />
 
         <LinearLayout
@@ -96,6 +98,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:maxLines="2"
                 android:text="Saving"
+                android:visibility="gone"
                 android:textSize="@dimen/_10ssp" />
         </LinearLayout>
     </RelativeLayout>

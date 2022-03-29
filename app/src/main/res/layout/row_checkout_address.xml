@@ -108,7 +108,6 @@
             android:fontFamily="@font/poppins_regular"
             android:maxLines="2"
             android:ellipsize="end"
-            android:text=''
             android:textColor="@color/text_color"
             android:textSize="@dimen/_10ssp"
             tools:ignore="RtlSymmetry"

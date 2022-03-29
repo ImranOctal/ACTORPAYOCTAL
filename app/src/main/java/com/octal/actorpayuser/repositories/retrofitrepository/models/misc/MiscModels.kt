@@ -11,7 +11,8 @@ data class FAQResponseData (
      val id        : String,
      val question  : String,
      val answer    : String,
-     val updatedAt : String
+     val updatedAt : String,
+     var isExpand:Boolean=false
 )
 
 data class FAQResponse (

@@ -17,7 +17,7 @@ class PlaceOrderDialog(
     private val mContext: Activity,
     val methodsRepo: MethodsRepo,
     val orderData: OrderData,
-    val onDone: (String) -> Unit
+    val onDone: (action:String,orderNo:String) -> Unit
 ) : DialogFragment() {
 
 
@@ -57,8 +57,18 @@ class PlaceOrderDialog(
         binding.email.text="Email: "+orderData.merchantDTO.email
         binding.contactNo.text="Contact No: "+orderData.merchantDTO.extensionNumber+""+orderData.merchantDTO.contactNumber
         binding.deliveryAddressAddress1.text=orderData.shippingAddressDTO!!.addressLine1
-        binding.deliveryAddressAddress2.text=orderData.shippingAddressDTO.addressLine2
-        binding.deliveryAddressCity.text=orderData.shippingAddressDTO.city+", "+orderData.shippingAddressDTO!!.state
+//        binding.deliveryAddressAddress2.text=orderData.shippingAddressDTO.addressLine2
+//        binding.deliveryAddressCity.text=orderData.shippingAddressDTO.city+", "+orderData.shippingAddressDTO!!.state
+
+        var addressLine2=""
+        if(orderData.shippingAddressDTO.addressLine2==null || orderData.shippingAddressDTO.addressLine2.equals(""))
+        {
+            addressLine2=orderData.shippingAddressDTO.city+", "+orderData.shippingAddressDTO.state+", "+orderData.shippingAddressDTO.country
+        }
+        else{
+            addressLine2=orderData.shippingAddressDTO.addressLine2!!+", "+orderData.shippingAddressDTO.city+", "+orderData.shippingAddressDTO.state+", "+orderData.shippingAddressDTO.country
+        }
+        binding.deliveryAddressAddress2.text=addressLine2
 
         binding.orderStatus.text=orderData.orderStatus.replace("_"," ")
 
@@ -69,19 +79,17 @@ class PlaceOrderDialog(
             binding.deliveryAddressAddress1.visibility = View.GONE
             binding.deliveryAddressAddress2.visibility = View.GONE
             binding.deliveryAddressCity.visibility = View.GONE
-        } else if (orderData.shippingAddressDTO.addressLine2 == null || orderData.shippingAddressDTO?.addressLine2.equals("")) {
-            binding.deliveryAddressAddress2.visibility = View.GONE
         }
 
 
         binding.order.setOnClickListener {
             dismiss()
-            onDone("order")
+            onDone("order",orderData.orderNo)
         }
 
         binding.shopping.setOnClickListener {
             dismiss()
-            onDone("shopping")
+            onDone("shopping","")
         }
 
 

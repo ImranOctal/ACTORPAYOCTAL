@@ -2,6 +2,7 @@ package com.octal.actorpayuser.ui.productList
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -36,11 +37,14 @@ class ProductViewModel(val dispatcherProvider: CoroutineContextProvider, val met
 
 
 
+
   suspend fun getProductsWithPaging(token:String)=
       apiRepo.getProductsWithPaging(
           viewModelScope, token,
           ProductParams(category, name)
       )
+
+
 
 
 

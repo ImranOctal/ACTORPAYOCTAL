@@ -41,11 +41,16 @@ class ShippingListAdapter(
 
         fun bindView(item: ShippingAddressItem,position: Int) {
             binding.shippingItem = item
-
+            var addressLine2=""
             if(item.addressLine2==null || item.addressLine2.equals(""))
             {
-                binding.addressLine2.visibility= View.GONE
+               addressLine2=item.city+", "+", "+item.state+", "+item.country
             }
+            else{
+                addressLine2=item.addressLine2!!+", "+item.city+item.state+", "+", "+item.country
+            }
+
+            binding.addressLine2.text=addressLine2
 
             if(item.primary) {
                 binding.delete.visibility = View.GONE

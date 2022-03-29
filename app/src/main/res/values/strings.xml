@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">ActorPayApp</string>
     <string name="facebook_app_id">473779207383239</string>
-    <!--    <string name="google_map_key">AIzaSyCZGIE2o472ZoYOlLZk6rdPDWYtU3zoBOQ</string>-->
-    <!--    <string name="google_map_key">AIzaSyDF9E6078CB2YHeX3Qc6c4xOTkkQoT7KCY</string>-->
 
     <string name="google_map_key">AIzaSyDhMau_8Eah9KaloP_NWaBhDjvryMlzcD0</string>
 
-
+<!--
     <string name="twitter_api_key">dvCRgAVhLwhTb8vMNjFNP9Npx</string>
-    <string name="twitter_api_secret">Wb8sHbiFUGlFBrVptOu3EeapiiK7bVup98G3p4nX0IMHIpwkqu</string>
+    <string name="twitter_api_secret">Wb8sHbiFUGlFBrVptOu3EeapiiK7bVup98G3p4nX0IMHIpwkqu</string>-->
 
-<!--    <string name="twitter_api_key">OGdnTC1rODJXRGVrYXhqWHBfa3k6MTpjaQ</string>-->
-<!--    <string name="twitter_api_secret">QHC5wuY1OqIDdV9owF5z8chkvL5SxNyQONQ_Ggn4K2aG_d1IVY</string>-->
+
+    <string name="twitter_api_key">OWOuTJoG5CeuAx5RETkVxgyT7</string>
+    <string name="twitter_api_secret">rjKRSpYlLlxPtzotaE1IE46nIAxJQ9zbNmvVCIB5sCIzal7sbB</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -32,7 +32,8 @@
     <string name="product_list">Product List</string>
     <string name="login">Login</string>
     <string name="my_order">My Order</string>
-    <string name="forgot_password">Forgot password?</string>
+    <string name="forgot_password_1">Forgot password?</string>
+    <string name="forgot_password">Forgot Password</string>
     <string name="or">or</string>
     <string name="notification">Notification</string>
     <string name="about_us">About Us</string>

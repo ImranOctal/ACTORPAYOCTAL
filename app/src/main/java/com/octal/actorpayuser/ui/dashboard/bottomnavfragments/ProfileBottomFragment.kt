@@ -144,7 +144,10 @@ class ProfileBottomFragment : BaseFragment() {
                                         otp->
                                         profileViewModel.verifyOtp(otp)
                                     }
-                                    "User contact number has been verified successfully" -> profileViewModel.getProfile()
+                                    "User contact number has been verified successfully" -> {
+                                        showCustomToast(it.response.message)
+                                        profileViewModel.getProfile()
+                                    }
                                     else -> CommonDialogsUtils.showCommonDialog(requireActivity(),profileViewModel.methodRepo,"Profile Update",it.response.message)
                                 }
                             }

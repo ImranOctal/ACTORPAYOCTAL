@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpayuser.R
@@ -16,9 +17,6 @@ import com.octal.actorpayuser.databinding.FragmentDisputeBinding
 import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.DisputeListResponse
-import com.octal.actorpayuser.ui.dispute.disputedetails.DisputeDetailsViewModel
-import com.octal.actorpayuser.ui.myOrderList.OrderFilterDialog
-import com.octal.actorpayuser.ui.myOrderList.OrderListAdapter
 import com.octal.actorpayuser.utils.EndlessRecyclerViewScrollListener
 import com.octal.actorpayuser.utils.OnFilterClick
 import kotlinx.coroutines.flow.collect
@@ -51,11 +49,28 @@ class DisputeFragment : BaseFragment(), OnFilterClick {
 
 
     private fun setAdapter() {
-     val adapter=  DisputeAdapter(disputeViewModel.disputeListData.items,disputeViewModel.methodRepo){
-         position ->
-         val bundle = bundleOf("disputeId" to disputeViewModel.disputeListData.items[position].disputeId, "disputeCode" to disputeViewModel.disputeListData.items[position].disputeCode)
-         Navigation.findNavController(requireView()).navigate(R.id.disputeDetailsFragment,bundle)
-     }
+        val adapter = DisputeAdapter(
+            disputeViewModel.disputeListData.items,
+            disputeViewModel.methodRepo
+        ) { action, position ->
+            when (action) {
+                Clicks.Root -> {
+                    val bundle = bundleOf(
+                        "disputeId" to disputeViewModel.disputeListData.items[position].disputeId,
+                        "disputeCode" to disputeViewModel.disputeListData.items[position].disputeCode
+                    )
+                    Navigation.findNavController(requireView())
+                        .navigate(R.id.disputeDetailsFragment, bundle)
+                }
+                Clicks.Success -> {
+
+                    val bundle =
+                        bundleOf("orderNo" to disputeViewModel.disputeListData.items[position].orderNo)
+                    Navigation.findNavController(requireView())
+                        .navigate(R.id.orderDetailsFragment, bundle, null)
+                }
+            }
+        }
         val layoutManager = LinearLayoutManager(requireContext())
 
         binding.rvDispute.layoutManager = layoutManager
@@ -89,7 +104,6 @@ class DisputeFragment : BaseFragment(), OnFilterClick {
             binding.textEmpty.visibility = View.VISIBLE
         }
     }
-
 
 
     fun apiResponse() {

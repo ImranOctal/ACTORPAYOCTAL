@@ -21,7 +21,6 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.Wall
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletListData
 import com.octal.actorpayuser.ui.cart.CartViewModel
 import com.octal.actorpayuser.ui.dashboard.adapters.AdapterWalletStatement
-import com.octal.actorpayuser.utils.GlobalData
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 

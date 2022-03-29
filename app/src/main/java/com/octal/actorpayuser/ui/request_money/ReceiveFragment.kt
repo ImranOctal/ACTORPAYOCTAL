@@ -106,7 +106,7 @@ class ReceiveFragment : BaseFragment() {
                                 CommonDialogsUtils.showCommonDialog(requireActivity(),requestMoneyViewModel.methodRepo,
                                 "Money Requested","Your money request has been sent",false,false,true,false,object :CommonDialogsUtils.DialogClick{
                                         override fun onClick() {
-                                            Navigation.findNavController(requireView()).popBackStack(R.id.homeBottomFragment,false)
+                                            Navigation.findNavController(requireView()).popBackStack()
                                         }
                                         override fun onCancel() {
 

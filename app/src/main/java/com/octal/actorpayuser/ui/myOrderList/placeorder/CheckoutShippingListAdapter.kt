@@ -44,6 +44,17 @@ class CheckoutShippingListAdapter(
         fun bindView(item: ShippingAddressItem,position: Int) {
             binding.shippingItem = item
 
+            var addressLine2=""
+            if(item.addressLine2==null || item.addressLine2.equals(""))
+            {
+                addressLine2=item.city+", "+item.state+", "+item.country
+            }
+            else{
+                addressLine2=item.addressLine2!!+", "+item.city+", "+item.state+", "+item.country
+            }
+
+            binding.addressText2.text=addressLine2
+
             if(item.isSelect!=null && item.isSelect!!){
                 binding.addressCheck.visibility= View.VISIBLE
                 binding.addressEdit.visibility= View.VISIBLE

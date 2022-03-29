@@ -29,7 +29,7 @@ data class AddMoneyParams(
 data class TransferMoneyParams(
     var userIdentity:String,
     var amount:String,
-    var transactionRemark:String,
+    var transactionReason:String,
     var beneficiaryUserType:String
 )
 
@@ -78,6 +78,7 @@ data class WalletData(
     var transferAmount: Double,
     var purchaseType: String,
     var transactionRemark: String,
+    var transactionReason: String?,
     var toUserName: String,
     var toUser: String,
     var toEmail: String,

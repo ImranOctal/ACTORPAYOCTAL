@@ -11,13 +11,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.misc.FAQFragment">
 
-    <ExpandableListView
-        android:id="@+id/expendableList"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_faq"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@android:color/background_light"
-        android:dividerHeight="0.5dp"
-        android:scrollbars="none"
+        android:paddingBottom="@dimen/_5sdp"
+        android:clipToPadding="false"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

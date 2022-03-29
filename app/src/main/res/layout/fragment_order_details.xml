@@ -312,6 +312,7 @@
                         android:fontFamily="@font/poppins_regular"
                         android:gravity="center_vertical"
                         android:text=''
+                        android:visibility="gone"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_11ssp"
                         tools:text="dsfasdf"

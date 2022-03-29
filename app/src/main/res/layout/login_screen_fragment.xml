@@ -128,7 +128,7 @@
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="start"
-                android:text="@string/forgot_password"
+                android:text="@string/forgot_password_1"
                 android:textColor="#2659C5"
                 android:textSize="@dimen/_10sdp" />
 

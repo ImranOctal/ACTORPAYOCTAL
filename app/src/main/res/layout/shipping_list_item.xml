@@ -110,7 +110,6 @@
                     android:paddingEnd="10dp"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    android:text="@{shippingItem.addressLine2}"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/_10ssp"
                     tools:ignore="RtlSymmetry"

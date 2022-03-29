@@ -226,14 +226,17 @@ class PlaceOrderFragment : BaseFragment() {
                                     placeOrderViewModel.methodRepo,
                                     event.response.data
                                 ) {
+                                    action,orderno->
                                     cartViewModel.cartItems.value.clear()
-                                    if (it == "order") {
+                                    if (action == "order") {
                                         val navOptions = NavOptions.Builder()
                                             .setPopUpTo(R.id.homeBottomFragment, false).build()
+                                        val bundle =
+                                            bundleOf("orderNo" to orderno)
                                         Navigation.findNavController(requireView())
-                                            .navigate(R.id.myOrderFragment, null, navOptions)
+                                            .navigate(R.id.orderDetailsFragment, bundle, navOptions)
                                     }
-                                    if (it == "shopping") {
+                                    if (action == "shopping") {
                                         val navOptions = NavOptions.Builder()
                                             .setPopUpTo(R.id.homeBottomFragment, false).build()
                                         Navigation.findNavController(requireView())

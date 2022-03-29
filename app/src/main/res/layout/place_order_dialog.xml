@@ -494,6 +494,7 @@
                         android:text=''
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_11ssp"
+                        android:visibility="gone"
                         tools:text="there_are_many_variations"
                         />
 
@@ -518,7 +519,7 @@
                     android:backgroundTint="@color/primary"
                     android:fontFamily="@font/poppins_semibold"
                     android:gravity="center"
-                    android:text="Check orders"
+                    android:text="Check order"
                     android:textSize="@dimen/_10ssp"
                     />
 

@@ -72,11 +72,6 @@ class ShippingAddressFragment : BaseFragment() {
         ) { position, action ->
             if (action == "Edit") {
 
-                /*startActivity(
-                    Intent(
-                        requireContext(), ShippingAddressDetailsActivity::class.java
-                    )
-                )*/
                 val intent = Intent(requireContext(), ShippingAddressDetailsActivity::class.java)
                 intent.putExtra("shippingItem",
                     shippingAddressViewModel.shippingAddressList[position]

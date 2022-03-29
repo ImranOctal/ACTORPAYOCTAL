@@ -1,9 +1,6 @@
 package com.octal.actorpayuser.ui.dashboard.bottomnavfragments.wallet
 
-import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +12,6 @@ import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.databinding.FragmentWalletDetailsBinding
 import com.octal.actorpayuser.repositories.retrofitrepository.models.wallet.WalletData
-import com.octal.actorpayuser.ui.auth.viewmodel.LoginViewModel
-import com.octal.actorpayuser.ui.content.ContentActivity
-import com.octal.actorpayuser.ui.content.ContentViewModel
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.viewmodels.WalletBottomViewModel
 import org.koin.android.ext.android.inject
 
@@ -54,14 +48,17 @@ class WalletDetailsFragment : BaseFragment() {
 
             }
 
+            if(walletItem.transactionReason!= null){
+                binding.rowWalletReasonText.visibility=View.VISIBLE
+                binding.rowWalletReason.visibility=View.VISIBLE
+                binding.rowWalletReason.text=walletItem.transactionReason
+            }
+
             if(walletItem.purchaseType == "TRANSFER"){
                 binding.rowWalletName.visibility=View.VISIBLE
                 binding.rowWalletNameText.visibility=View.VISIBLE
-//                binding.rowWalletText.text="Money Transferred Successfully"
             }
-            else if(walletItem.purchaseType == "SHOPPING"){
-//                binding.rowWalletText.text="Online Shopping"
-            }
+
 
             binding.rowWalletName.setOnClickListener {
 

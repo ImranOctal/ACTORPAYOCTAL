@@ -118,6 +118,7 @@
         app:layout_constraintTop_toBottomOf="@+id/change_password"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginHorizontal="@dimen/_2sdp"
+        android:visibility="gone"
         app:cardCornerRadius="6dp">
 
         <RelativeLayout

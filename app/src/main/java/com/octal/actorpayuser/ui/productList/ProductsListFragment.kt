@@ -28,6 +28,7 @@ import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.
 import com.octal.actorpayuser.repositories.retrofitrepository.models.categories.CategorieResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductData
 import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductItem
+import com.octal.actorpayuser.repositories.retrofitrepository.models.products.ProductParams
 import com.octal.actorpayuser.utils.OnFilterClick
 import com.squareup.moshi.Json
 import kotlinx.coroutines.flow.collectLatest
@@ -229,6 +230,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
     }
 
 
+
     private fun setAdapter() {
 
 
@@ -266,7 +268,7 @@ class ProductsListFragment : BaseFragment(),OnFilterClick {
                 }
             }
         }
-        productPagingAdapter.refresh()
+//        productPagingAdapter.refresh()
 
 
     }

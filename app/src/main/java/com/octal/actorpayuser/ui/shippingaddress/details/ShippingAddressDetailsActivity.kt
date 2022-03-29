@@ -157,10 +157,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
             val cameraPosition = CameraPosition.Builder()
                 .target(
-                    LatLng(
-                        userLat,
-                        userLong
-                    )
+                    LatLng(userLat, userLong)
                 ) // Sets the center of the map to Mountain View
                 .zoom(15f) // Sets the zoom // Sets the orientation of the camera to east // Sets the tilt of the camera to 30 degrees
                 .bearing(30f)

@@ -151,6 +151,33 @@
                 android:visibility="visible"
                 />
 
+            <TextView
+                android:id="@+id/row_wallet_reason_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/row_wallet_amount_debit_text"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Reason:  "
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_medium"
+                android:visibility="gone"
+                />
+            <TextView
+                android:id="@+id/row_wallet_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/row_wallet_amount_debit_text"
+                app:layout_constraintStart_toEndOf="@+id/row_wallet_reason_text"
+                android:layout_marginTop="@dimen/_5sdp"
+                tools:text="2000 12 01"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/poppins_regular"
+                android:visibility="gone"
+                />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

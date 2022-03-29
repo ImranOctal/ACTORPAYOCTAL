@@ -150,6 +150,7 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
                         AppConstance.KEY_NAME to name,
                         AppConstance.KEY_TYPE to type
                     )
+                binding.emailNumberField.setText("")
                 Navigation.findNavController(requireView())
                     .navigate(destintation, bundle)
             }
@@ -164,6 +165,7 @@ class RequestMoneyFragment : BaseFragment(), OnFilterClick {
                         AppConstance.KEY_NAME to name,
                         AppConstance.KEY_TYPE to type
                     )
+                binding.emailNumberField.setText("")
                 Navigation.findNavController(requireView())
                     .navigate(destintation, bundle)
             }

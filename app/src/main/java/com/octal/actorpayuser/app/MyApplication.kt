@@ -3,11 +3,11 @@ package com.octal.actorpayuser.app
 import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.octal.actorpayuser.BuildConfig
+import com.octal.actorpayuser.base.AppSignatureHelper
 import com.octal.actorpayuser.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
-
 
 
 class MyApplication : MultiDexApplication() {
@@ -22,6 +22,10 @@ class MyApplication : MultiDexApplication() {
      */
     override fun onCreate() {
         super.onCreate()
+
+        // TODO: Generate 11 digit hash for sms [debug only]
+//        val appSignatureHelper = AppSignatureHelper(this)
+//        appSignatureHelper.appSignatures
 
         context = this
         startKoin {

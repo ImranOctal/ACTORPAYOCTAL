@@ -111,7 +111,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     "Request Money",
                     "Mobile & DTH",
                     "Utility Bill",
-                    "Online Payment",
+//                    "Online Payment",
                     "Product List"
                 )
             adapter = FeaturesAdapter(arraylist) { position ->
@@ -425,12 +425,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
 //                    navController.navigate(R.id.walletBottomFragment)
                 }
             }
-            "Online Payment" -> {
-                if (fragment !is WalletBottomFragment) {
-//                    title = "Online Payment"
-//                    navController.navigate(R.id.walletBottomFragment)
-                }
-            }
             "Product List" -> {
                 if (fragment !is ProductsListFragment) {
                     navController.navigate(R.id.productListFragment)
@@ -494,7 +488,7 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
                     binding.layoutMainID.constraintLayout.setBackgroundResource(R.drawable.layout_bg)
                     binding.layoutMainID.scan.isPressed=true
                     mMenuAdapter?.setViewSelected(-1,true)
-                    updateUI("ActorPay",true,true,false,false,true,true,true)
+                    updateUI("ActorPay",true,true,false,true,true,true,true)
                 }
                 R.id.historyBottomFragment -> {
                     binding.layoutMainID.bottomNavigationView.menu.getItem(1).isChecked = true

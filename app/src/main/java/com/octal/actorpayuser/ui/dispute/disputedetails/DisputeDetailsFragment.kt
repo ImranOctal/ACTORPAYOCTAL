@@ -1,17 +1,21 @@
 package com.octal.actorpayuser.ui.dispute.disputedetails
 
+import android.graphics.Paint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseFragment
 import com.octal.actorpayuser.base.ResponseSealed
 import com.octal.actorpayuser.databinding.FragmentDisputeDetailsBinding
+import com.octal.actorpayuser.repositories.AppConstance.Clicks
 import com.octal.actorpayuser.repositories.retrofitrepository.models.SuccessResponse
 import com.octal.actorpayuser.repositories.retrofitrepository.models.dispute.*
 import com.octal.actorpayuser.ui.dispute.DisputeViewModel
@@ -25,6 +29,7 @@ class DisputeDetailsFragment : BaseFragment() {
 
     private var disputeID: String =""
     private var disputeCode: String =""
+    private var disputeData: DisputeData?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +40,6 @@ class DisputeDetailsFragment : BaseFragment() {
         if(disputeID != ""){
             disputeDetailsViewModel.disputeListParams.disputeCode=disputeCode
             disputeDetailsViewModel.getAllDisputes()
-//            disputeDetailsViewModel.getDispute(disputeID)
         }
         else{
             showCustomToast("Something went wrong")
@@ -50,15 +54,16 @@ class DisputeDetailsFragment : BaseFragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_dispute_details, container, false)
 
-//        binding.disputedata=DisputeDetailsViewModel.disputeData
-//        binding.createdDate.text=disputeDetailsViewModel.methodRepo.getFormattedOrderDate(DisputeDetailsViewModel.disputeData!!.createdAt)
+        if(disputeData!=null)
+            updateUI(disputeData!!)
+
         apiResponse()
-//        setAdapter()
 
 
         binding.sendMessageIcon.setOnClickListener {
                 sendMessage()
         }
+
 
         binding.messageRefresh.setDistanceToTriggerSync(50)
         binding.messageRefresh.setOnRefreshListener {
@@ -120,10 +125,19 @@ class DisputeDetailsFragment : BaseFragment() {
     }
 
     fun updateUI(disputeData: DisputeData){
+        this.disputeData=disputeData
         binding.disputedata=disputeData
         binding.createdDate.text=disputeDetailsViewModel.methodRepo.getFormattedOrderDate(disputeData.createdAt)
             if(disputeData.disputeMessages!=null)
             setAdapter(disputeData.disputeMessages)
+
+        binding.order.setPaintFlags(binding.order.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+        binding.order.setOnClickListener {
+            val bundle =
+                bundleOf("orderNo" to disputeData.orderNo)
+            Navigation.findNavController(requireView())
+                .navigate(R.id.orderDetailsFragment, bundle, null)
+        }
     }
 
     fun setAdapter(disputeMessages:MutableList<DisputeMessage>){

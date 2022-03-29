@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ExpandableListAdapter
-import android.widget.ExpandableListView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import com.octal.actorpayuser.MainActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.base.BaseActivity
 import com.octal.actorpayuser.base.BaseFragment
@@ -35,11 +33,7 @@ class FAQFragment : BaseFragment() {
     ): View {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_f_a_q, container, false)
 
-        (requireActivity() as MainActivity).title="FAQ"
-
-        lifecycleScope.launchWhenCreated {
         miscViewModel.getFAQ()
-        }
 
         apiResponse()
 
@@ -47,22 +41,13 @@ class FAQFragment : BaseFragment() {
     }
 
     private fun initExpandableList(){
-        val adapter:ExpandableListAdapter = CustomExpandableListAdapter(requireContext(), miscViewModel.faqList)
-        binding.
-            expendableList.setAdapter(adapter)
-            binding.expendableList.setOnGroupExpandListener (object :
-                ExpandableListView.OnGroupExpandListener {
-                var previousGroup = -1
-                var flag = false
-                override fun onGroupExpand(groupPosition: Int) {
-                    if (groupPosition != previousGroup && flag) {
-                        binding.expendableList.collapseGroup(previousGroup)
-                    }
-                    previousGroup = groupPosition
 
-                    flag = true
-                }
-            })
+
+        val adapter=CustomFAQAdapter(miscViewModel.faqList)
+        binding.rvFaq.layoutManager=LinearLayoutManager(requireContext())
+        binding.rvFaq.adapter=adapter
+
+
     }
 
 
