@@ -6,6 +6,7 @@ import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.actorpay.merchant.utils.SingleClickListener
 import com.octal.actorpayuser.MainActivity
@@ -120,7 +121,7 @@ class LoginScreenFragment : BaseFragment() {
             showClickable = false,
             callback = object : CommonDialogsUtils.DialogClick {
                 override fun onClick() {
-                    loginViewModel.resendOtp(binding.name.text.toString().trim())
+                    loginViewModel.resendOtp(binding.loginEmail.text.toString().trim())
                 }
 
                 override fun onCancel() {
@@ -140,8 +141,6 @@ class LoginScreenFragment : BaseFragment() {
                 }
             })
 
-
-
             loginForget.setOnClickListener {
                 forgetPassword()
             }
@@ -156,6 +155,38 @@ class LoginScreenFragment : BaseFragment() {
                     showPassword = true
                     passwordShowHide.setImageResource(R.drawable.hide)
                     password.setSelection(password.text.toString().length)
+                }
+            }
+
+            loginEmail.doOnTextChanged { text, start, before, count ->
+                if (text.toString().isEmpty() || loginViewModel.methodRepo.isValidEmail(text.toString().trim())) {
+                    errorOnEmail.visibility = View.GONE
+                } else{
+                    errorOnEmail.visibility = View.VISIBLE
+                }
+            }
+            password.doOnTextChanged { text, start, before, count ->
+
+                val password = text.toString()
+                var temp = ""
+                if (!loginViewModel.methodRepo.isSpecialCharacter(password))
+                    temp = getString(R.string.error_password_special)
+                if (!loginViewModel.methodRepo.isDigit(password))
+                    temp = getString(R.string.error_password_digit)
+                if (!loginViewModel.methodRepo.isSmallLetter(password))
+                    temp = getString(R.string.error_password_small)
+                if (!loginViewModel.methodRepo.isCapitalLetter(password))
+                    temp = getString(R.string.error_password_capital)
+                if (password.length < 8)
+                    temp = getString(R.string.oops_your_password_is_not_valid)
+
+
+                if (temp!="" && password.length != 0) {
+                    errorOnPassword.visibility = View.VISIBLE
+                    errorOnPassword.text = temp
+                } else {
+                    errorOnPassword.visibility = View.GONE
+                    errorOnPassword.text = ""
                 }
             }
 
@@ -174,28 +205,13 @@ class LoginScreenFragment : BaseFragment() {
             isValid=false
         }
 
-        if (binding.name.text.toString().trim().isEmpty() || !loginViewModel.methodRepo.isValidEmail(binding.name.text.toString().trim())) {
-            binding.name.error = getString(R.string.invalid_email)
-            binding.name.requestFocus()
+        if (binding.loginEmail.text.toString().trim().isEmpty() || !loginViewModel.methodRepo.isValidEmail(binding.loginEmail.text.toString().trim())) {
+            binding.loginEmail.error = getString(R.string.invalid_email)
+            binding.loginEmail.requestFocus()
             isValid=false
         }
 
 
-//         if (!binding.cbRememberMe.isChecked) {
-//            binding.errorOnName.visibility = View.GONE
-//            binding.errorOnPassword.visibility = View.GONE
-//            loginViewModel.methodRepo.setBackGround(
-//                requireContext(),
-//                binding.loginEmaillay,
-//                R.drawable.btn_outline_gray
-//            )
-//            loginViewModel.methodRepo.setBackGround(
-//                requireContext(),
-//                binding.loginPasslay,
-//                R.drawable.btn_outline_gray
-//            )
-//            login()
-//        }
         loginViewModel.methodRepo.hideSoftKeypad(requireActivity())
          if(isValid) {
 
@@ -206,7 +222,7 @@ class LoginScreenFragment : BaseFragment() {
     fun login() {
         loginViewModel.methodRepo.hideSoftKeypad(requireActivity())
         loginViewModel.signInNow(
-            binding.name.text.toString().trim(),
+            binding.loginEmail.text.toString().trim(),
             binding.password.text.toString().trim()
         )
     }

@@ -5,8 +5,10 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.text.method.PasswordTransformationMethod
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.databinding.ChangePasswordDialogBinding
@@ -18,7 +20,11 @@ class ChangePasswordDialog {
     private var showPasswordNew = false
     private var showPasswordConfirm = false
 
-    fun show(activity: Activity, methodsRepo: MethodsRepo, onClick:(oldPassword:String,newPassword:String)->Unit){
+    fun show(
+        activity: Activity,
+        methodsRepo: MethodsRepo,
+        onClick: (oldPassword: String, newPassword: String) -> Unit
+    ) {
         val alertDialog = Dialog(activity)
 
         val binding = DataBindingUtil.inflate<ChangePasswordDialogBinding>(
@@ -28,45 +34,108 @@ class ChangePasswordDialog {
             false
         )
 
+        binding.editChangePasswordOld.doOnTextChanged { text, start, before, count ->
+
+            val password = text.toString()
+            var temp = ""
+            if (!methodsRepo.isSpecialCharacter(password))
+                temp = activity.getString(R.string.error_password_special)
+            if (!methodsRepo.isDigit(password))
+                temp = activity.getString(R.string.error_password_digit)
+            if (!methodsRepo.isSmallLetter(password))
+                temp = activity.getString(R.string.error_password_small)
+            if (!methodsRepo.isCapitalLetter(password))
+                temp = activity.getString(R.string.error_password_capital)
+            if (password.length < 8)
+                temp = activity.getString(R.string.oops_your_password_is_not_valid)
+
+
+            if (temp != "" && password.length != 0) {
+                binding.errorOnPassword.visibility = View.VISIBLE
+                binding.errorOnPassword.text = temp
+            } else {
+                binding.errorOnPassword.visibility = View.GONE
+                binding.errorOnPassword.text = ""
+            }
+        }
+        binding.editChangePasswordNew.doOnTextChanged { text, start, before, count ->
+
+            val password = text.toString()
+            var temp = ""
+            if (!methodsRepo.isSpecialCharacter(password))
+                temp = activity.getString(R.string.error_password_special)
+            if (!methodsRepo.isDigit(password))
+                temp = activity.getString(R.string.error_password_digit)
+            if (!methodsRepo.isSmallLetter(password))
+                temp = activity.getString(R.string.error_password_small)
+            if (!methodsRepo.isCapitalLetter(password))
+                temp = activity.getString(R.string.error_password_capital)
+            if (password.length < 8)
+                temp = activity.getString(R.string.oops_your_password_is_not_valid)
+
+
+            if (temp != "" && password.length != 0) {
+                binding.errorOnNewPassword.visibility = View.VISIBLE
+                binding.errorOnNewPassword.text = temp
+            } else {
+                binding.errorOnNewPassword.visibility = View.GONE
+                binding.errorOnNewPassword.text = ""
+            }
+        }
+
         binding.tvOk.setOnClickListener {
-            val oldPassword=binding.editChangePasswordOld.text.toString().trim()
-            val newPassword=binding.editChangePasswordNew.text.toString().trim()
-            val confirmPassword=binding.editChangePasswordConfirm.text.toString().trim()
-            if(oldPassword.isEmpty()){
-                binding.editChangePasswordOld.error = activity.getString(R.string.oops_your_password_is_empty)
-                binding.editChangePasswordOld.requestFocus()
+            val oldPassword = binding.editChangePasswordOld.text.toString().trim()
+            val newPassword = binding.editChangePasswordNew.text.toString().trim()
+            val confirmPassword = binding.editChangePasswordConfirm.text.toString().trim()
+            var isValid = true
+
+            if (confirmPassword != newPassword) {
+                binding.editChangePasswordConfirm.error =
+                    (activity.getString(R.string.oops_your_password_is_not_matched))
+                binding.editChangePasswordConfirm.requestFocus()
+                isValid=false
             }
-            else if(!methodsRepo.isValidPassword(oldPassword)){
-                binding.editChangePasswordOld.error = activity.getString(R.string.oops_your_password_is_not_valid2)
-                binding.editChangePasswordOld.requestFocus()
-            }
-            else if(newPassword.length<8)
-            {
-                binding.editChangePasswordNew.error = activity.getString(R.string.oops_your_password_is_not_valid)
+            if (newPassword.length < 8) {
+                binding.editChangePasswordNew.error =
+                    activity.getString(R.string.oops_your_password_is_not_valid)
                 binding.editChangePasswordNew.requestFocus()
-            }
-            else if(!methodsRepo.isValidPassword(newPassword)){
-                binding.editChangePasswordNew.error = activity.getString(R.string.oops_your_password_is_not_valid2)
+                isValid = false
+            } else if (!methodsRepo.isValidPassword(newPassword)) {
+                binding.editChangePasswordNew.error =
+                    activity.getString(R.string.oops_your_password_is_not_valid2)
                 binding.editChangePasswordNew.requestFocus()
+                isValid = false
             }
-            else if(confirmPassword.length<8)
-            {
-                binding.editChangePasswordConfirm.error = activity.getString(R.string.oops_your_password_is_not_valid)
-                binding.editChangePasswordConfirm.requestFocus()
+
+
+            if (oldPassword.isEmpty()) {
+                binding.editChangePasswordOld.error =
+                    activity.getString(R.string.oops_your_password_is_empty)
+                binding.editChangePasswordOld.requestFocus()
+                isValid = false
+            } else if (!methodsRepo.isValidPassword(oldPassword)) {
+                binding.editChangePasswordOld.error =
+                    activity.getString(R.string.oops_your_password_is_not_valid2)
+                binding.editChangePasswordOld.requestFocus()
+                isValid = false
             }
-            else if(!methodsRepo.isValidPassword(confirmPassword)){
-                binding.editChangePasswordConfirm.error = activity.getString(R.string.oops_your_password_is_not_valid2)
-                binding.editChangePasswordConfirm.requestFocus()
-            }
-            else if(confirmPassword != newPassword)
-            {
-                binding.editChangePasswordConfirm.error = (activity.getString(R.string.oops_your_password_is_not_matched))
-                binding.editChangePasswordConfirm.requestFocus()
-            }
-            else{
+
+           if(isValid) {
                 alertDialog.dismiss()
-                onClick(oldPassword,newPassword)
+                onClick(oldPassword, newPassword)
             }
+
+            /*   else if(confirmPassword.length<8)
+               {
+                   binding.editChangePasswordConfirm.error = activity.getString(R.string.oops_your_password_is_not_valid)
+                   binding.editChangePasswordConfirm.requestFocus()
+               }
+               else if(!methodsRepo.isValidPassword(confirmPassword)){
+                   binding.editChangePasswordConfirm.error = activity.getString(R.string.oops_your_password_is_not_valid2)
+                   binding.editChangePasswordConfirm.requestFocus()
+               }*/
+
+
         }
         binding.tvCancel.setOnClickListener {
             alertDialog.dismiss()
@@ -99,7 +168,8 @@ class ChangePasswordDialog {
         }
         binding.confirmPasswordLayout.setOnClickListener {
             if (showPasswordConfirm) {
-                binding.editChangePasswordConfirm.transformationMethod = PasswordTransformationMethod()
+                binding.editChangePasswordConfirm.transformationMethod =
+                    PasswordTransformationMethod()
                 showPasswordConfirm = false
                 binding.passwordShowHideConfirm.setImageResource(R.drawable.show)
                 binding.editChangePasswordConfirm.setSelection(binding.editChangePasswordConfirm.text.toString().length)

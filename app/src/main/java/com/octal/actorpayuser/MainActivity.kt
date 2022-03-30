@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -19,7 +18,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +32,6 @@ import com.octal.actorpayuser.ui.addmoney.AddMoneyFragment
 import com.octal.actorpayuser.ui.auth.biometric.AuthBottomSheetDialog
 import com.octal.actorpayuser.ui.auth.viewmodel.LoginViewModel
 import com.octal.actorpayuser.ui.cart.CartFragment
-import com.octal.actorpayuser.ui.cart.CartViewModel
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.HistoryBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.ProfileBottomFragment
 import com.octal.actorpayuser.ui.dashboard.bottomnavfragments.home.HomeBottomFragment
@@ -68,7 +65,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
     private var mMenuAdapter: MenuAdapter? = null
     private lateinit var activity: Context
     private val viewModel: ActorPayViewModel by inject()
-    private val cartViewModel: CartViewModel by inject()
     private lateinit var filterClick: OnFilterClick
 
     private lateinit var navController: NavController
@@ -194,62 +190,62 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         mTitles.add(
             DrawerItems(
                 getString(R.string.my_orders),
-                ContextCompat.getDrawable((this), R.drawable.my_orders)!!
+                ContextCompat.getDrawable((this), R.drawable.order_icon)!!
 
             )
         )
         mTitles.add(
             DrawerItems(
                 getString(R.string.wallet_statement),
-                ContextCompat.getDrawable((this), R.drawable.wallet_statement)!!
+                ContextCompat.getDrawable((this), R.drawable.wallet_icon)!!
 
             )
         )
         mTitles.add(
             DrawerItems(
                 getString(R.string.my_loyalty_and_rewards),
-                ContextCompat.getDrawable((this), R.drawable.my_profile)!!
+                ContextCompat.getDrawable((this), R.drawable.reward_icon)!!
 
             )
         )
         mTitles.add(
             DrawerItems(
                 getString(R.string.referral),
-                ContextCompat.getDrawable((this), R.drawable.my_profile)!!
+                ContextCompat.getDrawable((this), R.drawable.refer_icon)!!
 
             )
         )
         mTitles.add(
             DrawerItems(
                 getString(R.string.disputes),
-                ContextCompat.getDrawable((this), R.drawable.wallet_statement)!!
+                ContextCompat.getDrawable((this), R.drawable.auction_icon)!!
             )
         )
 
         mTitles.add(
             DrawerItems(
                 getString(R.string.promo_offers),
-                ContextCompat.getDrawable((this), R.drawable.my_orders)!!
+                ContextCompat.getDrawable((this), R.drawable.promo_icon)!!
 
             )
         )
         mTitles.add(
             DrawerItems(
                 getString(R.string.my_profile),
-                ContextCompat.getDrawable((this), R.drawable.my_profile)!!
+                ContextCompat.getDrawable((this), R.drawable.user_icon)!!
 
             )
         )
         mTitles.add(
             DrawerItems(
                 getString(R.string.settings),
-                ContextCompat.getDrawable((this), R.drawable.settings)!!
+                ContextCompat.getDrawable((this), R.drawable.setting_icon)!!
 
             )
         )
         mTitles.add(
             DrawerItems(
-                getString(R.string.more), ContextCompat.getDrawable((this), R.drawable.more)!!
+                getString(R.string.more), ContextCompat.getDrawable((this), R.drawable.more_icon)!!
 
             )
         )
@@ -438,47 +434,6 @@ class MainActivity : BaseActivity(), DuoMenuView.OnMenuClickListener,
         binding.cartCount.text=count.toString()
     }
 
-    private fun cartResponse() {
-        lifecycleScope.launchWhenCreated {
-
-            cartViewModel.responseLive.collect { event ->
-
-                when (event) {
-                    is ResponseSealed.loading -> {
-                        if(event.isLoading)
-                        showLoadingDialog()
-                    }
-                    is ResponseSealed.Success -> {
-                        hideLoadingDialog()
-                        when(event.response){
-//                            is CartResponse ->{
-//                                cartViewModel.cartData
-//                            }
-//                            is Int->{
-//                                binding.cartCount.text=event.response.toString()
-//                            }
-
-                        }
-                        updateCartCount(cartViewModel.cartData!!.totalQuantity)
-
-                    }
-                    is ResponseSealed.ErrorOnResponse -> {
-                        hideLoadingDialog()
-                        cartViewModel.responseLive.value = ResponseSealed.Empty
-
-                        if (event.message!!.code == 403) {
-                            cartViewModel.viewModelScope.cancel()
-                            forcelogout(viewModel.methodRepo)
-                        }
-                    }
-                    is ResponseSealed.Empty -> {
-                        hideLoadingDialog()
-                    }
-
-                }
-            }
-        }
-    }
 
     private fun setupNavigation() {
         navController.addOnDestinationChangedListener { _, destination, _ ->

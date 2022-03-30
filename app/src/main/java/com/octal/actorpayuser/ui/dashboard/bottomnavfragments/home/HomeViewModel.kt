@@ -26,29 +26,6 @@ class HomeViewModel(val dispatcherProvider: CoroutineContextProvider, val method
 
     val responseLive = MutableStateFlow<ResponseSealed>(ResponseSealed.Empty)
 
-    fun getWalletBalance() {
-        viewModelScope.launch(dispatcherProvider.IO) {
-            responseLive.value = ResponseSealed.loading(true)
-            methodRepo.dataStore.getAccessToken().collect { token ->
-                methodRepo.dataStore.getUserId().collect { id ->
-                    when (val response = apiRepo.getWalletBalance(token, id)) {
-                        is RetrofitResource.Error -> {
-                            responseLive.value =
-                                ResponseSealed.ErrorOnResponse(response.message)
-//                            this.cancel()
-                        }
-                        is RetrofitResource.Success -> {
-                            responseLive.value =
-                                ResponseSealed.Success(response.data!!)
-//                            this.cancel()
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-
     fun getWalletHistory() {
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(false)
@@ -60,7 +37,7 @@ class HomeViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                     is RetrofitResource.Error ->{
                         responseLive.value =
                             ResponseSealed.ErrorOnResponse(response.message)
-//                        this.cancel()
+                        this.cancel()
                     }
                     is RetrofitResource.Success -> {
                         responseLive.value =
@@ -81,7 +58,7 @@ class HomeViewModel(val dispatcherProvider: CoroutineContextProvider, val method
                     is RetrofitResource.Error ->{
                         responseLive.value =
                             ResponseSealed.ErrorOnResponse(response.message)
-//                        this.cancel()
+                        this.cancel()
                     }
                     is RetrofitResource.Success -> {
                         responseLive.value =

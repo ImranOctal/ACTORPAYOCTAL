@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -171,7 +172,17 @@ class TransferMoneyFragment : BaseFragment() {
                 binding.layoutBank.visibility = View.VISIBLE
             }
         }
+
+        binding.emailNumberField.doOnTextChanged { text, start, before, count ->
+            if(text.toString() == "" || transferMoneyViewModel.methodRepo.isValidEmail(text.toString()) || transferMoneyViewModel.methodRepo.isValidPhoneNumber(text.toString())){
+                binding.errorOnEmail.visibility=View.GONE
+            }
+            else{
+                binding.errorOnEmail.visibility=View.VISIBLE
+            }
+        }
     }
+
 
     fun validate(checkAPI: Boolean, name: String,type:String,destination:Int=0) {
         transferMoneyViewModel.methodRepo.hideSoftKeypad(requireActivity())

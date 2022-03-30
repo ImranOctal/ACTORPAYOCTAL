@@ -26,16 +26,21 @@ class WalletBottomFragment : BaseFragment() , OnFilterClick {
     private lateinit var binding: FragmentWalletBottomBinding
     private val walletBottomViewModel: WalletBottomViewModel by inject()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        walletBottomViewModel.getWalletBalance()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentWalletBottomBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        walletBottomViewModel.walletListData.pageNumber=0
-        walletBottomViewModel.walletListData.items.clear()
-        binding.rvItemsWalletID.adapter?.notifyDataSetChanged()
-        walletBottomViewModel.getWalletBalance()
+//        walletBottomViewModel.walletListData.pageNumber=0
+//        walletBottomViewModel.walletListData.items.clear()
+//        binding.rvItemsWalletID.adapter?.notifyDataSetChanged()
+
         apiResponse()
 
         onFilterClick(this)

@@ -5,9 +5,11 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -36,7 +38,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityShippingAddressDetailsBinding
     private val shippingAddressViewModel: ShippingAddressDetailsViewModel by inject()
-    private var isSave = true
+    private var isAdd = true
     private var isComingFirst = true
     private var mMap: GoogleMap? = null
     private lateinit var mLocationUtils: LocationUtils
@@ -59,6 +61,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 
         checkLocationPermission()
         apiResponse()
+        inlineValidation()
 
         val codeList = mutableListOf<String>()
         val countryList = mutableListOf<String>()
@@ -92,7 +95,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             }.show()
         }
         if (shippingAddressItem != null) {
-            isSave = false
+            isAdd = false
             binding.save.text = getString(R.string.update)
 //            binding.name.setText(shippingAddressItem!!.name)
             binding.addressTitle.setText(shippingAddressItem!!.title)
@@ -142,7 +145,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
         {
 
             mLocationUtils.stopLocation()
-            if (isSave) {
+            if (isAdd) {
                 userLat = it.latitude
                 userLong = it.longitude
             } else {
@@ -164,11 +167,59 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                 .tilt(45f)
                 .build() // Creates a CameraPosition from the builder
 
-            mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),object : GoogleMap.CancelableCallback {
+                override fun onCancel() {
+
+                }
+
+                override fun onFinish() {
+                    mMap!!.setOnCameraIdleListener {
+
+                        Log.d("MethodCall", ": setOnCameraIdleListener")
+                        val tempLatLng = mMap!!.cameraPosition.target
+
+                        if (!isComingFirst) {
+                            userLat = tempLatLng.latitude
+                            userLong = tempLatLng.longitude
+                            getAddress(userLat, userLong)
+                            Log.d("MethodCall", ": coming first not")
+                        } else if (isAdd) {
+                            userLat = tempLatLng.latitude
+                            userLong = tempLatLng.longitude
+                            getAddress(userLat, userLong)
+                            Log.d("MethodCall", ": isAdd")
+                        } else {
+                            isComingFirst = false
+                            Log.d("MethodCall", ": coming first ")
+                        }
+                        mMap!!.clear()
+                        mMap!!.addMarker(MarkerOptions().position(LatLng(userLat, userLong)))
+
+                        /* mMap!!.projection.visibleRegion.latLngBounds.center.let { latLng ->
+                             if (!isComingFirst) {
+                                 userLat = latLng.latitude
+                                 userLong = latLng.longitude
+                                 getAddress(userLat, userLong)
+                             } else if (isSave) {
+                                 userLat = latLng.latitude
+                                 userLong = latLng.longitude
+                                 getAddress(userLat, userLong)
+                             } else {
+                                 isComingFirst = false
+                             }
+                             mMap!!.clear()
+                             mMap!!.addMarker(MarkerOptions().position(LatLng(userLat,userLong)))
+                             //AppLogger.w("Latitude is : $latitude Longitude is$longitude")
+                         }*/
+                    }
+                }
+            })
             mMap!!.clear()
             mMap!!.addMarker(MarkerOptions().position(LatLng(userLat, userLong)))
 
 
+
+            if(isAdd)
             getAddress(userLat, userLong)
         }
         mLocationUtils.initConnection()
@@ -180,6 +231,39 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             onBackPressed()
         }
 
+    }
+
+    fun inlineValidation(){
+        binding.apply {
+            addressSecondaryContact.doOnTextChanged { text, start, before, count ->
+            val value=text.toString()
+                if(value.isEmpty() || value.length > 4)
+                    errorOnScontact.visibility= View.GONE
+                else
+                    errorOnScontact.visibility=View.VISIBLE
+            }
+            addressPrimaryContact.doOnTextChanged { text, start, before, count ->
+            val value=text.toString()
+                if(value.isEmpty() || value.length > 4)
+                    errorOnPcontact.visibility= View.GONE
+                else
+                    errorOnPcontact.visibility=View.VISIBLE
+            }
+            addressZipcode.doOnTextChanged { text, start, before, count ->
+            val value=text.toString()
+                if(value.isEmpty() || value.length > 5)
+                    errorOnZip.visibility= View.GONE
+                else
+                    errorOnZip.visibility=View.VISIBLE
+            }
+            addressTitle.doOnTextChanged { text, start, before, count ->
+            val value=text.toString()
+                if(value.isEmpty() || value.length > 2)
+                    errorOnTitle.visibility= View.GONE
+                else
+                    errorOnTitle.visibility=View.VISIBLE
+            }
+        }
     }
 
     fun validate() {
@@ -198,43 +282,43 @@ class ShippingAddressDetailsActivity : BaseActivity() {
         var isValid = true
 
         if (sContact.length < 5) {
-            binding.addressSecondaryContact.error = "Please Enter Valid Contact"
+            binding.addressSecondaryContact.error = getString(R.string.error_phone)
             isValid = false
             binding.addressSecondaryContact.requestFocus()
         }
 
         if (pContact.length < 5) {
-            binding.addressPrimaryContact.error = "Please Enter Valid Contact"
+            binding.addressPrimaryContact.error = getString(R.string.error_phone)
             isValid = false
             binding.addressPrimaryContact.requestFocus()
         }
 
         if (state == "") {
-            binding.addressState.error = "Please Enter State"
+            binding.addressState.error = getString(R.string.error_state)
             isValid = false
             binding.addressState.requestFocus()
         }
 
         if (city == "") {
-            binding.addressCity.error = "Please Enter City"
+            binding.addressCity.error = getString(R.string.error_city)
             isValid = false
             binding.addressCity.requestFocus()
         }
 
         if (area.length < 3) {
-            binding.addressArea.error = "Please Enter Valid Address Area"
+            binding.addressArea.error = getString(R.string.error_address_area)
             isValid = false
             binding.addressArea.requestFocus()
         }
 
 
         if (zipcode.length < 6) {
-            binding.addressZipcode.error = "Please Enter Valid Zipcode"
+            binding.addressZipcode.error = getString(R.string.error_zip)
             isValid = false
             binding.addressZipcode.requestFocus()
         }
         if (addLine1 == "") {
-            binding.addressLine1.error = "Please Enter Address Line 1"
+            binding.addressLine1.error = getString(R.string.error_address_line_1)
             isValid = false
             binding.addressLine1.requestFocus()
         }
@@ -244,7 +328,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
              binding.name.requestFocus()
          }*/
         if (title.length < 3) {
-            binding.addressTitle.error = "Please Enter Valid Address Type"
+            binding.addressTitle.error = getString(R.string.error_address_type)
             isValid = false
             binding.addressTitle.requestFocus()
 
@@ -253,7 +337,7 @@ class ShippingAddressDetailsActivity : BaseActivity() {
 //            Toast.makeText(requireContext(),"done",Toast.LENGTH_SHORT).show()
             lifecycleScope.launchWhenCreated {
                 shippingAddressViewModel.methodRepo.dataStore.getUserId().collect { userID ->
-                    if (isSave) {
+                    if (isAdd) {
                         shippingAddressViewModel.addAddress(
                             ShippingAddressItem(
                                 addLine1,
@@ -369,46 +453,11 @@ class ShippingAddressDetailsActivity : BaseActivity() {
             it.uiSettings.isZoomControlsEnabled = true
 
 
-            mMap!!.setOnCameraIdleListener {
 
-                val tempLatLng = mMap!!.cameraPosition.target
-
-                if (!isComingFirst) {
-                    userLat = tempLatLng.latitude
-                    userLong = tempLatLng.longitude
-                    getAddress(userLat, userLong)
-                } else if (isSave) {
-                    userLat = tempLatLng.latitude
-                    userLong = tempLatLng.longitude
-                    getAddress(userLat, userLong)
-                } else {
-                    isComingFirst = false
-                }
-                mMap!!.clear()
-                mMap!!.addMarker(MarkerOptions().position(LatLng(userLat, userLong)))
-
-                /* mMap!!.projection.visibleRegion.latLngBounds.center.let { latLng ->
-                     if (!isComingFirst) {
-                         userLat = latLng.latitude
-                         userLong = latLng.longitude
-                         getAddress(userLat, userLong)
-                     } else if (isSave) {
-                         userLat = latLng.latitude
-                         userLong = latLng.longitude
-                         getAddress(userLat, userLong)
-                     } else {
-                         isComingFirst = false
-                     }
-                     mMap!!.clear()
-                     mMap!!.addMarker(MarkerOptions().position(LatLng(userLat,userLong)))
-                     //AppLogger.w("Latitude is : $latitude Longitude is$longitude")
-
-                 }*/
-            }
 
         }
 
-        if (!isSave) {
+       /* if (!isAdd) {
 
             try {
                 userLat = shippingAddressItem!!.latitude.toDouble()
@@ -427,11 +476,12 @@ class ShippingAddressDetailsActivity : BaseActivity() {
                 ) // Sets the center of the map to Mountain View
                 .zoom(17f) // Sets the zoom // Sets the orientation of the camera to east // Sets the tilt of the camera to 30 degrees
                 .bearing(30f)
-                .tilt(45f)
                 .build() // Creates a CameraPosition from the builder
+
+
             mMap!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
-        }
+        }*/
 
     }
 

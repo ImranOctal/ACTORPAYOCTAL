@@ -4,8 +4,10 @@ import android.app.Activity
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import com.octal.actorpayuser.R
 import com.octal.actorpayuser.databinding.ForgetPasswordDialogBinding
@@ -23,6 +25,14 @@ class ForgetPasswordDialog {
             null,
             false
         )
+
+        binding.tvMessage.doOnTextChanged { text, start, before, count ->
+            if (text.toString().isEmpty() || methodsRepo.isValidEmail(text.toString().trim())) {
+                binding.errorOnEmail.visibility = View.GONE
+            } else{
+                binding.errorOnEmail.visibility = View.VISIBLE
+            }
+        }
 
         binding.tvOk.setOnClickListener {
             val email=binding.tvMessage.text.toString().trim()

@@ -94,11 +94,6 @@ class HomeBottomFragment : BaseFragment() {
                             is WalletHistoryResponse -> {
                                 updateUI(event.response.data)
                             }
-                            is WalletBalance -> {
-                                (requireActivity() as MainActivity).updateBalnce(event.response.data.amount)
-                                homeViewModel.walletListData.pageNumber=0
-                                homeViewModel.getWalletHistory()
-                            }
                             is GlobalResponse -> {
                                 val wallet=event.response.data.wallet_balance
                                 cartViewModel.cartData=event.response.data.cartDTO
@@ -113,10 +108,10 @@ class HomeBottomFragment : BaseFragment() {
                     }
                     is ResponseSealed.ErrorOnResponse -> {
                         hideLoading()
+                        homeViewModel.responseLive.value = ResponseSealed.Empty
                         if (event.message!!.code == 403) {
                             forcelogout(homeViewModel.methodRepo)
                         }
-                        homeViewModel.responseLive.value = ResponseSealed.Empty
 
                     }
                     is ResponseSealed.Empty -> {

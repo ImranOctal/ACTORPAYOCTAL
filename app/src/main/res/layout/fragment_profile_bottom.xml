@@ -27,7 +27,7 @@
                 android:layout_height="@dimen/_105sdp"
                 android:layout_marginTop="24dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/demo"
+                android:src="@drawable/profile_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

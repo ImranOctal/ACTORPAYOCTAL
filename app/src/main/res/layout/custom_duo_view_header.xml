@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/_30sdp"
         android:scaleType="fitXY"
         app:riv_oval="true"
-        android:src="@drawable/demo"
+        android:src="@drawable/profile_image"
         app:riv_border_color="@color/gray_dark"
         app:riv_border_width="@dimen/_1sdp"
         app:riv_corner_radius="20dp"

@@ -28,7 +28,7 @@ class WalletBottomViewModel(val dispatcherProvider: CoroutineContextProvider, va
 
     var walletParams=WallletMoneyParams()
 
-    fun getWalletHistory() {
+    fun  getWalletHistory() {
         viewModelScope.launch(dispatcherProvider.IO) {
             responseLive.value = ResponseSealed.loading(true)
             methodRepo.dataStore.getAccessToken().collect { token ->

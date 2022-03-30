@@ -20,6 +20,7 @@
     <string name="wallet_to_wallet">Wallet To Wallet</string>
     <string name="wallet_to_bank">Wallet To Bank</string>
     <string name="enter_mobile_no_or_email">Enter mobile no. or email</string>
+    <string name="error_mobile_no_or_email">Invalid mobile no. or email</string>
     <string name="mobile_not_start_with_0">Mobile no. should not start with 0</string>
     <string name="misc">Misc.</string>
     <string name="there_are_many_variations">There are many variations</string>
@@ -83,17 +84,21 @@
     <string name="error_on_fetching_loginDetails">Error on Login Detail Please try again !!</string>
     <string name="please_try_after_sometime">Something went Wrong</string>
 
-    <string name="email_empty">Oops! your Email is empty</string>
-    <string name="invalid_email">Oops! your Email is invalid</string>
-    <string name="invalid_otp">Oops! Your OTP is invalid</string>
-    <string name="oops_your_password_is_empty">Oops! your password is empty</string>
-    <string name="oops_your_email_is_not_correct_or_empty">Oops! your email is not correct or empty</string>
+    <string name="email_empty">your Email is empty</string>
+    <string name="invalid_email">your Email is invalid</string>
+    <string name="invalid_otp">your OTP is invalid</string>
+    <string name="oops_your_password_is_empty">your password is empty</string>
+    <string name="oops_your_email_is_not_correct_or_empty">your email is not correct or empty</string>
     <string name="oops_your_password_is_not_valid">Password should contain min of 8 characters</string>
+    <string name="error_password_special">Password should contain one symbol</string>
+    <string name="error_password_capital">Password should contain one uppercase</string>
+    <string name="error_password_small">Password should contain one small</string>
+    <string name="error_password_digit">Password should contain one digit</string>
     <string name="oops_your_password_is_not_valid2">Password should contains one digit,one lowercase,one uppercase and one symbol</string>
     <string name="oops_your_password_is_not_matched">Password and confirm password not match</string>
-    <string name="error_phone">Oops! your phone is not correct or empty</string>
-    <string name="error_name">Oops! your name\'s length is less than 3</string>
-    <string name="error_l_name">Oops! your last name\'s length is less than 3</string>
+    <string name="error_phone">your phone is not correct</string>
+    <string name="error_name">your name\'s length is less than 3</string>
+    <string name="error_l_name">your last name\'s length is less than 3</string>
     <string name="return_order">Return Order</string>
     <string name="cancel_order">Cancel Order</string>
     <string name="cancel">Cancel</string>
@@ -144,7 +149,8 @@
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>
-        <item>Other</item>
+        <item>Transgender</item>
+        <item>I Prefer not to say</item>
     </string-array>
     <string-array name="status_array">
         <item>Select Status</item>
@@ -211,5 +217,11 @@
     <string name="price_">Price: </string>
     <string name="password_match">Confirm password should match password</string>
     <string name="no_request_found">No request found</string>
+    <string name="error_state">Please enter state</string>
+    <string name="error_city">Please enter city</string>
+    <string name="error_address_area">Please enter valid address area</string>
+    <string name="error_zip">Please enter valid zipcode</string>
+    <string name="error_address_line_1">Please enter address line 1</string>
+    <string name="error_address_type">Please enter valid address type</string>
 
 </resources>

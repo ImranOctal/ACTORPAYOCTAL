@@ -85,6 +85,17 @@
             android:textSize="@dimen/_12sdp"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/errorOnTitle"
+            style="@style/errotextViewStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_title"
+            android:layout_marginHorizontal="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/error_address_type"
+            android:visibility="gone"
+            />
+
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/name"
             style="@style/RegularTextView"
@@ -101,7 +112,9 @@
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/address_title" />
+            app:layout_constraintTop_toBottomOf="@+id/errorOnTitle" />
+
+
 
         <fragment
             android:id="@+id/map"
@@ -129,6 +142,18 @@
             android:maxLength="200"
             app:layout_constraintTop_toBottomOf="@+id/map" />
 
+        <TextView
+            android:id="@+id/errorOnAddressLine"
+            style="@style/errotextViewStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_line_1"
+            android:layout_marginHorizontal="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/error_address_line_1"
+            android:visibility="gone"
+            />
+
+
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/address_line_2"
@@ -145,7 +170,8 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/address_line_1" />
+            app:layout_constraintTop_toBottomOf="@+id/errorOnAddressLine" />
+
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/address_zipcode"
@@ -164,6 +190,17 @@
             android:textSize="@dimen/_12sdp"
             app:layout_constraintTop_toBottomOf="@+id/address_line_2" />
 
+        <TextView
+            android:id="@+id/errorOnZip"
+            style="@style/errotextViewStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_zipcode"
+            android:layout_marginHorizontal="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/error_zip"
+            android:visibility="gone"
+            />
+
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/address_area"
             style="@style/RegularTextView"
@@ -179,7 +216,18 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/address_zipcode" />
+            app:layout_constraintTop_toBottomOf="@+id/errorOnZip" />
+
+        <TextView
+            android:id="@+id/errorOnArea"
+            style="@style/errotextViewStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_area"
+            android:layout_marginHorizontal="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/error_address_area"
+            android:visibility="gone"
+            />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/address_city"
@@ -196,7 +244,19 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/address_area" />
+            app:layout_constraintTop_toBottomOf="@+id/errorOnArea" />
+
+        <TextView
+            android:id="@+id/errorOnCity"
+            style="@style/errotextViewStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_city"
+            android:layout_marginHorizontal="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/error_city"
+            android:visibility="gone"
+            />
+
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/address_state"
@@ -214,19 +274,19 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/address_city" />
+            app:layout_constraintTop_toBottomOf="@+id/errorOnCity" />
 
-<!--
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/country_picker_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:gravity="center_vertical"
-            android:visibility="visible"
-            android:background="@drawable/btn_outline_gray"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@+id/address_state"/>-->
+
+        <TextView
+            android:id="@+id/errorOnState"
+            style="@style/errotextViewStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_state"
+            android:layout_marginHorizontal="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/error_phone"
+            android:visibility="gone"
+            />
 
         <LinearLayout
             android:id="@+id/country_layout"
@@ -234,7 +294,7 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/address_state"
+            app:layout_constraintTop_toBottomOf="@+id/errorOnState"
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:background="@drawable/btn_outline_gray"
             android:gravity="center_vertical"
@@ -265,20 +325,6 @@
 
         </LinearLayout>
 
-
-
-       <!-- <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/code_picker_spinner1"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:visibility="visible"
-            android:background="@drawable/btn_outline_gray"
-            android:layout_marginStart="@dimen/_10sdp"
-            app:layout_constraintTop_toTopOf="@+id/address_primary_contact"
-            app:layout_constraintBottom_toBottomOf="@+id/address_primary_contact"
-            app:layout_constraintStart_toStartOf="parent"
-            />-->
 
         <LinearLayout
             android:id="@+id/code_layout1"
@@ -338,19 +384,17 @@
              />
 
 
-<!--
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/code_picker_spinner2"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:visibility="visible"
-            android:background="@drawable/btn_outline_gray"
-            android:layout_marginStart="@dimen/_10sdp"
-            app:layout_constraintTop_toTopOf="@+id/address_secondary_contact"
-            app:layout_constraintBottom_toBottomOf="@+id/address_secondary_contact"
+        <TextView
+            android:id="@+id/errorOnPcontact"
+            style="@style/errotextViewStyle"
             app:layout_constraintStart_toStartOf="parent"
-            />-->
+            app:layout_constraintTop_toBottomOf="@+id/code_layout1"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/error_phone"
+            android:visibility="gone"
+            />
+
 
         <LinearLayout
             android:id="@+id/code_layout2"
@@ -406,13 +450,24 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/_12sdp"
-            app:layout_constraintTop_toBottomOf="@+id/address_primary_contact" />
+            app:layout_constraintTop_toBottomOf="@+id/errorOnPcontact" />
+
+        <TextView
+            android:id="@+id/errorOnScontact"
+            style="@style/errotextViewStyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/code_layout2"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/error_phone"
+            android:visibility="gone"
+            />
 
         <CheckBox
             android:id="@+id/primary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/address_secondary_contact"
+            app:layout_constraintTop_toBottomOf="@+id/errorOnScontact"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
