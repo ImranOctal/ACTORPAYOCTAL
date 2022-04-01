@@ -76,9 +76,6 @@ class RequestFilterDialog(
 
         }
 
-//        if (params.toUserName != null)
-//            binding.requestName.setText(params.toUserName)
-
             binding.fromAmount.setText(params.fromAmount.toString())
             binding.toAmount.setText(params.toAmount.toString())
         binding.startDate.setText(params.startDate.replace(" 00:00",""))

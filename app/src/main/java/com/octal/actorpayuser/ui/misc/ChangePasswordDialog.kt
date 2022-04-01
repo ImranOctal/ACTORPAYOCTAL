@@ -20,6 +20,9 @@ class ChangePasswordDialog {
     private var showPasswordNew = false
     private var showPasswordConfirm = false
 
+    var isOldPasswrodValid=false
+    var isNewPasswrodValid=false
+
     fun show(
         activity: Activity,
         methodsRepo: MethodsRepo,
@@ -38,6 +41,8 @@ class ChangePasswordDialog {
 
             val password = text.toString()
             var temp = ""
+            if (password.length < 8)
+                temp = activity.getString(R.string.oops_your_password_is_not_valid)
             if (!methodsRepo.isSpecialCharacter(password))
                 temp = activity.getString(R.string.error_password_special)
             if (!methodsRepo.isDigit(password))
@@ -46,9 +51,9 @@ class ChangePasswordDialog {
                 temp = activity.getString(R.string.error_password_small)
             if (!methodsRepo.isCapitalLetter(password))
                 temp = activity.getString(R.string.error_password_capital)
-            if (password.length < 8)
-                temp = activity.getString(R.string.oops_your_password_is_not_valid)
 
+
+            isOldPasswrodValid=temp==""
 
             if (temp != "" && password.length != 0) {
                 binding.errorOnPassword.visibility = View.VISIBLE
@@ -62,6 +67,8 @@ class ChangePasswordDialog {
 
             val password = text.toString()
             var temp = ""
+            if (password.length < 8)
+                temp = activity.getString(R.string.oops_your_password_is_not_valid)
             if (!methodsRepo.isSpecialCharacter(password))
                 temp = activity.getString(R.string.error_password_special)
             if (!methodsRepo.isDigit(password))
@@ -70,9 +77,8 @@ class ChangePasswordDialog {
                 temp = activity.getString(R.string.error_password_small)
             if (!methodsRepo.isCapitalLetter(password))
                 temp = activity.getString(R.string.error_password_capital)
-            if (password.length < 8)
-                temp = activity.getString(R.string.oops_your_password_is_not_valid)
 
+            isNewPasswrodValid=temp==""
 
             if (temp != "" && password.length != 0) {
                 binding.errorOnNewPassword.visibility = View.VISIBLE
@@ -95,12 +101,7 @@ class ChangePasswordDialog {
                 binding.editChangePasswordConfirm.requestFocus()
                 isValid=false
             }
-            if (newPassword.length < 8) {
-                binding.editChangePasswordNew.error =
-                    activity.getString(R.string.oops_your_password_is_not_valid)
-                binding.editChangePasswordNew.requestFocus()
-                isValid = false
-            } else if (!methodsRepo.isValidPassword(newPassword)) {
+           if (!isNewPasswrodValid) {
                 binding.editChangePasswordNew.error =
                     activity.getString(R.string.oops_your_password_is_not_valid2)
                 binding.editChangePasswordNew.requestFocus()
@@ -108,12 +109,7 @@ class ChangePasswordDialog {
             }
 
 
-            if (oldPassword.isEmpty()) {
-                binding.editChangePasswordOld.error =
-                    activity.getString(R.string.oops_your_password_is_empty)
-                binding.editChangePasswordOld.requestFocus()
-                isValid = false
-            } else if (!methodsRepo.isValidPassword(oldPassword)) {
+            if (!isOldPasswrodValid) {
                 binding.editChangePasswordOld.error =
                     activity.getString(R.string.oops_your_password_is_not_valid2)
                 binding.editChangePasswordOld.requestFocus()

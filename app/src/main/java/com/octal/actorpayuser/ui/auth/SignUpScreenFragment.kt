@@ -43,7 +43,7 @@ class SignUpScreenFragment : BaseFragment() {
 
     private var showPassword = false
     private var showConfirmPassword = false
-
+    var isPasswrodValid=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +59,7 @@ class SignUpScreenFragment : BaseFragment() {
 
         binding = SignUpScreenFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         init()
-
         return root
     }
 
@@ -121,14 +119,14 @@ class SignUpScreenFragment : BaseFragment() {
                 }
             }
             signupConfirmPasswordShowHide.setOnClickListener {
-                if (showPassword) {
+                if (showConfirmPassword) {
                     confirmPassword.transformationMethod = PasswordTransformationMethod()
-                    showPassword = false
+                    showConfirmPassword = false
                     signupConfirmPasswordShowHide.setImageResource(R.drawable.show)
                     confirmPassword.setSelection(confirmPassword.text.toString().length)
                 } else {
                     confirmPassword.transformationMethod = null
-                    showPassword = true
+                    showConfirmPassword = true
                     signupConfirmPasswordShowHide.setImageResource(R.drawable.hide)
                     confirmPassword.setSelection(confirmPassword.text.toString().length)
                 }
@@ -244,6 +242,12 @@ class SignUpScreenFragment : BaseFragment() {
                 val password = text.toString()
                 var mCount = 0
                 var temp = ""
+
+                if (password.length >= 8) {
+                    mCount++
+                } else
+                    temp = getString(R.string.oops_your_password_is_not_valid)
+
                 if (signupViewModel.methodRepo.isSpecialCharacter(password)) {
                     mCount++
 
@@ -261,10 +265,6 @@ class SignUpScreenFragment : BaseFragment() {
                     mCount++
                 } else
                     temp = getString(R.string.error_password_capital)
-                if (password.length >= 8) {
-                    mCount++
-                } else
-                    temp = getString(R.string.oops_your_password_is_not_valid)
 
 
                 if (temp != "") {
@@ -275,7 +275,7 @@ class SignUpScreenFragment : BaseFragment() {
                     errorOnPassword.text = ""
                 }
 
-
+                isPasswrodValid=temp==""
 
                 if (mCount == 0) {
                     password1.setBackgroundColor(
@@ -616,7 +616,7 @@ class SignUpScreenFragment : BaseFragment() {
             binding.confirmPassword.error = getString(R.string.password_match)
             binding.confirmPassword.requestFocus()
         }
-        if (binding.password.text.toString().trim().length < 8) {
+       /* if (binding.password.text.toString().trim().length < 8) {
             isValidate = false
             binding.password.error = getString(R.string.oops_your_password_is_not_valid)
             binding.password.requestFocus()
@@ -629,14 +629,16 @@ class SignUpScreenFragment : BaseFragment() {
                 isValidate = false
                 binding.password.error = getString(R.string.oops_your_password_is_not_valid2)
                 binding.password.requestFocus()
-            } else {
-                binding.errorOnPassword.visibility = View.GONE
-                signupViewModel.methodRepo.setBackGround(
-                    requireContext(),
-                    binding.signupPassword,
-                    R.drawable.btn_outline_gray
-                )
+            } */
+            if(!isPasswrodValid)
+            {
+                isValidate = false
+                binding.password.error = getString(R.string.oops_your_password_is_not_valid2)
+                binding.password.requestFocus()
             }
+            else {
+                binding.errorOnPassword.visibility = View.GONE
+
         }
 
         if (binding.email.text.toString().length < 3 || !signupViewModel.methodRepo.isValidEmail(

@@ -84,18 +84,18 @@
     <string name="error_on_fetching_loginDetails">Error on Login Detail Please try again !!</string>
     <string name="please_try_after_sometime">Something went Wrong</string>
 
-    <string name="email_empty">your Email is empty</string>
-    <string name="invalid_email">your Email is invalid</string>
+    <string name="email_empty">your email is empty</string>
+    <string name="invalid_email">your email is invalid</string>
     <string name="invalid_otp">your OTP is invalid</string>
     <string name="oops_your_password_is_empty">your password is empty</string>
     <string name="oops_your_email_is_not_correct_or_empty">your email is not correct or empty</string>
-    <string name="oops_your_password_is_not_valid">Password should contain min of 8 characters</string>
-    <string name="error_password_special">Password should contain one symbol</string>
-    <string name="error_password_capital">Password should contain one uppercase</string>
-    <string name="error_password_small">Password should contain one small</string>
-    <string name="error_password_digit">Password should contain one digit</string>
-    <string name="oops_your_password_is_not_valid2">Password should contains one digit,one lowercase,one uppercase and one symbol</string>
-    <string name="oops_your_password_is_not_matched">Password and confirm password not match</string>
+    <string name="oops_your_password_is_not_valid">password should contain min of 8 characters</string>
+    <string name="error_password_special">password should contain one symbol</string>
+    <string name="error_password_capital">password should contain one uppercase character</string>
+    <string name="error_password_small">password should contain one lowercase character</string>
+    <string name="error_password_digit">password should contain one digit</string>
+    <string name="oops_your_password_is_not_valid2">password should contains one digit,one lowercase,one uppercase and one symbol</string>
+    <string name="oops_your_password_is_not_matched">password and confirm password not match</string>
     <string name="error_phone">your phone is not correct</string>
     <string name="error_name">your name\'s length is less than 3</string>
     <string name="error_l_name">your last name\'s length is less than 3</string>

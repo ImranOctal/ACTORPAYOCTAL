@@ -28,6 +28,7 @@ class LoginScreenFragment : BaseFragment() {
     lateinit var binding: LoginScreenFragmentBinding
 
     private var showPassword = false
+    var isPasswrodValid=false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -169,6 +170,8 @@ class LoginScreenFragment : BaseFragment() {
 
                 val password = text.toString()
                 var temp = ""
+                if (password.length < 8)
+                    temp = getString(R.string.oops_your_password_is_not_valid)
                 if (!loginViewModel.methodRepo.isSpecialCharacter(password))
                     temp = getString(R.string.error_password_special)
                 if (!loginViewModel.methodRepo.isDigit(password))
@@ -177,8 +180,7 @@ class LoginScreenFragment : BaseFragment() {
                     temp = getString(R.string.error_password_small)
                 if (!loginViewModel.methodRepo.isCapitalLetter(password))
                     temp = getString(R.string.error_password_capital)
-                if (password.length < 8)
-                    temp = getString(R.string.oops_your_password_is_not_valid)
+
 
 
                 if (temp!="" && password.length != 0) {
@@ -188,6 +190,8 @@ class LoginScreenFragment : BaseFragment() {
                     errorOnPassword.visibility = View.GONE
                     errorOnPassword.text = ""
                 }
+
+                isPasswrodValid=temp==""
             }
 
         }
@@ -199,7 +203,7 @@ class LoginScreenFragment : BaseFragment() {
 
         var isValid=true
 
-        if (binding.password.text.toString().trim().isEmpty() || !loginViewModel.methodRepo.isValidPassword(binding.password.text.toString().trim())) {
+        if (!isPasswrodValid) {
             binding.password.error = getString(R.string.oops_your_password_is_not_valid2)
             binding.password.requestFocus()
             isValid=false

@@ -63,13 +63,6 @@ class MethodsRepo(private var context: Context, var dataStore: DataStoreBase) {
         return matcher.matches()
     }
 
-    fun isValidPassword(password: String): Boolean {
-        val pattern =
-            Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!&*^()-_]).{8,20}$")
-        val matcher: Matcher = pattern.matcher(password)
-        return matcher.matches()
-    }
-
     fun isSpecialCharacter(password: String): Boolean {
         val pattern = Pattern.compile("(.*[^A-Za-z0-9].*)")
         val matcher: Matcher = pattern.matcher(password)
